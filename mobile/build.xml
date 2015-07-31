@@ -44,7 +44,7 @@
 
     -->
 
-<project name="github-mobile-budget" basedir=".">
+<project name="Mobile-Budget" basedir=".">
 	<description>Builds, tests, and runs the project CodenameOne111.</description>
 	<property file="codenameone_settings.properties" />
 	<property file="build.props" />

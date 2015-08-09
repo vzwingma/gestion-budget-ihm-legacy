@@ -17,7 +17,7 @@
  * under the License.
  */
  
-var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/pin";
+var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/ping";
  
 var app = {
     // Application Constructor

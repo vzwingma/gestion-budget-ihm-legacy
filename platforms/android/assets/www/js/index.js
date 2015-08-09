@@ -48,4 +48,16 @@ var app = {
     }
 };
 
+
+function goPageBudget()
+{
+   var dirPath = dirname(location.href);
+   fullPath = dirPath + "/budget.html";
+   window.location=fullPath;
+}
+
+function dirname(path)
+{
+   return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+}
 app.initialize();

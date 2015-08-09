@@ -16,6 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ 
+var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/ping";
+ 
 var app = {
     // Application Constructor
     initialize: function() {
@@ -36,38 +39,55 @@ var app = {
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
+    receivedEvent: function(id) {   
+        console.log('Received Event: ' + id);
+		// Appel de Ping sur l'appli        
+        $.ajax({
+		  type: "GET",
+		  dataType: "jsonp",
+		  url: serverPingUrl,
+		  success: function(msg){
+		  	app.receivedPing(msg);
+		  },
+		  error: function(msg){
+		  	app.receivedPing(msg);
+		  }
+		});
+    },
+    receivedPing: function(returnCall){
+    	console.log("Ping Server : {" +  returnCall.status + "} : " + returnCall.statusText );
+    	app.updateStatus(returnCall.status == 200);
+     //   console.log(returnCall);
+    },
+    updateStatus: function(status){
+        var parentElement = document.getElementById('deviceready');
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
+		var errorElement = parentElement.querySelector('.error');
+		document.getElementById('loginButton').disabled = !status;
+		if(status){
+	        listeningElement.setAttribute('style', 'display:none;');
+	        receivedElement.setAttribute('style', 'display:block;');
+	        
+	    }
+        else{
+	        listeningElement.setAttribute('style', 'display:none;');
+	        errorElement.setAttribute('style', 'display:block;');
+        }
+    },
 };
 
 
+// Redirection suite à connexion
 function goPageBudget()
 {
-	alert("go page budget");
    var dirPath = dirname(location.href);
    fullPath = dirPath + "/budget.html";
    window.location=fullPath;
-   alert("dirPath : " + dirPath);
 }
+
 function dirname(path)
 {
    return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
 }
-
-
-// Préparation du bouton Connexion
-document.addEventListener('DOMContentReady', function () {
-document.getElementById('loginButton')
-      .addEventListener('click', goPageBudget);
-});
-
-
 app.initialize();

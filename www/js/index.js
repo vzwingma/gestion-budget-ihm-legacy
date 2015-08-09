@@ -48,4 +48,26 @@ var app = {
     }
 };
 
+
+function goPageBudget()
+{
+	alert("go page budget");
+   var dirPath = dirname(location.href);
+   fullPath = dirPath + "/budget.html";
+   window.location=fullPath;
+   alert("dirPath : " + dirPath);
+}
+function dirname(path)
+{
+   return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+}
+
+
+// Préparation du bouton Connexion
+document.addEventListener('DOMContentReady', function () {
+document.getElementById('loginButton')
+      .addEventListener('click', goPageBudget);
+});
+
+
 app.initialize();

@@ -17,7 +17,8 @@
  * under the License.
  */
  
-var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/ping";
+// var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/ping";
+var serverPingUrl = "http://localhost:8080/gestion-budget/rest/ping";
  
 var app = {
     // Application Constructor
@@ -44,12 +45,14 @@ var app = {
 		// Appel de Ping sur l'appli        
         $.ajax({
 		  type: "GET",
-		  dataType: "jsonp",
+		  contentType: 'text/plain',
 		  url: serverPingUrl,
 		  success: function(msg){
+			console.log("Success Ping " + msg);
 		  	app.receivedPing(msg);
 		  },
 		  error: function(msg){
+			console.log(msg);
 		  	app.receivedPing(msg);
 		  }
 		});

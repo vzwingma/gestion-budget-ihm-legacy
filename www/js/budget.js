@@ -20,7 +20,6 @@
 var serverPingUrl = "http://localhost:8080/gestion-budget/rest/categories/depenses";
 // var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/categories/depenses";
 var loginmdp = "test";
-var basicAuth = 'Basic dnp3aW5nbWFubjp0dXNoa2FuODI=';
 var app = {
     // Application Constructor
     initialize: function() {
@@ -28,7 +27,7 @@ var app = {
     }
 };
 
-
+// Chargement des catégories
 var categories = {
 	initialize: function() {
 		 // Appel de la liste des catégories de dépenses sur l'appli        
@@ -37,11 +36,9 @@ var categories = {
 		  contentType: 'application/json',
 		  dataType: 'json',
 		  url: serverPingUrl,
-		  username: loginmdp,
-		  password: loginmdp,
-		   // This the only way I can find that works to do Basic Auth with jQuery Ajax
-			beforeSend: function(req) {
-				req.setRequestHeader('Authorization', basicAuth);
+		  // This the only way I can find that works to do Basic Auth with jQuery Ajax
+		  beforeSend: function(req) {
+				req.setRequestHeader('Authorization', 'Basic ' + btoa(loginmdp + ":" + loginmdp));
 			}
 		}).then(function(data) {
 			console.log('data', data);

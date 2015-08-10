@@ -46,21 +46,17 @@ var app = {
         $.ajax({
 		  type: "GET",
 		  contentType: 'text/plain',
+		  dataType: 'text',
 		  url: serverPingUrl,
 		  success: function(msg){
-			console.log("Success Ping " + msg);
-		  	app.receivedPing(msg);
+			console.log("Success Ping : " + msg);
+		  	app.updateStatus(true);
 		  },
-		  error: function(msg){
-			console.log(msg);
-		  	app.receivedPing(msg);
+		  error: function(returnCall){
+			console.log("Ping Server : {" +  returnCall.status + "} : " + returnCall.statusText );
+		  	app.updateStatus(false);
 		  }
 		});
-    },
-    receivedPing: function(returnCall){
-    	console.log("Ping Server : {" +  returnCall.status + "} : " + returnCall.statusText );
-    	app.updateStatus(returnCall.status == 200);
-     //   console.log(returnCall);
     },
     updateStatus: function(status){
         var parentElement = document.getElementById('deviceready');

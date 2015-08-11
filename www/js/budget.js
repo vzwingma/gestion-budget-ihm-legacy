@@ -17,15 +17,14 @@
  * under the License.
  */
 
-var serverPingUrl = "http://localhost:8080/gestion-budget/rest/categories/depenses";
-// var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/categories/depenses";
-var loginmdp = "test";
 var app = {
     // Application Constructor
     initialize: function() {
        categories.initialize();
+	   utilisateur.initialize();
     }
 };
+
 
 // Chargement des catégories
 var categories = {
@@ -35,22 +34,43 @@ var categories = {
 		  type: 'GET',
 		  contentType: 'application/json',
 		  dataType: 'json',
-		  url: serverPingUrl,
-		  // This the only way I can find that works to do Basic Auth with jQuery Ajax
-		  beforeSend: function(req) {
-				req.setRequestHeader('Authorization', 'Basic ' + btoa(loginmdp + ":" + loginmdp));
-			}
+		  url: serverCategorieUrl,
+		  // Basic Auth with jQuery Ajax
+		  beforeSend: addBasicAuth
 		}).then(function(data) {
-			console.log('data', data);
+			categories.logCategories(data);
 		}, function(err) {
 			console.log('Erreur lors du chargement des catégories', err);
+			alert("Erreur d'authentification");
 		});
 	},
-	init2: function(){
-		 $.get(serverPingUrl, function(data, status){
-			console.log("Data: " + data + "\nStatus: " + status);
+	logCategories: function(categorie){
+		console.log("Catégories chargées");
+		$.each(categorie, function( index, value ) {
+			console.log( index + ": " + value.libelle );
 		});
 	}
 }
+
+// Contexte utilisateur
+var utilisateur = {
+	initialize: function() {
+		 // Appel du contexte utilisateur        
+        $.ajax({
+		  type: 'GET',
+		  contentType: 'application/json',
+		  dataType: 'json',
+		  url: serverUtilisateurUrl,
+		  // Basic Auth with jQuery Ajax
+		  beforeSend: addBasicAuth
+		}).then(function(data) {
+			console.log('Contexte Utilisateur : ', data);
+		}, function(err) {
+			console.log('Erreur lors du chargement du contexte utilisateur', err);
+		});
+	},
+}
+
+
 
 app.initialize();

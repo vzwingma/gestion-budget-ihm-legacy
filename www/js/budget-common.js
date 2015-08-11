@@ -11,7 +11,10 @@ var serverPingUrl = rootServer + "/ping";
 var serverCategorieUrl = rootServer + "/categories/depenses";
 // Contexte utilisateur
 var serverUtilisateurUrl = rootServer + "/utilisateur";
-
+// Budget
+var serverBudgetUrl = rootServer + "/budget/";
+// Depenses
+var serverDepensesUrl = rootServer + "/depenses/";
 
 
 // Ajout de la BasicAuthentication à la requête

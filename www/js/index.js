@@ -78,19 +78,20 @@ var authentication = {
 		  beforeSend: addBasicAuth
 		}).then(function(data) {
 			console.log('Authentification OK', data);
-			goPageBudget();
+			authentication.goPageBudget();
 		}, function(err) {
 			console.log('Erreur lors du chargement des catégories', err);
 			alert("Erreur d'authentification");
 		});
 	},
+	goPageBudget: function(){
+		var dirPath = location.href.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+		fullPath = dirPath + "/budget.html";
+		window.location=fullPath;
+	}
 }
 
-// Redirection suite à connexion
-function goPageBudget(){
-	var dirPath = location.href.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
-	fullPath = dirPath + "/budget.html";
-	window.location=fullPath;
-}
-
+// Register OnClick sur login
+$('#loginButton').click(authentication.login);
+// Init de la page
 app.initialize();

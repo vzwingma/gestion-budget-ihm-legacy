@@ -1,24 +1,8 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * JS pour la page de login
  */
- 
-var serverPingUrl = "https://budget-tushkanyogik.rhcloud.com/rest/ping";
- 
+
+ // Initialisation de la page, lorsque le device est ready et le ping serveur est OK : Activation de la connexion
 var app = {
     // Application Constructor
     initialize: function() {
@@ -44,20 +28,18 @@ var app = {
 		// Appel de Ping sur l'appli        
         $.ajax({
 		  type: "GET",
-		  dataType: "jsonp",
+		  contentType: 'text/plain',
+		  dataType: 'text',
 		  url: serverPingUrl,
 		  success: function(msg){
-		  	app.receivedPing(msg);
+			console.log("Success Ping : " + msg);
+		  	app.updateStatus(true);
 		  },
-		  error: function(msg){
-		  	app.receivedPing(msg);
+		  error: function(returnCall){
+			console.log("Ping Server : {" +  returnCall.status + "} : " + returnCall.statusText );
+		  	app.updateStatus(false);
 		  }
 		});
-    },
-    receivedPing: function(returnCall){
-    	console.log("Ping Server : {" +  returnCall.status + "} : " + returnCall.statusText );
-    	app.updateStatus(returnCall.status == 200);
-     //   console.log(returnCall);
     },
     updateStatus: function(status){
         var parentElement = document.getElementById('deviceready');
@@ -78,16 +60,38 @@ var app = {
 };
 
 
-// Redirection suite à connexion
-function goPageBudget()
-{
-   var dirPath = dirname(location.href);
-   fullPath = dirPath + "/budget.html";
-   window.location=fullPath;
+// Chargement des catégories
+var authentication = {
+	login: function() {
+		
+		// Enregistrement en session des valeurs
+		$.session.set('loginUser', $( "#login" ).val());
+		$.session.set('mdpUser', $( "#mdp" ).val());
+	
+		 // Appel de la liste des catégories de dépenses sur l'appli        
+        $.ajax({
+		  type: 'GET',
+		  contentType: 'application/json',
+		  dataType: 'json',
+		  url: serverCategorieUrl,
+		  // Basic Auth with jQuery Ajax
+		  beforeSend: addBasicAuth
+		}).then(function(data) {
+			console.log('Authentification OK', data);
+			authentication.goPageBudget();
+		}, function(err) {
+			console.log('Erreur lors du chargement des catégories', err);
+			alert("Erreur d'authentification");
+		});
+	},
+	goPageBudget: function(){
+		var dirPath = location.href.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+		fullPath = dirPath + "/budget.html";
+		window.location=fullPath;
+	}
 }
 
-function dirname(path)
-{
-   return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
-}
+// Register OnClick sur login
+$('#loginButton').click(authentication.login);
+// Init de la page
 app.initialize();

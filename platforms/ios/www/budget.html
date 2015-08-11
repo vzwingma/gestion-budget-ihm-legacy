@@ -9,20 +9,48 @@
             * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        -->
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/budget.css">
-		<link rel="stylesheet" type="text/css" href="css/styles.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/budget.css">
+		<!-- Librairies à mettre sur toutes les pages -->
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="js/jquery.session.js"></script>
+		<script type="text/javascript" src="js/budget-common.js"></script>		
         <title>Gestion Mobile de budget</title>
+			<style>
+		
+	</style>
     </head>
     <body>
-        <div class="app">
-			Budget		
-        </div>
+		<div class="header-body">
+			<div class="header-block-compte">
+				<select id="selectCompte" name="select-native-2" data-mini="true">
+				</select>
+			</div>
+			<div id="date" class="header-block-date">
+				<a href="#" class="ui-btn ui-corner-all"><<</a><a href="#" class="ui-btn ui-corner-all"><</a>Mois courant<a href="#" class="ui-btn ui-corner-all">></a>
+			</div>
+			<div id="lastaccess" class="header-block-access">
+				Last access
+			</div>				
+		</div><!-- /header -->
+		<div role="main" class="ui-content">
+			<div class="ui-resume">
+				<div id="ui-liste-cats" class="ui-liste-cats"></div>
+				<div class="ui-totaux"></div>
+			</div>
+			<div id="ui-liste-depenses" class="ui-liste-depenses"></div>
+		</div><!-- /content -->
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/budget.js"></script>
     </body>
 </html>

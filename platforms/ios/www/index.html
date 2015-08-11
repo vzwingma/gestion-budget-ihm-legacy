@@ -15,12 +15,16 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-		<link rel="stylesheet" type="text/css" href="css/styles.css">
+        <link rel="stylesheet" type="text/css" href="css/budget.css">
+		<!-- Librairies à mettre sur toutes les pages -->
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery.session.js"></script>
+		<script type="text/javascript" src="js/budget-common.js"></script>
+	
         <title>Gestion Mobile de budget</title>
     </head>
     <body>
-        <div class="app">
+        <div id="app" class="app">
 			<div class="title">
 				Authentification
 			</div>
@@ -39,7 +43,7 @@
 				<div>
 					<input type="password" id="mdp" tabindex="0" style="width: 90%;">
 				</div>
-					<button id="loginButton" type="button" onclick="goPageBudget()">Connexion</button>
+					<button id="loginButton" type="button" disabled="true">Connexion</button>
 				</div>			
         </div>
         <div id="deviceready" class="blink, statut">
@@ -47,8 +51,8 @@
             <p class="event received"> Connect&eacute; </p>
             <p class="event error"> Erreur de connexion </p>
         </div>
-        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
+	
+        <script type="text/javascript" src="cordova.js"></script>	
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

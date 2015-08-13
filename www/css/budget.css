@@ -188,7 +188,7 @@ body {
 }
  
 .v-button{
-    width: 16% !important;
+    width: 13.1% !important;
 	height: 4em !important;
 	background-size: 4em 4em;
 	background-repeat:no-repeat;
@@ -200,10 +200,10 @@ body {
   }
 
   .v-button-supprimer {
-  	background-image: url('../img/circle_remove.png'); 
+  	background-image: url('../img/circle_remove.svg'); 
   }
     
-    .v-button-annuler {
+  .v-button-annuler {
   	background-image: url('../img/circle_cancel.svg'); 
   }
   
@@ -211,10 +211,16 @@ body {
   	background-image: url('../img/circle_arrow_right.svg');
   }
   
-    .v-button-prevue {
+  .v-button-prevue {
   	background-image: url('../img/circle_clock.svg');
   }
    
+  .v-button-plus {
+  	background-image: url('../img/circle-plus.svg');
+  }   
+  .v-button-edit {
+  	background-image: url('../img/circle-edit.svg');
+  }     
  
 /**********************************************************************************/
 /*** 							Portait layout									***/

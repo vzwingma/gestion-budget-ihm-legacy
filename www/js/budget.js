@@ -19,11 +19,12 @@ var app = {
 		categoriesClass.initialize();
 		utilisateurClass.initialize();
 		// Suppression des boutons d'actions sur dépenses à l'init
-		$('#buttonRealiser').hide();
-		$('#buttonPrevu').hide();
-		$('#buttonAnnuler').hide();
-		$('#buttonReporter').hide();
-		$('#buttonSupprimer').hide();
+		$('#buttonRealiser').prop('disabled', true);
+		$('#buttonPrevu').prop('disabled', true);
+		$('#buttonAnnuler').prop('disabled', true);
+		$('#buttonReporter').prop('disabled', true);
+		$('#buttonSupprimer').prop('disabled', true);
+		$('#buttonEditer').prop('disabled', true);
     }
 };
 
@@ -197,32 +198,12 @@ var depensesClass = {
 	selectDepense: function(idDepense){
 		var etatDepense = depensesClass.findDepenseById(idDepense).etat;
 		console.log("Actions sur la dépense : " + idDepense + "::"+etatDepense);
-		$('#buttonSupprimer').show();
-		console.log(etatDepense == "REALISEE");
-		if(etatDepense == "REALISEE"){
-			$('#buttonRealiser').hide();
-			$('#buttonPrevu').show();
-			$('#buttonAnnuler').show();
-			$('#buttonReporter').show();
-		}
-		else if(etatDepense == "PREVUE"){
-			$('#buttonRealiser').show();
-			$('#buttonPrevu').hide();
-			$('#buttonAnnuler').show();
-			$('#buttonReporter').show();
-		}
-		else if(etatDepense == "REPORTEE"){
-			$('#buttonRealiser').show();
-			$('#buttonPrevu').show();
-			$('#buttonAnnuler').show();
-			$('#buttonReporter').hide();
-		}	
-		else if(etatDepense == "ANNULEE"){
-			$('#buttonRealiser').show();
-			$('#buttonPrevu').show();
-			$('#buttonAnnuler').hide();
-			$('#buttonReporter').show();
-		}
+		$('#buttonRealiser').prop('disabled', etatDepense == "REALISEE");
+		$('#buttonPrevu').prop('disabled', etatDepense == "PREVUE");
+		$('#buttonAnnuler').prop('disabled', etatDepense == "ANNULEE");
+		$('#buttonReporter').prop('disabled', etatDepense == "REPORTEE");
+		$('#buttonSupprimer').prop('disabled', false);
+		$('#buttonEditer').prop('disabled', false);
 	},
 	fillTableauDepenses: function(depenses){
 		$('#ui-liste-depenses').empty();

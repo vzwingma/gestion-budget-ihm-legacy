@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="26pt"
+   height="26pt"
+   viewBox="0 0 26 26"
+   version="1.1"
+   id="svg2999"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="circle-plus.svg">
+  <metadata
+     id="metadata3011">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3009" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1161"
+     inkscape:window-height="702"
+     id="namedview3007"
+     showgrid="false"
+     inkscape:zoom="10.269366"
+     inkscape:cx="-7.6489452"
+     inkscape:cy="16.5935"
+     inkscape:window-x="113"
+     inkscape:window-y="1100"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2999" />
+  <path
+     fill="none"
+     d=" M 0.00 0.00 L 26.00 0.00 L 26.00 26.00 L 0.00 26.00 L 0.00 0.00 Z"
+     id="path3001" />
+  <path
+     fill="#27ae60"
+     d=" M 8.30 1.51 C 15.34 -1.59 24.40 3.32 25.22 11.07 C 27.09 19.41 18.06 27.67 9.93 24.99 C 3.84 23.67 -0.47 17.12 0.80 11.01 C 1.35 6.79 4.34 3.04 8.30 1.51 Z"
+     id="path3003"
+     style="fill:#2c9720;fill-opacity:1" />
+  <polygon
+     style="fill:#ffffff"
+     points="14,5 9,5 9,0 5,0 5,5 0,5 0,9 5,9 5,14 9,14 9,9 14,9 "
+     id="polygon3053"
+     transform="matrix(1.1428571,0,0,1.1428571,4.9517851,4.75042)" />
+</svg>

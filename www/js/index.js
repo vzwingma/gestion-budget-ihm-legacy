@@ -69,7 +69,7 @@ var app = {
 
 
 // Chargement des catégories
-var authentication = {
+var authenticationClass = {
 	login: function() {
 		
 		// Enregistrement en session des valeurs
@@ -100,6 +100,6 @@ var authentication = {
 }
 
 // Register OnClick sur login
-$('#loginButton').click(authentication.login);
+$('#loginButton').click(authenticationClass.login);
 // Init de la page
 app.initialize();

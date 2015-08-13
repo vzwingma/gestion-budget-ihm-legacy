@@ -22,7 +22,7 @@ function addBasicAuth(req){
 	req.setRequestHeader('Authorization', 'Basic ' + btoa($.session.get('loginUser') + ":" + $.session.get('mdpUser')));
 }
 
-
+// Affichage du nom du mois
 function getLabelMois(noMois){
 	if(noMois == 0){
 		return "Janvier";

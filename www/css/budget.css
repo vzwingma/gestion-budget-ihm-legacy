@@ -132,9 +132,20 @@ body {
 	-webkit-border-radius: .3125em;
 	border-radius: .3125em;
 }
-		
 
  /* Couleurs du tableau des dépenses */
+  .ui-liste-depenses  .ui-depense-SELECTIONNEE{
+	background-color: #0072C6;
+	color:#FFFFFF;
+ }
+  /* Couleurs du tableau des dépenses */
+  .ui-liste-depenses  .ui-depense-SELECTIONNEE  .ui-depense-CREDIT{
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;	
+ }
+  .ui-liste-depenses  .ui-depense-SELECTIONNEE  .ui-depense-DEPENSE{
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;	
+ }
+ 
  .ui-liste-depenses  .ui-depense-REALISEE{
 	background-color: #c9ebd8;
  }
@@ -167,25 +178,25 @@ body {
 	color: red;
 	font-weight:700;
 	text-align:right;
+	width:5.5em;
  }	
  
 .ui-liste-depenses  .ui-depense-CREDIT{
 	color: #2c9720;
 	font-weight:700;
 	text-align:right;
+	width:5.5em;
  }	
  
  /* Hover sur Ligne  */
+ .ui-liste-depenses .ui-depense-last{
+	font-weight:700;
+ }
+  
 .ui-liste-depenses tr:hover{
-	background-color: #0072C6;
-	color:#FFFFFF;
+	background-color: #c7deef;
 }
-.ui-liste-depenses tr:hover .ui-depense-CREDIT{
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;	
-}
-.ui-liste-depenses tr:hover .ui-depense-DEPENSE{
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;	
-}
+
  
 .v-button{
     width: 13.1% !important;
@@ -207,7 +218,7 @@ body {
   	background-image: url('../img/circle_cancel.svg'); 
   }
   
-    .v-button-reporter {
+  .v-button-reporter {
   	background-image: url('../img/circle_arrow_right.svg');
   }
   
@@ -217,7 +228,8 @@ body {
    
   .v-button-plus {
   	background-image: url('../img/circle-plus.svg');
-  }   
+  }
+  
   .v-button-edit {
   	background-image: url('../img/circle-edit.svg');
   }     
@@ -282,15 +294,15 @@ body {
 
 	.ui-liste-depenses thead{
 		width:100%;
+		background-color:#0072C6;
+		color: white;
+	}
+	.ui-liste-depenses th{
 		height: 3em;
 	}
-	
 	.ui-liste-depenses tr{
 		width:100%;
 	}
-	
-	
-	
 	
 	.ui-liste-depenses td {
 		display: table-cell;
@@ -355,6 +367,4 @@ body {
 		border: 1px solid red;
 		width:60%;
 	}
-	
-
 }

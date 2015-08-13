@@ -15,7 +15,9 @@ var app = {
 		
 		// Register Chargement du budget sur sélection
 		$('#selectCompte').bind("change",compteClass.select);
-		
+		// Register des swipe
+		$(document).on( "swipeleft", app.swipeHandler(-1) );
+		$(document).on( "swiperight", app.swipeHandler(+1) );
 		categoriesClass.initialize();
 		utilisateurClass.initialize();
 		// Suppression des boutons d'actions sur dépenses à l'init
@@ -25,7 +27,12 @@ var app = {
 		$('#buttonReporter').prop('disabled', true);
 		$('#buttonSupprimer').prop('disabled', true);
 		$('#buttonEditer').prop('disabled', true);
-    }
+    },
+	swipeHandler : function(sens) {
+		if(!mois == NaN){
+			alert("Chargmeent de " + (mois + sens));
+		}
+	}
 };
 
 
@@ -130,17 +137,15 @@ var budgetClass = {
 	initialize : function(){
 		var aujourdhui = new Date();
 		mois = aujourdhui.getMonth();
+		var strMois = "" + mois;
 		if(mois < 10){
-			mois = "0"+mois;
-		}
-		else{
-			mois = ""+mois;
+			strMois = "0"+mois;
 		}
 		annee = ""+ aujourdhui.getFullYear();
-		console.log("Chargement du budget ["+ idCompte +"] du " + mois + "/" + annee);
+		console.log("Chargement du budget ["+ idCompte +"] du " + strMois + "/" + annee);
 		// Affichage de la date
-		$( "#date_courante" ).text(getLabelMois(mois) + " " + annee);
-		budgetClass.get(idCompte, mois, annee);
+		$( "#date_courante" ).text(getLabelMois(strMois) + " " + annee);
+		budgetClass.get(idCompte, strMois, annee);
 	},
 	get: function(idCompte, mois, annee) {
 		 // Appel du budget      
@@ -157,7 +162,7 @@ var budgetClass = {
 			depensesClass.get(idBudget);
 		}, function(err) {
 			console.log('Erreur lors du chargement du budget', err);
-			$('#ui-liste-depenses').empty();
+			$('#table-liste-depenses').empty();
 			alert('Erreur lors du chargement du budget');
 		});
 	}
@@ -183,7 +188,7 @@ var depensesClass = {
 			listeDepenses=data;
 			depensesClass.fillTableauDepenses(data);
 		}, function(err) {
-			$('#ui-liste-depenses').empty();
+			$('#table-liste-depenses').empty();
 			console.log('Erreur lors du chargement des dépenses', err);
 			alert('Erreur lors du chargement des dépenses');
 		});
@@ -198,18 +203,40 @@ var depensesClass = {
 	selectDepense: function(idDepense){
 		var etatDepense = depensesClass.findDepenseById(idDepense).etat;
 		console.log("Actions sur la dépense : " + idDepense + "::"+etatDepense);
+		// Activation des boutons
 		$('#buttonRealiser').prop('disabled', etatDepense == "REALISEE");
 		$('#buttonPrevu').prop('disabled', etatDepense == "PREVUE");
 		$('#buttonAnnuler').prop('disabled', etatDepense == "ANNULEE");
 		$('#buttonReporter').prop('disabled', etatDepense == "REPORTEE");
 		$('#buttonSupprimer').prop('disabled', false);
 		$('#buttonEditer').prop('disabled', false);
+		// Ancienne ligne sélectionnée => Désélectionnée
+		if(!($("#table-liste-depenses").find('.ui-depense-SELECTIONNEE')[0] === undefined )){
+			idLigne = $("#table-liste-depenses").find('.ui-depense-SELECTIONNEE')[0].id;
+			// Remplacement de SELECTIONNE par le type de dépense
+			var reclassDepense = $('#'+ idLigne).prop('class').replace(/SELECTIONNEE/g, $('#'+ idLigne).attr('type'));
+			$('#'+ idLigne).prop('class', reclassDepense);
+		}
+		// Ligne sélectionnée
+		var classeDepense = $('#'+ idDepense).prop('class');
+		//$('#'+ idDepense).prop('class', 'ui-ligne-depenses .ui-depense-SELECTIONNEE');
+		classeDepense = classeDepense.replace(/REALISEE/g, "SELECTIONNEE");
+		classeDepense = classeDepense.replace(/PREVUE/g, "SELECTIONNEE");
+		classeDepense = classeDepense.replace(/ANNULEE/g, "SELECTIONNEE");
+		classeDepense = classeDepense.replace(/REPORTEE/g, "SELECTIONNEE");
+		$('#'+ idDepense).prop('class', classeDepense);
+
 	},
 	fillTableauDepenses: function(depenses){
-		$('#ui-liste-depenses').empty();
+		$('#table-liste-depenses').empty();
 		/* Itération du tableau des dépenses */
 		$.each(depenses, function( index, depense ) {
-			$('#ui-liste-depenses').append($('<tr>', { id : depense.id , class : 'ui-ligne-depenses ui-depense-' + depense.etat}));
+			var classDepense = 'ui-ligne-depenses ';
+			if(depense.derniereOperation){
+				classDepense += 'ui-depense-last ';
+			}
+			classDepense += 'ui-depense-' + depense.etat;
+			$('#table-liste-depenses').append($('<tr>', { id : depense.id , class : classDepense, type: depense.etat}));
 			var valeur = depense.valeur + " &euro;";
 			if(depense.typeDepense == 'DEPENSE'){
 				valeur = "- " + valeur;
@@ -221,7 +248,7 @@ var depensesClass = {
 				.append($('<td>', {class: 'ui-tab-depenses ui-depense-' + depense.typeDepense}).html(valeur))
 				; 
 		});
-		$('#ui-liste-depenses tr').click(function(event) {
+		$('#table-liste-depenses tr').click(function(event) {
             depensesClass.selectDepense(this.id);
         });
 	}

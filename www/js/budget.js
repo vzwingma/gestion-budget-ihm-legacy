@@ -255,4 +255,3 @@ var depensesClass = {
 }
 
 app.initialize();
-

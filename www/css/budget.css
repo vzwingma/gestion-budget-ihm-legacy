@@ -244,12 +244,13 @@ body {
 	margin:0em;
 	padding:0em;
 }
-	.header-block-compte{
-		width:100%;
+
+	.ui-select .ui-btn{
+		display:block;
 	}
 	.header-block-date {
-		display: inline-block;
 		width:50%;
+		display: inline-block;		
 		text-align:center;
 		font-size:1.2em;
 		font-weight:700;
@@ -325,6 +326,7 @@ body {
 	.header-block-compte{
 		width:50%;
 		border: 1px solid red;
+
 	}
 	.header-block-date {
 		display: inline-block;

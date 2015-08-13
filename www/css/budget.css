@@ -133,7 +133,89 @@ body {
 	border-radius: .3125em;
 }
 		
-		
+
+ /* Couleurs du tableau des dépenses */
+ .ui-liste-depenses  .ui-depense-REALISEE{
+	background-color: #c9ebd8;
+ }
+ .ui-liste-depenses  .ui-depense-REALISEE-odd{
+	background-color: #e9f7ef;
+ }
+ 
+ .ui-liste-depenses  .ui-depense-PREVUE{
+	background-color: #fce6c4;
+ }
+ .ui-liste-depenses  .ui-depense-PREVUE-odd{
+	background-color: #fdeed6;
+ }
+
+ .ui-liste-depenses  .ui-depense-REPORTEE{
+	background-color: #e6d6ed;
+ }
+ .ui-liste-depenses  .ui-depense-REPORTEE-odd{
+	background-color: #dcc5e6;
+ }
+ 
+ .ui-liste-depenses  .ui-depense-ANNULEE{
+	background-color: #cad2d3;
+ }
+ .ui-liste-depenses  .ui-depense-ANNULEE-odd{
+	background-color: #dadfe0;
+ }	
+ 
+.ui-liste-depenses  .ui-depense-DEPENSE{
+	color: red;
+	font-weight:700;
+	text-align:right;
+ }	
+ 
+.ui-liste-depenses  .ui-depense-CREDIT{
+	color: #2c9720;
+	font-weight:700;
+	text-align:right;
+ }	
+ 
+ /* Hover sur Ligne  */
+.ui-liste-depenses tr:hover{
+	background-color: #0072C6;
+	color:#FFFFFF;
+}
+.ui-liste-depenses tr:hover .ui-depense-CREDIT{
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;	
+}
+.ui-liste-depenses tr:hover .ui-depense-DEPENSE{
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;	
+}
+ 
+.v-button{
+    width: 16% !important;
+	height: 4em !important;
+	background-size: 4em 4em;
+	background-repeat:no-repeat;
+	background-position:center center;
+}
+
+  .v-button-reel {
+  	background-image: url('../img/circle_ok.svg'); 
+  }
+
+  .v-button-supprimer {
+  	background-image: url('../img/circle_remove.png'); 
+  }
+    
+    .v-button-annuler {
+  	background-image: url('../img/circle_cancel.svg'); 
+  }
+  
+    .v-button-reporter {
+  	background-image: url('../img/circle_arrow_right.svg');
+  }
+  
+    .v-button-prevue {
+  	background-image: url('../img/circle_clock.svg');
+  }
+   
+ 
 /**********************************************************************************/
 /*** 							Portait layout									***/
 /**********************************************************************************/
@@ -141,10 +223,30 @@ body {
 .header-body {
 	text-align: left;
 	color: #0072C6;
+	margin:0em;
+	padding:0em;
 }
-	/* contenu */
+	.header-block-compte{
+		width:100%;
+	}
+	.header-block-date {
+		display: inline-block;
+		width:50%;
+		text-align:center;
+		font-size:1.2em;
+		font-weight:700;
+	}
+	.header-block-access {
+		display: inline-block;
+		width: 48%;
+		text-align:right;
+		vertical-align:bottom;
+		font-size:1em;
+	}
+/* contenu */
 	.ui-content{
 		display: block;
+		height:100%;
 	}
 	/* colonne de gauche */
 	.ui-resume{
@@ -164,11 +266,30 @@ body {
 		border: 1px solid blue;
 	}	
 	
-	/** liste des dépenses **/
+/** liste des dépenses **/
 	.ui-liste-depenses{
 		width:100%;
-		height: 110em;
-		border: 1px solid red;
+		border-collapse: collapse;
+		font-size:1.2em;
+		text-align:left;
+	}
+
+	.ui-liste-depenses thead{
+		width:100%;
+		height: 3em;
+	}
+	
+	.ui-liste-depenses tr{
+		width:100%;
+	}
+	
+	
+	
+	
+	.ui-liste-depenses td {
+		display: table-cell;
+		height: 3em;
+		border-bottom: 1px solid grey;
 	}
 
 
@@ -184,19 +305,22 @@ body {
 	   line-height: 4em;
 	}
 	.header-block-compte{
-		width:30%;
-		border: 1px solid red;
-	}
-	.header-block-date {
-		display: flex;
 		width:50%;
 		border: 1px solid red;
 	}
+	.header-block-date {
+		display: inline-block;
+		width:50%;
+		text-align:center;
+		font-size:1.2em;
+		font-weight:700;
+	}
 	.header-block-access {
-		position:relative;
-		left: 0px;
-		width: 20%;
-		border: 1px solid red;
+		display: inline-block;
+		width: 48%;
+		text-align:right;
+		vertical-align:bottom;
+		font-size:1em;
 	}
 	/* contenu */
 	.ui-content{
@@ -211,7 +335,6 @@ body {
 	}
 	/* catégories */
 	.ui-liste-cats{
-		height: 100em;
 		border: 1px solid red;
 		display: block;
 	}
@@ -223,8 +346,9 @@ body {
 	
 	/** liste des dépenses **/
 	.ui-liste-depenses{
-		
-		height: 110em;
 		border: 1px solid red;
+		width:60%;
 	}
+	
+
 }

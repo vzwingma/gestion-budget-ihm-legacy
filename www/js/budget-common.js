@@ -1,8 +1,8 @@
 /*
  * Classe commune à toutes les pages
  */
-//var rootServer = "http://192.168.59.103:18080/gestion-budget/rest"
- var rootServer = "http://192.168.0.17:8080/gestion-budget/rest"
+var rootServer = "http://192.168.59.103:18080/gestion-budget/rest/v2"
+// var rootServer = "http://192.168.0.17:8080/gestion-budget/rest"
 // var rootServer = "https://budget-tushkanyogik.rhcloud.com/rest"
 
 // Ping
@@ -20,4 +20,44 @@ var serverDepensesUrl = rootServer + "/depenses/";
 // Ajout de la BasicAuthentication à la requête
 function addBasicAuth(req){
 	req.setRequestHeader('Authorization', 'Basic ' + btoa($.session.get('loginUser') + ":" + $.session.get('mdpUser')));
+}
+
+
+function getLabelMois(noMois){
+	if(noMois == 0){
+		return "Janvier";
+	}
+	else if(noMois == 1){
+		return "Février";
+	}
+	else if(noMois == 2){
+		return "Mars";
+	}
+	else if(noMois == 3){
+		return "Avril";
+	}
+	else if(noMois == 4){
+		return "Mai";
+	}
+	else if(noMois == 5){
+		return "Juin";
+	}
+	else if(noMois == 6){
+		return "Juillet";
+	}
+	else if(noMois == 7){
+		return "Aout";
+	}
+	else if(noMois == 8){
+		return "Septembre";
+	}
+	else if(noMois == 9){
+		return "Octobre";
+	}
+	else if(noMois == 10){
+		return "Novembre";
+	}
+	else if(noMois == 11){
+		return "Décembre";
+	}
 }

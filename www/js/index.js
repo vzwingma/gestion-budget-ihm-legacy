@@ -34,6 +34,7 @@ var app = {
 		  success: function(msg){
 			console.log("Success Ping : " + msg);
 		  	app.updateStatus(true);
+			app.getCookieAuth();
 		  },
 		  error: function(returnCall){
 			console.log("Ping Server : {" +  returnCall.status + "} : " + returnCall.statusText );
@@ -57,6 +58,13 @@ var app = {
 	        errorElement.setAttribute('style', 'display:block;');
         }
     },
+	getCookieAuth : function(){
+		// Enregistrement en session des valeurs
+		var loginUser = $.session.get('loginUser');
+		var mdpUser = $.session.get('mdpUser');
+		$( "#login" ).val(loginUser);
+		$( "#mdp" ).val(mdpUser);
+	}
 };
 
 

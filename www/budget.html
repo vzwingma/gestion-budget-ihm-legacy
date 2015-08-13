@@ -32,22 +32,45 @@
 				<select id="selectCompte" name="select-native-2" data-mini="true">
 				</select>
 			</div>
-			<div id="date" class="header-block-date">
-				<a href="#" class="ui-btn ui-corner-all"><<</a><a href="#" class="ui-btn ui-corner-all"><</a>Mois courant<a href="#" class="ui-btn ui-corner-all">></a>
+			<div class="header-block-compte"/>
+				<div id="date_courante" class="header-block-date">Mois courant</div>
+				<div id="lastaccess" class="header-block-access">
+					Last access
+				</div>			
 			</div>
-			<div id="lastaccess" class="header-block-access">
-				Last access
-			</div>				
 		</div><!-- /header -->
+		
+		<!-- Contenu -->
 		<div role="main" class="ui-content">
 			<div class="ui-resume">
 				<div id="ui-liste-cats" class="ui-liste-cats"></div>
 				<div class="ui-totaux"></div>
 			</div>
-			<div id="ui-liste-depenses" class="ui-liste-depenses"></div>
+			<table class="ui-liste-depenses">
+				<thead>
+				 <tr>
+					 <th colspan="2">Cat&eacute;gorie</th>
+					 <th>Libelle</th>
+					 <th>Valeur</th>
+				  </tr>
+				</thead>
+				<!-- Liste des dépenses -->
+				<tbody  id="ui-liste-depenses" >			
+				</tbody>
+			</table>
 		</div><!-- /content -->
-		<div data-role="footer">
-			<h4>Page Footer</h4>
+		
+		<!-- Actions -->
+		<div data-role="footer" data-position="fixed" data-tap-toggle="false">
+			<div data-role="navbar">
+				<button id="buttonRealiser" class="v-button v-button-reel"></button>
+				<button id="buttonPrevu" class="v-button v-button-prevue"></button>
+				<button id="buttonAnnuler" class="v-button v-button-annuler"></button>
+				<button id="buttonReporter" class="v-button v-button-reporter"></button>
+				<button id="buttonSupprimer"  class="v-button v-button-supprimer"></button>
+				<button id="buttonEditer"  class="v-button" data-icon="edit"></button>
+				<button id="buttonAjouter"  class="v-button" data-icon="plus"></button>
+			</div><!-- /navbar -->
 		</div><!-- /footer -->
 
         <script type="text/javascript" src="cordova.js"></script>

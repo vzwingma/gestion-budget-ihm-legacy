@@ -1,0 +1,118 @@
+/*
+* Style dans le mode portrait
+*/
+
+/**************************************************************************/
+/***						INDEX							   			***/
+/**************************************************************************/
+/* Portrait layout (default) */
+.app {
+	margin-left: auto;
+	margin-right: auto;
+	height:50px;                   /* text area height */
+	width:225px;                   /* text area width */
+	text-align:center;
+	position:relative;
+	top:50px;
+}
+
+
+/**************************************************************************/
+/***						BUDGET							   			***/
+/*************************************************************************/
+
+/* Basic styles */
+.header-body {
+	text-align: left;
+	color: #0072C6;
+	margin:0em;
+	padding:0em;
+}
+
+.ui-select .ui-btn{
+	display:block;
+}
+.header-block-date {
+	width:50%;
+	display: inline-block;		
+	text-align:center;
+	font-size:1.2em;
+	font-weight:700;
+}
+.header-block-access {
+	display: inline-block;
+	width: 48%;
+	text-align:right;
+	vertical-align:bottom;
+	font-size:1em;
+}
+/* contenu */
+.ui-content{
+	display: block;
+	height:100%;
+}
+/* colonne de gauche */
+.ui-resume{
+	display: block;
+	width:100%;
+	border: 1px solid green;
+}
+/* catégories */
+.ui-liste-cats{
+	height: 100em;
+	border: 1px solid red;
+	display:none;
+}
+/** totaux **/
+.ui-totaux{
+	height: 10em;
+	border: 1px solid blue;
+}	
+
+/** liste des dépenses **/
+.ui-liste-depenses{
+	width:100%;
+	border-collapse: collapse;
+	font-size:1em;
+	text-align:left;
+}
+
+.ui-liste-depenses thead{
+	width:100%;
+	background-color:#0072C6;
+	color: white;
+}
+.ui-liste-depenses th{
+	height: 3em;
+}
+.ui-liste-depenses tr{
+	width:100%;
+}
+
+.ui-liste-depenses td {
+	display: table-cell;
+	height: 3em;
+	border-bottom: 1px solid grey;
+}
+/** Boutons d'action **/
+.v-button{
+	width: 12% !important;
+	height: 4em !important;
+	background-size: 4em 4em;
+	background-repeat:no-repeat;
+	background-position:center center;
+}
+
+/** Galaxy S6 en mode portrait **/
+@media screen and (min-width:1430px),(max-width:400px) {
+	.v-button{
+		width: 3.5em !important;
+		height: 3.3em !important;
+		background-size: 3em 3em;
+		background-repeat:no-repeat;
+		background-position:center center;
+	}
+	body {
+		font-size:0.8em;
+	}
+}

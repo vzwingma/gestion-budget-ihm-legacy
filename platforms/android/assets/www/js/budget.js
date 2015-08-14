@@ -5,7 +5,7 @@
 var mois;
 var annee;
 var idCompte; 
- 
+var budgetCourant;
 // Liste des catégories
 var listeCategories;
  
@@ -20,13 +20,6 @@ var app = {
 		$(document).on( "swiperight", app.swipeHandler(+1) );
 		categoriesClass.initialize();
 		utilisateurClass.initialize();
-		// Suppression des boutons d'actions sur dépenses à l'init
-		$('#buttonRealiser').prop('disabled', true);
-		$('#buttonPrevu').prop('disabled', true);
-		$('#buttonAnnuler').prop('disabled', true);
-		$('#buttonReporter').prop('disabled', true);
-		$('#buttonSupprimer').prop('disabled', true);
-		$('#buttonEditer').prop('disabled', true);
     },
 	swipeHandler : function(sens) {
 		if(!mois == NaN){
@@ -145,6 +138,16 @@ var budgetClass = {
 		console.log("Chargement du budget ["+ idCompte +"] du " + strMois + "/" + annee);
 		// Affichage de la date
 		$( "#date_courante" ).text(getLabelMois(strMois) + " " + annee);
+		
+		// Suppression des boutons d'actions sur dépenses à l'init
+		$('#buttonRealiser').prop('disabled', true);
+		$('#buttonPrevu').prop('disabled', true);
+		$('#buttonAnnuler').prop('disabled', true);
+		$('#buttonReporter').prop('disabled', true);
+		$('#buttonSupprimer').prop('disabled', true);
+		$('#buttonEditer').prop('disabled', true);
+		// Chargement du budget
+		
 		budgetClass.get(idCompte, strMois, annee);
 	},
 	get: function(idCompte, mois, annee) {
@@ -157,14 +160,21 @@ var budgetClass = {
 		  // Basic Auth with jQuery Ajax
 		  beforeSend: addBasicAuth
 		}).then(function(data) {
+			// Chargement du budget
 			console.log('Budget : ', data);
-			var idBudget = data.id;
-			depensesClass.get(idBudget);
+			budgetClass.budgetCharge(data);
 		}, function(err) {
 			console.log('Erreur lors du chargement du budget', err);
 			$('#table-liste-depenses').empty();
 			alert('Erreur lors du chargement du budget');
 		});
+	},
+	budgetCharge(budget){
+		budgetCourant = budget;
+		// Chargmeent des dépenses
+		depensesClass.get(budgetCourant.id);
+		// Maj du bouton si actif
+		$('#buttonAjouter').prop('disabled', !budget.actif);
 	}
 }
 

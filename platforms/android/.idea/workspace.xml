@@ -5,29 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6bdb9c40-d9f3-435d-bb5a-7d02243f620d" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/index.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../browser/www/css/index.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../ios/www/css/index.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/budget.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../browser/www/css/budget.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ios/www/css/budget.css" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/GestionBudget.xcodeproj/project.xcworkspace/xcuserdata/Yogik.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="$PROJECT_DIR$/../ios/GestionBudget.xcodeproj/project.xcworkspace/xcuserdata/Yogik.xcuserdatad/UserInterfaceState.xcuserstate" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../browser/build/package.zip" afterPath="$PROJECT_DIR$/../browser/build/package.zip" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../www/js/budget-common.js" afterPath="$PROJECT_DIR$/../../www/js/budget-common.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/css/budget.css" afterPath="$PROJECT_DIR$/assets/www/css/budget.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../browser/www/css/budget.css" afterPath="$PROJECT_DIR$/../browser/www/css/budget.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/css/budget.css" afterPath="$PROJECT_DIR$/../ios/www/css/budget.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/js/budget-common.js" afterPath="$PROJECT_DIR$/assets/www/js/budget-common.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../browser/www/js/budget-common.js" afterPath="$PROJECT_DIR$/../browser/www/js/budget-common.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/js/budget-common.js" afterPath="$PROJECT_DIR$/../ios/www/js/budget-common.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/budget.html" afterPath="$PROJECT_DIR$/assets/www/budget.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../browser/www/budget.html" afterPath="$PROJECT_DIR$/../browser/www/budget.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/budget.html" afterPath="$PROJECT_DIR$/../ios/www/budget.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/js/budget.js" afterPath="$PROJECT_DIR$/assets/www/js/budget.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../browser/www/js/budget.js" afterPath="$PROJECT_DIR$/../browser/www/js/budget.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/js/budget.js" afterPath="$PROJECT_DIR$/../ios/www/js/budget.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/index.html" afterPath="$PROJECT_DIR$/assets/www/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../browser/www/index.html" afterPath="$PROJECT_DIR$/../browser/www/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/index.html" afterPath="$PROJECT_DIR$/../ios/www/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/js/index.js" afterPath="$PROJECT_DIR$/assets/www/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../browser/www/js/index.js" afterPath="$PROJECT_DIR$/../browser/www/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/js/index.js" afterPath="$PROJECT_DIR$/../ios/www/js/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -53,7 +51,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/terrier/finances/mobile/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.888889">
+            <state vertical-scroll-proportion="0.0">
               <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding />
             </state>
@@ -996,7 +994,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="5756726856000" />
+        <entry key="$PROJECT_DIR$" value="5757272466000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1280,6 +1278,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/com/terrier/finances/mobile/MainActivity.java" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -1314,12 +1313,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane />
-      </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1404,6 +1397,12 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane />
+      </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1651,6 +1650,22 @@
     <entry file="file://$PROJECT_DIR$/src/com/terrier/finances/mobile/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/terrier/finances/mobile/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -1686,17 +1701,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/terrier/finances/mobile/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/assets/_where-is-www.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/terrier/finances/mobile/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.888889">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
           <folding />
         </state>
       </provider>

@@ -1,7 +1,9 @@
 /*
 * Style dans le mode portrait
 */
-
+body {
+    font-size:0.8em;
+}
 /**************************************************************************/
 /***						INDEX							   			***/
 /**************************************************************************/
@@ -96,7 +98,7 @@
 }
 /** Boutons d'action **/
 .v-button{
-	width: 12% !important;
+	width: 3.5em !important;
 	height: 4em !important;
 	background-size: 4em 4em;
 	background-repeat:no-repeat;

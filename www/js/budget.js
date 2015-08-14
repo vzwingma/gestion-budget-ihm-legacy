@@ -5,7 +5,7 @@
 var mois;
 var annee;
 var idCompte; 
- 
+var budgetCourant;
 // Liste des catégories
 var listeCategories;
  
@@ -160,14 +160,21 @@ var budgetClass = {
 		  // Basic Auth with jQuery Ajax
 		  beforeSend: addBasicAuth
 		}).then(function(data) {
+			// Chargement du budget
 			console.log('Budget : ', data);
-			var idBudget = data.id;
-			depensesClass.get(idBudget);
+			budgetClass.budgetCharge(data);
 		}, function(err) {
 			console.log('Erreur lors du chargement du budget', err);
 			$('#table-liste-depenses').empty();
 			alert('Erreur lors du chargement du budget');
 		});
+	},
+	budgetCharge(budget){
+		budgetCourant = budget;
+		// Chargmeent des dépenses
+		depensesClass.get(budgetCourant.id);
+		// Maj du bouton si actif
+		$('#buttonAjouter').prop('disabled', !budget.actif);
 	}
 }
 

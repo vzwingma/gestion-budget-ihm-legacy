@@ -86,7 +86,7 @@ var authenticationClass = {
 		  beforeSend: addBasicAuth
 		}).then(function(data) {
 			console.log('Authentification OK', data);
-			authentication.goPageBudget();
+			authenticationClass.goPageBudget();
 		}, function(err) {
 			console.log('Erreur lors du chargement des catégories', err);
 			alert("Erreur d'authentification");

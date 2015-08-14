@@ -34,6 +34,7 @@ var app = {
 		  success: function(msg){
 			console.log("Success Ping : " + msg);
 		  	app.updateStatus(true);
+			app.getCookieAuth();
 		  },
 		  error: function(returnCall){
 			console.log("Ping Server : {" +  returnCall.status + "} : " + returnCall.statusText );
@@ -57,11 +58,18 @@ var app = {
 	        errorElement.setAttribute('style', 'display:block;');
         }
     },
+	getCookieAuth : function(){
+		// Enregistrement en session des valeurs
+		var loginUser = $.session.get('loginUser');
+		var mdpUser = $.session.get('mdpUser');
+		$( "#login" ).val(loginUser);
+		$( "#mdp" ).val(mdpUser);
+	}
 };
 
 
 // Chargement des catégories
-var authentication = {
+var authenticationClass = {
 	login: function() {
 		
 		// Enregistrement en session des valeurs
@@ -78,7 +86,7 @@ var authentication = {
 		  beforeSend: addBasicAuth
 		}).then(function(data) {
 			console.log('Authentification OK', data);
-			authentication.goPageBudget();
+			authenticationClass.goPageBudget();
 		}, function(err) {
 			console.log('Erreur lors du chargement des catégories', err);
 			alert("Erreur d'authentification");
@@ -92,6 +100,6 @@ var authentication = {
 }
 
 // Register OnClick sur login
-$('#loginButton').click(authentication.login);
+$('#loginButton').click(authenticationClass.login);
 // Init de la page
 app.initialize();

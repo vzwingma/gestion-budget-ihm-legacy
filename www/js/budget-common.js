@@ -1,9 +1,9 @@
 /*
  * Classe commune à toutes les pages
  */
-var rootServer = "http://192.168.59.103:18080/gestion-budget/rest/v2"
-// var rootServer = "http://192.168.0.17:8080/gestion-budget/rest"
 // var rootServer = "https://budget-tushkanyogik.rhcloud.com/rest"
+var rootServer = "https://budgetdev-tushkanyogik.rhcloud.com/rest/v2"
+// var rootServer = "http://192.168.0.17:8080/gestion-budget/rest"
 
 // Ping
 var serverPingUrl = rootServer + "/ping";

@@ -192,11 +192,7 @@ body {
  .ui-liste-depenses .ui-depense-last{
 	font-weight:700;
  }
-  
-.ui-liste-depenses tr:hover{
-	background-color: #c7deef;
-}
-
+ 
  
 .v-button{
     width: 13.1% !important;

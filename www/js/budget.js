@@ -20,13 +20,6 @@ var app = {
 		$(document).on( "swiperight", app.swipeHandler(+1) );
 		categoriesClass.initialize();
 		utilisateurClass.initialize();
-		// Suppression des boutons d'actions sur dépenses à l'init
-		$('#buttonRealiser').prop('disabled', true);
-		$('#buttonPrevu').prop('disabled', true);
-		$('#buttonAnnuler').prop('disabled', true);
-		$('#buttonReporter').prop('disabled', true);
-		$('#buttonSupprimer').prop('disabled', true);
-		$('#buttonEditer').prop('disabled', true);
     },
 	swipeHandler : function(sens) {
 		if(!mois == NaN){
@@ -145,6 +138,16 @@ var budgetClass = {
 		console.log("Chargement du budget ["+ idCompte +"] du " + strMois + "/" + annee);
 		// Affichage de la date
 		$( "#date_courante" ).text(getLabelMois(strMois) + " " + annee);
+		
+		// Suppression des boutons d'actions sur dépenses à l'init
+		$('#buttonRealiser').prop('disabled', true);
+		$('#buttonPrevu').prop('disabled', true);
+		$('#buttonAnnuler').prop('disabled', true);
+		$('#buttonReporter').prop('disabled', true);
+		$('#buttonSupprimer').prop('disabled', true);
+		$('#buttonEditer').prop('disabled', true);
+		// Chargement du budget
+		
 		budgetClass.get(idCompte, strMois, annee);
 	},
 	get: function(idCompte, mois, annee) {

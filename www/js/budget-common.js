@@ -1,7 +1,7 @@
 /*
  * Classe commune à toutes les pages
  */
-// var rootServer = "https://budget-tushkanyogik.rhcloud.com/rest"
+// var rootServer = "https://budget-tushkanyogik.rhcloud.com/rest/v2"
 var rootServer = "https://budgetdev-tushkanyogik.rhcloud.com/rest/v2"
 // var rootServer = "http://192.168.0.17:8080/gestion-budget/rest"
 

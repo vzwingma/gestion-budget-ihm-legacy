@@ -15,7 +15,6 @@ var idDepenseSelectionnee;
 var app = {
     // Application Constructor
     initialize: function() {
-		
 		// Register Chargement du budget sur sélection
 		$('#selectCompte').bind("change",compteClass.select);
 		// Register des swipe
@@ -28,7 +27,7 @@ var app = {
     },
 	swipeHandler : function(sens) {
 		if(!mois == NaN){
-			alert("Chargmeent de " + (mois + sens));
+			alert("Chargement de " + (mois + sens));
 		}
 	}
 };
@@ -39,6 +38,7 @@ var app = {
 //********************
 var categoriesClass = {
 	initialize: function() {
+        alert("Init");
 		 // Appel de la liste des catégories de dépenses sur l'appli        
         $.ajax({
 		  type: 'GET',
@@ -48,6 +48,7 @@ var categoriesClass = {
 		  // Basic Auth with jQuery Ajax
 		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
+                alert("DOnnées OK "+data);
 			// Affectation des catégories
 			listeCategories = data;
 			categoriesClass.logCategories(data);

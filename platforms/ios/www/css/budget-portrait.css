@@ -158,7 +158,12 @@ only screen and (-o-min-device-pixel-ratio: 13/10){
         height: 3.3em !important;
         background-size: 3em 3em;
     }
-    
+    .ui-liste-depenses {
+        font-size:0.6em;
+    }
+    .ui-totaux {
+        font-size:0.6em;
+    }
     body {
         font-size:0.6em;
     }

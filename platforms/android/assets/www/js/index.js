@@ -71,10 +71,15 @@ var app = {
 // Chargement des catégories
 var authenticationClass = {
 	login: function() {
-		
+        var user = $( "#login" ).val();
+        var mdp = $( "#mdp" ).val();
+        user = "vzwingmann";
+        mdp = "tushkan82";
+        
+        
 		// Enregistrement en session des valeurs
-		$.session.set('loginUser', $( "#login" ).val());
-		$.session.set('mdpUser', $( "#mdp" ).val());
+		$.session.set('loginUser', user);
+		$.session.set('mdpUser', mdp);
 	
 		 // Appel de la liste des catégories de dépenses sur l'appli        
         $.ajax({
@@ -83,7 +88,7 @@ var authenticationClass = {
 		  dataType: 'json',
 		  url: serverCategorieUrl,
 		  // Basic Auth with jQuery Ajax
-		  beforeSend: addBasicAuth
+		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
 			console.log('Authentification OK', data);
 			authenticationClass.goPageBudget();

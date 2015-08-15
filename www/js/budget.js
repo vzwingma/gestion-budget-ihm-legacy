@@ -168,12 +168,51 @@ var budgetClass = {
 			alert('Erreur lors du chargement du budget');
 		});
 	},
-	budgetCharge(budget){
+	budgetCharge: function(budget){
 		budgetCourant = budget;
+		// Mise à jour du tableau
+		ResumeTotauxClass.updateTableau(budget);
 		// Chargement des dépenses
 		depensesClass.get(budgetCourant.id);
 		// Maj du bouton si actif
 		$('#buttonAjouter').prop('disabled', !budget.actif);
+	}
+}
+
+//********************
+// 		Totaux
+//********************
+var ResumeTotauxClass = {
+	updateTableau: function(budget){
+		var valeurTotal = parseFloat(budget.nowArgentAvance).toFixed(2);
+		var classTotal = (valeurTotal > 0) ? "ui-totaux-credit" : "ui-totaux-debit";
+		$('#nowArgentAvance').html(valeurTotal + " €");
+		$('#nowArgentAvance').prop('class', classTotal);
+
+		valeurTotal = parseFloat(budget.nowCompteReel).toFixed(2);
+		classTotal = (valeurTotal > 0) ? "ui-totaux-credit" : "ui-totaux-debit";
+		$('#nowCompteReel').html(valeurTotal + " €");
+		$('#nowCompteReel').prop('class', classTotal);
+		
+		valeurTotal = parseFloat(budget.finArgentAvance).toFixed(2);
+		classTotal = (valeurTotal > 0) ? "ui-totaux-credit" : "ui-totaux-debit";
+		$('#finArgentAvance').html(valeurTotal + " €");
+		$('#finArgentAvance').prop('class', classTotal);
+
+		valeurTotal = parseFloat(budget.finCompteReel).toFixed(2);
+		classTotal = (valeurTotal > 0) ? "ui-totaux-credit" : "ui-totaux-debit";
+		$('#finCompteReel').html(valeurTotal + " €");
+		$('#finCompteReel').prop('class', classTotal);
+
+		valeurTotal = parseFloat(budget.margeSecuriteFinMois).toFixed(2);
+		classTotal = (valeurTotal > 0) ? "ui-totaux-credit" : "ui-totaux-debit";
+		$('#margeSecuriteFinMois').html(valeurTotal + " €");
+		$('#margeSecuriteFinMois').prop('class', classTotal);
+
+		valeurTotal = parseFloat(budget.margeSecurite).toFixed(2);
+		classTotal = (valeurTotal > 0) ? "ui-totaux-credit" : "ui-totaux-debit";
+		$('#margeSecurite').html(valeurTotal + " €");
+		$('#margeSecurite').prop('class', classTotal);
 	}
 }
 
@@ -196,8 +235,7 @@ var depensesClass = {
 		  // Basic Auth with jQuery Ajax
 		  beforeSend: addBasicAuth
 		}).then(function(data) {
-			console.log("Depenses chargées");
-			console.log(data);
+			console.log("Depenses chargées : ", data);
 			listeDepenses=data;
 			depensesClass.fillTableauDepenses(data);
 		}, function(err) {
@@ -210,16 +248,39 @@ var depensesClass = {
 	// Actions métier
 	//********************
 	findDepenseById: function(idDepense){
-		depense = $.grep(listeDepenses, function(depense){ 
+		var depenseCherchee = $.grep(listeDepenses, function(depense){ 
 														return depense.id === idDepense; 
 														});	
-		console.log("Recherche de la dépense [" +idDepense+ "]");
-		console.log(depense);
-		return depense[0];
+		console.log("Recherche de la dépense [" +idDepense+ "]", depenseCherchee);
+		return depenseCherchee[0];
 	},
-	sendUpdateDepense : function(idDepense, etat){
+	updateDepense : function(idDepense, etat){
 		var depenseUpdate = depensesClass.findDepenseById(idDepense);
 		depenseUpdate.etat = etat;
+		
+		// tess
+		if(etat === "SUPPRIMER"){
+			$(document).simpledialog2({
+				mode: 'button',
+				headerText: 'Suppression', headerClose: false,
+				buttonPrompt: 'Etes vous sûr de vouler supprimer la dépense ?',
+				buttons : {
+					'Oui': {
+						click: function () { 
+							depensesClass.sendUpdateDepense(depenseUpdate);
+						}
+					},
+					'Non': {
+						click: function () { },icon: "delete"
+					}
+				}
+			});
+		}
+		else{
+			depensesClass.sendUpdateDepense(depenseUpdate);
+		}
+	},
+	sendUpdateDepense : function(depenseUpdate){
 		console.log("Envoi de " + JSON.stringify(depenseUpdate));
 		 // Appel de la mise à jour du statut de la dépense
         $.ajax({
@@ -231,12 +292,27 @@ var depensesClass = {
 		  // Basic Auth with jQuery Ajax
 		  beforeSend: addBasicAuth
 		}).then(function(data) {
-			console.log("Dépense mise à jour");
-			// Mise à jour de la dépense dans le tableau
+			// Mise à jour de la dépense dans le tableau des données
 			
 			// et sur l'affichage
-			$('#' + depenseUpdate.id).prop('class', depensesClass.getClassLigneDepenseByEtat(depenseUpdate));
-			depensesClass.unselectDepenses();
+			if(depenseUpdate.etat == "SUPPRIMER"){
+				$('#' + depenseUpdate.id).remove();
+				var indexDepenseToDelete = -1;
+				$.each(listeDepenses, function( index, depense ) {
+					if(depense.id === depenseUpdate.id){
+						indexDepenseToDelete = index;
+					}
+				});
+				if(indexDepenseToDelete > -1){
+					listeDepenses.splice( indexDepenseToDelete, 1 );
+				}
+				depensesClass.unselectDepenses();
+				console.log("Dépense supprimée",listeDepenses );
+			}
+			else{
+				$('#' + depenseUpdate.id).prop('class', depensesClass.getClassLigneDepenseByEtat(depenseUpdate));
+				console.log("Dépense mise à jour",listeDepenses );
+			}
 		}, function(err) {
 		//	$('#table-liste-depenses').empty();
 			console.log('Erreur lors de la mise à jour de la dépense', err);
@@ -248,7 +324,7 @@ var depensesClass = {
 	//********************
 	selectDepense: function(idDepense){
 		var etatDepense = depensesClass.findDepenseById(idDepense).etat;
-		console.log("Selection de la dépense : " + idDepense + "::"+etatDepense);
+		console.log("Selection de la dépense : " + idDepense + ":", etatDepense);
 		idDepenseSelectionnee = idDepense;
 		// Activation des boutons
 		buttonsActionClass.activate(etatDepense);
@@ -270,7 +346,7 @@ var depensesClass = {
 
 	},
 	// Désactivation de dépenses dans le tableau
-	unselectDepenses(){
+	unselectDepenses : function(){
 		buttonsActionClass.desactivate();
 		idDepenseSelectionnee = null;
 	},
@@ -342,7 +418,7 @@ var buttonsActionClass = {
 	actionDepense: function(event){
 		var action = $('#'+event.currentTarget.id).attr('action');
 		console.log("Action " + action + " sur la dépense " + idDepenseSelectionnee);
-		depensesClass.sendUpdateDepense(idDepenseSelectionnee, action);
+		depensesClass.updateDepense(idDepenseSelectionnee, action);
 	},
 	ajoutDepense: function(event){
 		alert(event);

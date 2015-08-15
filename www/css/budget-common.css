@@ -143,13 +143,15 @@ body {
 	font-weight:700;
 	text-align:right;
 	width:100px;
- }	
+	padding-right:10px;
+}	
  
 .ui-liste-depenses  .ui-depense-CREDIT{
 	color: #2c9720;
 	font-weight:700;
 	text-align:right;
 	width:100px;
+	padding-right:10px;
  }	
  
  /* Hover sur Ligne  */

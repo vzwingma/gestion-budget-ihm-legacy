@@ -16,7 +16,12 @@ body {
     margin: auto;
     padding:0px;
     width:100%;
+    padding:0px !important;
 }
+
+   .ui-content {
+        padding:0px !important;
+    }
 /**************************************************************************/
 /***						INDEX							   			***/
 /**************************************************************************/
@@ -96,6 +101,30 @@ body {
 	-webkit-border-radius: .3125em;
 	border-radius: .3125em;
 }
+
+#selectCompte-button{
+	display:flex;
+}
+#selectCompte-button span{
+	font-size:1.2em !important;
+}
+
+	.ui-liste-depenses{
+		width:100%;
+		border-collapse: collapse;
+		text-align:left;
+		margin-top: 10px;
+	}
+
+	.ui-liste-depenses tr{
+		width:100%;
+	}
+	
+	.ui-liste-depenses td {
+		display: table-cell;
+		border-bottom: 1px solid grey;
+	}
+
 
  /* Couleurs du tableau des dépenses */
   .ui-liste-depenses  .ui-depense-SELECTIONNEE{
@@ -191,4 +220,12 @@ body {
   .v-button-edit {
   	background-image: url('../img/circle-edit.svg');
   }     
+  
+  /* Fene^te modale */
+.ui-simpledialog-container {
+z-index: 10001 !important;
+}
+.ui-simpledialog-screen-modal {
+z-index: 10000 !important;
+}
  

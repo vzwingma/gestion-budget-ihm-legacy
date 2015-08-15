@@ -176,6 +176,9 @@ var budgetClass = {
 		depensesClass.get(budgetCourant.id);
 		// Maj du bouton si actif
 		$('#buttonAjouter').prop('disabled', !budget.actif);
+		// lastaccess
+		var lastAccess = new Date(budget.dateMiseAJour);
+		$('#lastaccess').text("Dernier accès : " + lastAccess.getDay() + "/" + lastAccess.getMonth() + "/" + lastAccess.getFullYear() + " " + lastAccess.getHours() + ":"+ lastAccess.getMinutes());
 	}
 }
 
@@ -260,7 +263,7 @@ var depensesClass = {
 		
 		// tess
 		if(etat === "SUPPRIMER"){
-			$(document).simpledialog2({
+			$(document.body).simpledialog2({
 				mode: 'button',
 				headerText: 'Suppression', headerClose: false,
 				buttonPrompt: 'Etes vous sûr de vouler supprimer la dépense ?',

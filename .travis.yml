@@ -8,7 +8,6 @@ addons:
 before_install:
 - echo "Before install stage"
 - npm -g install cordova cordova-gen
-- cordova platform add browser
 #- cordova platform add android
 install:
 - echo "Install stage"

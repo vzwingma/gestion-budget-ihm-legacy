@@ -21,6 +21,8 @@ var app = {
 		// Register des swipe
 		$(document).on( "swipeleft", app.swipeHandler(-1) );
 		$(document).on( "swiperight", app.swipeHandler(+1) );
+		$('ui-totaux').on( "swipeleft", app.swipeHandler(-1) );
+		$('ui-totaux').on( "swiperight", app.swipeHandler(+1) );
 		// Init des classes
 		categoriesClass.initialize();
 		utilisateurClass.initialize();

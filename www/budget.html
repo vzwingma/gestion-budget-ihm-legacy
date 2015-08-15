@@ -38,9 +38,7 @@
 			</div>
 			<div class="header-block-compte">
 				<div id="date_courante" class="header-block-date">Mois courant</div>
-				<div id="lastaccess" class="header-block-access">
-					Last access
-				</div>			
+				<div id="lastaccess" class="header-block-access"></div>			
 			</div>
 		</div><!-- /header -->
 		
@@ -50,9 +48,11 @@
 				<div id="ui-liste-cats" class="ui-liste-cats"></div>
 				<table class="ui-totaux">
 				<thead>
-				 <tr>
-					 <th>Cat&eacute;gorie</th> <th style="text-align:center">Du 10 aout</th> <th style="text-align:center">Fin aout</th>
-				  </tr>
+					<tr>
+						<th>Cat&eacute;gorie</th>
+						<th id="nowMois" style="text-align:right; padding-right:10px"></th>
+						<th id="finMois" style="text-align:right; padding-right:10px"></th>
+					</tr>
 				</thead>
 				<!-- Liste des dépenses -->
 				<tbody  id="ui-totaux" >			

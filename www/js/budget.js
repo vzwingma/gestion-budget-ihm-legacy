@@ -170,15 +170,19 @@ var budgetClass = {
 	},
 	budgetCharge: function(budget){
 		budgetCourant = budget;
+				// Chargement des dépenses
+		depensesClass.get(budgetCourant.id);
 		// Mise à jour du tableau
 		ResumeTotauxClass.updateTableau(budget);
-		// Chargement des dépenses
-		depensesClass.get(budgetCourant.id);
 		// Maj du bouton si actif
 		$('#buttonAjouter').prop('disabled', !budget.actif);
 		// lastaccess
 		var lastAccess = new Date(budget.dateMiseAJour);
 		$('#lastaccess').text("Dernier accès : " + lastAccess.getDay() + "/" + lastAccess.getMonth() + "/" + lastAccess.getFullYear() + " " + lastAccess.getHours() + ":"+ lastAccess.getMinutes());
+		// Date du mois
+		
+		$('#nowMois').text('Au ' + new Date(budget.dateMiseAJour).getDay() + ' ' + getLabelMois(mois));
+		$('#finMois').text('Fin ' + getLabelMois(mois));
 	}
 }
 

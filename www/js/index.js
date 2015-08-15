@@ -88,7 +88,7 @@ var authenticationClass = {
 		  dataType: 'json',
 		  url: serverCategorieUrl,
 		  // Basic Auth with jQuery Ajax
-		  beforeSend: addBasicAuth
+		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
 			console.log('Authentification OK', data);
 			authenticationClass.goPageBudget();

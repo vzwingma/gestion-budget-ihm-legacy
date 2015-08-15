@@ -18,9 +18,16 @@ var serverBudgetUrl = rootServer + "/budget/";
 var serverDepensesUrl = rootServer + "/depenses/";
 // Mise à jour etat : POST : /depenses/{idBudget}/{idDepense}
 // Création d'une dépense : PUT /depenses/{idBudget}
-// Ajout de la BasicAuthentication à la requête
-function addBasicAuth(req){
-	req.setRequestHeader('Authorization', 'Basic ' + btoa($.session.get('loginUser') + ":" + $.session.get('mdpUser')));
+
+
+var restClass = {
+	// Ajout de la BasicAuthentication à la requête
+	addRequestHeader : function(req){
+		restClass.addBasicAuth(req);
+	},
+	addBasicAuth : function(req){
+		req.setRequestHeader('Authorization', 'Basic ' + btoa($.session.get('loginUser') + ":" + $.session.get('mdpUser')));
+	}
 }
 
 // Affichage du nom du mois

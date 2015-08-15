@@ -46,7 +46,7 @@ var categoriesClass = {
 		  dataType: 'json',
 		  url: serverCategorieUrl,
 		  // Basic Auth with jQuery Ajax
-		  beforeSend: addBasicAuth
+		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
 			// Affectation des catégories
 			listeCategories = data;
@@ -98,7 +98,7 @@ var utilisateurClass = {
 		  dataType: 'json',
 		  url: serverUtilisateurUrl,
 		  // Basic Auth with jQuery Ajax
-		  beforeSend: addBasicAuth
+		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
 			console.log('Contexte Utilisateur : ', data);
 			utilisateurClass.initUIFromContext(data)
@@ -157,7 +157,7 @@ var budgetClass = {
 		  dataType: 'json',
 		  url: serverBudgetUrl + idCompte + "/"+ mois + "/" + annee,
 		  // Basic Auth with jQuery Ajax
-		  beforeSend: addBasicAuth
+		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
 			// Chargement du budget
 			console.log('Budget : ', data);
@@ -233,7 +233,7 @@ var depensesClass = {
 		  dataType: 'json',
 		  url: serverDepensesUrl + idBudget,
 		  // Basic Auth with jQuery Ajax
-		  beforeSend: addBasicAuth
+		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
 			console.log("Depenses chargées : ", data);
 			listeDepenses=data;
@@ -290,7 +290,7 @@ var depensesClass = {
 		 // type attendu dataType: 'json',
 		  url: serverDepensesUrl + budgetCourant.id +"/" + depenseUpdate.id,
 		  // Basic Auth with jQuery Ajax
-		  beforeSend: addBasicAuth
+		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
 			// Mise à jour de la dépense dans le tableau des données
 			

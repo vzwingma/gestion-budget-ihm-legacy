@@ -8,9 +8,8 @@ addons:
 before_install:
 - echo "Before install stage"
 - npm -g install cordova cordova-gen
-#- cordova platform add android
 install:
 - echo "Install stage"
-- cordova build
+- cordova build browser
 # before_script:
 # - "gem install travis-artifacts"

@@ -1,5 +1,6 @@
 language: android
+android:
+
 before_script:
   - "gem install travis-artifacts"
-  - ls -l
-  - cd plateforms/android  
+  - "cd platforms/android  "

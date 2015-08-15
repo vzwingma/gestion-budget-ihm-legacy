@@ -1,4 +1,5 @@
-language: android
+language: node_js
+# Installation des packages
 addons:
   apt:
     packages:
@@ -6,9 +7,11 @@ addons:
     - npm
 before_install:
 - echo "Before install stage"
+- npm -g install cordova cordova-gen
+- cordova platform add browser
+- cordova platform add browser
 install:
 - echo "Install stage"
-- npm -g install cordova cordova-gen
-- npm install
+- cordova build
 # before_script:
 # - "gem install travis-artifacts"

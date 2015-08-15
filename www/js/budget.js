@@ -371,7 +371,7 @@ var depensesClass = {
             depensesClass.selectDepense(this.id);
         });
 	},
-	getClassLigneDepenseByEtat(depense){
+	getClassLigneDepenseByEtat : function (depense){
 		var classDepense = 'ui-ligne-depenses ';
 		if(depense.derniereOperation){
 			classDepense += 'ui-depense-last ';

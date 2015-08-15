@@ -5,29 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6bdb9c40-d9f3-435d-bb5a-7d02243f620d" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/jquery.mobile-1.4.5.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/jquery.mobile.external-png-1.4.5.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/jquery.mobile.icons-1.4.5.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/jquery.mobile.inline-png-1.4.5.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/jquery.mobile.inline-svg-1.4.5.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/jquery.mobile.structure-1.4.5.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/css/jquery.mobile.theme-1.4.5.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/js/jquery.mobile-1.4.5.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/www/js/budget-common-min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ios/www/js/budget-common-min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../../www/js/budget-common-min.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/GestionBudget.xcodeproj/project.xcworkspace/xcuserdata/Yogik.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="$PROJECT_DIR$/../ios/GestionBudget.xcodeproj/project.xcworkspace/xcuserdata/Yogik.xcuserdatad/UserInterfaceState.xcuserstate" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/css/budget-common.css" afterPath="$PROJECT_DIR$/assets/www/css/budget-common.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/js/budget-common.js" afterPath="$PROJECT_DIR$/assets/www/js/budget-common.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/css/budget-portrait.css" afterPath="$PROJECT_DIR$/assets/www/css/budget-portrait.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/css/budget-portrait.css" afterPath="$PROJECT_DIR$/../ios/www/css/budget-portrait.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/budget.html" afterPath="$PROJECT_DIR$/assets/www/budget.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/budget.html" afterPath="$PROJECT_DIR$/../ios/www/budget.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../www/budget.html" afterPath="$PROJECT_DIR$/../../www/budget.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/js/budget.js" afterPath="$PROJECT_DIR$/assets/www/js/budget.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ios/www/js/budget.js" afterPath="$PROJECT_DIR$/../ios/www/js/budget.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/www/js/index.js" afterPath="$PROJECT_DIR$/assets/www/js/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../www/css/budget-portrait.css" afterPath="$PROJECT_DIR$/../../www/css/budget-portrait.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="android.iws" />
@@ -995,7 +982,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="5757405358000" />
+        <entry key="$PROJECT_DIR$" value="5757406740000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1279,8 +1266,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/com/terrier/finances/mobile/MainActivity.java" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/assets/www/css/budget-portrait.css" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
       </list>
     </option>
   </component>

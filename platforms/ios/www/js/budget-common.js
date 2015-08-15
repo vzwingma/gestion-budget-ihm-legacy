@@ -23,11 +23,8 @@ var serverDepensesUrl = rootServer + "/depenses/";
 var restClass = {
 	// Ajout de la BasicAuthentication à la requête
 	addRequestHeader : function(req){
-		restClass.addBasicAuth(req);
-	},
-	addBasicAuth : function(req){
 		req.setRequestHeader('Authorization', 'Basic ' + btoa($.session.get('loginUser') + ":" + $.session.get('mdpUser')));
-	}
+	},
 }
 
 // Affichage du nom du mois

@@ -159,9 +159,16 @@ only screen and (-o-min-device-pixel-ratio: 13/10){
         background-size: 3em 3em;
     }
     
+    .ui-liste-depenses {
+        font-size:0.6em;
+    }
+    .ui-totaux {
+        font-size:0.6em;
+    }
     body {
         font-size:0.6em;
     }
+
 }
 /** Galaxy S6 en mode portrait **/
 @media screen and (-)webkit-min-device-pixel-ratio: 3.0) ,
@@ -172,7 +179,14 @@ only screen and (-o-min-device-pixel-ratio: 30){
 		background-size: 3em 3em;
 	}
 	
+    .ui-liste-depenses {
+        font-size:0.8em;
+    }
+    .ui-totaux {
+        font-size:0.8em;
+    }
     body {
         font-size:0.8em;
-	}
+    }
+
 }

@@ -1,9 +1,7 @@
 /*
 * Style dans le mode portrait
 */
-body {
-    font-size:0.8em;
-}
+@media only screen and (orientation : portrait) {
 /**************************************************************************/
 /***						INDEX							   			***/
 /**************************************************************************/
@@ -75,7 +73,6 @@ body {
 .ui-liste-depenses{
 	width:100%;
 	border-collapse: collapse;
-	font-size:1em;
 	text-align:left;
 }
 
@@ -96,25 +93,47 @@ body {
 	height: 3em;
 	border-bottom: 1px solid grey;
 }
-/** Boutons d'action **/
-.v-button{
-	width: 3.5em !important;
-	height: 4em !important;
-	background-size: 4em 4em;
-	background-repeat:no-repeat;
-	background-position:center center;
+
+
 }
 
+/** iPad 2 en mode portrait **/
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px)
+and (orientation : portrait)
+{
+    .v-button{
+        width: 13% !important;
+        height: 4.2em !important;
+        background-size: 4em 4em;
+    }
+    
+    body {
+        font-size:0.8em;
+    }
+}
+/** iPhone 5s en mode portrait **/
+@media	only screen and (-webkit-min-device-pixel-ratio: 1.3),
+only screen and (-o-min-device-pixel-ratio: 13/10){
+    .v-button{
+        width: 3.3em !important;
+        height: 3.3em !important;
+        background-size: 3em 3em;
+    }
+    
+    body {
+        font-size:0.6em;
+    }
+}
 /** Galaxy S6 en mode portrait **/
-@media screen and (min-width:1430px),(max-width:400px) {
+@media screen and (-)webkit-min-device-pixel-ratio: 3.0) ,
+only screen and (-o-min-device-pixel-ratio: 30){
 	.v-button{
 		width: 3.5em !important;
 		height: 3.3em !important;
 		background-size: 3em 3em;
-		background-repeat:no-repeat;
-		background-position:center center;
 	}
-	body {
-		font-size:0.8em;
+	
+    body {
+        font-size:0.8em;
 	}
 }

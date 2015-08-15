@@ -12,7 +12,6 @@ body {
     background-color:#34495e;
     background-attachment:fixed;
     font-family:'Source Sans Pro', sans-serif;
-    font-size:1.1em;
     height:100%;
     margin: auto;
     padding:0px;
@@ -159,7 +158,10 @@ body {
  }
  
  
-
+.v-button{
+    background-repeat:no-repeat;
+    background-position:center center;
+}
   .v-button-reel {
   	background-image: url('../img/circle_ok.svg'); 
   }
@@ -188,159 +190,3 @@ body {
   	background-image: url('../img/circle-edit.svg');
   }     
  
-/**********************************************************************************/
-/*** 							Portait layout									***/
-/**********************************************************************************/
-/* Basic styles */
-.header-body {
-	text-align: left;
-	color: #0072C6;
-	margin:0em;
-	padding:0em;
-}
-
-	.ui-select .ui-btn{
-		display:block;
-	}
-	.header-block-date {
-		width:50%;
-		display: inline-block;		
-		text-align:center;
-		font-size:1.2em;
-		font-weight:700;
-	}
-	.header-block-access {
-		display: inline-block;
-		width: 48%;
-		text-align:right;
-		vertical-align:bottom;
-		font-size:1em;
-	}
-/* contenu */
-	.ui-content{
-		display: block;
-		height:100%;
-	}
-	/* colonne de gauche */
-	.ui-resume{
-		display: block;
-		width:100%;
-		border: 1px solid green;
-	}
-	/* catégories */
-	.ui-liste-cats{
-		height: 100em;
-		border: 1px solid red;
-		display:none;
-	}
-	/** totaux **/
-	.ui-totaux{
-		height: 10em;
-		border: 1px solid blue;
-	}	
-	
-/** liste des dépenses **/
-	.ui-liste-depenses{
-		width:100%;
-		border-collapse: collapse;
-		font-size:1em;
-		text-align:left;
-	}
-
-	.ui-liste-depenses thead{
-		width:100%;
-		background-color:#0072C6;
-		color: white;
-	}
-	.ui-liste-depenses th{
-		height: 3em;
-	}
-	.ui-liste-depenses tr{
-		width:100%;
-	}
-	
-	.ui-liste-depenses td {
-		display: table-cell;
-		height: 3em;
-		border-bottom: 1px solid grey;
-	}
-/** Boutons d'action **/
-.v-button{
-    width: 12% !important;
-	height: 4em !important;
-	background-size: 4em 4em;
-	background-repeat:no-repeat;
-	background-position:center center;
-}
-
-/** Galaxy S6 en mode paysage **/
-@media screen and (min-width:1430px),(max-width:400px) {
-	.v-button{
-		width: 3.5em !important;
-		height: 3.3em !important;
-		background-size: 3em 3em;
-		background-repeat:no-repeat;
-		background-position:center center;
-	}
-	body {
-		font-size:0.8em;
-	}
-}
-/**********************************************************************************/
-/*** 							Paysage layout									***/
-/**********************************************************************************/
-@media screen and (min-aspect-ratio: 1/1) and (min-width:800px) {
-	.header-body {
-	   min-height: 1em;
-	   color: #0072C6;
-	   display: flex;
-	   border: 1px solid red;
-	   line-height: 4em;
-	}
-	.header-block-compte{
-		width:50%;
-		border: 1px solid red;
-
-	}
-	.header-block-date {
-		display: inline-block;
-		width:50%;
-		text-align:center;
-		font-size:1.2em;
-		font-weight:700;
-	}
-	.header-block-access {
-		display: inline-block;
-		width: 48%;
-		text-align:right;
-		vertical-align:bottom;
-		font-size:1em;
-	}
-	/* contenu */
-	.ui-content{
-		display: flex;
-	}
-	/* colonne de gauche */
-	.ui-resume{
-		display: block;
-		margin-right: 1em;
-		width:40%;
-		border: 1px solid green;
-	}
-	/* catégories */
-	.ui-liste-cats{
-		border: 1px solid red;
-		display: block;
-	}
-	/** totaux **/
-	.ui-totaux{
-		height: 10em;
-		border: 1px solid blue;
-	}	
-	
-	/** liste des dépenses **/
-	.ui-liste-depenses{
-		border: 1px solid red;
-		width:60%;
-	}
-}

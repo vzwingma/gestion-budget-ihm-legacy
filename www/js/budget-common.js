@@ -2,21 +2,22 @@
  * Classe commune à toutes les pages
  */
 // var rootServer = "https://budget-tushkanyogik.rhcloud.com/rest/v2"
-var rootServer = "https://budgetdev-tushkanyogik.rhcloud.com/rest/v2"
-// var rootServer = "http://192.168.0.17:8080/gestion-budget/rest"
+//var rootServer = "https://budgetdev-tushkanyogik.rhcloud.com/rest/v2"
+ var rootServer = "http://localhost:8080/gestion-budget/rest/v2"
 
 // Ping
 var serverPingUrl = rootServer + "/ping";
-// Catégories dépenses
+// Catégories dépenses : GET /categories/depenses
 var serverCategorieUrl = rootServer + "/categories/depenses";
-// Contexte utilisateur
+// Contexte utilisateur : GET /utilisateur
 var serverUtilisateurUrl = rootServer + "/utilisateur";
-// Budget
+// Budget : GET /budget/{idCompte}/{strMois}/{strAnnee}
 var serverBudgetUrl = rootServer + "/budget/";
 // Depenses
+// Chargement de la liste de dépenses : GET /depenses/{idBudget}
 var serverDepensesUrl = rootServer + "/depenses/";
-
-
+// Mise à jour etat : POST : /depenses/{idBudget}/{idDepense}
+// Création d'une dépense : PUT /depenses/{idBudget}
 // Ajout de la BasicAuthentication à la requête
 function addBasicAuth(req){
 	req.setRequestHeader('Authorization', 'Basic ' + btoa($.session.get('loginUser') + ":" + $.session.get('mdpUser')));

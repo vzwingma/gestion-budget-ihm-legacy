@@ -1,13 +1,16 @@
 /*
  * Script de budget
  */
-
+// Compte
 var mois;
 var annee;
 var idCompte; 
+// Budget
 var budgetCourant;
 // Liste des catégories
 var listeCategories;
+// id Dépense Selectionnée
+var idDepenseSelectionnee;
  
 var app = {
     // Application Constructor
@@ -18,8 +21,10 @@ var app = {
 		// Register des swipe
 		$(document).on( "swipeleft", app.swipeHandler(-1) );
 		$(document).on( "swiperight", app.swipeHandler(+1) );
+		// Init des classes
 		categoriesClass.initialize();
 		utilisateurClass.initialize();
+		buttonsActionClass.initialize();
     },
 	swipeHandler : function(sens) {
 		if(!mois == NaN){
@@ -63,7 +68,7 @@ var categoriesClass = {
 		categorie = $.grep(listeCategories, function(categorie){ 
 														return categorie.id === idCategorie; 
 														});	
-	//	console.log("Recherche de la categorie [" +idCategorie+ "] = " + categorie[0].libelle);
+	//	console.log("Recherche de la categorie [" +idCategorie+ "] = " + categorie[0]);
 		return categorie[0];
 	},
 	findSSCategorieById: function(idSSCategorie){
@@ -139,15 +144,9 @@ var budgetClass = {
 		// Affichage de la date
 		$( "#date_courante" ).text(getLabelMois(strMois) + " " + annee);
 		
-		// Suppression des boutons d'actions sur dépenses à l'init
-		$('#buttonRealiser').prop('disabled', true);
-		$('#buttonPrevu').prop('disabled', true);
-		$('#buttonAnnuler').prop('disabled', true);
-		$('#buttonReporter').prop('disabled', true);
-		$('#buttonSupprimer').prop('disabled', true);
-		$('#buttonEditer').prop('disabled', true);
+		// Désactivation des boutons
+		buttonsActionClass.desactivate();
 		// Chargement du budget
-		
 		budgetClass.get(idCompte, strMois, annee);
 	},
 	get: function(idCompte, mois, annee) {
@@ -171,7 +170,7 @@ var budgetClass = {
 	},
 	budgetCharge(budget){
 		budgetCourant = budget;
-		// Chargmeent des dépenses
+		// Chargement des dépenses
 		depensesClass.get(budgetCourant.id);
 		// Maj du bouton si actif
 		$('#buttonAjouter').prop('disabled', !budget.actif);
@@ -183,8 +182,12 @@ var budgetClass = {
 // 		Depenses
 //********************
 var depensesClass = {
+	//********************
+	// Chargement
+	//********************
 	get: function(idBudget) {
-		 // Appel du budget      
+		idDepenseSelectionnee = null;
+		 // Appel de chargement des lignes de dépenses
         $.ajax({
 		  type: 'GET',
 		  contentType: 'application/json',
@@ -203,23 +206,52 @@ var depensesClass = {
 			alert('Erreur lors du chargement des dépenses');
 		});
 	},
+	//********************
+	// Actions métier
+	//********************
 	findDepenseById: function(idDepense){
 		depense = $.grep(listeDepenses, function(depense){ 
 														return depense.id === idDepense; 
 														});	
-		console.log("Recherche de la dépense [" +idDepense+ "] = " + depense[0].libelle);
+		console.log("Recherche de la dépense [" +idDepense+ "]");
+		console.log(depense);
 		return depense[0];
 	},
+	sendUpdateDepense : function(idDepense, etat){
+		var depenseUpdate = depensesClass.findDepenseById(idDepense);
+		depenseUpdate.etat = etat;
+		console.log("Envoi de " + JSON.stringify(depenseUpdate));
+		 // Appel de la mise à jour du statut de la dépense
+        $.ajax({
+		  type: 'PUT',
+		  contentType: 'application/json',
+		  data: JSON.stringify(depenseUpdate),
+		 // type attendu dataType: 'json',
+		  url: serverDepensesUrl + budgetCourant.id +"/" + depenseUpdate.id,
+		  // Basic Auth with jQuery Ajax
+		  beforeSend: addBasicAuth
+		}).then(function(data) {
+			console.log("Dépense mise à jour");
+			// Mise à jour de la dépense dans le tableau
+			
+			// et sur l'affichage
+			$('#' + depenseUpdate.id).prop('class', depensesClass.getClassLigneDepenseByEtat(depenseUpdate));
+			depensesClass.unselectDepenses();
+		}, function(err) {
+		//	$('#table-liste-depenses').empty();
+			console.log('Erreur lors de la mise à jour de la dépense', err);
+			alert('Erreur lors de la mise à jour de la dépense');
+		});
+	},
+	//********************
+	// Affichage
+	//********************
 	selectDepense: function(idDepense){
 		var etatDepense = depensesClass.findDepenseById(idDepense).etat;
-		console.log("Actions sur la dépense : " + idDepense + "::"+etatDepense);
+		console.log("Selection de la dépense : " + idDepense + "::"+etatDepense);
+		idDepenseSelectionnee = idDepense;
 		// Activation des boutons
-		$('#buttonRealiser').prop('disabled', etatDepense == "REALISEE");
-		$('#buttonPrevu').prop('disabled', etatDepense == "PREVUE");
-		$('#buttonAnnuler').prop('disabled', etatDepense == "ANNULEE");
-		$('#buttonReporter').prop('disabled', etatDepense == "REPORTEE");
-		$('#buttonSupprimer').prop('disabled', false);
-		$('#buttonEditer').prop('disabled', false);
+		buttonsActionClass.activate(etatDepense);
 		// Ancienne ligne sélectionnée => Désélectionnée
 		if(!($("#table-liste-depenses").find('.ui-depense-SELECTIONNEE')[0] === undefined )){
 			idLigne = $("#table-liste-depenses").find('.ui-depense-SELECTIONNEE')[0].id;
@@ -237,20 +269,21 @@ var depensesClass = {
 		$('#'+ idDepense).prop('class', classeDepense);
 
 	},
+	// Désactivation de dépenses dans le tableau
+	unselectDepenses(){
+		buttonsActionClass.desactivate();
+		idDepenseSelectionnee = null;
+	},
 	fillTableauDepenses: function(depenses){
 		$('#table-liste-depenses').empty();
 		/* Itération du tableau des dépenses */
 		$.each(depenses, function( index, depense ) {
-			var classDepense = 'ui-ligne-depenses ';
-			if(depense.derniereOperation){
-				classDepense += 'ui-depense-last ';
-			}
-			classDepense += 'ui-depense-' + depense.etat;
-			$('#table-liste-depenses').append($('<tr>', { id : depense.id , class : classDepense, type: depense.etat}));
+			$('#table-liste-depenses').append($('<tr>', { id : depense.id , class : depensesClass.getClassLigneDepenseByEtat(depense), type: depense.etat}));
 			var valeur = depense.valeur + " &euro;";
 			if(depense.typeDepense == 'DEPENSE'){
 				valeur = "- " + valeur;
 			}
+			
 			$('#'+depense.id)
 				.append($('<td>', {class: "ui-tab-depenses"}).text(categoriesClass.findCategorieById(depense.idCategorie).libelle))			
 				.append($('<td>', {class: "ui-tab-depenses"}).text(categoriesClass.findSSCategorieById(depense.idSSCategorie).libelle))
@@ -261,7 +294,63 @@ var depensesClass = {
 		$('#table-liste-depenses tr').click(function(event) {
             depensesClass.selectDepense(this.id);
         });
+	},
+	getClassLigneDepenseByEtat(depense){
+		var classDepense = 'ui-ligne-depenses ';
+		if(depense.derniereOperation){
+			classDepense += 'ui-depense-last ';
+		}
+		classDepense += 'ui-depense-' + depense.etat;
+		return classDepense;
 	}
 }
+
+//********************
+//	Boutons Actions
+//********************
+var buttonsActionClass = {
+	initialize: function(){
+		// Register des clicks
+		$('#buttonRealiser').click(buttonsActionClass.actionDepense);
+		$('#buttonPrevu').click(buttonsActionClass.actionDepense);
+		$('#buttonAnnuler').click(buttonsActionClass.actionDepense);
+		$('#buttonReporter').click(buttonsActionClass.actionDepense);
+		$('#buttonSupprimer').click(buttonsActionClass.actionDepense);
+		$('#buttonEditer').click(buttonsActionClass.editDepense);
+		$('#buttonAjouter').click(buttonsActionClass.ajoutDepense);
+	},
+	// Désactivation de tous les boutons
+	desactivate: function(){
+		// Suppression des boutons d'actions sur dépenses à l'init
+		$('#buttonRealiser').prop('disabled', true);
+		$('#buttonPrevu').prop('disabled', true);
+		$('#buttonAnnuler').prop('disabled', true);
+		$('#buttonReporter').prop('disabled', true);
+		$('#buttonSupprimer').prop('disabled', true);
+		$('#buttonEditer').prop('disabled', true);
+	},
+	// Activation des boutons suivant l'état de la dépense sélectionnée
+	activate: function(etatDepense){
+		$('#buttonRealiser').prop('disabled', etatDepense == "REALISEE");
+		$('#buttonPrevu').prop('disabled', etatDepense == "PREVUE");
+		$('#buttonAnnuler').prop('disabled', etatDepense == "ANNULEE");
+		$('#buttonReporter').prop('disabled', etatDepense == "REPORTEE");
+		$('#buttonSupprimer').prop('disabled', false);
+		$('#buttonEditer').prop('disabled', false);
+
+	},
+	actionDepense: function(event){
+		var action = $('#'+event.currentTarget.id).attr('action');
+		console.log("Action " + action + " sur la dépense " + idDepenseSelectionnee);
+		depensesClass.sendUpdateDepense(idDepenseSelectionnee, action);
+	},
+	ajoutDepense: function(event){
+		alert(event);
+	},
+	editDepense: function(event){
+		alert(event);
+	}
+}
+
 
 app.initialize();

@@ -22,6 +22,16 @@ body {
    .ui-content {
         padding:0px !important;
     }
+	
+.modal { /*--Masque opaque noir de fond--*/
+	display: none; /*--masqué par défaut--*/
+	background: #000;
+	position: fixed; left: 0; top: 0;
+	width: 100%; height: 100%;
+	opacity: .97;
+	z-index: 9999;
+}
+
 /**************************************************************************/
 /***						INDEX							   			***/
 /**************************************************************************/

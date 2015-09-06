@@ -76,7 +76,6 @@ var authenticationClass = {
         user = "vzwingmann";
         mdp = "tushkan82";
         
-        
 		// Enregistrement en session des valeurs
 		$.session.set('loginUser', user);
 		$.session.set('mdpUser', mdp);

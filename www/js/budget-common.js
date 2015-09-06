@@ -2,8 +2,8 @@
  * Classe commune à toutes les pages
  */
 // var rootServer = "https://budget-tushkanyogik.rhcloud.com/rest/v2"
-var rootServer = "https://budgetdev-tushkanyogik.rhcloud.com/rest/v2"
-// var rootServer = "http://localhost:8080/gestion-budget/rest/v2"
+// var rootServer = "https://budgetdev-tushkanyogik.rhcloud.com/rest/v2"
+var rootServer = "http://localhost:8080/gestion-budget/rest/v2"
 
 // Ping
 var serverPingUrl = rootServer + "/ping";
@@ -14,16 +14,17 @@ var serverUtilisateurUrl = rootServer + "/utilisateur";
 // Budget : GET /budget/{idCompte}/{strMois}/{strAnnee}
 var serverBudgetUrl = rootServer + "/budget/";
 // Depenses
-// Chargement de la liste de dépenses : GET /depenses/{idBudget}
-var serverDepensesUrl = rootServer + "/depenses/";
-// Mise à jour etat : POST : /depenses/{idBudget}/{idDepense}
-// Création d'une dépense : PUT /depenses/{idBudget}
+// Chargement de la liste de dépenses : GET /budget/{idBudget}/depenses/
+var serviceListeDepenses = "/depenses/";
+// Mise à jour etat : POST : /budget/{idBudget}/depense/{idDepense}
+var serviceDepense = "/depense/";
+// Création d'une dépense : PUT /budget/{idBudget}/depense
 
 
 var restClass = {
 	// Ajout de la BasicAuthentication à la requête
 	addRequestHeader : function(req){
-		req.setRequestHeader('Authorization', 'Basic ' + btoa($.session.get('loginUser') + ":" + $.session.get('mdpUser')));
+		req.setRequestHeader('Authorization', 'Basic ' + btoa("vzwingmann:tushkan82"));
 	},
 }
 

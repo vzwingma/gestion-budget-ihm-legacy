@@ -240,7 +240,7 @@ var depensesClass = {
 		  type: 'GET',
 		  contentType: 'application/json',
 		  dataType: 'json',
-		  url: serverDepensesUrl + idBudget,
+		  url: serverBudgetUrl + idBudget + serviceListeDepenses,
 		  // Basic Auth with jQuery Ajax
 		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
@@ -263,6 +263,9 @@ var depensesClass = {
 		console.log("Recherche de la dépense [" +idDepense+ "]", depenseCherchee);
 		return depenseCherchee[0];
 	},
+	//********************
+	// Mise à jour d'une dépense
+	//********************
 	updateDepense : function(idDepense, etat){
 		var depenseUpdate = depensesClass.findDepenseById(idDepense);
 		depenseUpdate.etat = etat;
@@ -297,7 +300,7 @@ var depensesClass = {
 		  contentType: 'application/json',
 		  data: JSON.stringify(depenseUpdate),
 		 // type attendu dataType: 'json',
-		  url: serverDepensesUrl + budgetCourant.id +"/" + depenseUpdate.id,
+		  url: serverBudgetUrl + budgetCourant.id + serviceDepense + depenseUpdate.id,
 		  // Basic Auth with jQuery Ajax
 		  beforeSend: restClass.addRequestHeader
 		}).then(function(data) {
@@ -430,12 +433,17 @@ var buttonsActionClass = {
 		depensesClass.updateDepense(idDepenseSelectionnee, action);
 	},
 	ajoutDepense: function(event){
-		alert(event);
+		$('#edit_budget_form').load("depense.html");
+		$("#popupLogin").modal();
+		alert(idDepenseSelectionnee);
 	},
 	editDepense: function(event){
-		alert(event);
+		$('#edit_budget_form').load("depense.html");
+		var depenseSelectionnee = depensesClass.findDepenseById(idDepenseSelectionnee);
+		setTimeout(function(){
+			depensesFormClass.fillFormByDepense(depenseSelectionnee);
+			$("#popupLogin").modal();
+		}, 500);
 	}
 }
-
-
 app.initialize();

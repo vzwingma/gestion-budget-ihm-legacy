@@ -25,8 +25,8 @@
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
 		<script type="text/javascript" src="js/jquery.mobile.simpledialog2.min.js"></script>
+		<script type="text/javascript" src="js/jquery.simplemodal.1.4.4.min.js"></script>
 		<script type="text/javascript" src="js/jquery.session.js"></script>
-		<script type="text/javascript" src="js/budget-common.js"></script>		
         <script type="text/javascript" src="js/budget-common.js"></script>
         <title>Gestion Mobile de budget</title>
     </head>
@@ -82,16 +82,25 @@
 			</table>
 		</div><!-- /content -->
 		
+		<!-- Popup d'édition / création -->
+		<div id="popupLogin" class="modal">
+			<div id="edit_budget_form" class="popup_create_form">
+			</div>
+		</div>
+		
+		
+		
+		
 		<!-- Actions -->
 		<div data-role="footer" data-position="fixed" data-tap-toggle="false">
 			<div data-role="navbar">
-				<button id="buttonRealiser" action="REALISEE" 	class="v-button v-button-reel"></button>
-				<button id="buttonPrevu" 	action="PREVUE"		class="v-button v-button-prevue"></button>
-				<button id="buttonAnnuler" 	action="ANNULEE"	class="v-button v-button-annuler"></button>
-				<button id="buttonReporter" action="REPORTEE"	class="v-button v-button-reporter"></button>
-				<button id="buttonSupprimer"action="SUPPRIMER"  class="v-button v-button-supprimer"></button>
+				<button id="buttonRealiser"  action="REALISEE" 	class="v-button v-button-reel"></button>
+				<button id="buttonPrevu" 	 action="PREVUE"	class="v-button v-button-prevue"></button>
+				<button id="buttonAnnuler" 	 action="ANNULEE"	class="v-button v-button-annuler"></button>
+				<button id="buttonReporter"  action="REPORTEE"	class="v-button v-button-reporter"></button>
+				<button id="buttonSupprimer" action="SUPPRIMER"  class="v-button v-button-supprimer"></button>
 				<button id="buttonEditer" 	class="v-button v-button-edit" ></button>
-				<button id="buttonAjouter"	class="v-button v-button-plus" ></button>
+				<button id="buttonAjouter"	class="v-button v-button-plus" ></button>				
 			</div><!-- /navbar -->
 		</div><!-- /footer -->
 

@@ -136,9 +136,10 @@
 .popup_create_form{
 	background: #fff;
 	padding: 20px;
+	width: 90%;
 	float: left;
 	position: fixed;
-	top: 20%; left: 50%;
+	top: 20%;
 	z-index: 99999;
 	/*--Coins arrondis en CSS3--*/
 	-webkit-border-radius: 4px;

@@ -61,9 +61,16 @@ var categoriesClass = {
 	logCategories: function(categorie){
 		console.log("Catégories chargées");
 		console.log(categorie);
+		// Complétion de la liste des catégories
 		$.each(categorie, function( index, categorie ) {
 			console.log( index + ": " + categorie.libelle );
 			$('#ui-liste-cats').append($('<div>', { value : categorie.id }).text(categorie.libelle)); 
+		});
+		// Complétion de la liste du formulaire
+		$.each(categorie, function( key, categorie ) {
+			$.each(categorie.listeSSCategories, function( key, sscategorie ) {
+				$('#depenseform_categorie').append($('<option>', { value : sscategorie.id }).text(categorie.libelle + " - " + sscategorie.libelle)); 
+			})
 		});
 	},
 	findCategorieById: function(idCategorie){
@@ -427,23 +434,21 @@ var buttonsActionClass = {
 		$('#buttonEditer').prop('disabled', false);
 
 	},
+	// Mise à jour de la dépense
 	actionDepense: function(event){
 		var action = $('#'+event.currentTarget.id).attr('action');
 		console.log("Action " + action + " sur la dépense " + idDepenseSelectionnee);
 		depensesClass.updateDepense(idDepenseSelectionnee, action);
 	},
+	// Ajout d'une dépense
 	ajoutDepense: function(event){
-		$('#edit_budget_form').load("depense.html");
-		$("#popupLogin").modal();
-		alert(idDepenseSelectionnee);
+		depensesFormClass.actionAjouterDepense();
 	},
+	// Edition de la dépense
 	editDepense: function(event){
-		$('#edit_budget_form').load("depense.html");
 		var depenseSelectionnee = depensesClass.findDepenseById(idDepenseSelectionnee);
-		setTimeout(function(){
-			depensesFormClass.fillFormByDepense(depenseSelectionnee);
-			$("#popupLogin").modal();
-		}, 500);
+		depensesFormClass.fillFormByDepense(depenseSelectionnee);
+		depensesFormClass.actionEditerDepense();
 	}
 }
 app.initialize();

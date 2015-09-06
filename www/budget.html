@@ -85,6 +85,40 @@
 		<!-- Popup d'édition / création -->
 		<div id="popupLogin" class="modal">
 			<div id="edit_budget_form" class="popup_create_form">
+
+				<div class="header-body" data-role="header" data-position="fixed">
+					Créer ou éditer une nouvelle dépense
+				</div><!-- /header -->
+					
+				<!-- Contenu -->
+				<div role="main" class="ui-content" id="id-ui-content" style="display: inline;">
+				 	<label>Catégorie :</label>
+					<select id="depenseform_categorie" name="select-native-2" data-mini="true"/>
+					<label>Description :</label>
+					<input type="text" name="depenseform_description" id="depenseform_description" value=""></input>
+					<label>Valeur :</label>
+					<div style="display:block;">
+						<select type="text" name="depenseform_type" id="depenseform_type">
+							<option value="CREDIT">+</option>
+							<option value="DEPENSE">-</option>
+						</select>
+						<input type="text" name="depenseform_valeur" id="depenseform_valeur" value=""></input>
+						<label> €</label>
+					</div>
+					<label>Etat :</label>
+					<select id="depenseform_etat" name="select-native-2" data-mini="true">
+						<option value="prevue">Prévue</option>
+						<option value="realisee">Réalisée</option>
+						<option value="reportee">Reportée</option>
+						<option value="annulee">Annulée</option>
+					</select>			
+					<label>Dépense mensuelle :</label>
+					<input type="checkbox" name="depenseform_mensuelle" id="depenseform_mensuelle" value=""></input>
+					<br/>
+					<button id="depenseform_validerFermer" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Valider et fermer</button>
+					<button id="depenseform_validerContinuer" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Valider et continuer</button>
+				</div><!-- /content -->
+			
 			</div>
 		</div>
 		
@@ -106,5 +140,6 @@
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/budget.js"></script>
+		<script type="text/javascript" src="js/depenseForm.js"></script>
     </body>
 </html>

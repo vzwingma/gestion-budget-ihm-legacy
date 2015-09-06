@@ -67,3 +67,20 @@ function getLabelMois(noMois){
 		return "Décembre";
 	}
 }
+
+
+// Affichage du label état
+function getLabelEtatDepense(idEtat){
+	if(idEtat === "realisee"){
+		return "Réalisée";
+	}
+	else if(idEtat === "prevue"){
+		return "Prévue";
+	}
+	else if(idEtat === "reportee"){
+		return "Reportée";
+	}
+	else if(idEtat === "annulee"){
+		return "Annulée";
+	}
+}

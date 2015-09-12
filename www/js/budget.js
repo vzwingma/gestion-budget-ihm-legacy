@@ -267,7 +267,7 @@ var depensesClass = {
 		var depenseCherchee = $.grep(listeDepenses, function(depense){ 
 														return depense.id === idDepense; 
 														});	
-		console.log("Recherche de la dépense [" +idDepense+ "]", depenseCherchee);
+		// console.log("Recherche de la dépense [" +idDepense+ "]", depenseCherchee);
 		return depenseCherchee[0];
 	},
 	//********************
@@ -332,21 +332,43 @@ var depensesClass = {
 				$('#' + depenseUpdate.id).prop('class', depensesClass.getClassLigneDepenseByEtat(depenseUpdate));
 				console.log("Dépense mise à jour",listeDepenses );
 			}
+			depensesClass.get(budgetCourant.id);
 		}, function(err) {
 		//	$('#table-liste-depenses').empty();
 			console.log('Erreur lors de la mise à jour de la dépense', err);
 			alert('Erreur lors de la mise à jour de la dépense');
 		});
 	},
+	sendCreateDepense : function(depenseCreate){
+		console.log("Envoi de " + JSON.stringify(depenseCreate));
+		 // Appel de la mise à jour du statut de la dépense
+        $.ajax({
+		  type: 'POST',
+		  contentType: 'application/json',
+		  data: JSON.stringify(depenseCreate),
+		 // type attendu dataType: 'json',
+		  url: serverBudgetUrl + budgetCourant.id + serviceDepense,
+		  // Basic Auth with jQuery Ajax
+		  beforeSend: restClass.addRequestHeader
+		}).then(function(data) {
+			// Création de la dépense dans le tableau des données			
+			console.log("Dépense créée", data.id);
+			depensesClass.get(budgetCourant.id);
+
+		}, function(err) {
+			console.log('Erreur lors de la création de la dépense', err);
+			alert('Erreur lors de la création de la dépense');
+		});
+	},	
 	//********************
 	// Affichage
 	//********************
 	selectDepense: function(idDepense){
-		var etatDepense = depensesClass.findDepenseById(idDepense).etat;
-		console.log("Selection de la dépense : " + idDepense + ":", etatDepense);
+		var depenseS = depensesClass.findDepenseById(idDepense);
+		console.log("Selection de la dépense : " + idDepense + ":", depenseS);
 		idDepenseSelectionnee = idDepense;
 		// Activation des boutons
-		buttonsActionClass.activate(etatDepense);
+		buttonsActionClass.activate(depenseS.etat);
 		// Ancienne ligne sélectionnée => Désélectionnée
 		if(!($("#table-liste-depenses").find('.ui-depense-SELECTIONNEE')[0] === undefined )){
 			idLigne = $("#table-liste-depenses").find('.ui-depense-SELECTIONNEE')[0].id;

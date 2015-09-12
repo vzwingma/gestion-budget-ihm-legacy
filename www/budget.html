@@ -92,20 +92,21 @@
 					
 				<!-- Contenu -->
 				<div role="main" class="ui-content" id="id-ui-content" style="display: inline;">
-				 	<label>Catégorie :</label>
-					<select id="depenseform_categorie" name="select-native-2" data-mini="true"/>
-					<label>Description :</label>
+					<input type="hidden" name="depenseform_id" id="depenseform_id"></input>
+				 	<label>Catégorie * :</label>
+					<select id="depenseform_categorie" name="select-native-2" data-mini="true"></select>
+					<label>Description * :</label>
 					<input type="text" name="depenseform_description" id="depenseform_description" value=""></input>
-					<label>Valeur :</label>
+					<label>Valeur * :</label>
 					<div style="display:block;">
-						<select type="text" name="depenseform_type" id="depenseform_type">
+						<select name="depenseform_type" id="depenseform_type">
 							<option value="CREDIT">+</option>
 							<option value="DEPENSE">-</option>
 						</select>
 						<input type="text" name="depenseform_valeur" id="depenseform_valeur" value=""></input>
 						<label> €</label>
 					</div>
-					<label>Etat :</label>
+					<label>Etat * :</label>
 					<select id="depenseform_etat" name="select-native-2" data-mini="true">
 						<option value="prevue">Prévue</option>
 						<option value="realisee">Réalisée</option>

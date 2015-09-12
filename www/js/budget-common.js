@@ -26,8 +26,21 @@ var restClass = {
 	addRequestHeader : function(req){
 		req.setRequestHeader('Authorization', 'Basic ' + btoa("vzwingmann:tushkan82"));
 	},
-}
+};
 
+
+
+var utilsClass = {
+		getIdFromSelectOptions : function(idSelectElement){
+			var id = null;
+			$("#" + idSelectElement).children('option').each(function() { 
+				 if(this.text === $('#'+idSelectElement+'-button').find('span').text()){
+					 id = this.value;
+				 } 
+			});
+			return id;
+		}
+}
 // Affichage du nom du mois
 function getLabelMois(noMois){
 	if(noMois == 0){

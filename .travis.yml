@@ -44,5 +44,7 @@ install:
 before_script:
     - gem install travis-artifacts
 after_script:
-    - travis-artifacts upload --path platforms/browser/build/package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER
-    - travis-artifacts upload --path platforms/android/build/outputs/apk/android-debug.apk --target-path artifacts/$TRAVIS_BUILD_NUMBER
+    - cd ~/platforms/browser/build/
+    - travis-artifacts upload --path package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER/browser/package.zip
+    - cd ~/platforms/android/build/outputs/apk/
+    - travis-artifacts upload --path android-debug.apk --target-path artifacts/$TRAVIS_BUILD_NUMBER/android/android.apk

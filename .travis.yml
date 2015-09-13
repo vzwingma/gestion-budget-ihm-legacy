@@ -28,11 +28,10 @@ android:
     #- sys-img-armeabi-v7a-android-19
     #- sys-img-x86-android-17
 before_install:
+    - echo "Before install Android"
     - cd /usr/local
     - wget http://dl.google.com/android/android-sdk_r24.0.2-macosx.zip
     - unzip android-sdk_r24.0.2-macosx.zip
-    - cd ~
-    - echo "Before install stage"
     - node --version
     - npm --version
     - echo "Install Cordova"
@@ -40,6 +39,7 @@ before_install:
     - cordova --version
 install:
     - echo "Install stage"
+    - cd ~/build/vzwingma/gestion-budget
     - cordova build browser android ios
 before_script:
     - gem install travis-artifacts

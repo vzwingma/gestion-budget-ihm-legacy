@@ -14,7 +14,10 @@ before_install:
     - echo "Install NodeJS" ; node --version ; npm --version
     - echo "Install Cordova" ; npm install -g cordova cordova-gen cordova-ios ; cordova --version
 install:
-    - echo "Install stage"; cd ~/build/vzwingma/gestion-budget; cordova build browser android ios
+    - echo "Install stage"; cd ~/build/vzwingma/gestion-budget;
+    - cordova build browser
+    - cordova build	android
+    - cordova build	ios
 before_script:
     - gem install travis-artifacts
 after_script:

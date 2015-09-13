@@ -24,18 +24,8 @@ before_install:
     - echo "Before install stage"
     - node --version
     - npm --version
-    - sudo apt-get update -y
-    - sudo apt-get install -y python-software-properties
-    - sudo apt-get install -y nodejs
-    - sudo apt-get install -y npm
-    - sudo npm config set registry http://registry.npmjs.org/
-    - sudo npm cache clean -f
-    - sudo npm install -g n
-    - sudo n stable
-    - node --version
-    - npm --version
-    - sudo npm install -g cordova
-    - sudo npm install -g cordova-gen
+    - echo "Install Cordova"	
+    - npm install -g cordova cordova-gen
 env:
   global:
   - "ARTIFACTS_AWS_REGION=eu-west-1"

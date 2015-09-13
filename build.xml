@@ -1,0 +1,10 @@
+<project>
+    <target name="debug">
+    </target>
+
+    <target name="install">
+    </target>
+
+    <target name="test">
+    </target>
+</project>

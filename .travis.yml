@@ -42,6 +42,7 @@ install:
     - cordova build browser
     - cordova build android
 before_script:
-    - "gem install travis-artifacts"
+    - gem install travis-artifacts
 after_script:
-    - "travis-artifacts upload --path platforms/browser/build/package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER"
+    - travis-artifacts upload --path platforms/browser/build/package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER
+    - travis-artifacts upload --path platforms/android/build/outputs/apk/android-debug.apk --target-path artifacts/$TRAVIS_BUILD_NUMBER

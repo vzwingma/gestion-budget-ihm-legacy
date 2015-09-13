@@ -25,7 +25,6 @@ before_install:
 - sudo apt-get update -y
 - sudo apt-get install -y nodejs
 - sudo apt-get install -y npm
-- sudo npm install
 - sudo npm -g install cordova cordova-gen
 install:
 - echo "Install stage"

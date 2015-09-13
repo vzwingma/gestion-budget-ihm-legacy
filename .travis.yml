@@ -5,12 +5,12 @@ android:
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
-    - platform-tools
-    - tools
+ #   - platform-tools
+#    - tools
     # The BuildTools version used by your project
-    - build-tools-21.1.2
+#    - build-tools-21.1.2
     # The SDK version used to compile your project
-    - android-22
+#    - android-22
     # Additional components
     #- extra-google-google_play_services
     #- extra-google-m2repository
@@ -22,9 +22,8 @@ android:
     #- sys-img-x86-android-17
 before_install:
     - echo "Before install stage"
-    - xcodebuild -version -sdk
-    - sudo apt-get install -y python-software-properties
     - sudo apt-get update -y
+    - sudo apt-get install -y python-software-properties
     - sudo apt-get install -y nodejs
     - sudo apt-get install -y npm
     - sudo npm config set registry http://registry.npmjs.org/
@@ -41,12 +40,13 @@ env:
   - secure: VGenXEkuJJQth5WjUpLxXHqDZu6e8Qg2edsNIgKvohkGRbmUufrUeetfFBiagMen9VaMvDOculOOqvy/qi5/SLVmxeCRRg5UsCkgDidXbQJav73hGII10p5nak9zif8AQEAw3/F7irBCh/bzYt5Lusse/npkqr+0xQlM7EkP+X1MDlO4ipwwflHHdcE3Ngomdq+qGDr+/MUkutckmE6VCLx+WJDDNZasliCBm7hMOTpqD3nE/b/6yi3+Pt/rFjUZPV9AUZkygacL7iPdZM9evYeru1Y/f+/1Sptunov0JlJQR+GnKHKpVBBEK4s4wuL1A3h56GHDe/KPA0ucWFVNbg/iK1/TluWGpw9s9LiJGqsMUoEEUJ+beTy+PYjA/CQNnXlMzNTm/LS/9oJdOy0g2cNewUtNe7pWnIk0Y6AnpO0Fm/sk5yo/+J/jl7WsZInY/QsKtikVmkRsGv7uQDvLXXS/MlpxuOmJxbVZ3nupqnyLUF+l3aPXumauCuOgnmdouKsyDQdbOCvC1v6FlE+YVyHkCHb3tnJPYMomHuaFvxWchLRegMZ527TR0B/cQkQeuN0zb1638V7VZ0H9slOCpZYSVmy201+VKgE2MWG5h61CIKMcXhiB4VFBSeBGfOYW5NR5a0pjrBbIPAr+R8SAgsjbqSnGV77gmVb7vc/rJu0=	
 install:
     - echo "Install stage"
-    - cordova build browser android
-#    - cordova build ios
+    - cordova build browser
+#	android
+    - cordova build ios
 before_script:
     - gem install travis-artifacts
 after_script:
     - cd ~/build/vzwingma/gestion-budget/platforms/browser/build/
-    - travis-artifacts upload --path package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER/browser/package.zip
+#    - travis-artifacts upload --path package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER/browser/package.zip
     - cd ~/build/vzwingma/gestion-budget/platforms/android/build/outputs/apk/
-    - travis-artifacts upload --path android-debug.apk --target-path artifacts/$TRAVIS_BUILD_NUMBER/android/android.apk
+#    - travis-artifacts upload --path android-debug.apk --target-path artifacts/$TRAVIS_BUILD_NUMBER/android/android.apk

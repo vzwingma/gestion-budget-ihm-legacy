@@ -24,6 +24,8 @@ before_install:
     - echo "Before install stage"
     - node --version
     - npm --version
+    - sudo add-apt-repository ppa:upubuntu-com/devel
+    - sudo apt-get install android-sdk
     - echo "Install Cordova"
     - npm install -g cordova cordova-gen cordova-ios
     - cordova --version

@@ -19,7 +19,7 @@ install:
     - cordova build	android
     - cordova build	ios
 before_script:
-    - gem install travis-artifacts
+    - sudo gem install travis-artifacts
 after_script:
     - cd ~/build/vzwingma/gestion-budget/platforms/browser/build/
     - travis-artifacts upload --path package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER/browser/package.zip

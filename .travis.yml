@@ -10,7 +10,7 @@ env:
 before_install:
     - echo "Before install Android"; cd /usr/local ; wget http://dl.google.com/android/android-sdk_r24.0.2-macosx.zip; unzip android-sdk_r24.0.2-macosx.zip
     # Dépendance ANDROID
-    - $ANDROID_HOME/tools/android update sdk --filter tools,platform-tools,build-tools-21.1.2,android-22,addon-google_apis-google-22
+    - echo y | $ANDROID_HOME/tools/android update sdk --all --filter tools,platform-tools,build-tools-21.1.2,android-22,addon-google_apis-google-22 --no-ui
     - echo "Install NodeJS" ; node --version ; npm --version
     - echo "Install Cordova" ; npm install -g cordova cordova-gen cordova-ios ; cordova --version
 install:

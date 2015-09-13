@@ -11,9 +11,9 @@ android:
     # The SDK version used to compile your project
     - android-21
     # Additional components
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
+    #- extra-google-google_play_services
+    #- extra-google-m2repository
+    #- extra-android-m2repository
     - addon-google_apis-google-21
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
@@ -24,9 +24,9 @@ before_install:
 - sudo apt-get install -y python-software-properties
 - sudo apt-get update -y
 - sudo apt-get install -y nodejs
-- sudo npm -g install cordova ionic bower gulp cordova-gen
+- sudo apt-get install -y npm
 - sudo npm install
-- bower install
+- sudo npm -g install cordova cordova-gen
 install:
 - echo "Install stage"
 - cordova build android

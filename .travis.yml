@@ -25,9 +25,7 @@ before_install:
     - node --version
     - npm --version
     - echo "Install Cordova"
-    - sudo apt-add-repository -y ppa:cordova-ubuntu/ppa
-    - sudo apt-get install cordova-cli
-    - npm install -g cordova cordova-gen
+    - npm install -g cordova cordova-gen cordova-ios
     - cordova --version
 env:
   global:

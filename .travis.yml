@@ -26,6 +26,7 @@ before_install:
     - npm --version
     - echo "Install Cordova"	
     - npm install -g cordova cordova-gen
+    - cordova --version
 env:
   global:
   - "ARTIFACTS_AWS_REGION=eu-west-1"

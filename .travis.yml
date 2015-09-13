@@ -40,7 +40,7 @@ env:
 install:
     - echo "Install stage"
     - cordova build browser android
-    - cordova build ios
+#    - cordova build ios
 before_script:
     - gem install travis-artifacts
 after_script:

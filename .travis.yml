@@ -1,3 +1,4 @@
+osx_image: xcode7
 language: android
 # Dépendance ANDROID
 android:
@@ -20,8 +21,8 @@ android:
     #- sys-img-armeabi-v7a-android-19
     #- sys-img-x86-android-17
 before_install:
-#    - xcodebuild -version -sdk
     - echo "Before install stage"
+    - xcodebuild -version -sdk
     - sudo apt-get install -y python-software-properties
     - sudo apt-get update -y
     - sudo apt-get install -y nodejs

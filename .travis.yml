@@ -20,20 +20,22 @@ android:
     #- sys-img-armeabi-v7a-android-19
     #- sys-img-x86-android-17
 before_install:
-- echo "Before install stage"
-- sudo apt-get install -y python-software-properties
-- sudo apt-get update -y
-- sudo apt-get install -y nodejs
-- sudo apt-get install -y npm
-- sudo npm config set registry http://registry.npmjs.org/
-- sudo npm cache clean -f
-- sudo npm install -g n
-- sudo n stable
-- sudo npm install -g cordova
-- sudo npm install -g cordova-gen
+    - echo "Before install stage"
+    - sudo apt-get install -y python-software-properties
+    - sudo apt-get update -y
+    - sudo apt-get install -y nodejs
+    - sudo apt-get install -y npm
+    - sudo npm config set registry http://registry.npmjs.org/
+    - sudo npm cache clean -f
+    - sudo npm install -g n
+    - sudo n stable
+    - sudo npm install -g cordova
+    - sudo npm install -g cordova-gen
 install:
-- echo "Install stage"
-- cordova build browser
-# android
-# before_script:
-# - "gem install travis-artifacts"
+    - echo "Install stage"
+    - cordova build browser
+    - cordova build android
+before_script:
+    - "gem install travis-artifacts"
+after_script:
+    - "travis-artifacts upload --path platforms/browser/build/package.zip --target-path artifacts/$TRAVIS_BUILD_NUMBER"

@@ -26,4 +26,4 @@ after_script:
     - cd ~/build/vzwingma/gestion-budget/platforms/android/build/outputs/apk/
     - travis-artifacts upload --path android-debug.apk --target-path artifacts/$TRAVIS_BUILD_NUMBER/android/android.apk
     - cd ~/build/vzwingma/gestion-budget/platforms/
-    - travis-artifacts upload --path ios/ --target-path artifacts/$TRAVIS_BUILD_NUMBER/
+    - travis-artifacts upload --path ios/GestionBudget --target-path artifacts/$TRAVIS_BUILD_NUMBER/

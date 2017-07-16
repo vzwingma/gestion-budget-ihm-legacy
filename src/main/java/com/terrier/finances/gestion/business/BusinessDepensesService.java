@@ -3,6 +3,10 @@ package com.terrier.finances.gestion.business;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +63,10 @@ public class BusinessDepensesService {
 	public static final String ID_SS_CAT_RESERVE = "26a4b966-ffdc-4cb7-8611-a5ba4b518ef5";
 	public static final String ID_SS_CAT_PREVISION_SANTE = "eeb2f9a5-49b4-4c44-86bf-3bd626412d8e";
 
-
+	/** 
+	 * Liste des libellés pour l'autocomplétion
+	 */
+	protected Set<String> setLibellesDepensesForAutocomplete= new TreeSet<String>();
 	/**
 	 * Chargement du budget du mois courant
 	 * @param compte compte 
@@ -134,7 +141,7 @@ public class BusinessDepensesService {
 			// Résultat mensuel mis à jour
 			calculBudgetEtSauvegarde(budgetMensuel);
 			// Ajout de l'autocomplete
-			budgetMensuel.getSetLibellesDepensesForAutocomplete().addAll(this.dataDepenses.chargeLibellesDepenses(compteBancaire.getId(), annee));
+			this.setLibellesDepensesForAutocomplete.addAll(this.dataDepenses.chargeLibellesDepenses(compteBancaire.getId(), annee));
 		}
 		return budgetMensuel;
 	}
@@ -357,7 +364,24 @@ public class BusinessDepensesService {
 		if(budget.getCompteBancaire().isActif() && budgetTransfert.getCompteBancaire().isActif() && budget.isActif() && budgetTransfert.isActif()){
 			LOGGER.info("Ajout d'un transfert intercompte de {} vers {} > {} ", budget.getCompteBancaire().getLibelle(), compteCrediteur, ligneDepense);
 
-			LigneDepense ligneTransfert = new LigneDepense(ligneDepense.getSsCategorie(), "[de "+budget.getCompteBancaire().getLibelle()+"] " + ligneDepense.getLibelle(), TypeDepenseEnum.CREDIT, ligneDepense.getValeur(), EtatLigneDepenseEnum.PREVUE, ligneDepense.isPeriodique());
+			// #59 : Cohérence des états
+			EtatLigneDepenseEnum etatDepenseCourant = ligneDepense.getEtat();
+			EtatLigneDepenseEnum etatDepenseTransfert = EtatLigneDepenseEnum.PREVUE;
+			switch (etatDepenseCourant) {
+			case ANNULEE:
+				etatDepenseTransfert = EtatLigneDepenseEnum.ANNULEE;
+				break;
+			case REPORTEE:
+				etatDepenseTransfert = EtatLigneDepenseEnum.REPORTEE;
+				break;
+			case PREVUE:
+			case REALISEE:
+			default:				
+				etatDepenseTransfert = EtatLigneDepenseEnum.PREVUE;
+				break;
+			}
+			
+			LigneDepense ligneTransfert = new LigneDepense(ligneDepense.getSsCategorie(), "[de "+budget.getCompteBancaire().getLibelle()+"] " + ligneDepense.getLibelle(), TypeDepenseEnum.CREDIT, ligneDepense.getValeur(), etatDepenseTransfert, ligneDepense.isPeriodique());
 			ajoutLigneDepense(budgetTransfert, ligneTransfert, utilisateur.getLibelle());
 			calculBudgetEtSauvegarde(budgetTransfert);
 			/**
@@ -601,7 +625,7 @@ public class BusinessDepensesService {
 		for (LigneDepense depense : budget.getListeDepenses()) {
 			LOGGER.trace("     > {}", depense);
 			int sens = depense.getTypeDepense().equals(TypeDepenseEnum.CREDIT) ? 1 : -1;
-			budget.getSetLibellesDepensesForAutocomplete().add(depense.getLibelle());
+			this.setLibellesDepensesForAutocomplete.add(depense.getLibelle());
 			/**
 			 *  Calcul par catégorie
 			 */
@@ -673,4 +697,19 @@ public class BusinessDepensesService {
 		budgetMensuel.setDateMiseAJour(Calendar.getInstance());
 		calculBudgetEtSauvegarde(budgetMensuel);
 	}
+
+
+
+    /**
+     * Suggestion generator function, returns a list of suggestions for a user query
+     * @param query requête
+     * @param cap capacity
+     * @return liste resultats
+     */
+    public List<String> suggestDescription(String query, int cap) {
+         List<String> suggestions = this.setLibellesDepensesForAutocomplete.stream().filter(p -> p.toUpperCase().contains(query.toUpperCase()))
+                .limit(cap).collect(Collectors.toList());
+         LOGGER.debug("Suggestions : {} -> {} from {}", query, suggestions, this.setLibellesDepensesForAutocomplete);
+         return suggestions;
+    }
 }

@@ -1,7 +1,5 @@
 package com.terrier.finances.gestion.operations.model;
 
-import java.util.UUID;
-
 import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
@@ -15,6 +13,13 @@ import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBud
  *
  */
 public class LigneOperationVO extends LigneOperation  {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2333781431916344991L;
+
+
 
 	public LigneOperationVO(boolean budgetIsActif) {
 		super(budgetIsActif);
@@ -38,11 +43,6 @@ public class LigneOperationVO extends LigneOperation  {
 
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2932267709864103657L;
-	
-	/**
 	 * @return the actionsOperation
 	 */
 	public ActionsLigneBudget getActionsOperation() {
@@ -52,7 +52,7 @@ public class LigneOperationVO extends LigneOperation  {
 				&& !OperationsService.ID_SS_CAT_PREVISION_SANTE.equals(getSsCategorie().getId())
 				&& super.isBudgetActif()){
 			actionsOperation = new ActionsLigneBudget();
-			actionsOperation.getControleur().setIdOperation(UUID.fromString(getId()));
+			actionsOperation.getControleur().setIdOperation(getId());
 			actionsOperation.getControleur().miseAJourEtatLigne(getEtat());
 		}
 		return actionsOperation;

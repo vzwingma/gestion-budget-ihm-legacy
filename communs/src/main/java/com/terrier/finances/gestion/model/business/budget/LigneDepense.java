@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
-import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
+import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
 
 /**
  * 

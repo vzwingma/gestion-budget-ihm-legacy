@@ -2,10 +2,10 @@ package com.terrier.finances.gestion.ui.components.budget.mensuel.components;
 
 import java.util.Optional;
 
-import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
+import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.ui.components.abstrait.AbstractUIComponent;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.creer.operation.CreerDepenseController;
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.creation.ActionValiderCreationDepenseClickListener;

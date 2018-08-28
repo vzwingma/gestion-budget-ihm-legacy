@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.business.validator.OperationValidator;
-import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
+import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.model.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.CreerDepenseForm;

@@ -5,10 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
-import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
+import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
 import com.vaadin.data.ValidationResult;
 
 @Deprecated

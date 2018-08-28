@@ -4,8 +4,8 @@
 package com.terrier.finances.gestion.business.validator;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
-import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
+import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;

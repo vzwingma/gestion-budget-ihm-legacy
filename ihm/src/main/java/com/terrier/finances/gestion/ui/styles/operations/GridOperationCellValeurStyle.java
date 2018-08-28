@@ -3,8 +3,8 @@
  */
 package com.terrier.finances.gestion.ui.styles.operations;
 
-import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
+import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
 
 /**
  * Style des colonnes Valeurs du tableau des opérations

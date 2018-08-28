@@ -3,8 +3,8 @@
  */
 package com.terrier.finances.gestion.ui.styles.operations;
 
+import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
-import com.terrier.finances.gestion.model.ui.budget.LigneOperationVO;
 
 /**
  * Style des colonnes Valeurs du tableau des opérations
@@ -20,7 +20,7 @@ public class GridOperationCellValeurStyle extends GridOperationCellStyle {
 	private static final long serialVersionUID = 1551761447370771079L;
 
 	@Override
-	public String apply(LigneOperationVO depense) {
+	public String apply(LigneDepense depense) {
 		
 		StringBuilder style = new StringBuilder();
 		style.append(super.apply(depense));

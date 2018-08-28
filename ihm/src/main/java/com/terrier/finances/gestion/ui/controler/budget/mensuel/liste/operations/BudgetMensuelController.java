@@ -369,8 +369,8 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		}
 		LOGGER.info("[IHM] >> Mise à jour des vues >> {}", budgetCourant.isActif());		
 		LOGGER.debug("[IHM] Affichage des données dans le tableau de suivi des dépenses");
-		List<LigneOperationVO> listeOperations = new ArrayList<>();
-		budgetCourant.getListeDepenses().stream().forEach(e -> listeOperations.add((LigneOperationVO)e));		
+		List<LigneDepense> listeOperations = new ArrayList<>();
+		budgetCourant.getListeDepenses().stream().forEach(e -> listeOperations.add((LigneDepense)e));		
 		/**
 		 * Affichage des lignes dans le tableau
 		 **/

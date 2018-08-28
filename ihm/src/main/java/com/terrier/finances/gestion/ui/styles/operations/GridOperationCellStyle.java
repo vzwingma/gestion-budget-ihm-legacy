@@ -4,21 +4,21 @@
 package com.terrier.finances.gestion.ui.styles.operations;
 
 import com.terrier.finances.gestion.business.OperationsService;
-import com.terrier.finances.gestion.model.ui.budget.LigneOperationVO;
+import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.vaadin.ui.StyleGenerator;
 
 /**
  * Style des lignes du tableau de dépense
  * @author vzwingma
  */
-public class GridOperationCellStyle implements StyleGenerator<LigneOperationVO> {
+public class GridOperationCellStyle implements StyleGenerator<LigneDepense> {
 
 
 	private static final long serialVersionUID = -6709397765771547573L;
 
 
 	@Override
-	public String apply(LigneOperationVO depense) {
+	public String apply(LigneDepense depense) {
 
 		// Style de la ligne
 		StringBuilder style = new StringBuilder("v-grid-row-");

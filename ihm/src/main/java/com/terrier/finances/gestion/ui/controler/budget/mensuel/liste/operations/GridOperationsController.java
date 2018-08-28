@@ -5,6 +5,7 @@ package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operation
 
 import java.util.List;
 
+import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.enums.EntetesTableSuiviDepenseEnum;
 import com.terrier.finances.gestion.model.ui.budget.LigneOperationVO;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.GridOperations;
@@ -68,7 +69,7 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 	 * @param budgetIsActif budget actif ?
 	 * @param listeDepenses liste des dépenses à utiliser
 	 */
-	public void miseAJourVueDonnees(boolean budgetIsActif, List<LigneOperationVO> listeDepenses){
+	public void miseAJourVueDonnees(boolean budgetIsActif, List<LigneDepense> listeDepenses){
 		// Ajout des opérations
 		getComponent().setItems(listeDepenses);
 

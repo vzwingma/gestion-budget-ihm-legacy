@@ -2,7 +2,7 @@ package com.terrier.finances.gestion.ui.styles.operations;
 
 import java.math.BigDecimal;
 
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.vaadin.ui.renderers.TextRenderer;
 
 import elemental.json.Json;
@@ -38,8 +38,8 @@ public class OperationBudgetTypeRenderer extends TextRenderer {
             return Json.create((Boolean) value ? "oui" : "non");
         }
 		// TypeDepenseEnum
-        else if(value instanceof TypeDepenseEnum){
-            return Json.create(((TypeDepenseEnum) value).getLibelle());
+        else if(value instanceof TypeOperationEnum){
+            return Json.create(((TypeOperationEnum) value).getLibelle());
         }
 		// Valeur
         else if(value instanceof Float){

@@ -6,15 +6,15 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.business.validator.OperationValidator;
+import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
-import com.terrier.finances.gestion.model.enums.EtatLigneDepenseEnum;
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
 import com.terrier.finances.gestion.model.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.CreerDepenseForm;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 import com.vaadin.data.ValidationResult;
@@ -127,21 +127,21 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getTextFieldValeur().clear();
 		getComponent().getTextFieldValeur().setValue("0");
 		// Type dépense
-		getComponent().getComboboxType().setItems(TypeDepenseEnum.values());
+		getComponent().getComboboxType().setItems(TypeOperationEnum.values());
 		getComponent().getComboboxType().setTextInputAllowed(false);
-		getComponent().getComboboxType().setSelectedItem(TypeDepenseEnum.DEPENSE);
+		getComponent().getComboboxType().setSelectedItem(TypeOperationEnum.DEPENSE);
 		getComponent().getComboboxType().clear();
 		// Etat
-		getComponent().getListSelectEtat().setItems(EtatLigneDepenseEnum.values());
+		getComponent().getListSelectEtat().setItems(EtatLigneOperationEnum.values());
 		getComponent().getListSelectEtat().setTextInputAllowed(false);
 		getComponent().getListSelectEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
 		String etatNlleDepense = getUtilisateurCourant().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
-			getComponent().getListSelectEtat().setSelectedItem(EtatLigneDepenseEnum.getEnum(etatNlleDepense));
+			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.getEnum(etatNlleDepense));
 		}
 		else{
-			getComponent().getListSelectEtat().setSelectedItem(EtatLigneDepenseEnum.PREVUE);
+			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.PREVUE);
 		}
 		// Périodique
 		getComponent().getCheckBoxPeriodique().setCaption(null);

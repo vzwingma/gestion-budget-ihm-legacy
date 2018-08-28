@@ -9,11 +9,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.terrier.finances.gestion.budget.business.OperationsService;
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.vaadin.data.Binder;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
@@ -45,8 +45,8 @@ public class LigneOperationEditorBinder extends Binder<LigneDepense> {
 
 	private ComboBox<CategorieDepense> cCategories = new  ComboBox<>();
 	private ComboBox<CategorieDepense> ssCategories = new  ComboBox<>();
-	private ComboBox<TypeDepenseEnum> cTypes = new ComboBox<>();
-	private TypeDepenseEnum expectedType = TypeDepenseEnum.DEPENSE;
+	private ComboBox<TypeOperationEnum> cTypes = new ComboBox<>();
+	private TypeOperationEnum expectedType = TypeOperationEnum.DEPENSE;
 
 	/**
 	 * @return binding du libellé
@@ -62,11 +62,11 @@ public class LigneOperationEditorBinder extends Binder<LigneDepense> {
 	/**
 	 * @return binding du type dépense
 	 */
-	public Binding<LigneDepense, TypeDepenseEnum> bindTypeDepense(){
+	public Binding<LigneDepense, TypeOperationEnum> bindTypeDepense(){
 		cTypes = new ComboBox<>();
 		cTypes.setTextInputAllowed(false);
 		cTypes.setEmptySelectionAllowed(false);
-		cTypes.setItems(TypeDepenseEnum.values());
+		cTypes.setItems(TypeOperationEnum.values());
 		return this.forField(cTypes)
 				.withValidator(Objects::nonNull, "Le Type de dépense ne peut pas être nul")
 				.withValidator(v -> expectedType.equals(v), "L'opération est une "+expectedType.getId()+". La valeur doit être " + expectedType.getLibelle())
@@ -140,10 +140,10 @@ public class LigneOperationEditorBinder extends Binder<LigneDepense> {
 			cCategories.setValue(event.getSelectedItem().get().getCategorieParente());
 			if((OperationsService.ID_SS_CAT_SALAIRE.equals(this.ssCategories.getSelectedItem().get().getId()) 
 					|| OperationsService.ID_SS_CAT_REMBOURSEMENT.equals(this.ssCategories.getSelectedItem().get().getId()))){
-				expectedType = TypeDepenseEnum.CREDIT;
+				expectedType = TypeOperationEnum.CREDIT;
 			}
 			else{
-				expectedType = TypeDepenseEnum.DEPENSE;
+				expectedType = TypeOperationEnum.DEPENSE;
 			}
 			cTypes.setValue(expectedType);
 			

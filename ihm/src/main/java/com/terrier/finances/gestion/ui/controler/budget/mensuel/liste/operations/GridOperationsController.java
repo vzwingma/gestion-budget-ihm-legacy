@@ -5,9 +5,9 @@ package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operation
 
 import java.util.List;
 
+import com.terrier.finances.gestion.model.budget.LigneOperationVO;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.enums.EntetesTableSuiviDepenseEnum;
-import com.terrier.finances.gestion.model.ui.budget.LigneOperationVO;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.GridOperations;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 

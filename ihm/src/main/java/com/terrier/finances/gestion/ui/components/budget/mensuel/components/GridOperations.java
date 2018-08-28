@@ -4,11 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
 import com.terrier.finances.gestion.model.enums.EntetesTableSuiviDepenseEnum;
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
 import com.terrier.finances.gestion.ui.components.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.binder.LigneOperationEditorBinder;
@@ -128,7 +128,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Binding Edition
 		c5.setEditorBinding(binderLD.bindLibelle());
 			
-		Column<LigneDepense, TypeDepenseEnum> c6 = addColumn(LigneDepense::getTypeDepense);
+		Column<LigneDepense, TypeOperationEnum> c6 = addColumn(LigneDepense::getTypeDepense);
 		c6.setId(EntetesTableSuiviDepenseEnum.TYPE.name())
 			.setCaption(EntetesTableSuiviDepenseEnum.TYPE.getLibelle())
 			.setWidth(TAILLE_COLONNE_TYPE_MENSUEL)

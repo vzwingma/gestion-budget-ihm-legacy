@@ -14,6 +14,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.finances.gestion.model.budget.LigneOperationVO;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
@@ -22,7 +23,6 @@ import com.terrier.finances.gestion.model.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.model.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.model.exception.CompteClosedException;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
-import com.terrier.finances.gestion.model.ui.budget.LigneOperationVO;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.resume.TreeGridResumeCategoriesController;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.totaux.GridResumeTotauxController;

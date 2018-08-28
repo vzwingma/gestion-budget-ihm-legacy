@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
+import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
-import com.terrier.finances.gestion.model.enums.EtatLigneDepenseEnum;
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
 
 /**
  * 
@@ -35,9 +35,9 @@ public class LigneDepense implements Comparable<LigneDepense>, Serializable {
 	// Libellé
 	private String libelle;
 	// Type de dépense
-	private TypeDepenseEnum typeDepense;
+	private TypeOperationEnum typeDepense;
 	// Etat de la ligne
-	private EtatLigneDepenseEnum etat;
+	private EtatLigneOperationEnum etat;
 	// Valeur
 	private double valeur;
 	// Date operation
@@ -70,7 +70,7 @@ public class LigneDepense implements Comparable<LigneDepense>, Serializable {
 	 * @param absValeur valeur montant en valeur absolue
 	 * @param etat état
 	 */
-	public LigneDepense(CategorieDepense ssCategorie, String libelle, TypeDepenseEnum typeDepense, String absValeur, EtatLigneDepenseEnum etat, boolean periodique, boolean budgetActif){
+	public LigneDepense(CategorieDepense ssCategorie, String libelle, TypeOperationEnum typeDepense, String absValeur, EtatLigneOperationEnum etat, boolean periodique, boolean budgetActif){
 		this.id = UUID.randomUUID().toString();
 		setSsCategorie(ssCategorie);
 		this.libelle = libelle;
@@ -95,7 +95,7 @@ public class LigneDepense implements Comparable<LigneDepense>, Serializable {
 		ligneDepenseClonee.setSsCategorie(this.ssCategorie);
 		ligneDepenseClonee.setDateMaj(Calendar.getInstance().getTime());
 		ligneDepenseClonee.setDateOperation(null);
-		ligneDepenseClonee.setEtat(EtatLigneDepenseEnum.PREVUE);
+		ligneDepenseClonee.setEtat(EtatLigneOperationEnum.PREVUE);
 		ligneDepenseClonee.setPeriodique(this.periodique);
 		ligneDepenseClonee.setTypeDepense(this.typeDepense);
 		ligneDepenseClonee.setValeurAbsStringToDouble(Double.toString(Math.abs(this.valeur)));
@@ -159,13 +159,13 @@ public class LigneDepense implements Comparable<LigneDepense>, Serializable {
 	/**
 	 * @return the typeDepense
 	 */
-	public TypeDepenseEnum getTypeDepense() {
+	public TypeOperationEnum getTypeDepense() {
 		return typeDepense;
 	}
 	/**
 	 * @param typeDepense the typeDepense to set
 	 */
-	public void setTypeDepense(TypeDepenseEnum typeDepense) {
+	public void setTypeDepense(TypeOperationEnum typeDepense) {
 		this.typeDepense = typeDepense;
 	}
 	/**
@@ -182,7 +182,7 @@ public class LigneDepense implements Comparable<LigneDepense>, Serializable {
 	public void setValeurAbsStringToDouble(String valeurS){
 		valeurS = DataUtils.getValueFromString(valeurS);
 		if(valeurS != null){
-			this.valeur = Math.abs(Double.parseDouble(valeurS)) * (TypeDepenseEnum.DEPENSE.equals(this.getTypeDepense()) ? -1 : 1);
+			this.valeur = Math.abs(Double.parseDouble(valeurS)) * (TypeOperationEnum.DEPENSE.equals(this.getTypeDepense()) ? -1 : 1);
 		}
 	}
 
@@ -231,14 +231,14 @@ public class LigneDepense implements Comparable<LigneDepense>, Serializable {
 	/**
 	 * @return the etat
 	 */
-	public EtatLigneDepenseEnum getEtat() {
+	public EtatLigneOperationEnum getEtat() {
 		return etat;
 	}
 
 	/**
 	 * @param etat the etat to set
 	 */
-	public void setEtat(EtatLigneDepenseEnum etat) {
+	public void setEtat(EtatLigneOperationEnum etat) {
 		this.etat = etat;
 	}
 

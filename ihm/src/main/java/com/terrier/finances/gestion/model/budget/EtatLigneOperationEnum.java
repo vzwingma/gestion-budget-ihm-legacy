@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.enums;
+package com.terrier.finances.gestion.model.budget;
 
 /**
  * Type de dépenses
  * @author vzwingma
  *
  */
-public enum EtatLigneDepenseEnum {
+public enum EtatLigneOperationEnum {
 
 	// Ligne prévue
 	PREVUE("prevue", "Prévue"),
@@ -28,7 +28,7 @@ public enum EtatLigneDepenseEnum {
 	 * @param id
 	 * @param libelle
 	 */
-	private EtatLigneDepenseEnum(String id, String libelle){
+	private EtatLigneOperationEnum(String id, String libelle){
 		this.id = id;
 		this.libelle = libelle;
 	}
@@ -48,8 +48,8 @@ public enum EtatLigneDepenseEnum {
 	}
 	
 	
-	public static EtatLigneDepenseEnum getEnum(String idEnum){
-		for (EtatLigneDepenseEnum enums : values()) {
+	public static EtatLigneOperationEnum getEnum(String idEnum){
+		for (EtatLigneOperationEnum enums : values()) {
 			if(enums.getId().equals(idEnum)){
 				return enums;
 			}

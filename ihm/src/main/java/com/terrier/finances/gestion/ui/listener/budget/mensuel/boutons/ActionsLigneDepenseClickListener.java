@@ -9,9 +9,9 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.model.business.parametrage.Utilisateur;
-import com.terrier.finances.gestion.model.enums.EtatLigneDepenseEnum;
 import com.terrier.finances.gestion.model.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
@@ -47,23 +47,23 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		EtatLigneDepenseEnum etat = EtatLigneDepenseEnum.PREVUE;
+		EtatLigneOperationEnum etat = EtatLigneOperationEnum.PREVUE;
 		actions = event.getButton().findAncestor(ActionsLigneBudget.class);
 		if(event.getButton().getId().equals("buttonReel")){
 			LOGGER.trace("Action : Activation");
-			etat = EtatLigneDepenseEnum.REALISEE;
+			etat = EtatLigneOperationEnum.REALISEE;
 		}
 		else if(event.getButton().getId().equals("buttonAnnuler")){
 			LOGGER.trace("Action : Annulation");
-			etat = EtatLigneDepenseEnum.ANNULEE;
+			etat = EtatLigneOperationEnum.ANNULEE;
 		}
 		else if(event.getButton().getId().equals("buttonReporter")){
 			LOGGER.trace("Action : Reporter");
-			etat = EtatLigneDepenseEnum.REPORTEE;
+			etat = EtatLigneOperationEnum.REPORTEE;
 		}
 		else if(event.getButton().getId().equals("buttonPrevue")){
 			LOGGER.trace("Action : Prevue");
-			etat = EtatLigneDepenseEnum.PREVUE;
+			etat = EtatLigneOperationEnum.PREVUE;
 		}
 		else if(event.getButton().getId().equals("buttonSupprimer")){
 			LOGGER.trace("Action : Supprimé");
@@ -95,7 +95,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	/**
 	 * Mise à jour de la ligne
 	 */
-	private void updateLigne(EtatLigneDepenseEnum etat, Utilisateur auteur){
+	private void updateLigne(EtatLigneOperationEnum etat, Utilisateur auteur){
 
 		// Mise à jour de l'état
 		actions.getControleur().miseAJourEtatLigne(etat);

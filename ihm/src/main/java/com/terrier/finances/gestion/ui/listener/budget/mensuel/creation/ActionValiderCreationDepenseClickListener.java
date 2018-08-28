@@ -8,10 +8,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
-import com.terrier.finances.gestion.model.enums.EtatLigneDepenseEnum;
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.CreerDepenseForm;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.creer.operation.CreerDepenseController;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.BudgetMensuelController;
@@ -46,11 +46,11 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 		CreerDepenseForm form = (CreerDepenseForm)event.getButton().getParent().getParent().getParent().getParent();
 
 		LOGGER.debug("[IHM] Validation du formulaire de création");
-		Optional<TypeDepenseEnum> typeSelected = form.getComboboxType().getSelectedItem();
-		TypeDepenseEnum type = typeSelected.isPresent() ? typeSelected.get() : TypeDepenseEnum.DEPENSE;
+		Optional<TypeOperationEnum> typeSelected = form.getComboboxType().getSelectedItem();
+		TypeOperationEnum type = typeSelected.isPresent() ? typeSelected.get() : TypeOperationEnum.DEPENSE;
 
-		Optional<EtatLigneDepenseEnum> etatSelected = form.getListSelectEtat().getSelectedItem();
-		EtatLigneDepenseEnum etat = etatSelected.isPresent() ? etatSelected.get() : EtatLigneDepenseEnum.PREVUE;
+		Optional<EtatLigneOperationEnum> etatSelected = form.getListSelectEtat().getSelectedItem();
+		EtatLigneOperationEnum etat = etatSelected.isPresent() ? etatSelected.get() : EtatLigneOperationEnum.PREVUE;
 
 		Optional<CategorieDepense> categorieSelected = form.getComboBoxSsCategorie().getSelectedItem();
 		Optional<String> descriptionSelected = form.getTextFieldDescription().getSelectedItem();

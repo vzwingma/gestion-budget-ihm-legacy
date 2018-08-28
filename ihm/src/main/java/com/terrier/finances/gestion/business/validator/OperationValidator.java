@@ -3,9 +3,9 @@
  */
 package com.terrier.finances.gestion.business.validator;
 
+import com.terrier.finances.gestion.budget.business.OperationsService;
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;
@@ -44,12 +44,12 @@ public class OperationValidator implements Validator<LigneDepense> {
 		// Catégorie crédit
 		if((OperationsService.ID_SS_CAT_SALAIRE.equals(operation.getSsCategorie().getId()) 
 				|| OperationsService.ID_SS_CAT_REMBOURSEMENT.equals(operation.getSsCategorie().getId()))){
-			if(TypeDepenseEnum.DEPENSE.equals(operation.getTypeDepense())){
+			if(TypeOperationEnum.DEPENSE.equals(operation.getTypeDepense())){
 				return ValidationResult.error("L'opération est un crédit. Le type doit être CREDIT");
 			}
 			// Sinon c'est correct
 		}
-		else if(TypeDepenseEnum.CREDIT.equals(operation.getTypeDepense())){
+		else if(TypeOperationEnum.CREDIT.equals(operation.getTypeDepense())){
 			return ValidationResult.error("L'opération est un débit. Le type doit être DEBIT (-)");
 		}
 		return ValidationResult.ok();

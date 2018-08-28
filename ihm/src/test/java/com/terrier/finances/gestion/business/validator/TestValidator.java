@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.terrier.finances.gestion.budget.business.OperationsService;
+import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.model.budget.TypeOperationEnum;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
-import com.terrier.finances.gestion.model.enums.EtatLigneDepenseEnum;
-import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.vaadin.data.ValidationResult;
 
 @Deprecated
@@ -28,9 +28,9 @@ public class TestValidator {
 
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
-		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
+		operation.setEtat(EtatLigneOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
-		operation.setTypeDepense(TypeDepenseEnum.DEPENSE);
+		operation.setTypeDepense(TypeOperationEnum.DEPENSE);
 		operation.setValeurAbsStringToDouble("-123.13");
 		// Ligne OK
 		ValidationResult r = validator.apply(operation, null);
@@ -46,9 +46,9 @@ public class TestValidator {
 		// Ligne nulle
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
-		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
+		operation.setEtat(EtatLigneOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
-		operation.setTypeDepense(TypeDepenseEnum.DEPENSE);
+		operation.setTypeDepense(TypeOperationEnum.DEPENSE);
 		operation.setValeurAbsStringToDouble("NaN");
 		// Ligne OK
 		ValidationResult r = validator.apply(operation, null);
@@ -67,10 +67,10 @@ public class TestValidator {
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
 		operation.getSsCategorie().setId(OperationsService.ID_SS_CAT_SALAIRE);
-		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
+		operation.setEtat(EtatLigneOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");		
 		operation.setValeurAbsStringToDouble("-123");
-		operation.setTypeDepense(TypeDepenseEnum.DEPENSE);
+		operation.setTypeDepense(TypeOperationEnum.DEPENSE);
 		assertEquals(ValidationResult.error("").isError(), validator.apply(operation, null).isError());
 	}
 	
@@ -82,10 +82,10 @@ public class TestValidator {
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
 		operation.getSsCategorie().setId("26a4b966-ffff-ffff-8611-a5ba4b518ef5");
-		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
+		operation.setEtat(EtatLigneOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");	
 		operation.setValeurAbsStringToDouble("123");
-		operation.setTypeDepense(TypeDepenseEnum.CREDIT);
+		operation.setTypeDepense(TypeOperationEnum.CREDIT);
 		assertEquals(ValidationResult.error("").isError(), validator.apply(operation, null).isError());
 	}
 	

@@ -3,11 +3,11 @@
  */
 package com.terrier.finances.gestion.ui.controler.common;
 
+import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.business.AuthenticationService;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.model.business.parametrage.Utilisateur;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
-import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.parametrages.business.ParametragesService;
 import com.terrier.finances.gestion.ui.controler.FacadeServices;
 import com.terrier.finances.gestion.ui.sessions.UserSession;
 import com.terrier.finances.gestion.ui.sessions.UserSessionsManager;

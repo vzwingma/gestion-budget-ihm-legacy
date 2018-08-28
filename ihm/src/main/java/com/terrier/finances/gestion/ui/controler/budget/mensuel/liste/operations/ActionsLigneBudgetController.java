@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations;
 
-import com.terrier.finances.gestion.model.enums.EtatLigneDepenseEnum;
+import com.terrier.finances.gestion.model.budget.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 import com.vaadin.ui.Button;
@@ -38,19 +38,19 @@ public class ActionsLigneBudgetController extends AbstractUIController<ActionsLi
 	 * mise à jour de l'état de la ligne
 	 * @param etat
 	 */
-	public void miseAJourEtatLigne(EtatLigneDepenseEnum etat){
+	public void miseAJourEtatLigne(EtatLigneOperationEnum etat){
 		Button boutonInactif = getComponent().getButtonPrevue();
 		if(etat != null){
-			if(etat.equals(EtatLigneDepenseEnum.ANNULEE)) {
+			if(etat.equals(EtatLigneOperationEnum.ANNULEE)) {
 				boutonInactif = getComponent().getButtonAnnuler();
 			}
-			else if(etat.equals(EtatLigneDepenseEnum.REALISEE)) {
+			else if(etat.equals(EtatLigneOperationEnum.REALISEE)) {
 				boutonInactif = getComponent().getButtonReel();
 			}
-			else if(etat.equals(EtatLigneDepenseEnum.REPORTEE)) {
+			else if(etat.equals(EtatLigneOperationEnum.REPORTEE)) {
 				boutonInactif = getComponent().getButtonReporter();
 			}
-			else if(etat.equals(EtatLigneDepenseEnum.PREVUE)) {
+			else if(etat.equals(EtatLigneOperationEnum.PREVUE)) {
 				boutonInactif = getComponent().getButtonPrevue();
 			}
 		}

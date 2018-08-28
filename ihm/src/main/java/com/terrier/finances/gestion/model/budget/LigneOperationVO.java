@@ -1,7 +1,7 @@
-package com.terrier.finances.gestion.model.ui.budget;
+package com.terrier.finances.gestion.model.budget;
 
+import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
 
 /**

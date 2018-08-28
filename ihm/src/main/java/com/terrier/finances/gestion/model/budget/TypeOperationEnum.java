@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.enums;
+package com.terrier.finances.gestion.model.budget;
 
 /**
  * Type de dépenses
  * @author vzwingma
  *
  */
-public enum TypeDepenseEnum {
+public enum TypeOperationEnum {
 
 	// Crédit
 	CREDIT("CREDIT", "+"),
@@ -25,7 +25,7 @@ public enum TypeDepenseEnum {
 	 * @param id
 	 * @param libelle
 	 */
-	private TypeDepenseEnum(String id, String libelle){
+	private TypeOperationEnum(String id, String libelle){
 		this.id = id;
 		this.libelle = libelle;
 	}

@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.model.data.parametrage;
+package com.terrier.finances.gestion.services.parametrages.model;
 
 import java.util.HashSet;
 import java.util.Set;

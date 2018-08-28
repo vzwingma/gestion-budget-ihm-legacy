@@ -12,7 +12,7 @@ import java.util.Locale;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.model.business.budget.TotalBudgetMensuel;
 import com.terrier.finances.gestion.model.data.DataUtils;
-import com.terrier.finances.gestion.model.enums.EntetesTreeResumeDepenseEnum;
+import com.terrier.finances.gestion.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.GridResumeTotaux;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 
@@ -61,8 +61,8 @@ public class GridResumeTotauxController extends AbstractUIController<GridResumeT
 		totauxBudget.add(new TotalBudgetMensuel("Solde réel du compte", budget.getNowCompteReel(), budget.getFinCompteReel()));
 		
 		// Maj des colonnes
-		getComponent().getColumn(EntetesTreeResumeDepenseEnum.VALEUR_NOW.getId()).setCaption(EntetesTreeResumeDepenseEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(auDateFormat));
-		getComponent().getColumn(EntetesTreeResumeDepenseEnum.VALEUR_FIN.getId()).setCaption(EntetesTreeResumeDepenseEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(finDateFormat));
+		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(auDateFormat));
+		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(finDateFormat));
 		getComponent().setItems(totauxBudget);
 		getComponent().getDataProvider().refreshAll();
 		getComponent().setDescription("Marge de sécurité : "+budget.getMargeSecurite()+" € <br> Marge à fin de mois : " + budget.getMargeSecuriteFinMois() + " €");

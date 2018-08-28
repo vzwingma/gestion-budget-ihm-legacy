@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.model.enums;
+package com.terrier.finances.gestion.operations.model.enums;
 
 
 
@@ -7,7 +7,7 @@ package com.terrier.finances.gestion.model.enums;
  * @author vzwingma
  *
  */
-public enum EntetesTreeResumeDepenseEnum {
+public enum EntetesGridResumeOperationsEnum {
 
 	CATEGORIE("categorie", "Catégorie"),
 	VALEUR_NOW("valeurnow", "Au "),
@@ -22,7 +22,7 @@ public enum EntetesTreeResumeDepenseEnum {
 	 * @param id
 	 * @param libelle
 	 */
-	private EntetesTreeResumeDepenseEnum(String id, String libelle){
+	private EntetesGridResumeOperationsEnum(String id, String libelle){
 		this.id = id;
 		this.libelle = libelle;
 	}

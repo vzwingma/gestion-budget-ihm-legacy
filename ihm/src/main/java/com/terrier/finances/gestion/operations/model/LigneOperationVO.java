@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.budget.model;
+package com.terrier.finances.gestion.operations.model;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;

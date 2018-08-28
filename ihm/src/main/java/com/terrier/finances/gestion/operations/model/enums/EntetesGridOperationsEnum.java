@@ -1,11 +1,11 @@
-package com.terrier.finances.gestion.model.enums;
+package com.terrier.finances.gestion.operations.model.enums;
 
 /**
  * Entete du tableau
  * @author vzwingma
  *
  */
-public enum EntetesTableSuiviDepenseEnum {
+public enum EntetesGridOperationsEnum {
 
 	CATEGORIE		("Catégorie"),
 	SSCATEGORIE		("Ss catégorie"),
@@ -26,7 +26,7 @@ public enum EntetesTableSuiviDepenseEnum {
 	 * @param id
 	 * @param libelle
 	 */
-	private EntetesTableSuiviDepenseEnum(String libelle){
+	private EntetesGridOperationsEnum(String libelle){
 		this.libelle = libelle;
 	}
 

@@ -7,20 +7,17 @@ import java.util.Locale;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
-import com.terrier.finances.gestion.model.enums.EntetesTableSuiviDepenseEnum;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.model.enums.EntetesGridOperationsEnum;
 import com.terrier.finances.gestion.ui.components.abstrait.AbstractUIGridComponent;
-import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.binder.LigneOperationEditorBinder;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.GridOperationsController;
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.editor.GridOperationsEditorListener;
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.editor.GridOperationsRightClickListener;
-import com.terrier.finances.gestion.ui.styles.operations.GridOperationCellActionsStyle;
 import com.terrier.finances.gestion.ui.styles.operations.GridOperationCellStyle;
 import com.terrier.finances.gestion.ui.styles.operations.GridOperationCellValeurStyle;
 import com.terrier.finances.gestion.ui.styles.operations.OperationBudgetTypeRenderer;
 import com.vaadin.contextmenu.GridContextMenu;
-import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.renderers.DateRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
 
@@ -88,8 +85,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		 * Columns
 		 */		
 		Column<LigneDepense, Date> c = addColumn(LigneDepense::getDateOperation);
-		c.setId(EntetesTableSuiviDepenseEnum.DATE_OPERATION.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.DATE_OPERATION.getLibelle())
+		c.setId(EntetesGridOperationsEnum.DATE_OPERATION.name())
+			.setCaption(EntetesGridOperationsEnum.DATE_OPERATION.getLibelle())
 			.setWidth(TAILLE_COLONNE_DATE)
 			.setHidable(true)
 			.setResizable(false);
@@ -98,8 +95,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Pas éditable
 
 		Column<LigneDepense, CategorieDepense> c2 = addColumn(LigneDepense::getCategorie);
-		c2.setId(EntetesTableSuiviDepenseEnum.CATEGORIE.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.CATEGORIE.getLibelle())
+		c2.setId(EntetesGridOperationsEnum.CATEGORIE.name())
+			.setCaption(EntetesGridOperationsEnum.CATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)
 			.setHidable(true)
 			.setResizable(false);
@@ -109,8 +106,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c2.setEditorBinding(binderLD.bindCategories());
 		
 		Column<LigneDepense, CategorieDepense> c3 = addColumn(LigneDepense::getSsCategorie);
-		c3.setId(EntetesTableSuiviDepenseEnum.SSCATEGORIE.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.SSCATEGORIE.getLibelle())
+		c3.setId(EntetesGridOperationsEnum.SSCATEGORIE.name())
+			.setCaption(EntetesGridOperationsEnum.SSCATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)
 			.setHidable(true)
 			.setResizable(false);
@@ -119,8 +116,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c3.setEditorBinding(binderLD.bindSSCategories());
 		
 		Column<LigneDepense, String> c5 = addColumn(LigneDepense::getLibelle);
-		c5.setId(EntetesTableSuiviDepenseEnum.LIBELLE.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.LIBELLE.getLibelle())
+		c5.setId(EntetesGridOperationsEnum.LIBELLE.name())
+			.setCaption(EntetesGridOperationsEnum.LIBELLE.getLibelle())
 			.setHidable(true)
 			.setResizable(false);
 		c5.setRenderer(new TextRenderer(""));
@@ -129,8 +126,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c5.setEditorBinding(binderLD.bindLibelle());
 			
 		Column<LigneDepense, TypeOperationEnum> c6 = addColumn(LigneDepense::getTypeDepense);
-		c6.setId(EntetesTableSuiviDepenseEnum.TYPE.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.TYPE.getLibelle())
+		c6.setId(EntetesGridOperationsEnum.TYPE.name())
+			.setCaption(EntetesGridOperationsEnum.TYPE.getLibelle())
 			.setWidth(TAILLE_COLONNE_TYPE_MENSUEL)
 			.setHidden(true)
 			.setHidable(true)
@@ -141,8 +138,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c6.setEditorBinding(binderLD.bindTypeDepense());
 		
 		Column<LigneDepense, Double> c7 = addColumn(LigneDepense::getValeur);
-		c7.setId(EntetesTableSuiviDepenseEnum.VALEUR.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.VALEUR.getLibelle())
+		c7.setId(EntetesGridOperationsEnum.VALEUR.name())
+			.setCaption(EntetesGridOperationsEnum.VALEUR.getLibelle())
 			.setWidth(TAILLE_COLONNE_VALEUR)
 			.setHidable(true)
 			.setResizable(false);
@@ -151,8 +148,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c7.setEditorBinding(binderLD.bindValeur());
 		
 		Column<LigneDepense, Boolean> c8 = addColumn(LigneDepense::isPeriodique);
-		c8.setId(EntetesTableSuiviDepenseEnum.PERIODIQUE.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.PERIODIQUE.getLibelle())
+		c8.setId(EntetesGridOperationsEnum.PERIODIQUE.name())
+			.setCaption(EntetesGridOperationsEnum.PERIODIQUE.getLibelle())
 			.setWidth(TAILLE_COLONNE_TYPE_MENSUEL)
 			.setHidden(true)
 			.setHidable(true)
@@ -171,8 +168,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 //		c9.setRenderer(new ComponentRenderer());
 		
 		Column<LigneDepense, Date> c10 = addColumn(LigneDepense::getDateMaj);
-		c10.setId(EntetesTableSuiviDepenseEnum.DATE_MAJ.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.DATE_MAJ.getLibelle())
+		c10.setId(EntetesGridOperationsEnum.DATE_MAJ.name())
+			.setCaption(EntetesGridOperationsEnum.DATE_MAJ.getLibelle())
 			.setWidth(TAILLE_COLONNE_DATE + 10D)
 			.setHidable(true)
 			.setResizable(false);
@@ -182,8 +179,8 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Not editable
 		
 		Column<LigneDepense, String> c11 = addColumn(LigneDepense::getAuteur);
-		c11.setId(EntetesTableSuiviDepenseEnum.AUTEUR.name())
-			.setCaption(EntetesTableSuiviDepenseEnum.AUTEUR.getLibelle())
+		c11.setId(EntetesGridOperationsEnum.AUTEUR.name())
+			.setCaption(EntetesGridOperationsEnum.AUTEUR.getLibelle())
 			.setWidth(TAILLE_COLONNE_AUTEUR)
 			.setHidden(true)
 			.setHidable(true)
@@ -200,5 +197,15 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		GridContextMenu<LigneDepense> contextMenu = new GridContextMenu<>(this);
 		GridOperationsRightClickListener menuCommand = new GridOperationsRightClickListener(getControleur());
 		contextMenu.addGridBodyContextMenuListener(menuCommand);
+	}
+	
+	
+	/**
+	 * Nom de la colonne
+	 * @param nomColonne
+	 * @return la colonne correspondante
+	 */
+	public Column<LigneDepense, ?> getColumn(EntetesGridOperationsEnum nomColonne){
+		return super.getColumn(nomColonne.name());
 	}
 }

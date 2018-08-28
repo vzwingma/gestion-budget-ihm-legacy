@@ -1,7 +1,7 @@
 package com.terrier.finances.gestion.ui.components.budget.mensuel.components;
 
 import com.terrier.finances.gestion.model.business.budget.ResumeTotalCategories;
-import com.terrier.finances.gestion.model.enums.EntetesTreeResumeDepenseEnum;
+import com.terrier.finances.gestion.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.components.abstrait.AbstractUITreeGridComponent;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.resume.TreeGridResumeCategoriesController;
 import com.terrier.finances.gestion.ui.styles.operations.OperationBudgetTypeRenderer;
@@ -33,22 +33,22 @@ public class TreeGridResumeCategories extends AbstractUITreeGridComponent<TreeGr
 	public void paramComponentsOnTreeGrid() {
 		
 		addColumn(ResumeTotalCategories::getTypeTotal)
-		.setId(EntetesTreeResumeDepenseEnum.CATEGORIE.getId())
-		.setCaption(EntetesTreeResumeDepenseEnum.CATEGORIE.getLibelle());
+		.setId(EntetesGridResumeOperationsEnum.CATEGORIE.getId())
+		.setCaption(EntetesGridResumeOperationsEnum.CATEGORIE.getLibelle());
 		
 		addColumn(ResumeTotalCategories::getTotalADate)
-		.setId(EntetesTreeResumeDepenseEnum.VALEUR_NOW.getId())
-		.setCaption(EntetesTreeResumeDepenseEnum.VALEUR_NOW.getLibelle())
+		.setId(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId())
+		.setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle())
 		.setWidth(TAILLE_COLONNE_VALEUR)
 		.setRenderer(new OperationBudgetTypeRenderer())
-		.setStyleGenerator(new TreeGridResumeValeurCellStyle(EntetesTreeResumeDepenseEnum.VALEUR_NOW));
+		.setStyleGenerator(new TreeGridResumeValeurCellStyle(EntetesGridResumeOperationsEnum.VALEUR_NOW));
 		
 		addColumn(ResumeTotalCategories::getTotalFinMois)
-		.setId(EntetesTreeResumeDepenseEnum.VALEUR_FIN.getId())
-		.setCaption(EntetesTreeResumeDepenseEnum.VALEUR_FIN.getLibelle())
+		.setId(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId())
+		.setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle())
 		.setWidth(TAILLE_COLONNE_VALEUR)
 		.setRenderer(new OperationBudgetTypeRenderer())
-		.setStyleGenerator(new TreeGridResumeValeurCellStyle(EntetesTreeResumeDepenseEnum.VALEUR_FIN));
+		.setStyleGenerator(new TreeGridResumeValeurCellStyle(EntetesGridResumeOperationsEnum.VALEUR_FIN));
 		
 		// Pas de sélection de lignes
 		setSelectionMode(SelectionMode.NONE);

@@ -5,9 +5,9 @@ package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operation
 
 import java.util.List;
 
-import com.terrier.finances.gestion.budget.model.LigneOperationVO;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
-import com.terrier.finances.gestion.model.enums.EntetesTableSuiviDepenseEnum;
+import com.terrier.finances.gestion.operations.model.LigneOperationVO;
+import com.terrier.finances.gestion.operations.model.enums.EntetesGridOperationsEnum;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.GridOperations;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 
@@ -52,12 +52,12 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 	public void updateViewGridOnEditableMode(boolean editableMode){
 
 //		// Activation du tableau en mode édition
-        getComponent().getColumn(EntetesTableSuiviDepenseEnum.TYPE.name()).setHidden(!editableMode);
-        getComponent().getColumn(EntetesTableSuiviDepenseEnum.PERIODIQUE.name()).setHidden(!editableMode);
+        getComponent().getColumn(EntetesGridOperationsEnum.TYPE).setHidden(!editableMode);
+        getComponent().getColumn(EntetesGridOperationsEnum.PERIODIQUE).setHidden(!editableMode);
         // Réalignement de la colonne en mode édition
-        getComponent().getColumn(EntetesTableSuiviDepenseEnum.PERIODIQUE.name()).setWidth(editableMode ? GridOperations.TAILLE_COLONNE_TYPE_MENSUEL + 15 : GridOperations.TAILLE_COLONNE_TYPE_MENSUEL);
-        getComponent().getColumn(EntetesTableSuiviDepenseEnum.ACTIONS.name()).setHidden(editableMode);
-        getComponent().getColumn(EntetesTableSuiviDepenseEnum.DATE_MAJ.name()).setHidden(editableMode);
+        getComponent().getColumn(EntetesGridOperationsEnum.PERIODIQUE).setWidth(editableMode ? GridOperations.TAILLE_COLONNE_TYPE_MENSUEL + 15 : GridOperations.TAILLE_COLONNE_TYPE_MENSUEL);
+ // TODO : A remettre       getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(editableMode);
+        getComponent().getColumn(EntetesGridOperationsEnum.DATE_MAJ).setHidden(editableMode);
         
         //
 		this.budgetControleur.getComponent().getButtonCreate().setVisible(!editableMode);
@@ -74,8 +74,8 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 		getComponent().setItems(listeDepenses);
 
 		// Mise à jour des colonnes suivant l'activité du budget
-		getComponent().getColumn(EntetesTableSuiviDepenseEnum.AUTEUR.name()).setHidden(budgetIsActif);
-		getComponent().getColumn(EntetesTableSuiviDepenseEnum.ACTIONS.name()).setHidden(!budgetIsActif);
+		getComponent().getColumn(EntetesGridOperationsEnum.AUTEUR).setHidden(budgetIsActif);
+// TODO : A remettre		getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
 	}
 
 

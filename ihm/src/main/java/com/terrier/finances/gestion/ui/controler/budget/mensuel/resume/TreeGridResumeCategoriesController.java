@@ -14,7 +14,7 @@ import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.model.business.budget.ResumeTotalCategories;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
-import com.terrier.finances.gestion.model.enums.EntetesTreeResumeDepenseEnum;
+import com.terrier.finances.gestion.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.TreeGridResumeCategories;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.totaux.GridResumeTotauxController;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
@@ -61,8 +61,8 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 
 		// Libellés
 		LocalDate dateDerniereOperation = DataUtils.getMaxDateListeOperations(budget.getListeDepenses());
-		getComponent().getColumn(EntetesTreeResumeDepenseEnum.VALEUR_NOW.getId()).setCaption(EntetesTreeResumeDepenseEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.auDateFormat));
-		getComponent().getColumn(EntetesTreeResumeDepenseEnum.VALEUR_FIN.getId()).setCaption(EntetesTreeResumeDepenseEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.finDateFormat));
+		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.auDateFormat));
+		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.finDateFormat));
 
 
 		// Données des résumés

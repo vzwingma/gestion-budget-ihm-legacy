@@ -1,7 +1,7 @@
 package com.terrier.finances.gestion.ui.components.budget.mensuel.components;
 
 import com.terrier.finances.gestion.model.business.budget.TotalBudgetMensuel;
-import com.terrier.finances.gestion.model.enums.EntetesTreeResumeDepenseEnum;
+import com.terrier.finances.gestion.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.components.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.totaux.GridResumeTotauxController;
 import com.terrier.finances.gestion.ui.styles.operations.OperationBudgetTypeRenderer;
@@ -36,26 +36,26 @@ public class GridResumeTotaux extends AbstractUIGridComponent<GridResumeTotauxCo
 		 * Total resume
 		 */
 		addColumn(TotalBudgetMensuel::getTypeTotal)
-		.setCaption(EntetesTreeResumeDepenseEnum.CATEGORIE.getLibelle())
-		.setId(EntetesTreeResumeDepenseEnum.CATEGORIE.getId())
+		.setCaption(EntetesGridResumeOperationsEnum.CATEGORIE.getLibelle())
+		.setId(EntetesGridResumeOperationsEnum.CATEGORIE.getId())
 		.setSortable(false)
 		.setResizable(false)
 		.setHidable(false);
 
 		addColumn(TotalBudgetMensuel::getTotalADate)
-		.setId(EntetesTreeResumeDepenseEnum.VALEUR_NOW.getId())
+		.setId(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId())
 		.setSortable(false)
 		.setResizable(false)
 		.setHidable(false)
-		.setStyleGenerator(new GridTotalCellStyle(EntetesTreeResumeDepenseEnum.VALEUR_NOW))
+		.setStyleGenerator(new GridTotalCellStyle(EntetesGridResumeOperationsEnum.VALEUR_NOW))
 		.setRenderer(new OperationBudgetTypeRenderer());
 
 		addColumn(TotalBudgetMensuel::getTotalFinMois)
-		.setId(EntetesTreeResumeDepenseEnum.VALEUR_FIN.getId())
+		.setId(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId())
 		.setSortable(false)
 		.setResizable(false)
 		.setHidable(false)
-		.setStyleGenerator(new GridTotalCellStyle(EntetesTreeResumeDepenseEnum.VALEUR_FIN))
+		.setStyleGenerator(new GridTotalCellStyle(EntetesGridResumeOperationsEnum.VALEUR_FIN))
 		.setRenderer(new OperationBudgetTypeRenderer());
 	}
 

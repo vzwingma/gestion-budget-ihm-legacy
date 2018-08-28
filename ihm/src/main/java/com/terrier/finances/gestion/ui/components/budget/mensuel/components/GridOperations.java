@@ -197,7 +197,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		/**
 		 * Context Menu
 		 */
-		GridContextMenu<LigneDepense> contextMenu = new GridContextMenu<>(this);
+		GridContextMenu<LigneOperationVO> contextMenu = new GridContextMenu<>(this);
 		GridOperationsRightClickListener menuCommand = new GridOperationsRightClickListener(getControleur());
 		contextMenu.addGridBodyContextMenuListener(menuCommand);
 	}

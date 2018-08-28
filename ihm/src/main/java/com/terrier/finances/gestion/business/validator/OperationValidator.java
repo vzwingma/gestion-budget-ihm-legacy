@@ -15,7 +15,6 @@ import com.vaadin.data.ValueContext;
  * @author vzwingma
  *
  */
-@Deprecated
 public class OperationValidator implements Validator<LigneDepense> {
 
 	/**

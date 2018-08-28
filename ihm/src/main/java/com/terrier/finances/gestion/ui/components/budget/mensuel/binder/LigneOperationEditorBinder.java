@@ -100,11 +100,11 @@ public class LigneOperationEditorBinder extends Binder<LigneOperationVO> {
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneDepense, Date> bindDate(){
+	public Binding<LigneOperationVO, Date> bindDate(){
 		TextField valeurDate = new TextField();
 		valeurDate.setEnabled(false);
 		// Pas de validateur. Valeur en readonly
-		return this.forField(valeurDate).withConverter(new DateOperationEditorConverter()).bind(LigneDepense::getDateMaj, LigneDepense::setDateMaj);
+		return this.forField(valeurDate).withConverter(new DateOperationEditorConverter()).bind(LigneOperationVO::getDateMaj, LigneOperationVO::setDateMaj);
 	}
 
 

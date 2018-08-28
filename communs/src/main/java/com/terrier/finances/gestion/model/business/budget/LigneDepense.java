@@ -20,6 +20,7 @@ import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
  * @author vzwingma
  *
  */
+@Deprecated
 public class LigneDepense implements Comparable<LigneDepense>, Serializable {
 
 	/**

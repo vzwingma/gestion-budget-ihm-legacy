@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,14 +17,12 @@ import com.terrier.finances.gestion.model.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.model.enums.UtilisateurPrefsEnum;
 
 /**
- * Définition d'un utilisateur
+ * Définition d'un utilisateur de la BDD
  * @author vzwingma
  *
  */
 @Document(collection = "utilisateurs")
 public class Utilisateur implements Serializable {
-
-
 
 	/**
 	 * 
@@ -45,12 +42,6 @@ public class Utilisateur implements Serializable {
 
 	@JsonIgnore	
 	private Date dernierAcces;
-	/**
-	 *  Encryptor
-	 */
-	@Transient
-	@JsonIgnore
-	private BasicTextEncryptor encryptor = new BasicTextEncryptor();
 	
 	// Libellé
 	private String libelle;
@@ -128,16 +119,6 @@ public class Utilisateur implements Serializable {
 	public <T> T getPreference(UtilisateurPrefsEnum clePreference) {
 		return (T)prefsUtilisateur.get(clePreference);
 	}
-
-	
-	
-	/**
-	 * @return the encryptor
-*/	
-	public BasicTextEncryptor getEncryptor() {
-		return encryptor;
-	}
- 
 
 	/**
 	 * @return the masterCleChiffrementDonnees

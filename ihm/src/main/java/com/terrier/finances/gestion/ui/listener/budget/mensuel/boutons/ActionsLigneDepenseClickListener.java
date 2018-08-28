@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
+import com.terrier.finances.gestion.model.business.parametrage.Utilisateur;
 import com.terrier.finances.gestion.model.enums.EtatLigneDepenseEnum;
 import com.terrier.finances.gestion.model.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
@@ -86,7 +87,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 				}
 			}
 			event.getButton().setVisible(false);	
-			updateLigne(etat, getUtilisateurCourant().getLibelle());
+			updateLigne(etat, getUtilisateurCourant());
 		}
 	}
 
@@ -94,7 +95,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	/**
 	 * Mise à jour de la ligne
 	 */
-	private void updateLigne(EtatLigneDepenseEnum etat, String auteur){
+	private void updateLigne(EtatLigneDepenseEnum etat, Utilisateur auteur){
 
 		// Mise à jour de l'état
 		actions.getControleur().miseAJourEtatLigne(etat);
@@ -121,7 +122,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	@Override
 	public void response(boolean ok) {
 		if(ok){
-			updateLigne(null, getUtilisateurCourant().getLibelle());
+			updateLigne(null, getUtilisateurCourant());
 		}
 	}
 }

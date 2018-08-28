@@ -88,7 +88,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				LOGGER.debug("[REFRESH][{}] Dernière mise à jour reçue pour le budget {} : {}", idSession, 
 						budgetCourant.getId(), budgetCourant.getDateMiseAJour() != null ? budgetCourant.getDateMiseAJour().getTime() : "null");
 
-				if(getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour())){
+				if(getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour(), getUtilisateurCourant())){
 					LOGGER.info("[REFRESH][{}] Le budget a été mis à jour en base de données.  Mise à jour de l'IHM", idSession);
 					miseAJourVueDonnees();
 				}
@@ -239,7 +239,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 */
 	public void lockBudget(boolean setBudgetActif){
 		LOGGER.info("[IHM] {} du budget mensuel", setBudgetActif ? "Ouverture" : "Clôture");
-		updateBudgetCourantInSession(getServiceOperations().setBudgetActif(getBudgetMensuelCourant(), setBudgetActif));
+		updateBudgetCourantInSession(getServiceOperations().setBudgetActif(getBudgetMensuelCourant(), setBudgetActif, getUtilisateurCourant()));
 		miseAJourVueDonnees();
 	}
 
@@ -269,7 +269,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * @param operation
 	 */
 	public void setLigneDepenseAsDerniereOperation(LigneDepense operation){
-		getServiceOperations().setLigneDepenseAsDerniereOperation(getBudgetMensuelCourant(), operation.getId());
+		getServiceOperations().setLigneDepenseAsDerniereOperation(getBudgetMensuelCourant(), operation.getId(), getUtilisateurCourant());
 		miseAJourVueDonnees();
 	}
 	

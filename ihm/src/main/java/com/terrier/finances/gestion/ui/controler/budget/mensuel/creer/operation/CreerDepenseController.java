@@ -54,8 +54,6 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		ValidationResult resultatValidation = new OperationValidator().apply(newOperation, null);
 		if(!resultatValidation.isError()){
 			// Si oui création
-
-			String auteur = getUtilisateurCourant().getLibelle();
 			BudgetMensuel budget = getBudgetMensuelCourant();
 			try{
 				if(OperationsService.ID_SS_CAT_TRANSFERT_INTERCOMPTE.equals(newOperation.getSsCategorie().getId())
@@ -66,7 +64,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 				}
 				else{
 					LOGGER.info("[IHM] Ajout d'une nouvelle dépense");
-					updateBudgetCourantInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation, auteur));
+					updateBudgetCourantInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation, getUtilisateurCourant()));
 					Notification.show("l'opération a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				return true;

@@ -9,11 +9,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.terrier.finances.gestion.business.OperationsService;
 import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
 import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
+import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.vaadin.data.Binder;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;

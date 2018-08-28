@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.model.data.budget;
+package com.terrier.finances.gestion.services.budget.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

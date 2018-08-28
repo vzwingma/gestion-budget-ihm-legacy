@@ -45,8 +45,6 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 	public void buttonClick(ClickEvent event) {
 		CreerDepenseForm form = (CreerDepenseForm)event.getButton().getParent().getParent().getParent().getParent();
 
-		form.getTextFieldValeur().setValue(form.getTextFieldValeur().getValue().replaceAll(",", "."));
-
 		LOGGER.debug("[IHM] Validation du formulaire de création");
 		Optional<TypeDepenseEnum> typeSelected = form.getComboboxType().getSelectedItem();
 		TypeDepenseEnum type = typeSelected.isPresent() ? typeSelected.get() : TypeDepenseEnum.DEPENSE;
@@ -62,7 +60,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 				categorieSelected.isPresent() ? categorieSelected.get() : null, 
 				descriptionSelected.isPresent() ? descriptionSelected.get() : null, 
 				type,
-				Math.abs(Float.valueOf(form.getTextFieldValeur().getValue())),
+				form.getTextFieldValeur().getValue(),
 				etat,
 				form.getCheckBoxPeriodique().getValue(),
 				getBudgetMensuelCourant().isActif());
@@ -76,7 +74,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 			BudgetMensuelController controleur = getControleur(BudgetMensuelController.class);
 			if(event.getButton().getCaption().contains("Fermer")){
 				// Fin du formulaire
-				getUISession().getPopupModale().close();
+				getUserSession().getPopupModale().close();
 				controleur.miseAJourVueDonnees();
 			}
 			else{

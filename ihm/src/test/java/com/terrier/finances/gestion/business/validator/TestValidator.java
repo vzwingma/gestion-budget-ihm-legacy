@@ -31,8 +31,7 @@ public class TestValidator {
 		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
 		operation.setTypeDepense(TypeDepenseEnum.DEPENSE);
-		operation.setValeur(-123.13f);
-		operation.setValeurS("-123.13");
+		operation.setValeurAbsStringToDouble("-123.13");
 		// Ligne OK
 		ValidationResult r = validator.apply(operation, null);
 		assertEquals(ValidationResult.ok().isError(), r.isError());
@@ -50,7 +49,7 @@ public class TestValidator {
 		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
 		operation.setTypeDepense(TypeDepenseEnum.DEPENSE);
-		operation.setValeurS("NaN");
+		operation.setValeurAbsStringToDouble("NaN");
 		// Ligne OK
 		ValidationResult r = validator.apply(operation, null);
 		assertEquals(ValidationResult.error("").isError(), r.isError());
@@ -70,9 +69,7 @@ public class TestValidator {
 		operation.getSsCategorie().setId(OperationsService.ID_SS_CAT_SALAIRE);
 		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");		
-
-		operation.setValeur(-123);
-		operation.setValeurS("-123");
+		operation.setValeurAbsStringToDouble("-123");
 		operation.setTypeDepense(TypeDepenseEnum.DEPENSE);
 		assertEquals(ValidationResult.error("").isError(), validator.apply(operation, null).isError());
 	}
@@ -87,8 +84,7 @@ public class TestValidator {
 		operation.getSsCategorie().setId("26a4b966-ffff-ffff-8611-a5ba4b518ef5");
 		operation.setEtat(EtatLigneDepenseEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");	
-		operation.setValeur(123);
-		operation.setValeurS("123");
+		operation.setValeurAbsStringToDouble("123");
 		operation.setTypeDepense(TypeDepenseEnum.CREDIT);
 		assertEquals(ValidationResult.error("").isError(), validator.apply(operation, null).isError());
 	}

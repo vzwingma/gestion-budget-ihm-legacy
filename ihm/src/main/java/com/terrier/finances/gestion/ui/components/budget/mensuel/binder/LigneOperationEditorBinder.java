@@ -3,6 +3,7 @@
  */
 package com.terrier.finances.gestion.ui.components.budget.mensuel.binder;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.terrier.finances.gestion.business.OperationsService;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
+import com.terrier.finances.gestion.model.data.DataUtils;
 import com.terrier.finances.gestion.model.enums.TypeDepenseEnum;
 import com.terrier.finances.gestion.model.ui.budget.LigneOperationVO;
 import com.vaadin.data.Binder;
@@ -62,6 +64,8 @@ public class LigneOperationEditorBinder extends Binder<LigneOperationVO> {
 	 */
 	public Binding<LigneOperationVO, TypeDepenseEnum> bindTypeDepense(){
 		cTypes = new ComboBox<>();
+		cTypes.setTextInputAllowed(false);
+		cTypes.setEmptySelectionAllowed(false);
 		cTypes.setItems(TypeDepenseEnum.values());
 		return this.forField(cTypes)
 				.withValidator(Objects::nonNull, "Le Type de dépense ne peut pas être nul")
@@ -76,12 +80,12 @@ public class LigneOperationEditorBinder extends Binder<LigneOperationVO> {
 		TextField tValeur = new TextField();
 		// Validation de la valeur
 		return this.forField(tValeur)
-				.withValidator(v -> v != null && v.length() > 0, "La valeur ne doit pas être nulle")
+				.withConverter(DataUtils::getValueFromString, String::valueOf)
+				.withValidator(v -> v != null, "La valeur ne doit pas être nulle ou incorrecte")
                 .withValidator(v -> {
-                	Double d =  Double.valueOf(v.replaceAll(",", "."));
-                    return (!Double.isInfinite(d) && !Double.isNaN(d));
+                    return (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v)));
                 }, "La valeur est incorrecte")
-				.bind(LigneOperationVO::getValeurS, LigneOperationVO::setValeurS);
+				.bind(LigneOperationVO::getValeurAbsStringFromDouble, LigneOperationVO::setValeurAbsStringToDouble);
 	}
 
 
@@ -92,6 +96,16 @@ public class LigneOperationEditorBinder extends Binder<LigneOperationVO> {
 		return this.bind(new CheckBox(), LigneOperationVO::isPeriodique, LigneOperationVO::setPeriodique);
 	}
 
+
+	/**
+	 * @return binding périodique
+	 */
+	public Binding<LigneDepense, Date> bindDate(){
+		TextField valeurDate = new TextField();
+		valeurDate.setEnabled(false);
+		// Pas de validateur. Valeur en readonly
+		return this.forField(valeurDate).withConverter(new DateOperationEditorConverter()).bind(LigneDepense::getDateMaj, LigneDepense::setDateMaj);
+	}
 
 
 	/**

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ import com.terrier.finances.gestion.ui.listener.budget.mensuel.boutons.ActionDec
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.boutons.ActionLockBudgetClickListener;
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.boutons.ActionRefreshMonthBudgetClickListener;
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.creation.ActionCreerDepenseClickListener;
-import com.terrier.finances.gestion.ui.sessions.UISessionManager;
+import com.terrier.finances.gestion.ui.sessions.UserSessionsManager;
 import com.terrier.finances.gestion.ui.styles.comptes.ComptesItemCaptionStyle;
 import com.terrier.finances.gestion.ui.styles.comptes.ComptesItemIconStyle;
 import com.terrier.finances.gestion.ui.styles.comptes.ComptesItemStyle;
@@ -83,7 +82,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	public void poll(UIEvents.PollEvent event) {
 
 		String idSession = getIdSession();
-		if(UISessionManager.get().getNombreSessionsActives() > 1){
+		if(UserSessionsManager.get().getNombreSessionsActives() > 1){
 			BudgetMensuel budgetCourant = getBudgetMensuelCourant();
 			if(idSession != null &&  budgetCourant != null){
 				LOGGER.debug("[REFRESH][{}] Dernière mise à jour reçue pour le budget {} : {}", idSession, 
@@ -99,7 +98,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			}
 		}
 		else{
-			LOGGER.trace("{} session active. Pas de refresh automatique en cours", UISessionManager.get().getNombreSessionsActives());
+			LOGGER.trace("{} session active. Pas de refresh automatique en cours", UserSessionsManager.get().getNombreSessionsActives());
 		}
 	}
 
@@ -129,8 +128,8 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		// Label last connexion
 		Date dateDernierAcces = getUtilisateurCourant().getDernierAcces();
 		if(dateDernierAcces != null){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.FRENCH);
-			sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+			SimpleDateFormat sdf = new SimpleDateFormat(DataUtils.DATE_FULL_TEXT_PATTERN, Locale.FRENCH);
+			sdf.setTimeZone(DataUtils.getTzParis());
 			String date = sdf.format(dateDernierAcces.getTime());
 			this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + date);
 		}
@@ -231,7 +230,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * Déconnexion de l'utilisateur
 	 */
 	public void deconnexion(){
-		UISessionManager.get().deconnexion();
+		UserSessionsManager.get().deconnexion();
 	}
 
 
@@ -265,6 +264,15 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	}
 
 
+	/**
+	 * Set opération comme dernière
+	 * @param operation
+	 */
+	public void setLigneDepenseAsDerniereOperation(LigneDepense operation){
+		getServiceOperations().setLigneDepenseAsDerniereOperation(getBudgetMensuelCourant(), operation.getId());
+		miseAJourVueDonnees();
+	}
+	
 	/**
 	 * Mise à jour du range fin
 	 * @param dateFin
@@ -326,7 +334,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 						dateMoisSelectionne.getYear());
 
 				// Maj du budget
-				getUISession().setBudgetMensuelCourant(budget);
+				getUserSession().setBudgetMensuelCourant(budget);
 				LOGGER.debug("[BUDGET] Changement de mois ou de compte : Refresh total des tableaux");
 				return budget;
 

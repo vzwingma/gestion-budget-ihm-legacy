@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.listener.budget.mensuel.editor;
 
-import com.terrier.finances.gestion.model.budget.LigneOperationVO;
+import com.terrier.finances.gestion.budget.model.LigneOperationVO;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.GridOperationsController;
 import com.vaadin.ui.Notification;

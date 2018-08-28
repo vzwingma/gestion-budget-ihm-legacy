@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
-import com.terrier.finances.gestion.business.AuthenticationService;
 import com.terrier.finances.gestion.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.utilisateurs.business.AuthenticationService;
 
 
 /**

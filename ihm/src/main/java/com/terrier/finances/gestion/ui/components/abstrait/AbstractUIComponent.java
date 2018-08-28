@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
-import com.terrier.finances.gestion.ui.sessions.UserSessionsManager;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 

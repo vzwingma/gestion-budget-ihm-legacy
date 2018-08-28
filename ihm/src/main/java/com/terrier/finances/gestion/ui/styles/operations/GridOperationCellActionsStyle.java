@@ -3,7 +3,7 @@
  */
 package com.terrier.finances.gestion.ui.styles.operations;
 
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 
 /**
  * Style des colonnes Actions du tableau des opérations
@@ -16,7 +16,7 @@ public class GridOperationCellActionsStyle extends GridOperationCellStyle {
 	private static final long serialVersionUID = -289916798139753848L;
 
 	@Override
-	public String apply(LigneDepense depense) {
+	public String apply(LigneOperation depense) {
 		
 		StringBuilder style = new StringBuilder();
 		// Ajout de la couleur

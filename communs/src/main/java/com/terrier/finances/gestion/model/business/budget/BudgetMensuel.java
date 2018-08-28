@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 
 /**
  * Budget du mois
@@ -61,7 +62,7 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * Liste des dépenses
 	 */
-	private List<LigneDepense> listeDepenses = new ArrayList<>();
+	private List<LigneOperation> listeOperations = new ArrayList<>();
 	/** 
 	 * Liste des libellés pour l'autocomplétion
 	 */
@@ -225,17 +226,17 @@ public class BudgetMensuel implements Serializable {
 	}
 
 	/**
-	 * @return the listeDepenses
+	 * @return the listeOperations
 	 */
-	public List<LigneDepense> getListeDepenses() {
-		return listeDepenses;
+	public List<LigneOperation> getListeOperations() {
+		return listeOperations;
 	}
 
 	/**
-	 * @param listeDepenses the listeDepenses to set
+	 * @param listeOperations the listeOperations to set
 	 */
-	public void setListeDepenses(List<LigneDepense> listeDepenses) {
-		this.listeDepenses = listeDepenses;
+	public void setListeOperations(List<LigneOperation> listeOperations) {
+		this.listeOperations = listeOperations;
 	}
 
 

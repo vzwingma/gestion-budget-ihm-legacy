@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.TimeZone;
 
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 
 /**
  * Utilitaire sur les données
@@ -108,13 +108,13 @@ public class DataUtils {
 	 * @param listeOperations
 	 * @return date max d'une liste de dépenses
 	 */
-	public static LocalDate getMaxDateListeOperations(List<LigneDepense> listeOperations){
+	public static LocalDate getMaxDateListeOperations(List<LigneOperation> listeOperations){
 
 		LocalDate localDateDerniereOperation = localDateNow();
 
 		if(listeOperations != null && !listeOperations.isEmpty()){
 			// Comparaison de date
-			Comparator <LigneDepense> comparator = Comparator.comparing(LigneDepense::getDateOperation, (date1, date2) -> {
+			Comparator <LigneOperation> comparator = Comparator.comparing(LigneOperation::getDateOperation, (date1, date2) -> {
 				if(date1 == null){
 					return 1;
 				}
@@ -125,7 +125,7 @@ public class DataUtils {
 					return date1.before(date2) ? -1 : 1;
 				}
 			});
-			Optional<LigneDepense> maxDate = listeOperations.stream().max(comparator);
+			Optional<LigneOperation> maxDate = listeOperations.stream().max(comparator);
 			if(maxDate.isPresent() && maxDate.get().getDateOperation() != null){
 				localDateDerniereOperation = asLocalDate(maxDate.get().getDateOperation());
 			}

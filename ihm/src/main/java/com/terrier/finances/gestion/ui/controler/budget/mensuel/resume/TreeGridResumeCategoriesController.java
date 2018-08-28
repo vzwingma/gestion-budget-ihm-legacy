@@ -60,7 +60,7 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 	public void miseAJourVueDonnees(BudgetMensuel budget){
 
 		// Libellés
-		LocalDate dateDerniereOperation = DataUtils.getMaxDateListeOperations(budget.getListeDepenses());
+		LocalDate dateDerniereOperation = DataUtils.getMaxDateListeOperations(budget.getListeOperations());
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.auDateFormat));
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.finDateFormat));
 

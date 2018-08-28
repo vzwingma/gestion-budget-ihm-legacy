@@ -53,7 +53,7 @@ public class GridResumeTotauxController extends AbstractUIController<GridResumeT
 	 */
 	public void miseAJourVueDonnees(BudgetMensuel budget){
 
-		LocalDate dateDerniereOperation = DataUtils.getMaxDateListeOperations(budget.getListeDepenses());
+		LocalDate dateDerniereOperation = DataUtils.getMaxDateListeOperations(budget.getListeOperations());
 		
 		// Injection des données
 		List<TotalBudgetMensuel> totauxBudget = new ArrayList<>();

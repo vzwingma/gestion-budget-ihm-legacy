@@ -10,21 +10,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.vaadin.data.Binder;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextField;
 
 /**
- * Binder des champs de LigneDepenses dans le cas du mode éditable
+ * Binder des champs de LigneOperations dans le cas du mode éditable
  * @author vzwingma
  *
  */
-public class LigneOperationEditorBinder extends Binder<LigneDepense> {
+public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 
 	/**
 	 * 
@@ -51,18 +51,18 @@ public class LigneOperationEditorBinder extends Binder<LigneDepense> {
 	/**
 	 * @return binding du libellé
 	 */
-	public Binding<LigneDepense, String> bindLibelle(){
+	public Binding<LigneOperation, String> bindLibelle(){
 		TextField tLibelle = new TextField();
 		return this.forField(tLibelle)
 				.withValidator(v -> v != null && v.length() > 0, "Le libellé ne doit pas être nul")
-				.bind(LigneDepense::getLibelle, LigneDepense::setLibelle);
+				.bind(LigneOperation::getLibelle, LigneOperation::setLibelle);
 	}
 
 
 	/**
 	 * @return binding du type dépense
 	 */
-	public Binding<LigneDepense, TypeOperationEnum> bindTypeDepense(){
+	public Binding<LigneOperation, TypeOperationEnum> bindTypeDepense(){
 		cTypes = new ComboBox<>();
 		cTypes.setTextInputAllowed(false);
 		cTypes.setEmptySelectionAllowed(false);
@@ -70,13 +70,13 @@ public class LigneOperationEditorBinder extends Binder<LigneDepense> {
 		return this.forField(cTypes)
 				.withValidator(Objects::nonNull, "Le Type de dépense ne peut pas être nul")
 				.withValidator(v -> expectedType.equals(v), "L'opération est une "+expectedType.getId()+". La valeur doit être " + expectedType.getLibelle())
-				.bind(LigneDepense::getTypeDepense, LigneDepense::setTypeDepense);
+				.bind(LigneOperation::getTypeDepense, LigneOperation::setTypeDepense);
 	}
 
 	/**
 	 * @return binding de la valeur
 	 */
-	public Binding<LigneDepense, String> bindValeur(){
+	public Binding<LigneOperation, String> bindValeur(){
 		TextField tValeur = new TextField();
 		// Validation de la valeur
 		return this.forField(tValeur)
@@ -85,40 +85,40 @@ public class LigneOperationEditorBinder extends Binder<LigneDepense> {
                 .withValidator(v -> {
                     return (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v)));
                 }, "La valeur est incorrecte")
-				.bind(LigneDepense::getValeurAbsStringFromDouble, LigneDepense::setValeurAbsStringToDouble);
+				.bind(LigneOperation::getValeurAbsStringFromDouble, LigneOperation::setValeurAbsStringToDouble);
 	}
 
 
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneDepense, Boolean> bindPeriodique(){
-		return this.bind(new CheckBox(), LigneDepense::isPeriodique, LigneDepense::setPeriodique);
+	public Binding<LigneOperation, Boolean> bindPeriodique(){
+		return this.bind(new CheckBox(), LigneOperation::isPeriodique, LigneOperation::setPeriodique);
 	}
 
 
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneDepense, Date> bindDate(){
+	public Binding<LigneOperation, Date> bindDate(){
 		TextField valeurDate = new TextField();
 		valeurDate.setEnabled(false);
 		// Pas de validateur. Valeur en readonly
-		return this.forField(valeurDate).withConverter(new DateOperationEditorConverter()).bind(LigneDepense::getDateMaj, LigneDepense::setDateMaj);
+		return this.forField(valeurDate).withConverter(new DateOperationEditorConverter()).bind(LigneOperation::getDateMaj, LigneOperation::setDateMaj);
 	}
 
 
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneDepense, CategorieDepense> bindCategories(){
+	public Binding<LigneOperation, CategorieDepense> bindCategories(){
 		cCategories.setEnabled(false);
-		return this.forField(cCategories).withValidator(Objects::nonNull, "La catégorie est obligatoire").bind(LigneDepense::getCategorie, LigneDepense::setCategorie);
+		return this.forField(cCategories).withValidator(Objects::nonNull, "La catégorie est obligatoire").bind(LigneOperation::getCategorie, LigneOperation::setCategorie);
 	}
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneDepense, CategorieDepense> bindSSCategories(){
+	public Binding<LigneOperation, CategorieDepense> bindSSCategories(){
 
 
 		// Liste des sous catégories 
@@ -150,6 +150,6 @@ public class LigneOperationEditorBinder extends Binder<LigneDepense> {
 		});
 		return this.forField(ssCategories)
 				.withValidator(Objects::nonNull, "La sous catégorie est obligatoire")
-				.bind(LigneDepense::getSsCategorie, LigneDepense::setSsCategorie);
+				.bind(LigneOperation::getSsCategorie, LigneOperation::setSsCategorie);
 	}
 }

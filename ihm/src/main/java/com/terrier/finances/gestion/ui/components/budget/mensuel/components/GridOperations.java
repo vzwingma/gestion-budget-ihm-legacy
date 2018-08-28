@@ -4,10 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.terrier.finances.gestion.operations.model.enums.EntetesGridOperationsEnum;
 import com.terrier.finances.gestion.ui.components.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.binder.LigneOperationEditorBinder;
@@ -26,7 +26,7 @@ import com.vaadin.ui.renderers.TextRenderer;
  * @author vzwingma
  *
  */
-public class GridOperations extends AbstractUIGridComponent<GridOperationsController, LigneDepense> {
+public class GridOperations extends AbstractUIGridComponent<GridOperationsController, LigneOperation> {
 
 	//
 	private static final long serialVersionUID = -7187184070043964584L;
@@ -84,7 +84,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		/**
 		 * Columns
 		 */		
-		Column<LigneDepense, Date> c = addColumn(LigneDepense::getDateOperation);
+		Column<LigneOperation, Date> c = addColumn(LigneOperation::getDateOperation);
 		c.setId(EntetesGridOperationsEnum.DATE_OPERATION.name())
 			.setCaption(EntetesGridOperationsEnum.DATE_OPERATION.getLibelle())
 			.setWidth(TAILLE_COLONNE_DATE)
@@ -94,7 +94,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c.setStyleGenerator(new GridOperationCellStyle());
 		// Pas éditable
 
-		Column<LigneDepense, CategorieDepense> c2 = addColumn(LigneDepense::getCategorie);
+		Column<LigneOperation, CategorieDepense> c2 = addColumn(LigneOperation::getCategorie);
 		c2.setId(EntetesGridOperationsEnum.CATEGORIE.name())
 			.setCaption(EntetesGridOperationsEnum.CATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)
@@ -105,7 +105,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Pas éditable
 		c2.setEditorBinding(binderLD.bindCategories());
 		
-		Column<LigneDepense, CategorieDepense> c3 = addColumn(LigneDepense::getSsCategorie);
+		Column<LigneOperation, CategorieDepense> c3 = addColumn(LigneOperation::getSsCategorie);
 		c3.setId(EntetesGridOperationsEnum.SSCATEGORIE.name())
 			.setCaption(EntetesGridOperationsEnum.SSCATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)
@@ -115,7 +115,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c3.setStyleGenerator(new GridOperationCellStyle());
 		c3.setEditorBinding(binderLD.bindSSCategories());
 		
-		Column<LigneDepense, String> c5 = addColumn(LigneDepense::getLibelle);
+		Column<LigneOperation, String> c5 = addColumn(LigneOperation::getLibelle);
 		c5.setId(EntetesGridOperationsEnum.LIBELLE.name())
 			.setCaption(EntetesGridOperationsEnum.LIBELLE.getLibelle())
 			.setHidable(true)
@@ -125,7 +125,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Binding Edition
 		c5.setEditorBinding(binderLD.bindLibelle());
 			
-		Column<LigneDepense, TypeOperationEnum> c6 = addColumn(LigneDepense::getTypeDepense);
+		Column<LigneOperation, TypeOperationEnum> c6 = addColumn(LigneOperation::getTypeDepense);
 		c6.setId(EntetesGridOperationsEnum.TYPE.name())
 			.setCaption(EntetesGridOperationsEnum.TYPE.getLibelle())
 			.setWidth(TAILLE_COLONNE_TYPE_MENSUEL)
@@ -137,7 +137,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Binding Edition	
 		c6.setEditorBinding(binderLD.bindTypeDepense());
 		
-		Column<LigneDepense, Double> c7 = addColumn(LigneDepense::getValeur);
+		Column<LigneOperation, Double> c7 = addColumn(LigneOperation::getValeur);
 		c7.setId(EntetesGridOperationsEnum.VALEUR.name())
 			.setCaption(EntetesGridOperationsEnum.VALEUR.getLibelle())
 			.setWidth(TAILLE_COLONNE_VALEUR)
@@ -147,7 +147,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c7.setStyleGenerator(new GridOperationCellValeurStyle());
 		c7.setEditorBinding(binderLD.bindValeur());
 		
-		Column<LigneDepense, Boolean> c8 = addColumn(LigneDepense::isPeriodique);
+		Column<LigneOperation, Boolean> c8 = addColumn(LigneOperation::isPeriodique);
 		c8.setId(EntetesGridOperationsEnum.PERIODIQUE.name())
 			.setCaption(EntetesGridOperationsEnum.PERIODIQUE.getLibelle())
 			.setWidth(TAILLE_COLONNE_TYPE_MENSUEL)
@@ -157,17 +157,17 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c8.setRenderer(new OperationBudgetTypeRenderer());
 		c8.setStyleGenerator(new GridOperationCellStyle());
 		c8.setEditorBinding(binderLD.bindPeriodique());
-
-//		Column<LigneDepense, ActionsLigneBudget> c9 = addColumn(LigneDepense::getActionsOperation);
-//		c9.setId(EntetesTableSuiviDepenseEnum.ACTIONS.name())
-//			.setCaption(EntetesTableSuiviDepenseEnum.ACTIONS.getLibelle())
+//
+//		Column<LigneOperation, ActionsLigneBudget> c9 = addColumn(LigneOperation::getActionsOperation);
+//		c9.setId(EntetesGridOperationsEnum.ACTIONS.name())
+//			.setCaption(EntetesGridOperationsEnum.ACTIONS.getLibelle())
 //			.setWidth(TAILLE_COLONNE_ACTIONS)
 //			.setHidable(true)
 //			.setResizable(false);
 //		c9.setStyleGenerator(new GridOperationCellActionsStyle());
 //		c9.setRenderer(new ComponentRenderer());
 		
-		Column<LigneDepense, Date> c10 = addColumn(LigneDepense::getDateMaj);
+		Column<LigneOperation, Date> c10 = addColumn(LigneOperation::getDateMaj);
 		c10.setId(EntetesGridOperationsEnum.DATE_MAJ.name())
 			.setCaption(EntetesGridOperationsEnum.DATE_MAJ.getLibelle())
 			.setWidth(TAILLE_COLONNE_DATE + 10D)
@@ -178,7 +178,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c10.setEditorBinding(binderLD.bindDate());
 		// Not editable
 		
-		Column<LigneDepense, String> c11 = addColumn(LigneDepense::getAuteur);
+		Column<LigneOperation, String> c11 = addColumn(LigneOperation::getAuteur);
 		c11.setId(EntetesGridOperationsEnum.AUTEUR.name())
 			.setCaption(EntetesGridOperationsEnum.AUTEUR.getLibelle())
 			.setWidth(TAILLE_COLONNE_AUTEUR)
@@ -194,7 +194,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		/**
 		 * Context Menu
 		 */
-		GridContextMenu<LigneDepense> contextMenu = new GridContextMenu<>(this);
+		GridContextMenu<LigneOperation> contextMenu = new GridContextMenu<>(this);
 		GridOperationsRightClickListener menuCommand = new GridOperationsRightClickListener(getControleur());
 		contextMenu.addGridBodyContextMenuListener(menuCommand);
 	}
@@ -205,7 +205,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 	 * @param nomColonne
 	 * @return la colonne correspondante
 	 */
-	public Column<LigneDepense, ?> getColumn(EntetesGridOperationsEnum nomColonne){
+	public Column<LigneOperation, ?> getColumn(EntetesGridOperationsEnum nomColonne){
 		return super.getColumn(nomColonne.name());
 	}
 }

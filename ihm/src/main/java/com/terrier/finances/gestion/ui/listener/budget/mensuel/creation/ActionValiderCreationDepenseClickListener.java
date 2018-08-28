@@ -8,10 +8,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.CreerDepenseForm;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.creer.operation.CreerDepenseController;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.BudgetMensuelController;
@@ -56,7 +56,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 		Optional<String> descriptionSelected = form.getTextFieldDescription().getSelectedItem();
 
 
-		LigneDepense newOperation = new LigneDepense(
+		LigneOperation newOperation = new LigneOperation(
 				categorieSelected.isPresent() ? categorieSelected.get() : null, 
 				descriptionSelected.isPresent() ? descriptionSelected.get() : null, 
 				type,

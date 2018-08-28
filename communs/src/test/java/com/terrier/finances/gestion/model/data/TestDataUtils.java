@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 
 /**
  * @author vzwingma
@@ -41,20 +41,20 @@ public class TestDataUtils {
 	public void testMaxDateOperations(){
 		
 		Calendar c = Calendar.getInstance();
-		LigneDepense depense1 = new LigneDepense(true);
+		LigneOperation depense1 = new LigneOperation(true);
 		depense1.setDateOperation(c.getTime());
-		LigneDepense depense2 = new LigneDepense(true);
+		LigneOperation depense2 = new LigneOperation(true);
 		c.set(Calendar.DAY_OF_MONTH, 31);
 		depense2.setDateOperation(c.getTime());
 		
-		LigneDepense depense3 = new LigneDepense(true);
+		LigneOperation depense3 = new LigneOperation(true);
 		Calendar c3 = Calendar.getInstance();
 		c3.set(Calendar.DAY_OF_MONTH, 12);
 		c3.set(Calendar.MONTH, Calendar.OCTOBER);
 		c3.set(Calendar.YEAR, 2050);
 		depense3.setDateOperation(c3.getTime());
 		
-		List<LigneDepense> depenses = new ArrayList<>();
+		List<LigneOperation> depenses = new ArrayList<>();
 		depenses.addAll(Arrays.asList(depense1, depense2, depense3));
 		LocalDate cd = DataUtils.getMaxDateListeOperations(depenses);
 		

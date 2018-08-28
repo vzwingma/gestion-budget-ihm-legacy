@@ -5,13 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.vaadin.data.ValidationResult;
 
-@Deprecated
 public class TestValidator {
 
 
@@ -20,7 +19,7 @@ public class TestValidator {
 	@Test
 	public void testValidator(){
 
-		LigneDepense operation = new LigneDepense(true);
+		LigneOperation operation = new LigneOperation(true);
 
 
 		// Ligne nulle
@@ -41,7 +40,7 @@ public class TestValidator {
 	@Test
 	public void testValue(){
 
-		LigneDepense operation = new LigneDepense(true);
+		LigneOperation operation = new LigneOperation(true);
 
 		// Ligne nulle
 		operation.setCategorie(new CategorieDepense());
@@ -63,7 +62,7 @@ public class TestValidator {
 	public void testValidatorCredit(){
 		
 		
-		LigneDepense operation = new LigneDepense(true);
+		LigneOperation operation = new LigneOperation(true);
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
 		operation.getSsCategorie().setId(OperationsService.ID_SS_CAT_SALAIRE);
@@ -78,7 +77,7 @@ public class TestValidator {
 	@Test
 	public void testValidatorDebit(){
 			
-		LigneDepense operation = new LigneDepense(true);
+		LigneOperation operation = new LigneOperation(true);
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
 		operation.getSsCategorie().setId("26a4b966-ffff-ffff-8611-a5ba4b518ef5");

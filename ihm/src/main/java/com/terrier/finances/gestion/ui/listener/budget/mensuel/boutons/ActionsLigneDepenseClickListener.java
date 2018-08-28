@@ -105,7 +105,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 		try{
 			updateBudgetCourantInSession(
 					getControleur(BudgetMensuelController.class).getServiceOperations()
-					.majEtatLigneDepense(budget, actions.getControleur().getIdOperation(), etat, auteur));
+					.majEtatLigneOperation(budget, actions.getControleur().getIdOperation(), etat, auteur));
 		}
 		catch(DataNotFoundException|BudgetNotFoundException e){
 			Notification.show("l'opération est introuvable ou n'a pas été enregistrée", Type.ERROR_MESSAGE);

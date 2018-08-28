@@ -1,7 +1,7 @@
 package com.terrier.finances.gestion.ui.listener.budget.mensuel.editor;
 
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
-import com.terrier.finances.gestion.operations.model.LigneOperationVO;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.GridOperationsController;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.components.grid.EditorCancelEvent;
@@ -16,7 +16,7 @@ import com.vaadin.ui.components.grid.EditorSaveListener;
  * @author vzwingma
  *
  */
-public class GridEditorListener implements EditorCancelListener<LigneOperationVO>, EditorSaveListener<LigneOperationVO>, EditorOpenListener<LigneOperationVO> {
+public class GridEditorListener implements EditorCancelListener<LigneOperation>, EditorSaveListener<LigneOperation>, EditorOpenListener<LigneOperation> {
 
 	//
 	private static final long serialVersionUID = -4092876167681783200L;
@@ -30,7 +30,7 @@ public class GridEditorListener implements EditorCancelListener<LigneOperationVO
 
 
 	@Override
-	public void onEditorCancel(EditorCancelEvent<LigneOperationVO> event) {
+	public void onEditorCancel(EditorCancelEvent<LigneOperation> event) {
 		this.controler.updateViewGridOnEditableMode(false);
 	}
 
@@ -38,7 +38,7 @@ public class GridEditorListener implements EditorCancelListener<LigneOperationVO
 	 * @see com.vaadin.ui.components.grid.EditorOpenListener#onEditorOpen(com.vaadin.ui.components.grid.EditorOpenEvent)
 	 */
 	@Override
-	public void onEditorOpen(EditorOpenEvent<LigneOperationVO> event) {
+	public void onEditorOpen(EditorOpenEvent<LigneOperation> event) {
 		this.controler.updateViewGridOnEditableMode(true);
 	}
 
@@ -46,7 +46,7 @@ public class GridEditorListener implements EditorCancelListener<LigneOperationVO
 	 * @see com.vaadin.ui.components.grid.EditorSaveListener#onEditorSave(com.vaadin.ui.components.grid.EditorSaveEvent)
 	 */
 	@Override
-	public void onEditorSave(EditorSaveEvent<LigneOperationVO> event) {
+	public void onEditorSave(EditorSaveEvent<LigneOperation> event) {
 		// Recalcul du budget
 		BudgetMensuel budget = this.controler.getServiceOperations().calculEtSauvegardeBudget(this.controler.getBudgetMensuelCourant(), this.controler.getUtilisateurCourant());
 		this.controler.updateBudgetCourantInSession(budget);

@@ -15,14 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
 import com.terrier.finances.gestion.model.data.DataUtils;
 import com.terrier.finances.gestion.model.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.model.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.model.exception.CompteClosedException;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
-import com.terrier.finances.gestion.operations.model.LigneOperationVO;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.resume.TreeGridResumeCategoriesController;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.totaux.GridResumeTotauxController;
@@ -268,7 +267,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * Set opération comme dernière
 	 * @param operation
 	 */
-	public void setLigneDepenseAsDerniereOperation(LigneDepense operation){
+	public void setLigneDepenseAsDerniereOperation(LigneOperation operation){
 		getServiceOperations().setLigneDepenseAsDerniereOperation(getBudgetMensuelCourant(), operation.getId(), getUtilisateurCourant());
 		miseAJourVueDonnees();
 	}
@@ -369,8 +368,8 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		}
 		LOGGER.info("[IHM] >> Mise à jour des vues >> {}", budgetCourant.isActif());		
 		LOGGER.debug("[IHM] Affichage des données dans le tableau de suivi des dépenses");
-		List<LigneDepense> listeOperations = new ArrayList<>();
-		budgetCourant.getListeDepenses().stream().forEach(e -> listeOperations.add((LigneDepense)e));		
+		List<LigneOperation> listeOperations = new ArrayList<>();
+		budgetCourant.getListeOperations().stream().forEach(e -> listeOperations.add(e));		
 		/**
 		 * Affichage des lignes dans le tableau
 		 **/

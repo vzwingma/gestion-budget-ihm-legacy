@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.business.validator.OperationValidator;
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.model.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.CreerDepenseForm;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 import com.vaadin.data.ValidationResult;
@@ -50,7 +50,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 	 * @param newOperation operation
 	 * @param compteTransfert compte si transfert inter compte
 	 */
-	public boolean validateAndCreate(LigneDepense newOperation, Optional<CompteBancaire> compteTransfert){
+	public boolean validateAndCreate(LigneOperation newOperation, Optional<CompteBancaire> compteTransfert){
 		ValidationResult resultatValidation = new OperationValidator().apply(newOperation, null);
 		if(!resultatValidation.isError()){
 			// Si oui création

@@ -3,11 +3,13 @@
  */
 package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.terrier.finances.gestion.operations.model.LigneOperationVO;
 import com.terrier.finances.gestion.operations.model.enums.EntetesGridOperationsEnum;
+import com.terrier.finances.gestion.operations.model.transformer.DataTransformerLigneOperation;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.components.GridOperations;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 
@@ -23,6 +25,8 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 
 	private BudgetMensuelController budgetControleur;
 
+	private DataTransformerLigneOperation transformer = new DataTransformerLigneOperation();
+	
 	/**
 	 * Constructeur du controleur du composant
 	 * @param composant
@@ -56,7 +60,7 @@ public class GridOperationsController extends AbstractUIController<GridOperation
         getComponent().getColumn(EntetesGridOperationsEnum.PERIODIQUE).setHidden(!editableMode);
         // Réalignement de la colonne en mode édition
         getComponent().getColumn(EntetesGridOperationsEnum.PERIODIQUE).setWidth(editableMode ? GridOperations.TAILLE_COLONNE_TYPE_MENSUEL + 15 : GridOperations.TAILLE_COLONNE_TYPE_MENSUEL);
- // TODO : A remettre       getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(editableMode);
+  //      getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(editableMode);
         getComponent().getColumn(EntetesGridOperationsEnum.DATE_MAJ).setHidden(editableMode);
         
         //
@@ -67,15 +71,17 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 	 * Mise à jour de la vue suite aux données
 	 * @param refreshAllTable : flag s'il faut tout effacer avant l'affichage
 	 * @param budgetIsActif budget actif ?
-	 * @param listeDepenses liste des dépenses à utiliser
+	 * @param listeOperations liste des dépenses à utiliser
 	 */
-	public void miseAJourVueDonnees(boolean budgetIsActif, List<LigneDepense> listeDepenses){
+	public void miseAJourVueDonnees(boolean budgetIsActif, List<LigneOperation> listeOperations){
 		// Ajout des opérations
-		getComponent().setItems(listeDepenses);
+//		List<LigneOperationVO> listeOperationsVO = new ArrayList<>();
+//		listeOperations.parallelStream().forEach(bo -> listeOperationsVO.add(transformer.transformBOtoVO(bo)));
+		getComponent().setItems(listeOperations);
 
 		// Mise à jour des colonnes suivant l'activité du budget
 		getComponent().getColumn(EntetesGridOperationsEnum.AUTEUR).setHidden(budgetIsActif);
-// TODO : A remettre		getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
+	//	getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
 	}
 
 

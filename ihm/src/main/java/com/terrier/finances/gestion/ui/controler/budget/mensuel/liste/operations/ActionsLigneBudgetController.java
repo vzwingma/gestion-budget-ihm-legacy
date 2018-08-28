@@ -1,5 +1,7 @@
 package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations;
 
+import java.util.UUID;
+
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
@@ -15,7 +17,7 @@ public class ActionsLigneBudgetController extends AbstractUIController<ActionsLi
 
 	private static final long serialVersionUID = 3969804553001678780L;
 
-	private String idOperation;
+	private UUID idOperation;
 	/**
 	 * Contructeur
 	 * @param composant
@@ -64,7 +66,7 @@ public class ActionsLigneBudgetController extends AbstractUIController<ActionsLi
 	/**
 	 * @return the idDepense
 	 */
-	public String getIdOperation() {
+	public UUID getIdOperation() {
 		return idOperation;
 	}
 
@@ -72,7 +74,7 @@ public class ActionsLigneBudgetController extends AbstractUIController<ActionsLi
 	/**
 	 * @param idOperation the idOperation to set
 	 */
-	public void setIdOperation(String idOperation) {
+	public void setIdOperation(UUID idOperation) {
 		this.idOperation = idOperation;
 	}
 

@@ -4,8 +4,8 @@
 package com.terrier.finances.gestion.business.validator;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
-import com.terrier.finances.gestion.model.business.budget.LigneDepense;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;
@@ -15,7 +15,7 @@ import com.vaadin.data.ValueContext;
  * @author vzwingma
  *
  */
-public class OperationValidator implements Validator<LigneDepense> {
+public class OperationValidator implements Validator<LigneOperation> {
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class OperationValidator implements Validator<LigneDepense> {
 
 
 	@Override
-	public ValidationResult apply(LigneDepense operation, ValueContext context) {
+	public ValidationResult apply(LigneOperation operation, ValueContext context) {
 
 		// Not Null
 		if(operation.getSsCategorie() == null

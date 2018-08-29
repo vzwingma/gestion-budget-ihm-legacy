@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
 import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
-import com.terrier.finances.gestion.ui.login.business.UserSessionsService;
+import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
 
 
 /**
@@ -48,7 +48,7 @@ public class FacadeServices {
 	private AuthenticationService serviceAuth;
 	
 	@Autowired 
-	private UserSessionsService serviceUserSessions;
+	private UserUISessionsService serviceUserSessions;
 
 	/**
 	 * @return l'instance de la façade des services
@@ -109,7 +109,7 @@ public class FacadeServices {
 	/**
 	 * @return the serviceUserSessions
 	 */
-	public UserSessionsService getServiceUserSessions() {
+	public UserUISessionsService getServiceUserSessions() {
 		return serviceUserSessions;
 	}
 
@@ -118,7 +118,7 @@ public class FacadeServices {
 	/**
 	 * @param serviceUserSessions the serviceUserSessions to set
 	 */
-	public void setServiceUserSessions(UserSessionsService serviceUserSessions) {
+	public void setServiceUserSessions(UserUISessionsService serviceUserSessions) {
 		LOGGER.info("Injection de UserSessionsManager");
 		this.serviceUserSessions = serviceUserSessions;
 	}

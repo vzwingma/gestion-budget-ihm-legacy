@@ -21,35 +21,24 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
 /**
- * Session Utilisateur
+ * Session Utilisateur dans l'application, coté IHM
+ * Lien vers les données métier et composants graphiques
  * @author vzwingma
  *
  */
-public class UserSession {
+public class UserUISession {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserSession.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserUISession.class);
 
 	private String idSession;
 
 	private Instant lastAccessTime;
-	
-	/**
-	 * Session Manager
-	 * @param idSession idSessions
-	 */
-	public UserSession(String idSession){
-		LOGGER.trace("[INIT][{}] Session UI ", idSession);
-		this.idSession = idSession;
-		this.lastAccessTime = Instant.now();
-	}
-
 	/**
 	 * Utilisateur courant
 	 */
 	private Utilisateur utilisateurCourant = null;
-
 	/**
 	 * Budget courant
 	 */
@@ -61,14 +50,26 @@ public class UserSession {
 	private Layout mainLayout;
 
 	private Window popupModale;
+	
+	
+	
+	/**
+	 * Session Manager
+	 * @param idSession idSessions
+	 */
+	public UserUISession(String idSession){
+		LOGGER.trace("[INIT][{}] Session UI ", idSession);
+		this.idSession = idSession;
+		this.lastAccessTime = Instant.now();
+	}
 
 
 	/**
 	 * Déconnexion de l'utilisateur manuellement
 	 */
-	public void deconnexion(){
-		// Déco auto
-		autoDeconnexion();
+	protected void deconnexionAndRedirect(){
+		// Déconnexion métier et invalidation Session Vaadin
+		deconnexion();
 		//Redirect the user to the login/default Page
 		Page currentPage = Page.getCurrent();
 		VaadinServlet currentServlet = VaadinServlet.getCurrent();
@@ -83,14 +84,16 @@ public class UserSession {
 	/**
 	 * Auto déconnexion, sans redirection
 	 */
-	public void autoDeconnexion(){
+	protected void deconnexion(){
 		// Suppression de l'utilisateur
 		this.utilisateurCourant = null;
 		this.lastAccessTime = null;
+		this.budgetMensuelCourant = null;
+		this.idSession = null;
 		// Suppression de l'IHM
 		getMainLayout().removeAllComponents();
 		// Suppression de tous les controleurs
-		mapControleurs.clear();
+		this.mapControleurs.clear();
 
 		// Invalidate Sessions
 		VaadinSession vSession = VaadinSession.getCurrent();
@@ -100,7 +103,6 @@ public class UserSession {
 			//Invalidate HttpSession
 			httpSession.invalidate();
 		}
-		
 	}
 
 
@@ -115,7 +117,6 @@ public class UserSession {
 		}
 
 	}
-
 
 
 	/**
@@ -140,7 +141,7 @@ public class UserSession {
 	/**
 	 * @return the utilisateurCourant
 	 */
-	public Utilisateur getUtilisateurCourant() {
+	public Utilisateur getUtilisateur() {
 		return utilisateurCourant;
 	}
 

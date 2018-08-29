@@ -2,10 +2,11 @@ package com.terrier.finances.gestion.ui.login.business;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIService;
 import com.vaadin.ui.UI;
 
 /**
@@ -24,14 +26,14 @@ import com.vaadin.ui.UI;
  *
  */
 @Service
-public class UserSessionsService implements Runnable {
+public class UserUISessionsService implements Runnable, IUIService {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserSessionsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserUISessionsService.class);
 
 	// Gestionnaire des composants UI
-	private ConcurrentHashMap<String, UserSession> sessionsMap = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, UserUISession> sessionsMap = new ConcurrentHashMap<>();
 
 	private ScheduledThreadPoolExecutor pool;
 
@@ -60,11 +62,11 @@ public class UserSessionsService implements Runnable {
 	/**
 	 * @return la session utilisateur
 	 */
-	public UserSession getSession(){
+	public UserUISession getSession(){
 		String idSession = getUIIdSession();
 		// Création d'une nouvelle session si nécessaire
-		sessionsMap.putIfAbsent(idSession, new UserSession(idSession));
-		UserSession session = sessionsMap.get(idSession);
+		sessionsMap.putIfAbsent(idSession, new UserUISession(idSession));
+		UserUISession session = sessionsMap.get(idSession);
 		session.setLastAccessTime(Instant.now());
 		return session;
 	}
@@ -88,10 +90,17 @@ public class UserSessionsService implements Runnable {
 	/**
 	 * Déconnexion de l'utilisateur
 	 */
-	public void deconnexion(){
-		String idSession = getUIIdSession();
-		sessionsMap.get(idSession).deconnexion();
+	public void deconnexionUtilisateur(String idSession, boolean redirect){
+		UserUISession session = sessionsMap.get(idSession);
+		getServiceAuthentification().deconnexionBusinessSession(session.getUtilisateur().getId());
+		if(redirect){
+			session.deconnexionAndRedirect();
+		}
+		else{
+			session.deconnexion();
+		}
 		sessionsMap.remove(idSession);
+		
 	}
 
 
@@ -102,24 +111,24 @@ public class UserSessionsService implements Runnable {
 		return sessionsMap.values().stream().filter(s -> s.isActive()).count();
 	}
 
+	
+	private Instant validiteSession;
 	/**
 	 * Vérification des sessions
 	 */
 	@Override
 	public void run() {
 		int sessionValidity = Integer.parseInt(this.serviceParams.getUiValiditySessionPeriod());
-		Instant validiteSession = Instant.now();
+		validiteSession  = Instant.now();
 		LOGGER.info("Durée de validité d'une session : {} minutes", sessionValidity);
 		validiteSession = validiteSession.minus(sessionValidity, ChronoUnit.MINUTES);
-		for (Iterator<UserSession> iterator = sessionsMap.values().iterator(); iterator.hasNext();) {
-			UserSession session = iterator.next();
-			if(session.getLastAccessTime().isBefore(validiteSession)){
-				LOGGER.warn("La session {} n'a pas été utilisé depuis {}. Déconnexion automatique", session.getId(), validiteSession);
-				iterator.remove();
-			}
-			else{
-				LOGGER.debug(" > {} : active : {}. Dernière activité : {}", session.getId(), session.isActive(), session.getLastAccessTime());
-			}
-		}
+		
+		List<String> idsInvalide = sessionsMap.values()
+			.parallelStream()
+			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), session.getLastAccessTime().isBefore(validiteSession)))
+			.filter(session -> session.getLastAccessTime().isBefore(validiteSession))
+			.map(session -> session.getId())
+			.collect(Collectors.toList());
+		idsInvalide.parallelStream().forEach(key -> deconnexionUtilisateur(key, false));
 	}
 }

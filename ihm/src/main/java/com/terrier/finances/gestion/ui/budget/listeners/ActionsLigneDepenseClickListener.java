@@ -87,7 +87,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 				}
 			}
 			event.getButton().setVisible(false);	
-			updateLigne(etat, getUserSession().getUtilisateurCourant());
+			updateLigne(etat, getUserSession().getUtilisateur());
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	@Override
 	public void response(boolean ok) {
 		if(ok){
-			updateLigne(null, getUserSession().getUtilisateurCourant());
+			updateLigne(null, getUserSession().getUtilisateur());
 		}
 	}
 }

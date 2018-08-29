@@ -58,12 +58,12 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 				if(OperationsService.ID_SS_CAT_TRANSFERT_INTERCOMPTE.equals(newOperation.getSsCategorie().getId())
 						&& compteTransfert.isPresent()){
 					LOGGER.info("[IHM] Ajout d'un nouveau transfert intercompte");
-					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get(), getUserSession().getUtilisateurCourant()));
+					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get(), getUserSession().getUtilisateur()));
 					Notification.show("Le transfert inter-compte a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				else{
 					LOGGER.info("[IHM] Ajout d'une nouvelle dépense");
-					getUserSession().updateBudgetInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation, getUserSession().getUtilisateurCourant()));
+					getUserSession().updateBudgetInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation, getUserSession().getUtilisateur()));
 					Notification.show("l'opération a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				return true;
@@ -106,7 +106,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		// Comptes pour virement intercomptes
 		try{
 			getComponent().getComboboxComptes().setItems(
-					getServiceParams().getComptesUtilisateur(getUserSession().getUtilisateurCourant())
+					getServiceParams().getComptesUtilisateur(getUserSession().getUtilisateur())
 					.stream()
 					.filter(CompteBancaire::isActif)
 					.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
@@ -135,7 +135,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getListSelectEtat().setTextInputAllowed(false);
 		getComponent().getListSelectEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
-		String etatNlleDepense = getUserSession().getUtilisateurCourant().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+		String etatNlleDepense = getUserSession().getUtilisateur().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
 			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.getEnum(etatNlleDepense));
 		}

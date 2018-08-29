@@ -8,8 +8,8 @@ import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.operations.business.validator.OperationValidator;
 import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
 import com.vaadin.data.ValidationResult;
 
 public class TestValidator {

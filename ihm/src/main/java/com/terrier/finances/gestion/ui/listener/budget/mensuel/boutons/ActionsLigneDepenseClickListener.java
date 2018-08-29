@@ -14,7 +14,7 @@ import com.terrier.finances.gestion.model.business.parametrage.Utilisateur;
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.model.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
-import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
+import com.terrier.finances.gestion.operations.actions.ui.ActionsLigneOperation;
 import com.terrier.finances.gestion.ui.components.confirm.ConfirmDialog;
 import com.terrier.finances.gestion.ui.components.confirm.ConfirmDialog.ConfirmationDialogCallback;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.BudgetMensuelController;
@@ -43,12 +43,12 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ActionsLigneDepenseClickListener.class);
 
 
-	private ActionsLigneBudget actions;
+	private ActionsLigneOperation actions;
 
 	@Override
 	public void buttonClick(ClickEvent event) {
 		EtatLigneOperationEnum etat = EtatLigneOperationEnum.PREVUE;
-		actions = event.getButton().findAncestor(ActionsLigneBudget.class);
+		actions = event.getButton().findAncestor(ActionsLigneOperation.class);
 		if(event.getButton().getId().equals("buttonReel")){
 			LOGGER.trace("Action : Activation");
 			etat = EtatLigneOperationEnum.REALISEE;

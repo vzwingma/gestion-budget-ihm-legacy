@@ -1,16 +1,13 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations;
+package com.terrier.finances.gestion.operations.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.terrier.finances.gestion.operations.model.LigneOperation;
-import com.terrier.finances.gestion.operations.model.LigneOperationVO;
 import com.terrier.finances.gestion.operations.model.enums.EntetesGridOperationsEnum;
-import com.terrier.finances.gestion.operations.model.transformer.DataTransformerLigneOperation;
-import com.terrier.finances.gestion.ui.components.budget.mensuel.components.GridOperations;
+import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 
 /**
@@ -25,7 +22,6 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 
 	private BudgetMensuelController budgetControleur;
 
-	private DataTransformerLigneOperation transformer = new DataTransformerLigneOperation();
 	
 	/**
 	 * Constructeur du controleur du composant
@@ -60,7 +56,7 @@ public class GridOperationsController extends AbstractUIController<GridOperation
         getComponent().getColumn(EntetesGridOperationsEnum.PERIODIQUE).setHidden(!editableMode);
         // Réalignement de la colonne en mode édition
         getComponent().getColumn(EntetesGridOperationsEnum.PERIODIQUE).setWidth(editableMode ? GridOperations.TAILLE_COLONNE_TYPE_MENSUEL + 15 : GridOperations.TAILLE_COLONNE_TYPE_MENSUEL);
-  //      getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(editableMode);
+        getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(editableMode);
         getComponent().getColumn(EntetesGridOperationsEnum.DATE_MAJ).setHidden(editableMode);
         
         //
@@ -75,13 +71,11 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 	 */
 	public void miseAJourVueDonnees(boolean budgetIsActif, List<LigneOperation> listeOperations){
 		// Ajout des opérations
-//		List<LigneOperationVO> listeOperationsVO = new ArrayList<>();
-//		listeOperations.parallelStream().forEach(bo -> listeOperationsVO.add(transformer.transformBOtoVO(bo)));
 		getComponent().setItems(listeOperations);
 
 		// Mise à jour des colonnes suivant l'activité du budget
 		getComponent().getColumn(EntetesGridOperationsEnum.AUTEUR).setHidden(budgetIsActif);
-	//	getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
+		getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
 	}
 
 

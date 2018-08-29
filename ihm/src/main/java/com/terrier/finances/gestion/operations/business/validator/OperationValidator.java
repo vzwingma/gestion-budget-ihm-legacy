@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.business.validator;
+package com.terrier.finances.gestion.operations.business.validator;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;

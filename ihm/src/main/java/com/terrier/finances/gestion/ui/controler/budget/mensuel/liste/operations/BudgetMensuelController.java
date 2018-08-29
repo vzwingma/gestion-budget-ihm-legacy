@@ -22,6 +22,7 @@ import com.terrier.finances.gestion.model.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.model.exception.CompteClosedException;
 import com.terrier.finances.gestion.model.exception.DataNotFoundException;
 import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.operations.ui.GridOperationsController;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.resume.TreeGridResumeCategoriesController;
 import com.terrier.finances.gestion.ui.controler.budget.mensuel.totaux.GridResumeTotauxController;

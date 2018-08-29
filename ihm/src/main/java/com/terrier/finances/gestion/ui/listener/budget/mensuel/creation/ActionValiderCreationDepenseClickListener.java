@@ -62,8 +62,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 				type,
 				form.getTextFieldValeur().getValue(),
 				etat,
-				form.getCheckBoxPeriodique().getValue(),
-				getBudgetMensuelCourant().isActif());
+				form.getCheckBoxPeriodique().getValue());
 		LOGGER.debug("[IHM]  >  {}", newOperation);
 		boolean resultat = getControleur(CreerDepenseController.class).validateAndCreate(newOperation, form.getComboboxComptes().getSelectedItem());
 

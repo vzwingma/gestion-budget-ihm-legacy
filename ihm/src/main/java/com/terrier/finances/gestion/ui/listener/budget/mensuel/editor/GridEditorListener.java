@@ -2,7 +2,7 @@ package com.terrier.finances.gestion.ui.listener.budget.mensuel.editor;
 
 import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
 import com.terrier.finances.gestion.operations.model.LigneOperation;
-import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.GridOperationsController;
+import com.terrier.finances.gestion.operations.ui.GridOperationsController;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.components.grid.EditorCancelEvent;
 import com.vaadin.ui.components.grid.EditorCancelListener;

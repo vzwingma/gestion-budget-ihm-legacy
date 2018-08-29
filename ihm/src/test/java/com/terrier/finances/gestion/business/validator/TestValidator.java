@@ -8,6 +8,7 @@ import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.business.validator.OperationValidator;
 import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.vaadin.data.ValidationResult;
 
@@ -19,7 +20,7 @@ public class TestValidator {
 	@Test
 	public void testValidator(){
 
-		LigneOperation operation = new LigneOperation(true);
+		LigneOperation operation = new LigneOperation();
 
 
 		// Ligne nulle
@@ -40,7 +41,7 @@ public class TestValidator {
 	@Test
 	public void testValue(){
 
-		LigneOperation operation = new LigneOperation(true);
+		LigneOperation operation = new LigneOperation();
 
 		// Ligne nulle
 		operation.setCategorie(new CategorieDepense());
@@ -62,7 +63,7 @@ public class TestValidator {
 	public void testValidatorCredit(){
 		
 		
-		LigneOperation operation = new LigneOperation(true);
+		LigneOperation operation = new LigneOperation();
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
 		operation.getSsCategorie().setId(OperationsService.ID_SS_CAT_SALAIRE);
@@ -77,7 +78,7 @@ public class TestValidator {
 	@Test
 	public void testValidatorDebit(){
 			
-		LigneOperation operation = new LigneOperation(true);
+		LigneOperation operation = new LigneOperation();
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
 		operation.getSsCategorie().setId("26a4b966-ffff-ffff-8611-a5ba4b518ef5");

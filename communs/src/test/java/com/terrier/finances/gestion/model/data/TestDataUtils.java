@@ -41,13 +41,13 @@ public class TestDataUtils {
 	public void testMaxDateOperations(){
 		
 		Calendar c = Calendar.getInstance();
-		LigneOperation depense1 = new LigneOperation(true);
+		LigneOperation depense1 = new LigneOperation();
 		depense1.setDateOperation(c.getTime());
-		LigneOperation depense2 = new LigneOperation(true);
+		LigneOperation depense2 = new LigneOperation();
 		c.set(Calendar.DAY_OF_MONTH, 31);
 		depense2.setDateOperation(c.getTime());
 		
-		LigneOperation depense3 = new LigneOperation(true);
+		LigneOperation depense3 = new LigneOperation();
 		Calendar c3 = Calendar.getInstance();
 		c3.set(Calendar.DAY_OF_MONTH, 12);
 		c3.set(Calendar.MONTH, Calendar.OCTOBER);

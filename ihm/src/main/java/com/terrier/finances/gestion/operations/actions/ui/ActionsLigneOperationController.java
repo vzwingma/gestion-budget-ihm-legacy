@@ -1,7 +1,6 @@
-package com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations;
+package com.terrier.finances.gestion.operations.actions.ui;
 
 import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.ui.components.budget.mensuel.ActionsLigneBudget;
 import com.terrier.finances.gestion.ui.controler.common.AbstractUIController;
 import com.vaadin.ui.Button;
 
@@ -10,7 +9,7 @@ import com.vaadin.ui.Button;
  * @author vzwingma
  *
  */
-public class ActionsLigneBudgetController extends AbstractUIController<ActionsLigneBudget> {
+public class ActionsLigneOperationController extends AbstractUIController<ActionsLigneOperation> {
 
 
 	private static final long serialVersionUID = 3969804553001678780L;
@@ -20,7 +19,7 @@ public class ActionsLigneBudgetController extends AbstractUIController<ActionsLi
 	 * Contructeur
 	 * @param composant
 	 */
-	public ActionsLigneBudgetController(ActionsLigneBudget composant) {
+	public ActionsLigneOperationController(ActionsLigneOperation composant) {
 		super(composant);
 	}
 

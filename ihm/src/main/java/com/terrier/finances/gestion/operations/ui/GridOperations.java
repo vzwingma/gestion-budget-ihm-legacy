@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.ui.components.budget.mensuel.components;
+package com.terrier.finances.gestion.operations.ui;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,17 +7,19 @@ import java.util.Locale;
 import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
 import com.terrier.finances.gestion.model.data.DataUtils;
 import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.operations.actions.ui.ActionsLigneOperation;
 import com.terrier.finances.gestion.operations.model.LigneOperation;
 import com.terrier.finances.gestion.operations.model.enums.EntetesGridOperationsEnum;
 import com.terrier.finances.gestion.ui.components.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.components.budget.mensuel.binder.LigneOperationEditorBinder;
-import com.terrier.finances.gestion.ui.controler.budget.mensuel.liste.operations.GridOperationsController;
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.editor.GridOperationsEditorListener;
 import com.terrier.finances.gestion.ui.listener.budget.mensuel.editor.GridOperationsRightClickListener;
+import com.terrier.finances.gestion.ui.styles.operations.GridOperationCellActionsStyle;
 import com.terrier.finances.gestion.ui.styles.operations.GridOperationCellStyle;
 import com.terrier.finances.gestion.ui.styles.operations.GridOperationCellValeurStyle;
 import com.terrier.finances.gestion.ui.styles.operations.OperationBudgetTypeRenderer;
 import com.vaadin.contextmenu.GridContextMenu;
+import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.renderers.DateRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
 
@@ -66,6 +68,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 	/* (non-Javadoc)
 	 * @see com.terrier.finances.gestion.ui.components.abstrait.AbstractUIGridComponent#paramComponentsOnPage()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void paramComponentsOnGrid() {
 		
@@ -157,15 +160,15 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c8.setRenderer(new OperationBudgetTypeRenderer());
 		c8.setStyleGenerator(new GridOperationCellStyle());
 		c8.setEditorBinding(binderLD.bindPeriodique());
-//
-//		Column<LigneOperation, ActionsLigneBudget> c9 = addColumn(LigneOperation::getActionsOperation);
-//		c9.setId(EntetesGridOperationsEnum.ACTIONS.name())
-//			.setCaption(EntetesGridOperationsEnum.ACTIONS.getLibelle())
-//			.setWidth(TAILLE_COLONNE_ACTIONS)
-//			.setHidable(true)
-//			.setResizable(false);
-//		c9.setStyleGenerator(new GridOperationCellActionsStyle());
-//		c9.setRenderer(new ComponentRenderer());
+
+		@SuppressWarnings("rawtypes")
+		Column c9 = addColumn(operation -> new ActionsLigneOperation(operation), new ComponentRenderer());
+		c9.setId(EntetesGridOperationsEnum.ACTIONS.name())
+			.setCaption(EntetesGridOperationsEnum.ACTIONS.getLibelle())
+			.setWidth(TAILLE_COLONNE_ACTIONS)
+			.setHidable(true)
+			.setResizable(false);
+		c9.setStyleGenerator(new GridOperationCellActionsStyle());
 		
 		Column<LigneOperation, Date> c10 = addColumn(LigneOperation::getDateMaj);
 		c10.setId(EntetesGridOperationsEnum.DATE_MAJ.name())

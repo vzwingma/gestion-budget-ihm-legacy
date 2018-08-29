@@ -2,6 +2,9 @@ package com.terrier.finances.gestion.ui.communs.abstrait.ui;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.ui.AbstractComponent;
 
 /**
@@ -12,12 +15,17 @@ import com.vaadin.ui.AbstractComponent;
  */
 public abstract class AbstractUIController<P extends AbstractComponent> implements IUIService, Serializable {
 
-
+	/**
+	 * Logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUIController.class);
+	
 	/**
 	 * Constructeur
 	 * @param composant
 	 */
 	public AbstractUIController(P composant){
+		LOGGER.info("[INIT] Controleur {}", this.getClass().getSimpleName());
 		this.component = composant;
 	}
 	/**

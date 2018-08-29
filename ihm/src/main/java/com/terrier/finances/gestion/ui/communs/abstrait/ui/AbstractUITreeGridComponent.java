@@ -34,7 +34,7 @@ public abstract class AbstractUITreeGridComponent<C extends AbstractUIController
 	 */
 	public void startControleur(){
 		controleur = createControleurTreeGrid();
-		LOGGER.info("[INIT] Démarrage du controleur {}", getControleur());
+		LOGGER.info("[INIT] Controleur {} ", getControleur());
 		controleur.start();
 		paramComponentsOnTreeGrid();
 	}

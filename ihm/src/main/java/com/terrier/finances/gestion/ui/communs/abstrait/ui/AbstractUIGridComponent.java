@@ -34,7 +34,7 @@ public abstract class AbstractUIGridComponent<C extends AbstractUIController<?>,
 	 */
 	public void startControleur(){
 		controleurGrid = createControleurGrid();
-		LOGGER.info("[INIT] Démarrage du controleur {}", getControleur());
+		LOGGER.info("[INIT] Controleur {}", getControleur());
 		controleurGrid.start();
 		paramComponentsOnGrid();
 	}

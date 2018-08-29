@@ -10,16 +10,15 @@ import com.terrier.finances.gestion.services.parametrages.business.ParametragesS
 import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
 
-
 /**
  * Facade des services pour appels depuis l'IHM
+ * 
  * @author vzwingma
  *
  */
 @Controller
 public class FacadeServices {
 
-	
 	/**
 	 * Logger
 	 */
@@ -28,12 +27,13 @@ public class FacadeServices {
 	// Gestionnaire des composants UI
 	private static FacadeServices facadeServices;
 
-	public FacadeServices(){
+	public FacadeServices() {
 		LOGGER.debug("[INIT] UI FacadeServices");
 		synchronized (FacadeServices.class) {
-			facadeServices = this;	
+			facadeServices = this;
 		}
 	}
+
 	/**
 	 * 
 	 * Liens vers les services métiers
@@ -46,18 +46,19 @@ public class FacadeServices {
 
 	@Autowired
 	private AuthenticationService serviceAuth;
+
+	@Autowired
+	private com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService serviceRestAuth;
 	
-	@Autowired 
+	@Autowired
 	private UserUISessionsService serviceUserSessions;
 
 	/**
 	 * @return l'instance de la façade des services
 	 */
-	public static FacadeServices get(){
+	public static FacadeServices get() {
 		return facadeServices;
 	}
-	
-	
 
 	/**
 	 * @return the serviceDepense
@@ -67,7 +68,8 @@ public class FacadeServices {
 	}
 
 	/**
-	 * @param serviceOperations the serviceDepense to set
+	 * @param serviceOperations
+	 *            the serviceDepense to set
 	 */
 	public void setServiceOperations(OperationsService serviceOperations) {
 		LOGGER.info("Injection du service métier Operations");
@@ -82,7 +84,8 @@ public class FacadeServices {
 	}
 
 	/**
-	 * @param serviceParams the serviceParams to set
+	 * @param serviceParams
+	 *            the serviceParams to set
 	 */
 	public void setServiceParams(ParametragesService serviceParams) {
 		LOGGER.info("Injection de ParametragesService");
@@ -97,14 +100,13 @@ public class FacadeServices {
 	}
 
 	/**
-	 * @param serviceAuth the serviceAuth to set
+	 * @param serviceAuth
+	 *            the serviceAuth to set
 	 */
 	public void setServiceAuth(AuthenticationService serviceAuth) {
 		LOGGER.info("Injection de AuthenticationService");
 		this.serviceAuth = serviceAuth;
 	}
-
-
 
 	/**
 	 * @return the serviceUserSessions
@@ -113,14 +115,27 @@ public class FacadeServices {
 		return serviceUserSessions;
 	}
 
-
-
 	/**
-	 * @param serviceUserSessions the serviceUserSessions to set
+	 * @param serviceUserSessions
+	 *            the serviceUserSessions to set
 	 */
 	public void setServiceUserSessions(UserUISessionsService serviceUserSessions) {
 		LOGGER.info("Injection de UserSessionsManager");
 		this.serviceUserSessions = serviceUserSessions;
+	}
+
+	/**
+	 * @return the serviceRestAuth
+	 */
+	public com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService getServiceRestAuth() {
+		return serviceRestAuth;
+	}
+
+	/**
+	 * @param serviceRestAuth the serviceRestAuth to set
+	 */
+	public void setServiceRestAuth(com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService serviceRestAuth) {
+		this.serviceRestAuth = serviceRestAuth;
 	}
 
 }

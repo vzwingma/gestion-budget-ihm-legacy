@@ -76,8 +76,8 @@ public class LoginController extends AbstractUIController<Login>{
 	 * @param passwordEnClair en clair de l'utilisateur
 	 */
 	public void authenticateUser(String login, String passwordEnClair){
-		String idUtilisateur = getServiceAuthentification().authenticate(
-				login, passwordEnClair);
+		String idUtilisateur = getServiceAuthentification().authenticate(login, passwordEnClair);
+		getRestServiceAuthentification().authenticate(login, passwordEnClair);
 		if(idUtilisateur != null){
 			getUserSession().registerUtilisateur(idUtilisateur);
 			LOGGER.info("Accès autorisé pour {}", login);

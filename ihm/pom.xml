@@ -12,6 +12,9 @@
 	<name>IHM</name>
 	<description>IHM de l'application</description>
 
+
+	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -210,6 +213,22 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-context-menu</artifactId>
 			<version>2.1.0</version>
+		</dependency>
+		<!-- REST client -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 	</dependencies>
 	<repositories>

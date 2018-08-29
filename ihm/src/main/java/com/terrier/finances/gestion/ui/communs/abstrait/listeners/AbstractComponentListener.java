@@ -4,7 +4,7 @@
 package com.terrier.finances.gestion.ui.communs.abstrait.listeners;
 
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIService;
+import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIControleurService;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Window;
 
@@ -13,7 +13,7 @@ import com.vaadin.ui.Window;
  * @author vzwingma
  *
  */
-public abstract class AbstractComponentListener implements IUIService {
+public abstract class AbstractComponentListener implements IUIControleurService {
 
 	
 	

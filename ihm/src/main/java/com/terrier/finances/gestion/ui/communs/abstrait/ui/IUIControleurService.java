@@ -16,7 +16,7 @@ import com.vaadin.ui.Window;
  * @author vzwingma
  *
  */
-public interface IUIService  {
+public interface IUIControleurService  {
 
 
 	/**
@@ -57,7 +57,14 @@ public interface IUIService  {
 	/**
 	 * @return service auth
 	 */
+	@Deprecated
 	public default AuthenticationService getServiceAuthentification(){
 		return FacadeServices.get().getServiceAuth();
+	}
+	/**
+	 * @return service auth
+	 */
+	public default com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService getRestServiceAuthentification(){
+		return FacadeServices.get().getServiceRestAuth();
 	}
 }

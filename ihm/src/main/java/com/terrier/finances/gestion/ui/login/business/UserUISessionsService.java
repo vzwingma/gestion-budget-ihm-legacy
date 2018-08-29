@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIService;
+import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIControleurService;
 import com.vaadin.ui.UI;
 
 /**
@@ -24,7 +24,7 @@ import com.vaadin.ui.UI;
  *
  */
 @Service
-public class UserUISessionsService implements Runnable, IUIService {
+public class UserUISessionsService implements Runnable, IUIControleurService {
 	/**
 	 * Logger
 	 */

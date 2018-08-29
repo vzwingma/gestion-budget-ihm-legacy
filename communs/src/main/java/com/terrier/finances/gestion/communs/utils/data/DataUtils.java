@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.data;
+package com.terrier.finances.gestion.communs.utils.data;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.TimeZone;
 
-import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 
 /**
  * Utilitaire sur les données

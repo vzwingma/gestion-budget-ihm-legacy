@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.business.budget;
+package com.terrier.finances.gestion.communs.budget.model;
 
 /**
  * @author vzwingma

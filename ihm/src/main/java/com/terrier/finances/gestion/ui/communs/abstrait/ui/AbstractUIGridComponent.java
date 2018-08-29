@@ -6,7 +6,7 @@ package com.terrier.finances.gestion.ui.communs.abstrait.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.ui.login.business.UserSessionsManager;
 import com.vaadin.ui.Grid;
 

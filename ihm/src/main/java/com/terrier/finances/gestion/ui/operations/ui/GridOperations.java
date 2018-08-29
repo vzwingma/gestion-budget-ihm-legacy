@@ -4,10 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
-import com.terrier.finances.gestion.model.data.DataUtils;
-import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsLigneOperation;
 import com.terrier.finances.gestion.ui.operations.edition.binder.LigneOperationEditorBinder;

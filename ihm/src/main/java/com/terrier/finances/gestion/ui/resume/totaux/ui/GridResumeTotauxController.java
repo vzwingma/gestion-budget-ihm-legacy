@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
-import com.terrier.finances.gestion.model.business.budget.TotalBudgetMensuel;
-import com.terrier.finances.gestion.model.data.DataUtils;
+import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.TotalBudgetMensuel;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 

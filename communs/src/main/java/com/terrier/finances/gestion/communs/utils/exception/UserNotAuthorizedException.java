@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.exception;
+package com.terrier.finances.gestion.communs.utils.exception;
 
 /**
  * Utilisateur non autorisé
  * @author vzwingma
  *
  */
-public class NotModifiedException extends Exception {
+public class UserNotAuthorizedException extends Exception {
 
 	/**
 	 * 

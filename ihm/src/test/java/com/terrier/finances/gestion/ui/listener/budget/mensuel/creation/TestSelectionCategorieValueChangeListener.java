@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 
 public class TestSelectionCategorieValueChangeListener {
 

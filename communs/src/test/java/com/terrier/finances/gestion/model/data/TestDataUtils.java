@@ -15,7 +15,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 
 /**
  * @author vzwingma

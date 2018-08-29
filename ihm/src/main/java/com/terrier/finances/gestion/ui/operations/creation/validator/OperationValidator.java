@@ -4,8 +4,8 @@
 package com.terrier.finances.gestion.ui.operations.creation.validator;
 
 import com.terrier.finances.gestion.budget.business.OperationsService;
-import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;

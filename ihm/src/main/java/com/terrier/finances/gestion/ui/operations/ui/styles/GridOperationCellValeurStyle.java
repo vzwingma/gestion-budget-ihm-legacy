@@ -3,8 +3,8 @@
  */
 package com.terrier.finances.gestion.ui.operations.ui.styles;
 
-import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 
 /**
  * Style des colonnes Valeurs du tableau des opérations

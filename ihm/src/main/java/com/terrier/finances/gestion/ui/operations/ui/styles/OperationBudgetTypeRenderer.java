@@ -2,7 +2,7 @@ package com.terrier.finances.gestion.ui.operations.ui.styles;
 
 import java.math.BigDecimal;
 
-import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.vaadin.ui.renderers.TextRenderer;
 
 import elemental.json.Json;

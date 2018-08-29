@@ -2,10 +2,10 @@ package com.terrier.finances.gestion.ui.operations.creation.ui;
 
 import java.util.Optional;
 
-import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
-import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
-import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIComponent;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemCaptionStyle;
 import com.terrier.finances.gestion.ui.operations.creation.listeners.ActionValiderCreationDepenseClickListener;
@@ -16,11 +16,11 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.ComboBox.NewItemProvider;
 
 /**
  * Formulaire de création d'une dépense

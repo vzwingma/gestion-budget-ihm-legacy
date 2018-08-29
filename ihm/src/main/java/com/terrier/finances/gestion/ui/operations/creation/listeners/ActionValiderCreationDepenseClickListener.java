@@ -8,10 +8,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
-import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;

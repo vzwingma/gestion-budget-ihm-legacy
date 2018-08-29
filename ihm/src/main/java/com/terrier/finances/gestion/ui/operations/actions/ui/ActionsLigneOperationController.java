@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.operations.actions.ui;
 
-import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.vaadin.ui.Button;
 

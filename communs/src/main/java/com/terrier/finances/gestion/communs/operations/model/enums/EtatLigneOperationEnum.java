@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.enums;
+package com.terrier.finances.gestion.communs.operations.model.enums;
 
 /**
  * Type de dépenses

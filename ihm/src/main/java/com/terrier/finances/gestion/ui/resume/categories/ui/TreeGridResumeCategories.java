@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.resume.categories.ui;
 
-import com.terrier.finances.gestion.model.business.budget.ResumeTotalCategories;
+import com.terrier.finances.gestion.communs.budget.model.ResumeTotalCategories;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUITreeGridComponent;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.operations.ui.styles.OperationBudgetTypeRenderer;

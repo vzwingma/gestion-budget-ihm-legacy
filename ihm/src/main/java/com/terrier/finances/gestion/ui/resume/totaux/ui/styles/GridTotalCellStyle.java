@@ -4,7 +4,7 @@
 package com.terrier.finances.gestion.ui.resume.totaux.ui.styles;
 
 
-import com.terrier.finances.gestion.model.business.budget.TotalBudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.TotalBudgetMensuel;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.vaadin.ui.StyleGenerator;
 

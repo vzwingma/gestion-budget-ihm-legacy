@@ -7,8 +7,8 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
-import com.terrier.finances.gestion.model.data.DataUtils;
+import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;

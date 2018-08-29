@@ -9,11 +9,11 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
-import com.terrier.finances.gestion.model.business.parametrage.Utilisateur;
-import com.terrier.finances.gestion.model.enums.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.model.exception.BudgetNotFoundException;
-import com.terrier.finances.gestion.model.exception.DataNotFoundException;
+import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
+import com.terrier.finances.gestion.communs.utils.exception.BudgetNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exception.DataNotFoundException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;

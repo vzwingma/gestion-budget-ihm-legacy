@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
 import com.vaadin.event.selection.SingleSelectionEvent;

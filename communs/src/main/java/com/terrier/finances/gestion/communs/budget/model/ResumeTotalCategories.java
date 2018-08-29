@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.business.budget;
+package com.terrier.finances.gestion.communs.budget.model;
 
 import java.util.ArrayList;
 import java.util.List;

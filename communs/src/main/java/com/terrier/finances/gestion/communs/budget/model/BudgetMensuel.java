@@ -1,5 +1,5 @@
 			
-package com.terrier.finances.gestion.model.business.budget;
+package com.terrier.finances.gestion.communs.budget.model;
 
 import java.io.Serializable;
 import java.time.Month;
@@ -14,9 +14,9 @@ import java.util.TreeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
-import com.terrier.finances.gestion.model.business.parametrage.CompteBancaire;
-import com.terrier.finances.gestion.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 
 /**
  * Budget du mois

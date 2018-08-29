@@ -10,10 +10,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.model.business.budget.BudgetMensuel;
-import com.terrier.finances.gestion.model.business.budget.ResumeTotalCategories;
-import com.terrier.finances.gestion.model.business.parametrage.CategorieDepense;
-import com.terrier.finances.gestion.model.data.DataUtils;
+import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.ResumeTotalCategories;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.resume.totaux.ui.GridResumeTotauxController;

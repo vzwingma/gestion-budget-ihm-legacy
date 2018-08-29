@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.model.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.resume.totaux.ui.GridResumeTotauxController;
 
 /**

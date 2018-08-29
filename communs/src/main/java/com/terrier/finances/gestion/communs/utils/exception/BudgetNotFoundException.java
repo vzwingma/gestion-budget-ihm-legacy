@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.model.exception;
+package com.terrier.finances.gestion.communs.utils.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

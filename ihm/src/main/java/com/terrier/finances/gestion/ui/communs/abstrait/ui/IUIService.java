@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.communs.abstrait.services;
+package com.terrier.finances.gestion.ui.communs.abstrait.ui;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
@@ -18,7 +18,7 @@ import com.vaadin.ui.Window;
  * @author vzwingma
  *
  */
-public interface AbstractUIService  {
+public interface IUIService  {
 
 
 	/**

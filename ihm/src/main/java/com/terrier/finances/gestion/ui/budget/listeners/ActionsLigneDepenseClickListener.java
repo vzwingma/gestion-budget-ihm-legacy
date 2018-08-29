@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
-import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 import com.terrier.finances.gestion.communs.utils.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exception.DataNotFoundException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;

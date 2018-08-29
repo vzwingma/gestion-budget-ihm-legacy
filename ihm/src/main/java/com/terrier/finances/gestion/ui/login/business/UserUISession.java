@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinServlet;

@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.communs.ui;
 
-import com.terrier.finances.gestion.ui.login.business.UserSessionsManager;
+import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -89,7 +89,7 @@ public final class ConfirmDialog extends Window implements Button.ClickListener 
 	/** * Event handler for button clicks. * @param event the click event. */
 	public void buttonClick(final ClickEvent event) {
 		if (getParent() != null) {
-			UserSessionsManager.get().getSession().getPopupModale().close();
+			FacadeServices.get().getServiceUserSessions().getSession().getPopupModale().close();
 		}
 		callback.response(event.getSource() == okButton);
 	}

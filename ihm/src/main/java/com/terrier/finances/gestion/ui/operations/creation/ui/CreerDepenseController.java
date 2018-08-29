@@ -53,17 +53,17 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		ValidationResult resultatValidation = new OperationValidator().apply(newOperation, null);
 		if(!resultatValidation.isError()){
 			// Si oui création
-			BudgetMensuel budget = getBudgetMensuelCourant();
+			BudgetMensuel budget = getUserSession().getBudgetCourant();
 			try{
 				if(OperationsService.ID_SS_CAT_TRANSFERT_INTERCOMPTE.equals(newOperation.getSsCategorie().getId())
 						&& compteTransfert.isPresent()){
 					LOGGER.info("[IHM] Ajout d'un nouveau transfert intercompte");
-					updateBudgetCourantInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get(), getUtilisateurCourant()));
+					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get(), getUserSession().getUtilisateurCourant()));
 					Notification.show("Le transfert inter-compte a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				else{
 					LOGGER.info("[IHM] Ajout d'une nouvelle dépense");
-					updateBudgetCourantInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation, getUtilisateurCourant()));
+					getUserSession().updateBudgetInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation, getUserSession().getUtilisateurCourant()));
 					Notification.show("l'opération a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				return true;
@@ -106,10 +106,10 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		// Comptes pour virement intercomptes
 		try{
 			getComponent().getComboboxComptes().setItems(
-					getServiceParams().getComptesUtilisateur(getUtilisateurCourant())
+					getServiceParams().getComptesUtilisateur(getUserSession().getUtilisateurCourant())
 					.stream()
 					.filter(CompteBancaire::isActif)
-					.filter(c -> !c.getId().equals(getBudgetMensuelCourant().getCompteBancaire().getId()))
+					.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
 					.collect(Collectors.toList()));
 			getComponent().getComboboxComptes().clear();
 		} catch (DataNotFoundException e) {
@@ -135,7 +135,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getListSelectEtat().setTextInputAllowed(false);
 		getComponent().getListSelectEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
-		String etatNlleDepense = getUtilisateurCourant().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+		String etatNlleDepense = getUserSession().getUtilisateurCourant().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
 			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.getEnum(etatNlleDepense));
 		}
@@ -147,7 +147,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getCheckBoxPeriodique().setValue(Boolean.FALSE);
 		getComponent().getCheckBoxPeriodique().clear();
 		// Description
-		getComponent().getTextFieldDescription().setItems(getBudgetMensuelCourant().getSetLibellesDepensesForAutocomplete());
+		getComponent().getTextFieldDescription().setItems(getUserSession().getBudgetCourant().getSetLibellesDepensesForAutocomplete());
 		getComponent().getTextFieldDescription().clear();
 	}
 }

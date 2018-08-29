@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
-import com.terrier.finances.gestion.ui.login.business.UserSessionsManager;
 import com.terrier.finances.gestion.ui.login.ui.Login;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -55,7 +54,7 @@ public class FinancesVaadinUI extends UI
 		layout.setSizeFull();
 		setContent(layout);
 		setSizeFull();
-		UserSessionsManager.get().getSession().setMainLayout(layout);
+		FacadeServices.get().getServiceUserSessions().getSession().setMainLayout(layout);
 		UI.setCurrent(this);
 
 		// Refresh
@@ -63,7 +62,7 @@ public class FinancesVaadinUI extends UI
 		UI.getCurrent().setPollInterval(pollInterval);
 		LOGGER.debug("[INIT] FinancesVaadinUI - PoolInterval de {} ms", pollInterval);
 
-		if(!UserSessionsManager.get().getSession().isActive()){
+		if(!FacadeServices.get().getServiceUserSessions().getSession().isActive()){
 			// Page de login au démarrage si non authentifié
 			layout.addComponent(new Login());
 		}

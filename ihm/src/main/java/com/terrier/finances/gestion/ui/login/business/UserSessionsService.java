@@ -24,29 +24,21 @@ import com.vaadin.ui.UI;
  *
  */
 @Service
-public class UserSessionsManager implements Runnable {
+public class UserSessionsService implements Runnable {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserSessionsManager.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserSessionsService.class);
 
 	// Gestionnaire des composants UI
 	private ConcurrentHashMap<String, UserSession> sessionsMap = new ConcurrentHashMap<>();
 
 	private ScheduledThreadPoolExecutor pool;
 
-	private static UserSessionsManager sessionManager;
-	
 	@Autowired
 	private ParametragesService serviceParams;
 
-	/**
-	 * @return l'instance de sessions Manager
-	 * Ne doit être utilisé que pour VaadinUI !
-	 */
-	public static UserSessionsManager get(){
-		return UserSessionsManager.sessionManager;
-	}
+
 	/**
 	 * Démarrage du controle des sessions
 	 */
@@ -54,16 +46,8 @@ public class UserSessionsManager implements Runnable {
 	public void startSessionsControl(){
 		pool = new ScheduledThreadPoolExecutor(1);
 		pool.scheduleAtFixedRate(this, 0, 1, TimeUnit.MINUTES);
-		setSessionManager(this);
 	}
 
-	/**
-	 * Update du session manager
-	 * @param manager UISessionManager
-	 */
-	private static synchronized void setSessionManager(UserSessionsManager manager){
-		UserSessionsManager.sessionManager = manager;
-	}
 	
 	/**
 	 * Arrêt du controle des sessions
@@ -74,7 +58,7 @@ public class UserSessionsManager implements Runnable {
 	}
 
 	/**
-	 * @return l'instance du manager UI
+	 * @return la session utilisateur
 	 */
 	public UserSession getSession(){
 		String idSession = getUIIdSession();
@@ -88,7 +72,7 @@ public class UserSessionsManager implements Runnable {
 	/**
 	 * @return l'id de session Vaadin
 	 */
-	public String getUIIdSession(){
+	private String getUIIdSession(){
 		String idSession = null;
 		if(UI.getCurrent() != null && UI.getCurrent().getSession() != null && UI.getCurrent().getSession().getCsrfToken() != null){
 			idSession = UI.getCurrent().getSession().getCsrfToken();
@@ -130,11 +114,11 @@ public class UserSessionsManager implements Runnable {
 		for (Iterator<UserSession> iterator = sessionsMap.values().iterator(); iterator.hasNext();) {
 			UserSession session = iterator.next();
 			if(session.getLastAccessTime().isBefore(validiteSession)){
-				LOGGER.warn("La session {} n'a pas été utilisé depuis {}. Déconnexion automatique", session.getIdSession(), validiteSession);
+				LOGGER.warn("La session {} n'a pas été utilisé depuis {}. Déconnexion automatique", session.getId(), validiteSession);
 				iterator.remove();
 			}
 			else{
-				LOGGER.debug(" > {} : active : {}. Dernière activité : {}", session.getIdSession(), session.isActive(), session.getLastAccessTime());
+				LOGGER.debug(" > {} : active : {}. Dernière activité : {}", session.getId(), session.isActive(), session.getLastAccessTime());
 			}
 		}
 	}

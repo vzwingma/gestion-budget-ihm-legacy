@@ -172,21 +172,21 @@ public class UserSession {
 	/**
 	 * @return the idSession
 	 */
-	public String getIdSession() {
+	public String getId() {
 		return idSession;
 	}
 
 	/**
 	 * @return the budgetMensuelCourant
 	 */
-	public BudgetMensuel getBudgetMensuelCourant() {
+	public BudgetMensuel getBudgetCourant() {
 		return budgetMensuelCourant;
 	}
 
 	/**
 	 * @param budgetMensuelCourant the budgetMensuelCourant to set
 	 */
-	public void setBudgetMensuelCourant(BudgetMensuel budgetMensuelCourant) {
+	public void updateBudgetInSession(BudgetMensuel budgetMensuelCourant) {
 		this.budgetMensuelCourant = budgetMensuelCourant;
 	}
 

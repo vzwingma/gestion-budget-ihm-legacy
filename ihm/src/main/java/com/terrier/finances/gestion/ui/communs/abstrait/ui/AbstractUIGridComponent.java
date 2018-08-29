@@ -6,8 +6,6 @@ package com.terrier.finances.gestion.ui.communs.abstrait.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.ui.login.business.UserSessionsManager;
 import com.vaadin.ui.Grid;
 
 
@@ -57,12 +55,4 @@ public abstract class AbstractUIGridComponent<C extends AbstractUIController<?>,
 	 * @return création d'un controleur
 	 */
 	public abstract C createControleurGrid();
-
-	
-	/**
-	 * @return le budget mensuel courant
-	 */
-	public BudgetMensuel getBudgetMensuelCourant(){
-		return UserSessionsManager.get().getSession().getBudgetMensuelCourant();
-	}
 }

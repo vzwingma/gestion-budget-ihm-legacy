@@ -10,7 +10,7 @@ import com.terrier.finances.gestion.services.parametrages.business.ParametragesS
 import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
 import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.terrier.finances.gestion.ui.login.business.UserSession;
-import com.terrier.finances.gestion.ui.login.business.UserSessionsManager;
+import com.terrier.finances.gestion.ui.login.business.UserSessionsService;
 import com.vaadin.ui.Window;
 
 /**
@@ -29,40 +29,13 @@ public interface IUIService  {
 		getUserSession().setPopupModale(popupModale);
 	}
 
-	/**
-	 * @return l'utilisateur courant
-	 */
-	public default Utilisateur getUtilisateurCourant(){
-		return getUserSession().getUtilisateurCourant();
-	}
-
-	/**
-	 * @return le budget mensuel courant
-	 */
-	public default void updateBudgetCourantInSession(BudgetMensuel budget){
-		getUserSession().setBudgetMensuelCourant(budget);
-	}
-	/**
-	 * @return le budget mensuel courant
-	 */
-	public default BudgetMensuel getBudgetMensuelCourant(){
-		return getUserSession().getBudgetMensuelCourant();
-	}
 
 	/**
 	 * @return la session de l'UI
 	 */
 	public default UserSession getUserSession(){
-		return UserSessionsManager.get().getSession();
+		return getServiceUserSessions().getSession();
 	}
-
-	/**
-	 * @return l'id de la session
-	 */
-	public default String getIdSession(){
-		return getUserSession().getIdSession();
-	}
-	
 
 	/**
 	 * @return service métier dépense
@@ -77,7 +50,12 @@ public interface IUIService  {
 	public default ParametragesService getServiceParams(){
 		return FacadeServices.get().getServiceParams();
 	}
-	
+	/**
+	 * @return service User
+	 */
+	default UserSessionsService getServiceUserSessions(){
+		return FacadeServices.get().getServiceUserSessions();
+	}
 	/**
 	 * @return service auth
 	 */

@@ -48,8 +48,8 @@ public class GridOperationsEditorListener implements EditorCancelListener<LigneO
 	@Override
 	public void onEditorSave(EditorSaveEvent<LigneOperation> event) {
 		// Recalcul du budget
-		BudgetMensuel budget = this.controler.getServiceOperations().calculEtSauvegardeBudget(this.controler.getBudgetMensuelCourant(), this.controler.getUtilisateurCourant());
-		this.controler.updateBudgetCourantInSession(budget);
+		BudgetMensuel budget = this.controler.getServiceOperations().calculEtSauvegardeBudget(this.controler.getUserSession().getBudgetCourant(), this.controler.getUserSession().getUtilisateurCourant());
+		this.controler.getUserSession().updateBudgetInSession(budget);
 		// MAJ des tableaux
 		this.controler.getBudgetControleur().miseAJourVueDonnees();
 		Notification.show("L'opération a bien été mise à jour", Notification.Type.TRAY_NOTIFICATION);

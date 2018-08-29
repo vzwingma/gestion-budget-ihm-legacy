@@ -32,7 +32,7 @@ public abstract class AbstractUIComponent<C extends AbstractUIController<?>> ext
 	 */
 	public void startControleur(){
 		controleur = createControleur();
-		LOGGER.trace("[{}] Démarrage du controleur {}", controleur.getIdSession(), controleur);
+		LOGGER.trace("[{}] Démarrage du controleur {}", controleur.getUserSession().getId(), controleur);
 		controleur.start();
 		
 	}

@@ -87,7 +87,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 				}
 			}
 			event.getButton().setVisible(false);	
-			updateLigne(etat, getUtilisateurCourant());
+			updateLigne(etat, getUserSession().getUtilisateurCourant());
 		}
 	}
 
@@ -101,9 +101,9 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 		actions.getControleur().miseAJourEtatLigne(etat);
 
 		// Recalcul du budget
-		BudgetMensuel budget = getBudgetMensuelCourant();
+		BudgetMensuel budget = getUserSession().getBudgetCourant();
 		try{
-			updateBudgetCourantInSession(
+			getUserSession().updateBudgetInSession(
 					getControleur(BudgetMensuelController.class).getServiceOperations()
 					.majEtatLigneOperation(budget, actions.getControleur().getIdOperation(), etat, auteur));
 		}
@@ -122,7 +122,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	@Override
 	public void response(boolean ok) {
 		if(ok){
-			updateLigne(null, getUtilisateurCourant());
+			updateLigne(null, getUserSession().getUtilisateurCourant());
 		}
 	}
 }

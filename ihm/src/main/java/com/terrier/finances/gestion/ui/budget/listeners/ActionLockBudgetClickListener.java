@@ -33,7 +33,7 @@ public class ActionLockBudgetClickListener extends AbstractComponentListener imp
 		Button editer = event.getButton();
 		page  = (BudgetMensuelPage)editer.getParent().getParent().getParent().getParent().getParent();
 		
-		boolean budgetActif = getBudgetMensuelCourant().isActif();
+		boolean budgetActif = getUserSession().getBudgetCourant().isActif();
 		
 		// Confirmation
 		ConfirmDialog confirm = new ConfirmDialog((budgetActif ? "Clôture" : "Ouverture") + " du budget mensuel", 

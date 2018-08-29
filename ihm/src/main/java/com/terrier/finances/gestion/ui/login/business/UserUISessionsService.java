@@ -114,12 +114,12 @@ public class UserUISessionsService implements Runnable, IUIService {
 	public void run() {
 		int sessionValidity = Integer.parseInt(getServiceParams().getUiValiditySessionPeriod());
 		validiteSession  = Instant.now();
-		LOGGER.info("Durée de validité d'une session : {} minutes", sessionValidity);
+		LOGGER.debug("Durée de validité d'une session : {} minutes", sessionValidity);
 		validiteSession = validiteSession.minus(sessionValidity, ChronoUnit.MINUTES);
 		
 		List<String> idsInvalide = sessionsMap.values()
 			.parallelStream()
-			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), session.getLastAccessTime().isBefore(validiteSession)))
+			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))
 			.filter(session -> session.getLastAccessTime().isBefore(validiteSession))
 			.map(session -> session.getId())
 			.collect(Collectors.toList());

@@ -13,10 +13,8 @@ import javax.annotation.PreDestroy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIService;
 import com.vaadin.ui.UI;
 
@@ -36,10 +34,6 @@ public class UserUISessionsService implements Runnable, IUIService {
 	private ConcurrentHashMap<String, UserUISession> sessionsMap = new ConcurrentHashMap<>();
 
 	private ScheduledThreadPoolExecutor pool;
-
-	@Autowired
-	private ParametragesService serviceParams;
-
 
 	/**
 	 * Démarrage du controle des sessions
@@ -92,7 +86,7 @@ public class UserUISessionsService implements Runnable, IUIService {
 	 */
 	public void deconnexionUtilisateur(String idSession, boolean redirect){
 		UserUISession session = sessionsMap.get(idSession);
-		getServiceAuthentification().deconnexionBusinessSession(session.getUtilisateur().getId());
+		getServiceAuthentification().deconnexionBusinessSession(session.getIdUtilisateur());
 		if(redirect){
 			session.deconnexionAndRedirect();
 		}
@@ -118,7 +112,7 @@ public class UserUISessionsService implements Runnable, IUIService {
 	 */
 	@Override
 	public void run() {
-		int sessionValidity = Integer.parseInt(this.serviceParams.getUiValiditySessionPeriod());
+		int sessionValidity = Integer.parseInt(getServiceParams().getUiValiditySessionPeriod());
 		validiteSession  = Instant.now();
 		LOGGER.info("Durée de validité d'une session : {} minutes", sessionValidity);
 		validiteSession = validiteSession.minus(sessionValidity, ChronoUnit.MINUTES);

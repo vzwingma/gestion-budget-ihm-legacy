@@ -38,7 +38,7 @@ public class UserUISession {
 	/**
 	 * Utilisateur courant
 	 */
-	private Utilisateur utilisateurCourant = null;
+	private String idUtilisateur = null;
 	/**
 	 * Budget courant
 	 */
@@ -86,7 +86,7 @@ public class UserUISession {
 	 */
 	protected void deconnexion(){
 		// Suppression de l'utilisateur
-		this.utilisateurCourant = null;
+		this.idUtilisateur = null;
 		this.lastAccessTime = null;
 		this.budgetMensuelCourant = null;
 		this.idSession = null;
@@ -131,9 +131,9 @@ public class UserUISession {
 	 * Enregistrement de l'utilisateur
 	 * @param utilisateur USER
 	 */
-	public boolean registerUtilisateur(Utilisateur utilisateur){
+	public boolean registerUtilisateur(String utilisateur){
 		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, utilisateur);
-		this.utilisateurCourant = utilisateur;
+		this.idUtilisateur = utilisateur;
 		return true;
 	}
 
@@ -141,8 +141,8 @@ public class UserUISession {
 	/**
 	 * @return the utilisateurCourant
 	 */
-	public Utilisateur getUtilisateur() {
-		return utilisateurCourant;
+	public String getIdUtilisateur() {
+		return idUtilisateur;
 	}
 
 
@@ -167,7 +167,7 @@ public class UserUISession {
 	 * @return session active
 	 */
 	public boolean isActive(){
-		return utilisateurCourant != null && this.budgetMensuelCourant != null;
+		return this.idUtilisateur != null && this.budgetMensuelCourant != null;
 	}
 
 	/**

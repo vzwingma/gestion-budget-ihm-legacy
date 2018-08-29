@@ -80,7 +80,7 @@ public class LoginController extends AbstractUIController<Login>{
 		Utilisateur utilisateur = getServiceAuthentification().authenticate(
 				login, passwordEnClair);
 		if(utilisateur != null){
-			getUserSession().registerUtilisateur(utilisateur);
+			getUserSession().registerUtilisateur(utilisateur.getId());
 			LOGGER.info("Accès autorisé pour {}", login);
 			// MAJ
 			getUserSession().getMainLayout().removeAllComponents();

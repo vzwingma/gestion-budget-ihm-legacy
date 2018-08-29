@@ -3,8 +3,8 @@
  */
 package com.terrier.finances.gestion.ui.operations.ui.styles;
 
-import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.vaadin.ui.StyleGenerator;
 
 /**

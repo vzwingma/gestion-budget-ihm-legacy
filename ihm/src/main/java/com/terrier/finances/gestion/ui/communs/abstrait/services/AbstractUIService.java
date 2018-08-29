@@ -3,14 +3,14 @@
  */
 package com.terrier.finances.gestion.ui.communs.abstrait.services;
 
-import com.terrier.finances.gestion.budget.business.OperationsService;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
-import com.terrier.finances.gestion.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
 import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.terrier.finances.gestion.ui.login.business.UserSession;
 import com.terrier.finances.gestion.ui.login.business.UserSessionsManager;
-import com.terrier.finances.gestion.utilisateurs.business.AuthenticationService;
 import com.vaadin.ui.Window;
 
 /**

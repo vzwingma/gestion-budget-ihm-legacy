@@ -1,7 +1,7 @@
 package com.terrier.finances.gestion.ui.communs.services;
 
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -33,11 +33,13 @@ public class AuthenticationRestService extends AbstractHTTPClient {
 	 * @return si valide
 	 */
 	public String authenticate(String login, String motPasseEnClair){
-		final String URI = "http://localhost:8080/ihm/rest/authentification/v1/authenticate";
+		final String URI = "http://localhost:8080/ihm/rest/authentification/v1/";
 
-		Entity<Authentification> auth = Entity.entity(new Authentification(login, motPasseEnClair), MediaType.APPLICATION_JSON_PATCH_JSON_TYPE);
+		Invocation.Builder invoque = getInvocation(URI, "authenticate");
+		
+		Entity<Authentification> auth = Entity.entity(new Authentification(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
 		LOGGER.info("Appel de {}", URI);
-		Object resultat =  callHTTPPost(ClientBuilder.newClient().target(URI).request(MediaType.APPLICATION_JSON_PATCH_JSON_TYPE), auth);
+		Object resultat =  callHTTPPost(invoque, auth);
 		LOGGER.info("Résultat : {}", resultat);
 		return "result";
 	}

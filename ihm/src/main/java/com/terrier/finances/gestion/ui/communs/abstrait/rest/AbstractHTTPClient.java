@@ -29,15 +29,20 @@ public abstract class AbstractHTTPClient {
 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger( AbstractHTTPClient.class );
-
-	// Résultat du dernier appel HTTP
-	private int lastResponseCode;
-
+	// Tout est en JSON
+	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
 
+	private Client clientHTTP;
 
-	public Client getClient(){
-		return getClient(null);
+	/**
+	 * @return client HTTP
+	 */
+	private Client getClient(){
+		if(clientHTTP == null){
+			this.clientHTTP = getClient(null);
+		}
+		return this.clientHTTP;
 	}
 
 	/**
@@ -54,13 +59,13 @@ public abstract class AbstractHTTPClient {
 		}
 
 		try {
-//			// Install the all-trusting trust manager
-//			SSLContext sslcontext = SSLContext.getInstance("TLS");
-//
-//			sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
-//			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+			//			// Install the all-trusting trust manager
+			//			SSLContext sslcontext = SSLContext.getInstance("TLS");
+			//
+			//			sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
+			//			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
-//					.sslContext(sslcontext)
+					//					.sslContext(sslcontext)
 					.withConfig(clientConfig)
 					.build();
 		}
@@ -78,16 +83,13 @@ public abstract class AbstractHTTPClient {
 	 * @param type
 	 * @return
 	 */
-	public Invocation.Builder getInvocation(Client clientHTTP, String url, String path, MediaType type){
-		if(clientHTTP != null){
-			LOGGER.debug("[HTTP] Appel de l'URI [{}{}]", url, path);
-			WebTarget wt = clientHTTP.target(url);
-			if(path != null){
-				wt = wt.path(path);
-			}
-			return wt.request(type);
+	public Invocation.Builder getInvocation(String url, String path){
+		LOGGER.debug("[HTTP] Appel de l'URI [{}{}]", url, path);
+		WebTarget wt = getClient().target(url);
+		if(path != null){
+			wt = wt.path(path);
 		}
-		return null;
+		return wt.request(JSON_MEDIA_TYPE);
 	}
 
 
@@ -102,7 +104,7 @@ public abstract class AbstractHTTPClient {
 	public Object callHTTPPost(Invocation.Builder invocation, Entity<?> entityData){
 		LOGGER.debug("[HTTP POST] Appel du service");
 		try{
-			invocation.header("Content-type", "application/json");
+			invocation.header("Content-type", JSON_MEDIA_TYPE.getType()+"/"+JSON_MEDIA_TYPE.getSubtype());
 			Response response = invocation.post(entityData);
 			LOGGER.debug("[HTTP POST] Resultat : {}", response);
 			if(response != null){
@@ -131,14 +133,12 @@ public abstract class AbstractHTTPClient {
 			Response response = invocation.get();
 			if(response != null){
 				LOGGER.debug("[HTTP GET] Resultat : {}", response.getStatus());
-				this.lastResponseCode = response.getStatus();
 				resultat = response.getStatus() == 200;
 			}
 		}
 		catch(Exception e){
 			LOGGER.error("> Resultat : Erreur lors de l'appel HTTP GET", e);
 			resultat = false;
-			this.lastResponseCode = 500;
 		}
 		return resultat;
 	}
@@ -158,22 +158,13 @@ public abstract class AbstractHTTPClient {
 			Response response = invocation.get();
 			if(response != null){
 				LOGGER.debug("[HTTP GET] Resultat : {} / MediaType {}", response, response.getMediaType());
-				this.lastResponseCode = response.getStatus();
 			}
 			return response;
 		}
 		catch(Exception e){
 			LOGGER.error("> Resultat : Erreur lors de l'appel HTTP GET", e);
 		}
-		this.lastResponseCode = 500;
 		return null;
 	}
 
-
-	/**
-	 * @return the lastResponseCode
-	 */
-	public int getLastResponseCode() {
-		return lastResponseCode;
-	}
 }

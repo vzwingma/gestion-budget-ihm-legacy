@@ -208,7 +208,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 	 * @param nomColonne
 	 * @return la colonne correspondante
 	 */
-	public Column<LigneOperation> getColumn(EntetesGridOperationsEnum nomColonne){
+	public Column<LigneOperation, ?> getColumn(EntetesGridOperationsEnum nomColonne){
 		return super.getColumn(nomColonne.name());
 	}
 }

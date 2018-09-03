@@ -1,5 +1,6 @@
 package com.terrier.finances.gestion.ui.operations.actions.ui;
 
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.vaadin.ui.Button;
@@ -9,17 +10,17 @@ import com.vaadin.ui.Button;
  * @author vzwingma
  *
  */
-public class ActionsLigneOperationController extends AbstractUIController<ActionsLigneOperation> {
+public class ActionsOperationController extends AbstractUIController<ActionsOperation> {
 
 
 	private static final long serialVersionUID = 3969804553001678780L;
 
-	private String idOperation;
+	private LigneOperation operation;
 	/**
 	 * Contructeur
 	 * @param composant
 	 */
-	public ActionsLigneOperationController(ActionsLigneOperation composant) {
+	public ActionsOperationController(ActionsOperation composant) {
 		super(composant);
 	}
 
@@ -61,20 +62,18 @@ public class ActionsLigneOperationController extends AbstractUIController<Action
 
 
 	/**
-	 * @return the idDepense
+	 * @return the operation
 	 */
-	public String getIdOperation() {
-		return idOperation;
+	public LigneOperation getOperation() {
+		return operation;
 	}
 
 
 	/**
-	 * @param idOperation the idOperation to set
+	 * @param operation the operation to set
 	 */
-	public void setIdOperation(String idOperation) {
-		this.idOperation = idOperation;
+	public void setOperation(LigneOperation operation) {
+		this.operation = operation;
 	}
-
-
 }
 

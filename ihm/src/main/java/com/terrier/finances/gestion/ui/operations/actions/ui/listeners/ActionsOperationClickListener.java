@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.budget.listeners;
+package com.terrier.finances.gestion.ui.operations.actions.ui.listeners;
 
 
 import java.util.Iterator;
@@ -17,7 +17,7 @@ import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;
 import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog.ConfirmationDialogCallback;
-import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsLigneOperation;
+import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
@@ -30,7 +30,7 @@ import com.vaadin.ui.Notification.Type;
  * @author vzwingma
  *
  */
-public class ActionsLigneDepenseClickListener extends AbstractComponentListener implements Button.ClickListener, ConfirmationDialogCallback {
+public class ActionsOperationClickListener extends AbstractComponentListener implements Button.ClickListener, ConfirmationDialogCallback {
 
 	/**
 	 * 
@@ -39,15 +39,15 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ActionsLigneDepenseClickListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ActionsOperationClickListener.class);
 
 
-	private ActionsLigneOperation actions;
+	private ActionsOperation actions;
 
 	@Override
 	public void buttonClick(ClickEvent event) {
 		EtatLigneOperationEnum etat = EtatLigneOperationEnum.PREVUE;
-		actions = event.getButton().findAncestor(ActionsLigneOperation.class);
+		actions = event.getButton().findAncestor(ActionsOperation.class);
 		if(event.getButton().getId().equals("buttonReel")){
 			LOGGER.trace("Action : Activation");
 			etat = EtatLigneOperationEnum.REALISEE;
@@ -104,7 +104,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 		try{
 			getUserSession().updateBudgetInSession(
 					getControleur(BudgetMensuelController.class).getServiceOperations()
-					.majEtatLigneOperation(budget, actions.getControleur().getIdOperation(), etat, idUtilisateur));
+					.majEtatLigneOperation(budget, actions.getControleur().getOperation().getId(), etat, idUtilisateur));
 		}
 		catch(DataNotFoundException|BudgetNotFoundException e){
 			Notification.show("l'opération est introuvable ou n'a pas été enregistrée", Type.ERROR_MESSAGE);

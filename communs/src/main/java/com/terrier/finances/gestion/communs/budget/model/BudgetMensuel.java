@@ -66,8 +66,10 @@ public class BudgetMensuel implements Serializable {
 	/** 
 	 * Liste des libellés pour l'autocomplétion
 	 */
-	private Set<String> setLibellesDepensesForAutocomplete= new TreeSet<>();
+	private transient Set<String> setLibellesDepensesForAutocomplete= new TreeSet<>();
 
+	private transient boolean isNewBudget = false;
+	
 	private Map<CategorieDepense, Double[]> totalParCategories = new HashMap<>();
 	private Map<CategorieDepense, Double[]> totalParSSCategories = new HashMap<>();
 
@@ -363,6 +365,22 @@ public class BudgetMensuel implements Serializable {
 	 */
 	public Set<String> getSetLibellesDepensesForAutocomplete() {
 		return setLibellesDepensesForAutocomplete;
+	}
+	
+	
+
+	/**
+	 * @return the isNewBudget
+	 */
+	public boolean isNewBudget() {
+		return isNewBudget;
+	}
+
+	/**
+	 * @param isNewBudget the isNewBudget to set
+	 */
+	public void setNewBudget(boolean isNewBudget) {
+		this.isNewBudget = isNewBudget;
 	}
 
 	/* (non-Javadoc)

@@ -81,10 +81,8 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 		// Validation de la valeur
 		return this.forField(tValeur)
 				.withConverter(DataUtils::getValueFromString, String::valueOf)
-				.withValidator(v -> v != null, "La valeur ne doit pas être nulle ou incorrecte")
-                .withValidator(v -> {
-                    return (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v)));
-                }, "La valeur est incorrecte")
+				.withValidator(Objects::nonNull, "La valeur ne doit pas être nulle ou incorrecte")
+                .withValidator(v -> (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v))), "La valeur est incorrecte")
 				.bind(LigneOperation::getValeurAbsStringFromDouble, LigneOperation::setValeurAbsStringToDouble);
 	}
 

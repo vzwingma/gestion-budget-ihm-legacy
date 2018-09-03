@@ -162,7 +162,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c8.setEditorBinding(binderLD.bindPeriodique());
 
 		@SuppressWarnings("rawtypes")
-		Column c9 = addColumn(operation -> new ActionsLigneOperation(operation), new ComponentRenderer());
+		Column c9 = addColumn(ActionsLigneOperation::new, new ComponentRenderer());
 		c9.setId(EntetesGridOperationsEnum.ACTIONS.name())
 			.setCaption(EntetesGridOperationsEnum.ACTIONS.getLibelle())
 			.setWidth(TAILLE_COLONNE_ACTIONS)
@@ -208,7 +208,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 	 * @param nomColonne
 	 * @return la colonne correspondante
 	 */
-	public Column<LigneOperation, ?> getColumn(EntetesGridOperationsEnum nomColonne){
+	public Column<LigneOperation> getColumn(EntetesGridOperationsEnum nomColonne){
 		return super.getColumn(nomColonne.name());
 	}
 }

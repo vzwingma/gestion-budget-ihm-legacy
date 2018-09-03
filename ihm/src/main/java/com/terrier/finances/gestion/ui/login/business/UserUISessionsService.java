@@ -102,26 +102,24 @@ public class UserUISessionsService implements Runnable, IUIService {
 	 * @return le nombre de sessions actives soit utilisateur authentifié
 	 */
 	public long getNombreSessionsActives(){
-		return sessionsMap.values().stream().filter(s -> s.isActive()).count();
+		return sessionsMap.values().stream().filter(UserUISession::isActive).count();
 	}
 
-	
-	private Instant validiteSession;
+
 	/**
 	 * Vérification des sessions
 	 */
 	@Override
 	public void run() {
 		int sessionValidity = Integer.parseInt(getServiceParams().getUiValiditySessionPeriod());
-		validiteSession  = Instant.now();
 		LOGGER.debug("Durée de validité d'une session : {} minutes", sessionValidity);
-		validiteSession = validiteSession.minus(sessionValidity, ChronoUnit.MINUTES);
+		final Instant validiteSession  = Instant.now().minus(sessionValidity, ChronoUnit.MINUTES);
 		
 		List<String> idsInvalide = sessionsMap.values()
 			.parallelStream()
 			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))
 			.filter(session -> session.getLastAccessTime().isBefore(validiteSession))
-			.map(session -> session.getId())
+			.map(UserUISession::getId)
 			.collect(Collectors.toList());
 		idsInvalide.parallelStream().forEach(key -> deconnexionUtilisateur(key, false));
 	}

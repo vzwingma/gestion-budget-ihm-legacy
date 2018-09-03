@@ -50,7 +50,7 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 				budgetMensuelCourant.getCompteBancaire(), 
 				moisPrecedent, anneePrecedente);
 		if(budgetPrecedentActif){
-			warnMoisActif = "<span style=\"color: red;\"><br> Attention : Le mois précédent n'est pas clos !</span>";
+			warnMoisActif = "<span style=\"color: red;\"><br> Attention : Le mois précédent n'est pas clos !</span><br>Il sera automatiquement clôturé et les opérations en attente, annulées";
 		}
 
 		// Confirmation

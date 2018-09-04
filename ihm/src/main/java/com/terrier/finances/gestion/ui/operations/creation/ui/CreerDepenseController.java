@@ -131,16 +131,16 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getComboboxType().setSelectedItem(TypeOperationEnum.DEPENSE);
 		getComponent().getComboboxType().clear();
 		// Etat
-		getComponent().getListSelectEtat().setItems(EtatLigneOperationEnum.values());
-		getComponent().getListSelectEtat().setTextInputAllowed(false);
-		getComponent().getListSelectEtat().clear();
+		getComponent().getComboboxEtat().setItems(EtatLigneOperationEnum.values());
+		getComponent().getComboboxEtat().setTextInputAllowed(false);
+		getComponent().getComboboxEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
 		String etatNlleDepense = getServiceAuthentification().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
-			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.getEnum(etatNlleDepense));
+			getComponent().getComboboxEtat().setSelectedItem(EtatLigneOperationEnum.getEnum(etatNlleDepense));
 		}
 		else{
-			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.PREVUE);
+			getComponent().getComboboxEtat().setSelectedItem(EtatLigneOperationEnum.PREVUE);
 		}
 		// Périodique
 		getComponent().getCheckBoxPeriodique().setCaption(null);

@@ -136,7 +136,7 @@ public class CreerDepenseForm extends AbstractUIComponent<CreerDepenseController
 	/**
 	 * @return the listSelectEtat
 	 */
-	public ComboBox<EtatLigneOperationEnum> getListSelectEtat() {
+	public ComboBox<EtatLigneOperationEnum> getComboboxEtat() {
 		return comboBoxEtat;
 	}
 
@@ -235,6 +235,16 @@ public class CreerDepenseForm extends AbstractUIComponent<CreerDepenseController
 	 */
 	public Button getButtonValiderContinuer() {
 		return buttonValiderContinuer;
+	}
+
+
+
+
+	/**
+	 * @return the labelEtat
+	 */
+	public Label getLabelEtat() {
+		return labelEtat;
 	}
 
 

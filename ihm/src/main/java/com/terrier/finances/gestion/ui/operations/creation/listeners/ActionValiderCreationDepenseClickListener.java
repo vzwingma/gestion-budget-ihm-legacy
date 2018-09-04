@@ -12,6 +12,7 @@ import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
@@ -49,9 +50,9 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 		Optional<TypeOperationEnum> typeSelected = form.getComboboxType().getSelectedItem();
 		TypeOperationEnum type = typeSelected.isPresent() ? typeSelected.get() : TypeOperationEnum.DEPENSE;
 
-		Optional<EtatLigneOperationEnum> etatSelected = form.getListSelectEtat().getSelectedItem();
+		Optional<EtatLigneOperationEnum> etatSelected = form.getComboboxEtat().getSelectedItem();
 		EtatLigneOperationEnum etat = etatSelected.isPresent() ? etatSelected.get() : EtatLigneOperationEnum.PREVUE;
-
+		
 		Optional<CategorieDepense> categorieSelected = form.getComboBoxSsCategorie().getSelectedItem();
 		Optional<String> descriptionSelected = form.getTextFieldDescription().getSelectedItem();
 
@@ -63,6 +64,11 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 				form.getTextFieldValeur().getValue(),
 				etat,
 				form.getCheckBoxPeriodique().getValue());
+
+		// #121 : Opération de réserve: toujours validée
+		if(OperationsService.ID_SS_CAT_RESERVE.equals(newOperation.getSsCategorie().getId())){
+			newOperation.setEtat(EtatLigneOperationEnum.REALISEE);
+		}
 		LOGGER.debug("[IHM]  >  {}", newOperation);
 		boolean resultat = getControleur(CreerDepenseController.class).validateAndCreate(newOperation, form.getComboboxComptes().getSelectedItem());
 

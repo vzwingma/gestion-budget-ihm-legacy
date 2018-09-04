@@ -56,8 +56,7 @@ public class BudgetMensuel implements Serializable {
 	 */
 	private Double resultatMoisPrecedent;
 
-	private Double margeSecurite;
-	private Double margeSecuriteFinMois;
+	private Double margeSecurite = 0D;
 
 	/**
 	 * Liste des dépenses
@@ -74,10 +73,8 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * Totaux
 	 */
-	private Double nowArgentAvance;
-	private Double nowCompteReel;
-	private Double finArgentAvance;
-	private Double finCompteReel;
+	private Double soldeNow;
+	private Double soldeFin;
 
 	/**
 	 * Raz calculs
@@ -86,11 +83,8 @@ public class BudgetMensuel implements Serializable {
 		totalParCategories.clear();
 		totalParSSCategories.clear();
 		LOGGER.debug("Raz des calculs du budget");
-		nowArgentAvance = this.resultatMoisPrecedent;
-		nowCompteReel = this.resultatMoisPrecedent + this.margeSecurite;
-		finArgentAvance = this.resultatMoisPrecedent;
-		this.margeSecuriteFinMois = this.margeSecuriteFinMois != null ? this.margeSecuriteFinMois : 0L;
-		finCompteReel = this.resultatMoisPrecedent + this.margeSecuriteFinMois;
+		soldeNow = this.resultatMoisPrecedent;
+		soldeFin = this.resultatMoisPrecedent;
 	}
 
 	/**
@@ -124,29 +118,29 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * @return the nowArgentAvance
 	 */
-	public double getNowArgentAvance() {
-		return nowArgentAvance;
+	public double getSoldeNow() {
+		return soldeNow;
 	}
 
 	/**
 	 * @return the nowCompteReel
 	 */
-	public double getNowCompteReel() {
-		return nowCompteReel;
+	public double getSoldeReelNow() {
+		return soldeNow + margeSecurite;
 	}
 
 	/**
 	 * @return the finArgentAvance
 	 */
-	public double getFinArgentAvance() {
-		return finArgentAvance;
+	public double getSoldeFin() {
+		return soldeFin;
 	}
 
 	/**
 	 * @return the finCompteReel
 	 */
-	public double getFinCompteReel() {
-		return finCompteReel;
+	public double getSoldeReelFin() {
+		return soldeFin + margeSecurite;
 	}
 
 	/**
@@ -181,31 +175,17 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * @param nowArgentAvance the nowArgentAvance to set
 	 */
-	public void ajouteANowArgentAvance(double nowArgentAvance) {
-		this.nowArgentAvance += nowArgentAvance;
+	public void ajouteASoldeNow(double nowArgentAvance) {
+		this.soldeNow += nowArgentAvance;
 	}
 
 	/**
 	 * @param finArgentAvance the finArgentAvance to set
 	 */
-	public void ajouteAFinArgentAvance(double finArgentAvance) {
-		this.finArgentAvance += finArgentAvance;
+	public void ajouteASoldeFin(double finArgentAvance) {
+		this.soldeFin += finArgentAvance;
 	}
 
-
-	/**
-	 * @param nowArgentAvance the nowArgentAvance to set
-	 */
-	public void ajouteANowCompteReel(double nowArgentAvance) {
-		this.nowCompteReel += nowArgentAvance;
-	}
-
-	/**
-	 * @param finArgentAvance the finArgentAvance to set
-	 */
-	public void ajouteAFinCompteReel(double finArgentAvance) {
-		this.finCompteReel += finArgentAvance;
-	}
 
 	/**
 	 * @return the resultatMoisPrecedent
@@ -219,10 +199,8 @@ public class BudgetMensuel implements Serializable {
 	 */
 	public void setResultatMoisPrecedent(Double resultatMoisPrecedent) {
 		this.resultatMoisPrecedent = resultatMoisPrecedent;
-		this.finArgentAvance = resultatMoisPrecedent;
-		this.finCompteReel = resultatMoisPrecedent;
-		this.nowArgentAvance = resultatMoisPrecedent;
-		this.nowCompteReel = resultatMoisPrecedent;
+		this.soldeFin = resultatMoisPrecedent;
+		this.soldeNow = resultatMoisPrecedent;
 	}
 
 	/**
@@ -271,20 +249,6 @@ public class BudgetMensuel implements Serializable {
 		this.dateMiseAJour = dateMiseAJour;
 	}
 
-	/**
-	 * @return the margeSecuriteFinMois
-	 */
-	public Double getMargeSecuriteFinMois() {
-		return margeSecuriteFinMois;
-	}
-
-
-	/**
-	 * @param margeSecuriteFinMois the margeSecuriteFinMois to set
-	 */
-	public void setMargeSecuriteFinMois(Double margeSecuriteFinMois) {
-		this.margeSecuriteFinMois = margeSecuriteFinMois;
-	}
 
 	/**
 	 * @return the compteBancaire
@@ -319,30 +283,18 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * @param nowArgentAvance the nowArgentAvance to set
 	 */
-	public void setNowArgentAvance(Double nowArgentAvance) {
-		this.nowArgentAvance = nowArgentAvance;
+	public void setSoldeNow(Double soldeNow) {
+		this.soldeNow = soldeNow;
 	}
 
-	/**
-	 * @param nowCompteReel the nowCompteReel to set
-	 */
-	public void setNowCompteReel(Double nowCompteReel) {
-		this.nowCompteReel = nowCompteReel;
-	}
 
 	/**
 	 * @param finArgentAvance the finArgentAvance to set
 	 */
-	public void setFinArgentAvance(Double finArgentAvance) {
-		this.finArgentAvance = finArgentAvance;
+	public void setSoldeFin(Double soldeFin) {
+		this.soldeFin = soldeFin;
 	}
 
-	/**
-	 * @param finCompteReel the finCompteReel to set
-	 */
-	public void setFinCompteReel(Double finCompteReel) {
-		this.finCompteReel = finCompteReel;
-	}
 
 	/**
 	 * @return the actif

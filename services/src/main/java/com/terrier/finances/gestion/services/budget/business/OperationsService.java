@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class OperationsService extends AbstractBusinessService {
 	private BudgetDatabaseService dataDepenses;
 
 	private DataTransformerLigneDepense transformer = new DataTransformerLigneDepense();
-	
+
 
 	public static final String ID_SS_CAT_TRANSFERT_INTERCOMPTE = "ed3f6100-5dbd-4b68-860e-0c97ae1bbc63";
 
@@ -63,7 +64,9 @@ public class OperationsService extends AbstractBusinessService {
 	public static final String ID_SS_CAT_RESERVE = "26a4b966-ffdc-4cb7-8611-a5ba4b518ef5";
 	public static final String ID_SS_CAT_PREVISION_SANTE = "eeb2f9a5-49b4-4c44-86bf-3bd626412d8e";
 
-
+	public static final String ID_CAT_PRELEVEMENTS_MENSUEL = "504beea7-ed52-438a-aced-15e9603b82ab";
+	
+	
 	/**
 	 * Chargement du budget du mois courant
 	 * @param compte compte 
@@ -102,7 +105,7 @@ public class OperationsService extends AbstractBusinessService {
 		LOGGER.debug("Chargement du budget du compte actif {} de {}/{}", compteBancaire.getId(), mois, annee);
 
 		BasicTextEncryptor encryptor = getBusinessSession(idUtilisateur).getEncryptor();
-		
+
 		BudgetMensuel budgetMensuel = null;
 		try{
 			budgetMensuel = this.dataDepenses.chargeBudgetMensuel(compteBancaire, mois, annee, encryptor);
@@ -121,7 +124,6 @@ public class OperationsService extends AbstractBusinessService {
 				if(budgetPrecedent.isActif()){
 					calculBudget(budgetPrecedent);
 				}
-				// TODO : Et si le budget n'est pas actif ? On ne recacule pas ?
 				budgetMensuel.setResultatMoisPrecedent(budgetPrecedent.getFinArgentAvance());
 			}
 			catch(BudgetNotFoundException e){
@@ -226,8 +228,9 @@ public class OperationsService extends AbstractBusinessService {
 	 * @throws DataNotFoundException erreur données
 	 */
 	private BudgetMensuel initNewBudget(CompteBancaire compteBancaire, String idUtilisateur, Month mois, int annee) throws BudgetNotFoundException,CompteClosedException, DataNotFoundException{
-		LOGGER.info("[INIT] Initialisation du budget {} de {}/{}", compteBancaire.getId(), mois, annee);
+		LOGGER.info("[INIT] Initialisation du budget {} de {}/{}", compteBancaire.getLibelle(), mois, annee);
 		BudgetMensuel budget = new BudgetMensuel();
+		budget.setNewBudget(true);
 		budget.setActif(true);
 		budget.setAnnee(annee);
 		budget.setMois(mois);
@@ -245,10 +248,14 @@ public class OperationsService extends AbstractBusinessService {
 			int anneePrecedente = Month.DECEMBER.equals(moisPrecedent) ? annee -1 : annee;
 			// Recherche du budget précédent 
 			// Si impossible : BudgetNotFoundException
-			initBudgetFromBudgetPrecedent(budget, chargerBudgetMensuel(idUtilisateur, compteBancaire, moisPrecedent, anneePrecedente));
+			BudgetMensuel budgetPrecedent = chargerBudgetMensuel(idUtilisateur, compteBancaire, moisPrecedent, anneePrecedente);
+			// #115 : Cloture automatique du mois précédent
+			setBudgetActif(budgetPrecedent, false, idUtilisateur);
+			
+			initBudgetFromBudgetPrecedent(budget, budgetPrecedent);
 		}
 		else{
-			LOGGER.warn("Le budget {}/{} n'a jamais existé", mois, annee);
+			LOGGER.warn("Le budget {} n'a jamais existé", compteBancaire.getLibelle());
 			budget.setFinArgentAvance(0D);
 			budget.setFinCompteReel(0D);
 			budget.setNowArgentAvance(0D);
@@ -300,13 +307,18 @@ public class OperationsService extends AbstractBusinessService {
 			calculBudget(budgetPrecedent);
 			budget.setCompteBancaire(budgetPrecedent.getCompteBancaire());
 			budget.setMargeSecurite(budgetPrecedent.getMargeSecurite());
-			budget.setResultatMoisPrecedent(budgetPrecedent.getFinArgentAvance());
+			// #116 : Le résultat du moins précédent est le compte réel, pas le compte avancé
+			budget.setResultatMoisPrecedent(budgetPrecedent.getFinCompteReel());
 			budget.setDateMiseAJour(Calendar.getInstance());
-			for (LigneOperation depenseMoisPrecedent : budgetPrecedent.getListeOperations()) {
-				if(depenseMoisPrecedent.isPeriodique() || depenseMoisPrecedent.getEtat().equals(EtatLigneOperationEnum.REPORTEE)){
-					budget.getListeOperations().add(transformer.cloneDepenseToMoisSuivant(depenseMoisPrecedent));	
-				}
+			if(budgetPrecedent.getListeOperations() != null){
 
+				// Recopie de toutes les opérations périodiques, et reportées
+				budget.getListeOperations().addAll(
+						budgetPrecedent.getListeOperations()
+						.stream()
+						.filter(op -> op.isPeriodique() || EtatLigneOperationEnum.REPORTEE.equals(op.getEtat()))
+						.map(op -> transformer.cloneDepenseToMoisSuivant(op))
+						.collect(Collectors.toList()));
 			}
 		}
 		else{
@@ -533,6 +545,7 @@ public class OperationsService extends AbstractBusinessService {
 	 */
 	public BudgetMensuel calculEtSauvegardeBudget(BudgetMensuel budget, String utilisateur){
 		calculBudget(budget);
+
 		dataDepenses.sauvegardeBudgetMensuel(budget, getBusinessSession(utilisateur).getEncryptor());
 		return budget;
 	}
@@ -613,10 +626,27 @@ public class OperationsService extends AbstractBusinessService {
 	 * Lock/unlock d'un budget
 	 * @param budgetActif
 	 */
-	public BudgetMensuel setBudgetActif(BudgetMensuel budgetMensuel, boolean budgetActif, String utilisateur){
+	public BudgetMensuel setBudgetActif(BudgetMensuel budgetMensuel, boolean budgetActif, String idUtilisateur){
 		LOGGER.info("{} du budget {}/{} de {}", budgetActif ? "Réouverture" : "Fermeture", budgetMensuel.getMois(), budgetMensuel.getAnnee(), budgetMensuel.getCompteBancaire().getLibelle());
 		budgetMensuel.setActif(budgetActif);
 		budgetMensuel.setDateMiseAJour(Calendar.getInstance());
-		return calculEtSauvegardeBudget(budgetMensuel, utilisateur);
+		//#119 : Toutes les opérations en attente sont annulées
+		if(!budgetActif){		
+			budgetMensuel.getListeOperations()
+				.stream()
+				.filter(op -> EtatLigneOperationEnum.PREVUE.equals(op.getEtat()))
+				.forEach(op -> op.setEtat(EtatLigneOperationEnum.ANNULEE));
+		}
+		return calculEtSauvegardeBudget(budgetMensuel, idUtilisateur);
 	}
+
+
+	/**
+	 * @param dataDepenses the dataDepenses to set
+	 */
+	protected void setDataDepenses(BudgetDatabaseService dataDepenses) {
+		this.dataDepenses = dataDepenses;
+	}
+	
+	
 }

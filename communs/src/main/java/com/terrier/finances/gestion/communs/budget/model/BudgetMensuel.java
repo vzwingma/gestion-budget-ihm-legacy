@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 
 /**
  * Budget du mois
@@ -54,9 +56,9 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * Résultat du mois précédent
 	 */
-	private Double resultatMoisPrecedent;
+	private Double moisPrecedentResultat;
 
-	private Double margeSecurite = 0D;
+	private Double margeMoisPrecedent = 0D;
 
 	/**
 	 * Liste des dépenses
@@ -83,8 +85,8 @@ public class BudgetMensuel implements Serializable {
 		totalParCategories.clear();
 		totalParSSCategories.clear();
 		LOGGER.debug("Raz des calculs du budget");
-		soldeNow = this.resultatMoisPrecedent;
-		soldeFin = this.resultatMoisPrecedent;
+		soldeNow = this.moisPrecedentResultat;
+		soldeFin = this.moisPrecedentResultat;
 	}
 
 	/**
@@ -126,7 +128,7 @@ public class BudgetMensuel implements Serializable {
 	 * @return the nowCompteReel
 	 */
 	public double getSoldeReelNow() {
-		return soldeNow + margeSecurite;
+		return soldeNow + margeMoisPrecedent;
 	}
 
 	/**
@@ -140,7 +142,7 @@ public class BudgetMensuel implements Serializable {
 	 * @return the finCompteReel
 	 */
 	public double getSoldeReelFin() {
-		return soldeFin + margeSecurite;
+		return soldeFin + margeMoisPrecedent;
 	}
 
 	/**
@@ -190,17 +192,19 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * @return the resultatMoisPrecedent
 	 */
-	public Double getResultatMoisPrecedent() {
-		return resultatMoisPrecedent;
+	public Double getMoisPrecedentResultat() {
+		return moisPrecedentResultat;
 	}
 
 	/**
 	 * @param resultatMoisPrecedent the resultatMoisPrecedent to set
 	 */
-	public void setResultatMoisPrecedent(Double resultatMoisPrecedent) {
-		this.resultatMoisPrecedent = resultatMoisPrecedent;
+	public void setResultatMoisPrecedent(Double resultatMoisPrecedent, Double margeMoisPrecedent) {
+		this.moisPrecedentResultat = resultatMoisPrecedent;
 		this.soldeFin = resultatMoisPrecedent;
 		this.soldeNow = resultatMoisPrecedent;
+		this.margeMoisPrecedent = margeMoisPrecedent;
+		this.margeCalculee = margeMoisPrecedent;
 	}
 
 	/**
@@ -221,18 +225,25 @@ public class BudgetMensuel implements Serializable {
 	/**
 	 * @return the margeSecurite
 	 */
-	public Double getMargeSecurite() {
-		return margeSecurite;
+	public Double getMoisPrecedentMarge() {
+		return margeMoisPrecedent;
 	}
-
-
+	
+	
+	private Double margeCalculee;
 	/**
-	 * @param margeSecurite the margeSecurite to set
+	 * @return the margeSecurite
 	 */
-	public void setMargeSecurite(Double margeSecurite) {
-		this.margeSecurite = margeSecurite;
+	public Double getMarge() {
+		margeCalculee = this.margeMoisPrecedent;
+		this.listeOperations.stream()
+			.filter(op -> IdsCategoriesEnum.RESERVE.getId().equals(op.getSsCategorie().getId()))
+			.forEach(op -> {
+				int type = TypeOperationEnum.CREDIT.equals(op.getTypeDepense()) ? 1 : -1;
+				margeCalculee = margeCalculee + type * Double.valueOf(op.getValeur());
+			});
+		return margeCalculee;
 	}
-
 
 	/**
 	 * @return the dateMiseAJour

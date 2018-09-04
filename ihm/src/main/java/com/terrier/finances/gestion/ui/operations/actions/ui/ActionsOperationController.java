@@ -1,7 +1,7 @@
 package com.terrier.finances.gestion.ui.operations.actions.ui;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.vaadin.ui.Button;
 
@@ -38,19 +38,19 @@ public class ActionsOperationController extends AbstractUIController<ActionsOper
 	 * mise à jour de l'état de la ligne
 	 * @param etat
 	 */
-	public void miseAJourEtatLigne(EtatLigneOperationEnum etat){
+	public void miseAJourEtatLigne(EtatOperationEnum etat){
 		Button boutonInactif = getComponent().getButtonPrevue();
 		if(etat != null){
-			if(etat.equals(EtatLigneOperationEnum.ANNULEE)) {
+			if(etat.equals(EtatOperationEnum.ANNULEE)) {
 				boutonInactif = getComponent().getButtonAnnuler();
 			}
-			else if(etat.equals(EtatLigneOperationEnum.REALISEE)) {
+			else if(etat.equals(EtatOperationEnum.REALISEE)) {
 				boutonInactif = getComponent().getButtonReel();
 			}
-			else if(etat.equals(EtatLigneOperationEnum.REPORTEE)) {
+			else if(etat.equals(EtatOperationEnum.REPORTEE)) {
 				boutonInactif = getComponent().getButtonReporter();
 			}
-			else if(etat.equals(EtatLigneOperationEnum.PREVUE)) {
+			else if(etat.equals(EtatOperationEnum.PREVUE)) {
 				boutonInactif = getComponent().getButtonPrevue();
 			}
 		}

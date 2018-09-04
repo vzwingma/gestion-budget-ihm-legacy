@@ -5,7 +5,7 @@ package com.terrier.finances.gestion.ui.operations.creation.validator;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;
@@ -42,8 +42,8 @@ public class OperationValidator implements Validator<LigneOperation> {
 
 
 		// Catégorie crédit
-		if((OperationsService.ID_SS_CAT_SALAIRE.equals(operation.getSsCategorie().getId()) 
-				|| OperationsService.ID_SS_CAT_REMBOURSEMENT.equals(operation.getSsCategorie().getId()))){
+		if((IdsCategoriesEnum.SALAIRE.getId().equals(operation.getSsCategorie().getId()) 
+				|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(operation.getSsCategorie().getId()))){
 			if(TypeOperationEnum.DEPENSE.equals(operation.getTypeDepense())){
 				return ValidationResult.error("L'opération est un crédit. Le type doit être CREDIT");
 			}

@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.operations.actions.ui.renderers;
 
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.renderers.ComponentRenderer;
@@ -21,7 +21,7 @@ public class ActionsOperationRenderer extends ComponentRenderer {
 	public JsonValue encode(Component value) {
 		if(value instanceof ActionsOperation){
 			ActionsOperation actions = (ActionsOperation)value;
-			if(OperationsService.ID_SS_CAT_RESERVE.equals(actions.getControleur().getOperation().getSsCategorie().getId())){
+			if(IdsCategoriesEnum.RESERVE.getId().equals(actions.getControleur().getOperation().getSsCategorie().getId())){
 				return null;
 			}
 		}

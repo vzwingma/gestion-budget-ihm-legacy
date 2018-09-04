@@ -42,15 +42,17 @@ public class OperationValidator implements Validator<LigneOperation> {
 
 
 		// Catégorie crédit
-		if((IdsCategoriesEnum.SALAIRE.getId().equals(operation.getSsCategorie().getId()) 
-				|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(operation.getSsCategorie().getId()))){
-			if(TypeOperationEnum.DEPENSE.equals(operation.getTypeDepense())){
-				return ValidationResult.error("L'opération est un crédit. Le type doit être CREDIT");
+		if(!IdsCategoriesEnum.RESERVE.getId().equals(operation.getSsCategorie().getId())){
+			if((IdsCategoriesEnum.SALAIRE.getId().equals(operation.getSsCategorie().getId()) 
+					|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(operation.getSsCategorie().getId()))){
+				if(TypeOperationEnum.DEPENSE.equals(operation.getTypeDepense())){
+					return ValidationResult.error("L'opération est un crédit. Le type doit être CREDIT");
+				}
+				// Sinon c'est correct
 			}
-			// Sinon c'est correct
-		}
-		else if(TypeOperationEnum.CREDIT.equals(operation.getTypeDepense())){
-			return ValidationResult.error("L'opération est un débit. Le type doit être DEBIT (-)");
+			else if(TypeOperationEnum.CREDIT.equals(operation.getTypeDepense())){
+				return ValidationResult.error("L'opération est un débit. Le type doit être DEBIT (-)");
+			}
 		}
 		return ValidationResult.ok();
 	}

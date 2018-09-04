@@ -128,7 +128,7 @@ public class BudgetMensuel implements Serializable {
 	 * @return the nowCompteReel
 	 */
 	public double getSoldeReelNow() {
-		return soldeNow + margeMoisPrecedent;
+		return soldeNow + getMarge();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class BudgetMensuel implements Serializable {
 	 * @return the finCompteReel
 	 */
 	public double getSoldeReelFin() {
-		return soldeFin + margeMoisPrecedent;
+		return soldeFin + getMarge();
 	}
 
 	/**

@@ -64,7 +64,7 @@ public class GridResumeTotauxController extends AbstractUIController<GridResumeT
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(finDateFormat));
 		getComponent().setItems(totauxBudget);
 		getComponent().getDataProvider().refreshAll();
-		getComponent().setDescription("Marge de sécurité : "+budget.getMoisPrecedentMarge()+" €");
+		getComponent().setDescription("Marge de sécurité : "+budget.getMarge()+" €");
 	}
 
 }

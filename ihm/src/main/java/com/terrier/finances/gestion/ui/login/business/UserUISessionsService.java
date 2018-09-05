@@ -35,6 +35,8 @@ public class UserUISessionsService implements Runnable, IUIService {
 
 	private ScheduledThreadPoolExecutor pool;
 
+	private int sessionValidity; 
+	
 	/**
 	 * Démarrage du controle des sessions
 	 */
@@ -42,6 +44,8 @@ public class UserUISessionsService implements Runnable, IUIService {
 	public void startSessionsControl(){
 		pool = new ScheduledThreadPoolExecutor(1);
 		pool.scheduleAtFixedRate(this, 0, 1, TimeUnit.MINUTES);
+		sessionValidity = Integer.parseInt(getServiceParams().getUiValiditySessionPeriod());
+		LOGGER.debug("Durée de validité d'une session : {} minutes", sessionValidity);
 	}
 
 	
@@ -111,10 +115,7 @@ public class UserUISessionsService implements Runnable, IUIService {
 	 */
 	@Override
 	public void run() {
-		int sessionValidity = Integer.parseInt(getServiceParams().getUiValiditySessionPeriod());
-		LOGGER.debug("Durée de validité d'une session : {} minutes", sessionValidity);
 		final Instant validiteSession  = Instant.now().minus(sessionValidity, ChronoUnit.MINUTES);
-		
 		List<String> idsInvalide = sessionsMap.values()
 			.parallelStream()
 			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))

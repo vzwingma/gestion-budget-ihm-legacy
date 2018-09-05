@@ -5,10 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
 import com.vaadin.data.ValidationResult;
 
@@ -28,7 +28,7 @@ public class TestValidator {
 
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
-		operation.setEtat(EtatLigneOperationEnum.PREVUE);
+		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
 		operation.setTypeDepense(TypeOperationEnum.DEPENSE);
 		operation.setValeurAbsStringToDouble("-123.13");
@@ -46,7 +46,7 @@ public class TestValidator {
 		// Ligne nulle
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
-		operation.setEtat(EtatLigneOperationEnum.PREVUE);
+		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
 		operation.setTypeDepense(TypeOperationEnum.DEPENSE);
 		operation.setValeurAbsStringToDouble("NaN");
@@ -66,8 +66,8 @@ public class TestValidator {
 		LigneOperation operation = new LigneOperation();
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
-		operation.getSsCategorie().setId(OperationsService.ID_SS_CAT_SALAIRE);
-		operation.setEtat(EtatLigneOperationEnum.PREVUE);
+		operation.getSsCategorie().setId(IdsCategoriesEnum.SALAIRE.getId());
+		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");		
 		operation.setValeurAbsStringToDouble("-123");
 		operation.setTypeDepense(TypeOperationEnum.DEPENSE);
@@ -82,7 +82,7 @@ public class TestValidator {
 		operation.setCategorie(new CategorieDepense());
 		operation.setSsCategorie(new CategorieDepense());
 		operation.getSsCategorie().setId("26a4b966-ffff-ffff-8611-a5ba4b518ef5");
-		operation.setEtat(EtatLigneOperationEnum.PREVUE);
+		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");	
 		operation.setValeurAbsStringToDouble("123");
 		operation.setTypeDepense(TypeOperationEnum.CREDIT);

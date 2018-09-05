@@ -8,7 +8,7 @@ package com.terrier.finances.gestion.communs.operations.model.enums;
  * @author vzwingma
  *
  */
-public enum EtatLigneOperationEnum {
+public enum EtatOperationEnum {
 
 	// Ligne prévue
 	PREVUE("prevue", "Prévue"),
@@ -28,7 +28,7 @@ public enum EtatLigneOperationEnum {
 	 * @param id
 	 * @param libelle
 	 */
-	private EtatLigneOperationEnum(String id, String libelle){
+	private EtatOperationEnum(String id, String libelle){
 		this.id = id;
 		this.libelle = libelle;
 	}
@@ -48,8 +48,8 @@ public enum EtatLigneOperationEnum {
 	}
 	
 	
-	public static EtatLigneOperationEnum getEnum(String idEnum){
-		for (EtatLigneOperationEnum enums : values()) {
+	public static EtatOperationEnum getEnum(String idEnum){
+		for (EtatOperationEnum enums : values()) {
 			if(enums.getId().equals(idEnum)){
 				return enums;
 			}

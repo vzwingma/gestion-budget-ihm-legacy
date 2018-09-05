@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.communs.utils.exception.DataNotFoundException;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
 import com.vaadin.data.ValidationResult;
@@ -55,7 +55,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 			// Si oui création
 			BudgetMensuel budget = getUserSession().getBudgetCourant();
 			try{
-				if(OperationsService.ID_SS_CAT_TRANSFERT_INTERCOMPTE.equals(newOperation.getSsCategorie().getId())
+				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getSsCategorie().getId())
 						&& compteTransfert.isPresent()){
 					LOGGER.info("[IHM] Ajout d'un nouveau transfert intercompte");
 					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get(), getUserSession().getIdUtilisateur()));
@@ -131,16 +131,16 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getComboboxType().setSelectedItem(TypeOperationEnum.DEPENSE);
 		getComponent().getComboboxType().clear();
 		// Etat
-		getComponent().getListSelectEtat().setItems(EtatLigneOperationEnum.values());
-		getComponent().getListSelectEtat().setTextInputAllowed(false);
-		getComponent().getListSelectEtat().clear();
+		getComponent().getComboboxEtat().setItems(EtatOperationEnum.values());
+		getComponent().getComboboxEtat().setTextInputAllowed(false);
+		getComponent().getComboboxEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
 		String etatNlleDepense = getServiceAuthentification().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
-			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.getEnum(etatNlleDepense));
+			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.getEnum(etatNlleDepense));
 		}
 		else{
-			getComponent().getListSelectEtat().setSelectedItem(EtatLigneOperationEnum.PREVUE);
+			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.PREVUE);
 		}
 		// Périodique
 		getComponent().getCheckBoxPeriodique().setCaption(null);

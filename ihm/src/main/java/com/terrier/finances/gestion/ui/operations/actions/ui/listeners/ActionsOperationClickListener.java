@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.budget.listeners;
+package com.terrier.finances.gestion.ui.operations.actions.ui.listeners;
 
 
 import java.util.Iterator;
@@ -10,14 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.utils.exception.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exception.DataNotFoundException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;
 import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog.ConfirmationDialogCallback;
-import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsLigneOperation;
+import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
@@ -30,7 +30,7 @@ import com.vaadin.ui.Notification.Type;
  * @author vzwingma
  *
  */
-public class ActionsLigneDepenseClickListener extends AbstractComponentListener implements Button.ClickListener, ConfirmationDialogCallback {
+public class ActionsOperationClickListener extends AbstractComponentListener implements Button.ClickListener, ConfirmationDialogCallback {
 
 	/**
 	 * 
@@ -39,30 +39,30 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ActionsLigneDepenseClickListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ActionsOperationClickListener.class);
 
 
-	private ActionsLigneOperation actions;
+	private ActionsOperation actions;
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		EtatLigneOperationEnum etat = EtatLigneOperationEnum.PREVUE;
-		actions = event.getButton().findAncestor(ActionsLigneOperation.class);
+		EtatOperationEnum etat = EtatOperationEnum.PREVUE;
+		actions = event.getButton().findAncestor(ActionsOperation.class);
 		if(event.getButton().getId().equals("buttonReel")){
 			LOGGER.trace("Action : Activation");
-			etat = EtatLigneOperationEnum.REALISEE;
+			etat = EtatOperationEnum.REALISEE;
 		}
 		else if(event.getButton().getId().equals("buttonAnnuler")){
 			LOGGER.trace("Action : Annulation");
-			etat = EtatLigneOperationEnum.ANNULEE;
+			etat = EtatOperationEnum.ANNULEE;
 		}
 		else if(event.getButton().getId().equals("buttonReporter")){
 			LOGGER.trace("Action : Reporter");
-			etat = EtatLigneOperationEnum.REPORTEE;
+			etat = EtatOperationEnum.REPORTEE;
 		}
 		else if(event.getButton().getId().equals("buttonPrevue")){
 			LOGGER.trace("Action : Prevue");
-			etat = EtatLigneOperationEnum.PREVUE;
+			etat = EtatOperationEnum.PREVUE;
 		}
 		else if(event.getButton().getId().equals("buttonSupprimer")){
 			LOGGER.trace("Action : Supprimé");
@@ -94,7 +94,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 	/**
 	 * Mise à jour de la ligne
 	 */
-	private void updateLigne(EtatLigneOperationEnum etat, String idUtilisateur){
+	private void updateLigne(EtatOperationEnum etat, String idUtilisateur){
 
 		// Mise à jour de l'état
 		actions.getControleur().miseAJourEtatLigne(etat);
@@ -104,7 +104,7 @@ public class ActionsLigneDepenseClickListener extends AbstractComponentListener 
 		try{
 			getUserSession().updateBudgetInSession(
 					getControleur(BudgetMensuelController.class).getServiceOperations()
-					.majEtatLigneOperation(budget, actions.getControleur().getIdOperation(), etat, idUtilisateur));
+					.majEtatLigneOperation(budget, actions.getControleur().getOperation().getId(), etat, idUtilisateur));
 		}
 		catch(DataNotFoundException|BudgetNotFoundException e){
 			Notification.show("l'opération est introuvable ou n'a pas été enregistrée", Type.ERROR_MESSAGE);

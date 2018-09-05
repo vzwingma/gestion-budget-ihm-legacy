@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
 import com.vaadin.event.selection.SingleSelectionEvent;
@@ -67,7 +67,7 @@ public class SelectionCategorieValueChangeListener extends AbstractComponentList
 				controleur.getComponent().getComboBoxSsCategorie().setEnabled(true);
 				
 				//#114 : Si prelevement alors mensuel = true
-				controleur.getComponent().getCheckBoxPeriodique().setValue(OperationsService.ID_CAT_PRELEVEMENTS_MENSUEL.equals(categorie.getId()));
+				controleur.getComponent().getCheckBoxPeriodique().setValue(IdsCategoriesEnum.PRELEVEMENTS_MENSUELS.getId().equals(categorie.getId()));
 				
 			}
 			else{

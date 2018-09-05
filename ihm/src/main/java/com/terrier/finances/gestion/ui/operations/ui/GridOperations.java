@@ -9,17 +9,17 @@ import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperation
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIGridComponent;
-import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsLigneOperation;
+import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
+import com.terrier.finances.gestion.ui.operations.actions.ui.renderers.ActionsOperationRenderer;
 import com.terrier.finances.gestion.ui.operations.edition.binder.LigneOperationEditorBinder;
 import com.terrier.finances.gestion.ui.operations.edition.listeners.GridOperationsEditorListener;
 import com.terrier.finances.gestion.ui.operations.edition.listeners.GridOperationsRightClickListener;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridOperationsEnum;
+import com.terrier.finances.gestion.ui.operations.ui.renderers.OperationBudgetTypeRenderer;
 import com.terrier.finances.gestion.ui.operations.ui.styles.GridOperationCellActionsStyle;
 import com.terrier.finances.gestion.ui.operations.ui.styles.GridOperationCellStyle;
 import com.terrier.finances.gestion.ui.operations.ui.styles.GridOperationCellValeurStyle;
-import com.terrier.finances.gestion.ui.operations.ui.styles.OperationBudgetTypeRenderer;
 import com.vaadin.contextmenu.GridContextMenu;
-import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.renderers.DateRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
 
@@ -162,7 +162,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c8.setEditorBinding(binderLD.bindPeriodique());
 
 		@SuppressWarnings("rawtypes")
-		Column c9 = addColumn(ActionsLigneOperation::new, new ComponentRenderer());
+		Column c9 = addColumn(ActionsOperation::new, new ActionsOperationRenderer());
 		c9.setId(EntetesGridOperationsEnum.ACTIONS.name())
 			.setCaption(EntetesGridOperationsEnum.ACTIONS.getLibelle())
 			.setWidth(TAILLE_COLONNE_ACTIONS)

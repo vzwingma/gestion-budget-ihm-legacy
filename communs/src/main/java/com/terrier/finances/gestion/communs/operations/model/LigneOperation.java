@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
@@ -34,7 +34,7 @@ public class LigneOperation implements Comparable<LigneOperation>, Serializable 
 	// Type de dépense
 	private TypeOperationEnum typeDepense;
 	// Etat de la ligne
-	private EtatLigneOperationEnum etat;
+	private EtatOperationEnum etat;
 	// Valeur
 	private double valeur;
 	// Date operation
@@ -68,7 +68,7 @@ public class LigneOperation implements Comparable<LigneOperation>, Serializable 
 	 * @param absValeur valeur montant en valeur absolue
 	 * @param etat état
 	 */
-	public LigneOperation(CategorieDepense ssCategorie, String libelle, TypeOperationEnum typeDepense, String absValeur, EtatLigneOperationEnum etat, boolean periodique){
+	public LigneOperation(CategorieDepense ssCategorie, String libelle, TypeOperationEnum typeDepense, String absValeur, EtatOperationEnum etat, boolean periodique){
 		this.id = UUID.randomUUID().toString();
 		setSsCategorie(ssCategorie);
 		this.libelle = libelle;
@@ -208,14 +208,14 @@ public class LigneOperation implements Comparable<LigneOperation>, Serializable 
 	/**
 	 * @return the etat
 	 */
-	public EtatLigneOperationEnum getEtat() {
+	public EtatOperationEnum getEtat() {
 		return etat;
 	}
 
 	/**
 	 * @param etat the etat to set
 	 */
-	public void setEtat(EtatLigneOperationEnum etat) {
+	public void setEtat(EtatOperationEnum etat) {
 		this.etat = etat;
 	}
 

@@ -9,9 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
@@ -49,9 +50,9 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 		Optional<TypeOperationEnum> typeSelected = form.getComboboxType().getSelectedItem();
 		TypeOperationEnum type = typeSelected.isPresent() ? typeSelected.get() : TypeOperationEnum.DEPENSE;
 
-		Optional<EtatLigneOperationEnum> etatSelected = form.getListSelectEtat().getSelectedItem();
-		EtatLigneOperationEnum etat = etatSelected.isPresent() ? etatSelected.get() : EtatLigneOperationEnum.PREVUE;
-
+		Optional<EtatOperationEnum> etatSelected = form.getComboboxEtat().getSelectedItem();
+		EtatOperationEnum etat = etatSelected.isPresent() ? etatSelected.get() : EtatOperationEnum.PREVUE;
+		
 		Optional<CategorieDepense> categorieSelected = form.getComboBoxSsCategorie().getSelectedItem();
 		Optional<String> descriptionSelected = form.getTextFieldDescription().getSelectedItem();
 
@@ -63,6 +64,11 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 				form.getTextFieldValeur().getValue(),
 				etat,
 				form.getCheckBoxPeriodique().getValue());
+
+		// #121 : Opération de réserve: toujours validée
+		if(IdsCategoriesEnum.RESERVE.getId().equals(newOperation.getSsCategorie().getId())){
+			newOperation.setEtat(EtatOperationEnum.REALISEE);
+		}
 		LOGGER.debug("[IHM]  >  {}", newOperation);
 		boolean resultat = getControleur(CreerDepenseController.class).validateAndCreate(newOperation, form.getComboboxComptes().getSelectedItem());
 

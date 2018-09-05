@@ -366,6 +366,10 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		BudgetMensuel budgetCourant = null;
 		try {
 			budgetCourant = chargeDonnees();
+			if(budgetCourant.isNewBudget()){
+				Notification.show("Création du budget mensuel. Le mois précédent est automatiquement clôturé et les opérations prévues sont annulées", Notification.Type.WARNING_MESSAGE);
+				budgetCourant.setNewBudget(false);
+			}
 		} catch (final DataNotFoundException e) {
 			LOGGER.warn("[BUDGET] Budget non trouvé.");
 			Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
@@ -374,7 +378,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		LOGGER.info("[IHM] >> Mise à jour des vues >> {}", budgetCourant.isActif());		
 		LOGGER.debug("[IHM] Affichage des données dans le tableau de suivi des dépenses");
 		List<LigneOperation> listeOperations = new ArrayList<>();
-		budgetCourant.getListeOperations().stream().forEach(e -> listeOperations.add(e));		
+		budgetCourant.getListeOperations().stream().forEach(listeOperations::add);		
 		/**
 		 * Affichage des lignes dans le tableau
 		 **/

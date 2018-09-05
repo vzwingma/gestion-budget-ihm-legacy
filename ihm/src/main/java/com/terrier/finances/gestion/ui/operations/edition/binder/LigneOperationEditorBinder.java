@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.vaadin.data.Binder;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
@@ -81,10 +81,8 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 		// Validation de la valeur
 		return this.forField(tValeur)
 				.withConverter(DataUtils::getValueFromString, String::valueOf)
-				.withValidator(v -> v != null, "La valeur ne doit pas être nulle ou incorrecte")
-                .withValidator(v -> {
-                    return (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v)));
-                }, "La valeur est incorrecte")
+				.withValidator(Objects::nonNull, "La valeur ne doit pas être nulle ou incorrecte")
+                .withValidator(v -> (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v))), "La valeur est incorrecte")
 				.bind(LigneOperation::getValeurAbsStringFromDouble, LigneOperation::setValeurAbsStringToDouble);
 	}
 
@@ -127,8 +125,8 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 				.flatMap(Set::stream)
 				// Sauf transfert intercompte et réservice
 				.filter(c -> 
-						!OperationsService.ID_SS_CAT_TRANSFERT_INTERCOMPTE.equals(c.getId()) 
-						&&	! OperationsService.ID_SS_CAT_RESERVE.equals(c.getId()))
+						!IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(c.getId()) 
+						&&	! IdsCategoriesEnum.RESERVE.getId().equals(c.getId()))
 				.sorted((c1, c2) -> c1.getLibelle().compareTo(c2.getLibelle()))
 				.collect(Collectors.toSet());
 		ssCategories.setItems(sousCategories);
@@ -138,8 +136,8 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 		// Update auto de la catégorie et du type
 		ssCategories.addSelectionListener(event -> {
 			cCategories.setValue(event.getSelectedItem().get().getCategorieParente());
-			if((OperationsService.ID_SS_CAT_SALAIRE.equals(this.ssCategories.getSelectedItem().get().getId()) 
-					|| OperationsService.ID_SS_CAT_REMBOURSEMENT.equals(this.ssCategories.getSelectedItem().get().getId()))){
+			if((IdsCategoriesEnum.SALAIRE.getId().equals(this.ssCategories.getSelectedItem().get().getId()) 
+					|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(this.ssCategories.getSelectedItem().get().getId()))){
 				expectedType = TypeOperationEnum.CREDIT;
 			}
 			else{

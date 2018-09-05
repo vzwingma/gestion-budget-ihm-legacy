@@ -16,6 +16,7 @@ import com.vaadin.ui.Grid;
  */
 public abstract class AbstractUIGridComponent<C extends AbstractUIController<?>, D> extends Grid<D> {
 
+
 	/**
 	 * 
 	 */

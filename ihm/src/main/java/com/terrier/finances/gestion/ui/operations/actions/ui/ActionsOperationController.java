@@ -1,6 +1,7 @@
 package com.terrier.finances.gestion.ui.operations.actions.ui;
 
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatLigneOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.vaadin.ui.Button;
 
@@ -9,17 +10,17 @@ import com.vaadin.ui.Button;
  * @author vzwingma
  *
  */
-public class ActionsLigneOperationController extends AbstractUIController<ActionsLigneOperation> {
+public class ActionsOperationController extends AbstractUIController<ActionsOperation> {
 
 
 	private static final long serialVersionUID = 3969804553001678780L;
 
-	private String idOperation;
+	private LigneOperation operation;
 	/**
 	 * Contructeur
 	 * @param composant
 	 */
-	public ActionsLigneOperationController(ActionsLigneOperation composant) {
+	public ActionsOperationController(ActionsOperation composant) {
 		super(composant);
 	}
 
@@ -37,19 +38,19 @@ public class ActionsLigneOperationController extends AbstractUIController<Action
 	 * mise à jour de l'état de la ligne
 	 * @param etat
 	 */
-	public void miseAJourEtatLigne(EtatLigneOperationEnum etat){
+	public void miseAJourEtatLigne(EtatOperationEnum etat){
 		Button boutonInactif = getComponent().getButtonPrevue();
 		if(etat != null){
-			if(etat.equals(EtatLigneOperationEnum.ANNULEE)) {
+			if(etat.equals(EtatOperationEnum.ANNULEE)) {
 				boutonInactif = getComponent().getButtonAnnuler();
 			}
-			else if(etat.equals(EtatLigneOperationEnum.REALISEE)) {
+			else if(etat.equals(EtatOperationEnum.REALISEE)) {
 				boutonInactif = getComponent().getButtonReel();
 			}
-			else if(etat.equals(EtatLigneOperationEnum.REPORTEE)) {
+			else if(etat.equals(EtatOperationEnum.REPORTEE)) {
 				boutonInactif = getComponent().getButtonReporter();
 			}
-			else if(etat.equals(EtatLigneOperationEnum.PREVUE)) {
+			else if(etat.equals(EtatOperationEnum.PREVUE)) {
 				boutonInactif = getComponent().getButtonPrevue();
 			}
 		}
@@ -61,20 +62,18 @@ public class ActionsLigneOperationController extends AbstractUIController<Action
 
 
 	/**
-	 * @return the idDepense
+	 * @return the operation
 	 */
-	public String getIdOperation() {
-		return idOperation;
+	public LigneOperation getOperation() {
+		return operation;
 	}
 
 
 	/**
-	 * @param idOperation the idOperation to set
+	 * @param operation the operation to set
 	 */
-	public void setIdOperation(String idOperation) {
-		this.idOperation = idOperation;
+	public void setOperation(LigneOperation operation) {
+		this.operation = operation;
 	}
-
-
 }
 

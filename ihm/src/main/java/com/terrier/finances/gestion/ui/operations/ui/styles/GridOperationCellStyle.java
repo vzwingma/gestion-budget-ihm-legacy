@@ -4,7 +4,7 @@
 package com.terrier.finances.gestion.ui.operations.ui.styles;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.vaadin.ui.StyleGenerator;
 
 /**
@@ -24,7 +24,7 @@ public class GridOperationCellStyle implements StyleGenerator<LigneOperation> {
 		StringBuilder style = new StringBuilder("v-grid-row-");
 		//  Sauf pour les dépenses réalisées, et celle réserve
 
-		if(!OperationsService.ID_SS_CAT_RESERVE.equals(depense.getSsCategorie().getId())){
+		if(!IdsCategoriesEnum.RESERVE.getId().equals(depense.getSsCategorie().getId())){
 			style.append(depense.getEtat().getId());
 		}
 

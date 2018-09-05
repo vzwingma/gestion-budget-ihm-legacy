@@ -1,15 +1,13 @@
 package com.terrier.finances.gestion.ui.budget.ui;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,12 +125,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			LOGGER.debug("[INIT] Init du mois géré : {}", dateBudget);
 		}
 		// Label last connexion
-		Date dateDernierAcces = getServiceAuthentification().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur().getDernierAcces();
+		LocalDateTime dateDernierAcces = getServiceAuthentification().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur().getDernierAcces();
 		if(dateDernierAcces != null){
-			SimpleDateFormat sdf = new SimpleDateFormat(DataUtils.DATE_FULL_TEXT_PATTERN, Locale.FRENCH);
-			sdf.setTimeZone(DataUtils.getTzParis());
-			String date = sdf.format(dateDernierAcces.getTime());
-			this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + date);
+			this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + DataUtils.getLibelleDate(dateDernierAcces));
 		}
 
 		// Maj des composants MOIS/COMPTES

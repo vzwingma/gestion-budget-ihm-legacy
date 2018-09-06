@@ -100,12 +100,6 @@ public abstract class AbstractHTTPClient {
 
 	/**
 	 * Appel POST 
-	 * @param clientHTTP client utilisé
-	 * @param url url appelée
-	 * @param formData data envoyées
-	 * @return
-	 */
-	/**
 	 * @param invocation URL appelée
 	 * @param entityData données envoyé
 	 * @param responseClassType classe de la réponse
@@ -114,11 +108,24 @@ public abstract class AbstractHTTPClient {
 	public <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> R callHTTPPost(String url, String path, Entity<Q> entityData, Class<R> responseClassType){
 		LOGGER.debug("[API POST] Appel du service [{}{}]", url, path);
 		try{
-			R response = getInvocation(url, path).header("Content-type", MediaType.APPLICATION_JSON)
-					.post(entityData, responseClassType);
-			LOGGER.debug("[API POST][200] Resultat : {}", response);
+			Invocation.Builder invoquer = getInvocation(url, path).header("Content-type", MediaType.APPLICATION_JSON);
+			R response = null;
+			if(responseClassType != null){
+				response = invoquer.post(entityData, responseClassType);
+				LOGGER.debug("[API POST][200] Resultat : {}", response);
+			}
+			else{
+				Response res = invoquer.post(entityData);
+				if(res.getStatus() > 400){
+					LOGGER.error("[API POST][{}]", res.getStatus());
+				}
+				else{
+					LOGGER.debug("[API POST][{}]", res.getStatus());
+				}
+			}
+			
 			if(response != null){
-				return null;
+				return response;
 			}
 		}
 		catch(WebApplicationException e){

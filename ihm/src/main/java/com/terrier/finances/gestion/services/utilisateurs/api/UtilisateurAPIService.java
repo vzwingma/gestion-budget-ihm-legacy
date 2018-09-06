@@ -3,8 +3,6 @@ package com.terrier.finances.gestion.services.utilisateurs.api;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginRestObject;
@@ -22,10 +20,7 @@ import com.terrier.finances.gestion.ui.communs.abstrait.rest.AbstractHTTPClient;
 public class UtilisateurAPIService extends AbstractHTTPClient {
 	
 	final String URI = "http://localhost:8080/ihm/rest";
-	/**
-	 * Logger
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UtilisateurAPIService.class);
+
 	
 	/**
 	 * Validation login/mdp
@@ -37,7 +32,15 @@ public class UtilisateurAPIService extends AbstractHTTPClient {
 		
 		Entity<AuthLoginRestObject> auth = Entity.entity(new AuthLoginRestObject(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
 		AuthResponseRestObject resultat =  callHTTPPost(URI, BudgetApiUrlEnum.AUTH_AUTHENTICATE_FULL, auth, AuthResponseRestObject.class);
-		LOGGER.info("Résultat : {}", resultat);
-		return resultat.getIdUtilisateur();
+		return resultat != null ? resultat.getIdUtilisateur() : null;
+	}
+	
+	
+	/**
+	 * Déconnexion d'un utilisateur
+	 * @param idSession
+	 */
+	public void deconnexion(String idSession){
+		callHTTPPost(URI, BudgetApiUrlEnum.AUTH_DISCONNECT_FULL + "/" + idSession, null, null);
 	}
 }

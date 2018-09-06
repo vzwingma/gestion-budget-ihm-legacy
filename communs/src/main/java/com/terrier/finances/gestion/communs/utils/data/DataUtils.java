@@ -7,8 +7,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.Comparator;
 import java.util.Date;
@@ -96,7 +99,13 @@ public class DataUtils {
 				.with(ChronoField.YEAR, year);
 	}
 
-
+	public static final String getLibelleDate(LocalDateTime date){
+		DateTimeFormatter sdf = new DateTimeFormatterBuilder()
+				.appendPattern(DataUtils.DATE_FULL_TEXT_PATTERN)
+				.toFormatter(Locale.FRENCH);
+		return date.format(sdf);
+	}
+	
 	/**
 	 * @param date
 	 * @return localdate

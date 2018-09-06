@@ -4,17 +4,17 @@
 package com.terrier.finances.gestion.communs.utilisateur.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.EnumMap;
 import java.util.Map;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 
 /**
  * Définition d'un utilisateur de la BDD
@@ -40,16 +40,14 @@ public class Utilisateur implements Serializable {
 	@JsonIgnore
 	private String masterCleChiffrementDonnees;
 
-	@JsonIgnore	
-	private Date dernierAcces;
+	private LocalDateTime dernierAcces;
 	
 	// Libellé
 	private String libelle;
 	/**
 	 * Préférences
 	 */
-	@Transient
-	private transient Map<UtilisateurPrefsEnum, Object> prefsUtilisateur = new EnumMap<>(UtilisateurPrefsEnum.class);
+	private Map<UtilisateurPrefsEnum, Object> prefsUtilisateur = new EnumMap<>(UtilisateurPrefsEnum.class);
 	/**
 	 * Droits
 	 */
@@ -137,14 +135,14 @@ public class Utilisateur implements Serializable {
 	/**
 	 * @return the dernierAcces
 	 */
-	public Date getDernierAcces() {
+	public LocalDateTime getDernierAcces() {
 		return dernierAcces;
 	}
 
 	/**
 	 * @param dernierAcces the dernierAcces to set
 	 */
-	public void setDernierAcces(Date dernierAcces) {
+	public void setDernierAcces(LocalDateTime dernierAcces) {
 		this.dernierAcces = dernierAcces;
 	}
 
@@ -194,7 +192,7 @@ public class Utilisateur implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Utilisateur [login=").append(login)
 				.append(", dateDernierAcces=")
-				.append(dernierAcces != null ? dernierAcces.getTime() : "nulle").append(", libelle=").append(libelle)
+				.append(dernierAcces != null ? DataUtils.getLibelleDate(dernierAcces) : "nulle").append(", libelle=").append(libelle)
 				.append("]");
 		return builder.toString();
 	}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.communs.utils.exception;
+package com.terrier.finances.gestion.communs.utils.exceptions;
 
 /**
  * Utilisateur non autorisé

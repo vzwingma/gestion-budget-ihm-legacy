@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author vzwingma
  *
  */
-public class AuthentificationRestObject extends AbstractRestObjectModel {
+public class AuthLoginRestObject extends AbstractRestObjectModel {
 
 	
 	/**
@@ -23,15 +23,13 @@ public class AuthentificationRestObject extends AbstractRestObjectModel {
 	@ApiModelProperty(notes = "Mot de passe hashé techniquement de l'utilisateur", required=true)
 	private String motDePasse;
 
-	@ApiModelProperty(notes = "Id de l'utilisateur associé", required=false)
-	private String idUtilisateur;
 	
 	// Constructeur par défaut
-	public AuthentificationRestObject(){
+	public AuthLoginRestObject(){
 		super();
 	}
 	
-	public AuthentificationRestObject(String login, String motDePasse){
+	public AuthLoginRestObject(String login, String motDePasse){
 		this.login = login;
 		this.motDePasse = motDePasse;
 	}
@@ -49,19 +47,13 @@ public class AuthentificationRestObject extends AbstractRestObjectModel {
 		return motDePasse;
 	}
 
-	/**
-	 * @return the idUtilisateur
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
-	public String getIdUtilisateur() {
-		return idUtilisateur;
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("AuthentificationRestObject [login=").append(login).append("]");
+		return builder.toString();
 	}
-
-	/**
-	 * @param idUtilisateur the idUtilisateur to set
-	 */
-	public void setIdUtilisateur(String idUtilisateur) {
-		this.idUtilisateur = idUtilisateur;
-	}
-	
-	
 }

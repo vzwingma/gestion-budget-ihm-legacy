@@ -7,6 +7,7 @@ package com.terrier.finances.gestion.ui.communs.abstrait.rest;
 
 import java.security.NoSuchAlgorithmException;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -19,6 +20,9 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.terrier.finances.gestion.communs.abstrait.AbstractRestObjectModel;
+import com.terrier.finances.gestion.services.communs.abstrait.rest.BudgetRestObjectMessageReader;
 
 /**
  * Classe d'un client HTTP
@@ -66,6 +70,7 @@ public abstract class AbstractHTTPClient {
 			//			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
 					//					.sslContext(sslcontext)
+					.register(BudgetRestObjectMessageReader.class)
 					.withConfig(clientConfig)
 					.build();
 		}
@@ -83,13 +88,12 @@ public abstract class AbstractHTTPClient {
 	 * @param type
 	 * @return
 	 */
-	public Invocation.Builder getInvocation(String url, String path){
-		LOGGER.debug("[HTTP] Appel de l'URI [{}{}]", url, path);
+	private Invocation.Builder getInvocation(String url, String path){
 		WebTarget wt = getClient().target(url);
 		if(path != null){
 			wt = wt.path(path);
 		}
-		return wt.request(JSON_MEDIA_TYPE);
+		return wt.request(JSON_MEDIA_TYPE).header("Content-type", MediaType.APPLICATION_JSON);
 	}
 
 
@@ -101,18 +105,27 @@ public abstract class AbstractHTTPClient {
 	 * @param formData data envoyées
 	 * @return
 	 */
-	public Object callHTTPPost(Invocation.Builder invocation, Entity<?> entityData){
-		LOGGER.debug("[HTTP POST] Appel du service");
+	/**
+	 * @param invocation URL appelée
+	 * @param entityData données envoyé
+	 * @param responseClassType classe de la réponse
+	 * @return réponse
+	 */
+	public <Q extends AbstractRestObjectModel, R extends AbstractRestObjectModel> R callHTTPPost(String url, String path, Entity<Q> entityData, Class<R> responseClassType){
+		LOGGER.debug("[API POST] Appel du service [{}{}]", url, path);
 		try{
-			invocation.header("Content-type", JSON_MEDIA_TYPE.getType()+"/"+JSON_MEDIA_TYPE.getSubtype());
-			Response response = invocation.post(entityData);
-			LOGGER.debug("[HTTP POST] Resultat : {}", response);
+			R response = getInvocation(url, path).header("Content-type", MediaType.APPLICATION_JSON)
+					.post(entityData, responseClassType);
+			LOGGER.debug("[API POST][200] Resultat : {}", response);
 			if(response != null){
-				return response.getEntity();
+				return null;
 			}
 		}
+		catch(WebApplicationException e){
+			LOGGER.error("[API POST][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+		}
 		catch(Exception e){
-			LOGGER.error("> Resultat : Erreur lors de l'appel HTTP POST", e);
+			LOGGER.error("[API POST][999] Erreur lors de l'appel", e);
 		}
 		return null;
 	}
@@ -125,14 +138,15 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	public boolean callHTTPGet(Invocation.Builder invocation){
-		LOGGER.debug("[HTTP GET] Appel du service");
+	@Deprecated
+	public boolean callHTTPGet(String url, String path){
+		LOGGER.debug("[API GET] Appel du service {}", url, path);
 		boolean resultat = false;
 		try{
 
-			Response response = invocation.get();
+			Response response = getInvocation(url, path).get();
 			if(response != null){
-				LOGGER.debug("[HTTP GET] Resultat : {}", response.getStatus());
+				LOGGER.debug("[API GET] Resultat : {}", response.getStatus());
 				resultat = response.getStatus() == 200;
 			}
 		}
@@ -151,13 +165,14 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	public Response callHTTPGetData(Invocation.Builder invocation){
-		LOGGER.debug("[HTTP GET] Appel du service");
+	@Deprecated
+	public Response callHTTPGetData(String url, String path){
+		LOGGER.debug("[API GET]  Appel du service {}", url, path);
 		try{
 
-			Response response = invocation.get();
+			Response response = getInvocation(url, path).get();
 			if(response != null){
-				LOGGER.debug("[HTTP GET] Resultat : {} / MediaType {}", response, response.getMediaType());
+				LOGGER.debug("[API GET] Resultat : {} / MediaType {}", response, response.getMediaType());
 			}
 			return response;
 		}

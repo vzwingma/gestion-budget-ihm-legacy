@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.communs.abstrait;
+package com.terrier.finances.gestion.services.communs.rest.converters;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.terrier.finances.gestion.communs.abstrait.AbstractRestObjectModel;
 
 /**
  * Message Converter pour les échanges entre l'IHM et les services via API

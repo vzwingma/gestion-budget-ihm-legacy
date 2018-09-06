@@ -161,6 +161,15 @@ public class Utilisateur implements Serializable {
 	public void setDroits(Map<UtilisateurDroitsEnum, Boolean> droits) {
 		this.droits = droits;
 	}
+	
+	
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	/**
 	 * @param cleDroit

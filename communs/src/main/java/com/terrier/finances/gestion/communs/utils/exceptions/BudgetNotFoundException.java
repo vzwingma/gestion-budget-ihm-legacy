@@ -16,9 +16,7 @@ public class BudgetNotFoundException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5428709492299879225L;
-
-
+	private static final long serialVersionUID = 873736486722763673L;
 	/**
 	 * Logger
 	 */

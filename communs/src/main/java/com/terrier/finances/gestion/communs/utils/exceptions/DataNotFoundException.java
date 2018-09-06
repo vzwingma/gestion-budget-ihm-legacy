@@ -27,8 +27,4 @@ public class DataNotFoundException extends Exception {
 		super(message);
 		LOGGER.error(message);
 	}
-	
-	
-	
-
 }

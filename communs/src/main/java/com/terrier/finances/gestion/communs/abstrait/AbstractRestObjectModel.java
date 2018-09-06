@@ -17,4 +17,9 @@ public abstract class AbstractRestObjectModel implements Serializable {
 	 */
 	private static final long serialVersionUID = 7048018115641885137L;
 
+	
+	// Constructeur par défaut
+	public AbstractRestObjectModel(){
+		
+	}
 }

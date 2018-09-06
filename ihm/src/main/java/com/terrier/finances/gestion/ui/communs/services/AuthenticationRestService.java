@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import com.terrier.finances.gestion.communs.utilisateur.model.Authentification;
+import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthentificationRestObject;
 import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
 import com.terrier.finances.gestion.ui.communs.abstrait.rest.AbstractHTTPClient;
 
@@ -37,7 +37,7 @@ public class AuthenticationRestService extends AbstractHTTPClient {
 
 		Invocation.Builder invoque = getInvocation(URI, "authenticate");
 		
-		Entity<Authentification> auth = Entity.entity(new Authentification(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
+		Entity<AuthentificationRestObject> auth = Entity.entity(new AuthentificationRestObject(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
 		LOGGER.info("Appel de {}", URI);
 		Object resultat =  callHTTPPost(invoque, auth);
 		LOGGER.info("Résultat : {}", resultat);

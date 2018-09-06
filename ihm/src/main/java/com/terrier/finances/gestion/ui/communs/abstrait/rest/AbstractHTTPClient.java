@@ -149,13 +149,13 @@ public abstract class AbstractHTTPClient {
 	 */
 	@Deprecated
 	public boolean callHTTPGet(String url, String path){
-		LOGGER.debug("[API GET] Appel du service {}", url, path);
+		LOGGER.debug("[API GET] Appel du service {}{}", url, path);
 		boolean resultat = false;
 		try{
 
 			Response response = getInvocation(url, path).get();
 			if(response != null){
-				LOGGER.debug("[API GET] Resultat : {}", response.getStatus());
+				LOGGER.debug("[API GET] Reponse : [{}]", response.getStatus());
 				resultat = response.getStatus() == 200;
 			}
 		}
@@ -175,12 +175,12 @@ public abstract class AbstractHTTPClient {
 	 * @return résultat de l'appel
 	 */
 	public <T> T callHTTPGetData(String url, String path, Class<T> responseClassType){
-		LOGGER.debug("[API GET]  Appel du service {}", url, path);
+		LOGGER.debug("[API GET]  Appel du service {}{}", url, path);
 		try{
 
 			T response = getInvocation(url, path).get(responseClassType);
 			if(response != null){
-				LOGGER.debug("[API GET][200] Resultat : {}", response);
+				LOGGER.debug("[API GET][200] Reponse : [{}]", response);
 			}
 			return response;
 		}

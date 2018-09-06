@@ -22,8 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
-import com.terrier.finances.gestion.services.communs.api.converters.BudgetRestObjectMessageReader;
-import com.terrier.finances.gestion.services.communs.api.converters.LocalDateTimeMessageConverter;
 
 /**
  * Classe d'un client HTTP
@@ -71,8 +69,6 @@ public abstract class AbstractHTTPClient {
 			//			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
 					//					.sslContext(sslcontext)
-					.register(BudgetRestObjectMessageReader.class)
-					.register(LocalDateTimeMessageConverter.class)
 					.withConfig(clientConfig)
 					.build();
 		}
@@ -134,7 +130,7 @@ public abstract class AbstractHTTPClient {
 			LOGGER.error("[API POST][{}] Erreur lors de l'appel", e.getResponse().getStatus());
 		}
 		catch(Exception e){
-			LOGGER.error("[API POST][999] Erreur lors de l'appel", e);
+			LOGGER.error("[API POST] Erreur lors de l'appel", e);
 		}
 		return null;
 	}
@@ -160,7 +156,7 @@ public abstract class AbstractHTTPClient {
 			}
 		}
 		catch(Exception e){
-			LOGGER.error("> Resultat : Erreur lors de l'appel HTTP GET", e);
+			LOGGER.error("[API GET] Erreur lors de l'appel", e);
 			resultat = false;
 		}
 		return resultat;
@@ -188,7 +184,7 @@ public abstract class AbstractHTTPClient {
 			LOGGER.error("[API GET][{}] Erreur lors de l'appel", e.getResponse().getStatus());
 		}
 		catch(Exception e){
-			LOGGER.error("[API GET][999] Erreur lors de l'appel", e);
+			LOGGER.error("[API GET] Erreur lors de l'appel", e);
 		}
 		return null;
 	}

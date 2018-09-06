@@ -5,8 +5,8 @@ package com.terrier.finances.gestion.ui.communs.abstrait.ui;
 
 import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
-import com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService;
 import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.terrier.finances.gestion.ui.login.business.UserUISession;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
@@ -65,7 +65,7 @@ public interface IUIControleurService  {
 	/**
 	 * @return service auth
 	 */
-	public default AuthenticationRestService getAPIServiceAuthentification(){
+	public default UtilisateurAPIService getAPIServiceAuthentification(){
 		return FacadeServices.get().getServiceAPIAuth();
 	}
 }

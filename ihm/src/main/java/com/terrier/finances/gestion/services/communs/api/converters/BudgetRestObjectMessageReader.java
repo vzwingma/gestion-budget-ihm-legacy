@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.services.communs.abstrait.rest;
+package com.terrier.finances.gestion.services.communs.api.converters;
 
 import java.io.IOException;
 import java.io.InputStream;

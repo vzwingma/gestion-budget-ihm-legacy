@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.ui.communs.services;
+package com.terrier.finances.gestion.services.utilisateurs.api;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -19,13 +19,13 @@ import com.terrier.finances.gestion.ui.communs.abstrait.rest.AbstractHTTPClient;
  *
  */
 @Controller
-public class AuthenticationRestService extends AbstractHTTPClient {
+public class UtilisateurAPIService extends AbstractHTTPClient {
 	
 	final String URI = "http://localhost:8080/ihm/rest";
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationRestService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilisateurAPIService.class);
 	
 	/**
 	 * Validation login/mdp

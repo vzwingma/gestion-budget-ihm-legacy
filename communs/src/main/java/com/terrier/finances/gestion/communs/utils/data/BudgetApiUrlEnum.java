@@ -12,7 +12,7 @@ public class BudgetApiUrlEnum {
 	/**
 	 * Authentification
 	 */
-	public static final String AUTH_BASE = "/authentification";
+	public static final String AUTH_BASE = "/utilisateurs";
 	
 	public static final String AUTH_AUTHENTICATE = "/v1/authenticate";
 	

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
 
@@ -48,7 +49,7 @@ public class FacadeServices {
     private AuthenticationService serviceAuth;
 
 	@Autowired
-	private AuthenticationRestService serviceRestAuth;
+	private UtilisateurAPIService serviceRestAuth;
 	
 	@Autowired
 	private UserUISessionsService serviceUserSessions;
@@ -126,14 +127,14 @@ public class FacadeServices {
 	/**
 	 * @return the serviceRestAuth
 	 */
-	public AuthenticationRestService getServiceAPIAuth() {
+	public UtilisateurAPIService getServiceAPIAuth() {
 		return serviceRestAuth;
 	}
 
 	/**
 	 * @param serviceRestAuth the serviceRestAuth to set
 	 */
-	public void setServiceRestAuth(com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService serviceRestAuth) {
+	public void setServiceRestAuth(com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService serviceRestAuth) {
 		LOGGER.trace("[INIT] Injection de AuthenticationService");
 		this.serviceRestAuth = serviceRestAuth;
 	}

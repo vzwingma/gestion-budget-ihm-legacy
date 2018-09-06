@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
-import com.terrier.finances.gestion.services.communs.abstrait.rest.BudgetRestObjectMessageReader;
+import com.terrier.finances.gestion.services.communs.api.converters.BudgetRestObjectMessageReader;
 
 /**
  * Classe d'un client HTTP

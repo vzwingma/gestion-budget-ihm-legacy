@@ -1,10 +1,12 @@
 package com.terrier.finances.gestion.model.data;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoField;
@@ -62,6 +64,13 @@ public class TestDataUtils {
 		assertEquals(Month.OCTOBER.getValue(), cd.get(ChronoField.MONTH_OF_YEAR));
 	}
 	
+	
+	@Test
+	public void testDateLibelle(){
+		String libelle = DataUtils.getLibelleDate(LocalDateTime.now());
+		System.err.println(libelle);
+		assertNotNull(libelle);
+	}
 	
 	@Test
 	public void testDoubleFromString(){

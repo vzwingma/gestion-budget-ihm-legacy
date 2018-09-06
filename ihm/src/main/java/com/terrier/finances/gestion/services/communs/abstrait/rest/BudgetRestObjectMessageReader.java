@@ -14,14 +14,14 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.terrier.finances.gestion.communs.abstrait.AbstractRestObjectModel;
+import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 
 /**
  * @author vzwingma
  * @param <T>
  *
  */
-public class BudgetRestObjectMessageReader<T extends AbstractRestObjectModel> implements MessageBodyReader<T> {
+public class BudgetRestObjectMessageReader<T extends AbstractAPIObjectModel> implements MessageBodyReader<T> {
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	

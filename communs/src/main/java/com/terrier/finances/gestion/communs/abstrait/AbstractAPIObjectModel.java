@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author vzwingma
  *
  */
-public abstract class AbstractRestObjectModel implements Serializable {
+public abstract class AbstractAPIObjectModel implements Serializable {
 
 	/**
 	 * 
@@ -19,7 +19,7 @@ public abstract class AbstractRestObjectModel implements Serializable {
 
 	
 	// Constructeur par défaut
-	public AbstractRestObjectModel(){
+	public AbstractAPIObjectModel(){
 		
 	}
 }

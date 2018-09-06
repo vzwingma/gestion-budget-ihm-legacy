@@ -43,12 +43,12 @@ public class FacadeServices {
 
 	@Autowired
 	private ParametragesService serviceParams;
+	
+    @Autowired
+    private AuthenticationService serviceAuth;
 
 	@Autowired
-	private AuthenticationService serviceAuth;
-
-	@Autowired
-	private com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService serviceRestAuth;
+	private AuthenticationRestService serviceRestAuth;
 	
 	@Autowired
 	private UserUISessionsService serviceUserSessions;
@@ -72,7 +72,7 @@ public class FacadeServices {
 	 *            the serviceDepense to set
 	 */
 	public void setServiceOperations(OperationsService serviceOperations) {
-		LOGGER.info("Injection du service métier Operations");
+		LOGGER.trace("[INIT] Injection du service métier Operations");
 		this.serviceOperations = serviceOperations;
 	}
 
@@ -88,24 +88,8 @@ public class FacadeServices {
 	 *            the serviceParams to set
 	 */
 	public void setServiceParams(ParametragesService serviceParams) {
-		LOGGER.info("Injection de ParametragesService");
+		LOGGER.trace("[INIT] Injection de ParametragesService");
 		this.serviceParams = serviceParams;
-	}
-
-	/**
-	 * @return the serviceAuth
-	 */
-	public AuthenticationService getServiceAuth() {
-		return serviceAuth;
-	}
-
-	/**
-	 * @param serviceAuth
-	 *            the serviceAuth to set
-	 */
-	public void setServiceAuth(AuthenticationService serviceAuth) {
-		LOGGER.info("Injection de AuthenticationService");
-		this.serviceAuth = serviceAuth;
 	}
 
 	/**
@@ -120,14 +104,29 @@ public class FacadeServices {
 	 *            the serviceUserSessions to set
 	 */
 	public void setServiceUserSessions(UserUISessionsService serviceUserSessions) {
-		LOGGER.info("Injection de UserSessionsManager");
+		LOGGER.trace("[INIT] Injection de UserSessionsManager");
 		this.serviceUserSessions = serviceUserSessions;
 	}
+    /**
+     * @return the serviceAuth
+     */
+    public AuthenticationService getServiceAuth() {
+        return serviceAuth;
+    }
+
+    /**
+     * @param serviceAuth
+     *            the serviceAuth to set
+     */
+    public void setServiceAuth(AuthenticationService serviceAuth) {
+        LOGGER.info("Injection de AuthenticationService");
+        this.serviceAuth = serviceAuth;
+    }
 
 	/**
 	 * @return the serviceRestAuth
 	 */
-	public com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService getServiceRestAuth() {
+	public AuthenticationRestService getServiceAPIAuth() {
 		return serviceRestAuth;
 	}
 
@@ -135,6 +134,7 @@ public class FacadeServices {
 	 * @param serviceRestAuth the serviceRestAuth to set
 	 */
 	public void setServiceRestAuth(com.terrier.finances.gestion.ui.communs.services.AuthenticationRestService serviceRestAuth) {
+		LOGGER.trace("[INIT] Injection de AuthenticationService");
 		this.serviceRestAuth = serviceRestAuth;
 	}
 

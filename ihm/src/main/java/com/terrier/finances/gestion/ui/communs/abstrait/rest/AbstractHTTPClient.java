@@ -21,7 +21,7 @@ import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.abstrait.AbstractRestObjectModel;
+import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.services.communs.abstrait.rest.BudgetRestObjectMessageReader;
 
 /**
@@ -111,7 +111,7 @@ public abstract class AbstractHTTPClient {
 	 * @param responseClassType classe de la réponse
 	 * @return réponse
 	 */
-	public <Q extends AbstractRestObjectModel, R extends AbstractRestObjectModel> R callHTTPPost(String url, String path, Entity<Q> entityData, Class<R> responseClassType){
+	public <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> R callHTTPPost(String url, String path, Entity<Q> entityData, Class<R> responseClassType){
 		LOGGER.debug("[API POST] Appel du service [{}{}]", url, path);
 		try{
 			R response = getInvocation(url, path).header("Content-type", MediaType.APPLICATION_JSON)

@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.communs.utilisateur.model.api;
 
-import com.terrier.finances.gestion.communs.abstrait.AbstractRestObjectModel;
+import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author vzwingma
  *
  */
-public class AuthLoginRestObject extends AbstractRestObjectModel {
+public class AuthLoginRestObject extends AbstractAPIObjectModel {
 
 	
 	/**

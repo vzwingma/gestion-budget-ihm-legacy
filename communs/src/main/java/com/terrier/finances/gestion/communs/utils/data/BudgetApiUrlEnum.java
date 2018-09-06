@@ -12,12 +12,16 @@ public class BudgetApiUrlEnum {
 	/**
 	 * Authentification
 	 */
-	public static final String AUTH_BASE = "/utilisateurs";
+	public static final String USERS_BASE = "/utilisateurs";
 	
-	public static final String AUTH_AUTHENTICATE = "/v1/authenticate";
-	public static final String AUTH_AUTHENTICATE_FULL = AUTH_BASE + AUTH_AUTHENTICATE;
+	public static final String USERS_AUTHENTICATE = "/v1/authenticate";
+	public static final String USERS_AUTHENTICATE_FULL = USERS_BASE + USERS_AUTHENTICATE;
 	
 	
-	public static final String AUTH_DISCONNECT = "/v1/disconnect";
-	public static final String AUTH_DISCONNECT_FULL = AUTH_BASE + AUTH_DISCONNECT;
+	public static final String USERS_DISCONNECT = "/v1/disconnect";
+	public static final String USERS_DISCONNECT_FULL = USERS_BASE + USERS_DISCONNECT;
+	
+	public static final String USERS_ACCESS_DATE = "/v1/lastaccessdate";
+	public static final String USERS_ACCESS_DATE_FULL = USERS_BASE + USERS_ACCESS_DATE;
+
 }

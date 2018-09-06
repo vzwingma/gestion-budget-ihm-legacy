@@ -90,7 +90,7 @@ public class UserUISessionsService implements Runnable, IUIControleurService {
 	 */
 	public void deconnexionUtilisateur(String idSession, boolean redirect){
 		UserUISession session = sessionsMap.get(idSession);
-		getAPIServiceAuthentification().deconnexion(session.getIdUtilisateur());
+		getAPIServiceUtilisateurs().deconnexion(session.getIdUtilisateur());
 		if(redirect){
 			session.deconnexionAndRedirect();
 		}

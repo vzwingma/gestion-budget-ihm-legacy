@@ -125,10 +125,11 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			LOGGER.debug("[INIT] Init du mois géré : {}", dateBudget);
 		}
 		// Label last connexion
-		LocalDateTime dateDernierAcces = getServiceAuthentification().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur().getDernierAcces();
-		if(dateDernierAcces != null){
-			this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + DataUtils.getLibelleDate(dateDernierAcces));
+		LocalDateTime dateDernierAcces = getAPIServiceUtilisateurs().getLastAccessTime(getUserSession().getIdUtilisateur());
+		if(dateDernierAcces == null){
+			dateDernierAcces = LocalDateTime.now();
 		}
+		this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + DataUtils.getLibelleDate(dateDernierAcces));
 
 		// Maj des composants MOIS/COMPTES
 		getComponent().getMois().setResolution(DateResolution.MONTH);

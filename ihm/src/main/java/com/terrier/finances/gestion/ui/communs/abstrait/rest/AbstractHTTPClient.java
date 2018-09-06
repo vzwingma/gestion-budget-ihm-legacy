@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.services.communs.api.converters.BudgetRestObjectMessageReader;
+import com.terrier.finances.gestion.services.communs.api.converters.LocalDateTimeMessageConverter;
 
 /**
  * Classe d'un client HTTP
@@ -71,6 +72,7 @@ public abstract class AbstractHTTPClient {
 			return ClientBuilder.newBuilder()
 					//					.sslContext(sslcontext)
 					.register(BudgetRestObjectMessageReader.class)
+					.register(LocalDateTimeMessageConverter.class)
 					.withConfig(clientConfig)
 					.build();
 		}
@@ -172,19 +174,21 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	@Deprecated
-	public Response callHTTPGetData(String url, String path){
+	public <T> T callHTTPGetData(String url, String path, Class<T> responseClassType){
 		LOGGER.debug("[API GET]  Appel du service {}", url, path);
 		try{
 
-			Response response = getInvocation(url, path).get();
+			T response = getInvocation(url, path).get(responseClassType);
 			if(response != null){
-				LOGGER.debug("[API GET] Resultat : {} / MediaType {}", response, response.getMediaType());
+				LOGGER.debug("[API GET][200] Resultat : {}", response);
 			}
 			return response;
 		}
+		catch(WebApplicationException e){
+			LOGGER.error("[API GET][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+		}
 		catch(Exception e){
-			LOGGER.error("> Resultat : Erreur lors de l'appel HTTP GET", e);
+			LOGGER.error("[API GET][999] Erreur lors de l'appel", e);
 		}
 		return null;
 	}

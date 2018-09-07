@@ -23,5 +23,6 @@ public class BudgetApiUrlEnum {
 	
 	public static final String USERS_ACCESS_DATE = "/v1/lastaccessdate";
 	public static final String USERS_ACCESS_DATE_FULL = USERS_BASE + USERS_ACCESS_DATE;
-
+	public static final String USERS_PREFS = "/v1/preferences";
+	public static final String USERS_PREFS_FULL = USERS_BASE + USERS_PREFS;
 }

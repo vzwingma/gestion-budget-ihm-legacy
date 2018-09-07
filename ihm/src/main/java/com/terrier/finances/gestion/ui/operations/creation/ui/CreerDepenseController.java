@@ -135,9 +135,9 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getComboboxEtat().setTextInputAllowed(false);
 		getComponent().getComboboxEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
-		String etatNlleDepense = getServiceAuthentification().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur().getPreference(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+		Object etatNlleDepense = getAPIServiceUtilisateurs().getPreferencesUtilisateur(getUserSession().getIdUtilisateur()).get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
-			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.getEnum(etatNlleDepense));
+			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.getEnum((String)etatNlleDepense));
 		}
 		else{
 			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.PREVUE);

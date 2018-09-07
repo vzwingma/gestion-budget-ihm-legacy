@@ -44,6 +44,10 @@ public class DataUtils {
 	public static final TimeZone getTzParis(){
 		return TimeZone.getTimeZone("Europe/Paris");
 	}
+	
+	public static final ZoneId getZIdParis(){
+		return ZoneId.of("Europe/Paris");
+	}
 
 	/**
 	 * @param utcTime
@@ -64,9 +68,29 @@ public class DataUtils {
 	 * @return la date actuelle en LocalDate
 	 */
 	public static final LocalDate localDateNow(){
-		return Instant.now().atZone(ZoneId.systemDefault()).toLocalDate();
+		return Instant.now().atZone(getZIdParis()).toLocalDate();
 	}
 
+	/**
+	 * @return la date actuelle en LocalDate
+	 */
+	public static final Long getLongFromLocalDateTime(LocalDateTime localDateTime){
+		if(localDateTime != null){
+			return localDateTime.atZone(getZIdParis()).toEpochSecond();
+		}
+		return null;
+	}
+	
+
+	/**
+	 * @return la date actuelle en LocalDate
+	 */
+	public static final LocalDateTime getLocalDateTimeFromLong(Long longTime){
+		if(longTime != null){
+			return LocalDateTime.ofInstant(Instant.ofEpochSecond(longTime), getZIdParis());
+		}
+		return null;
+	}
 
 	/**
 	 * @return la date localisée au début du mois

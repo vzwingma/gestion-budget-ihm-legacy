@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author vzwingma
  *
  */
-public class AuthLoginRestObject extends AbstractAPIObjectModel {
+public class AuthLoginAPIObject extends AbstractAPIObjectModel {
 
 	
 	/**
@@ -25,11 +25,11 @@ public class AuthLoginRestObject extends AbstractAPIObjectModel {
 
 	
 	// Constructeur par défaut
-	public AuthLoginRestObject(){
+	public AuthLoginAPIObject(){
 		super();
 	}
 	
-	public AuthLoginRestObject(String login, String motDePasse){
+	public AuthLoginAPIObject(String login, String motDePasse){
 		this.login = login;
 		this.motDePasse = motDePasse;
 	}

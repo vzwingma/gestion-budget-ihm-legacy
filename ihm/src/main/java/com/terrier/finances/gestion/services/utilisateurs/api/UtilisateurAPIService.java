@@ -1,15 +1,19 @@
 package com.terrier.finances.gestion.services.utilisateurs.api;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Controller;
 
-import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginRestObject;
-import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthResponseRestObject;
+import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
+import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
+import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthResponseAPIObject;
+import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
+import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.services.utilisateurs.business.UtilisateursService;
 import com.terrier.finances.gestion.ui.communs.abstrait.rest.AbstractHTTPClient;
 
@@ -32,26 +36,43 @@ public class UtilisateurAPIService extends AbstractHTTPClient {
 	 */
 	public String authenticate(String login, String motPasseEnClair){
 		
-		Entity<AuthLoginRestObject> auth = Entity.entity(new AuthLoginRestObject(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
-		AuthResponseRestObject resultat =  callHTTPPost(URI, BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth, AuthResponseRestObject.class);
+		Entity<AuthLoginAPIObject> auth = Entity.entity(new AuthLoginAPIObject(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
+		AuthResponseAPIObject resultat =  callHTTPPost(URI, BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth, AuthResponseAPIObject.class);
 		return resultat != null ? resultat.getIdUtilisateur() : null;
 	}
 	
 	
 	/**
 	 * Déconnexion d'un utilisateur
-	 * @param idSession
+	 * @param idUtilisateur
 	 */
-	public void deconnexion(String idSession){
-		callHTTPPost(URI, BudgetApiUrlEnum.USERS_DISCONNECT_FULL + "/" + idSession, null, null);
+	public void deconnexion(String idUtilisateur){
+		callHTTPPost(URI, BudgetApiUrlEnum.USERS_DISCONNECT_FULL + "/" + idUtilisateur, null, null);
 	}
 	
 	
 	/**
 	 * Déconnexion d'un utilisateur
-	 * @param idSession
+	 * @param idUtilisateur
 	 */
-	public LocalDateTime getLastAccessTime(String idSession){
-		return callHTTPGetData(URI, BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL + "/" + idSession, LocalDateTime.class);
+	public LocalDateTime getLastAccessTime(String idUtilisateur){
+		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL + "/" + idUtilisateur, UtilisateurPrefsAPIObject.class);
+		if(prefs != null){
+			return DataUtils.getLocalDateTimeFromLong(prefs.getLastAccessTime());
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Déconnexion d'un utilisateur
+	 * @param idUtilisateur
+	 */
+	public Map<UtilisateurPrefsEnum, String> getPreferencesUtilisateur(String idUtilisateur){
+		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, BudgetApiUrlEnum.USERS_PREFS_FULL + "/" + idUtilisateur, UtilisateurPrefsAPIObject.class);
+		if(prefs != null){
+			return prefs.getPreferences();
+		}
+		return null;
 	}
 }

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -68,7 +69,6 @@ public class TestDataUtils {
 	@Test
 	public void testDateLibelle(){
 		String libelle = DataUtils.getLibelleDate(LocalDateTime.now());
-		System.err.println(libelle);
 		assertNotNull(libelle);
 	}
 	
@@ -79,5 +79,17 @@ public class TestDataUtils {
 		assertEquals("123.3", DataUtils.getValueFromString("123.3"));
 		assertEquals("123.3", DataUtils.getValueFromString("123,3"));
 		assertEquals("-123.3", DataUtils.getValueFromString("-123,3"));
+	}
+	
+	
+	@Test
+	public void testLocalDateTime(){
+		LocalDateTime t = LocalDateTime.now();
+		t = t.minus(t.getNano(), ChronoUnit.NANOS);
+		Long lt = DataUtils.getLongFromLocalDateTime(t);
+		assertNotNull(lt);
+		LocalDateTime dt = DataUtils.getLocalDateTimeFromLong(lt);
+		assertNotNull(dt);
+		assertEquals(t, dt);
 	}
 }

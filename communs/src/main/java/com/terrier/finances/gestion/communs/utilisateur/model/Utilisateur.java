@@ -47,7 +47,7 @@ public class Utilisateur implements Serializable {
 	/**
 	 * Préférences
 	 */
-	private Map<UtilisateurPrefsEnum, Object> prefsUtilisateur = new EnumMap<>(UtilisateurPrefsEnum.class);
+	private Map<UtilisateurPrefsEnum, String> prefsUtilisateur = new EnumMap<>(UtilisateurPrefsEnum.class);
 	/**
 	 * Droits
 	 */
@@ -99,14 +99,14 @@ public class Utilisateur implements Serializable {
 	/**
 	 * @return the prefsUtilisateur
 	 */
-	public Map<UtilisateurPrefsEnum, Object> getPrefsUtilisateur() {
+	public Map<UtilisateurPrefsEnum, String> getPrefsUtilisateur() {
 		return prefsUtilisateur;
 	}
 
 	/**
 	 * @param prefsUtilisateur the prefsUtilisateur to set
 	 */
-	public void setPrefsUtilisateur(Map<UtilisateurPrefsEnum, Object> prefsUtilisateur) {
+	public void setPrefsUtilisateur(Map<UtilisateurPrefsEnum, String> prefsUtilisateur) {
 		this.prefsUtilisateur = prefsUtilisateur;
 	}
 

@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author vzwingma
  *
  */
-public class AuthResponseRestObject extends AbstractAPIObjectModel {
+public class AuthResponseAPIObject extends AbstractAPIObjectModel {
 
 	
 	/**
@@ -21,7 +21,7 @@ public class AuthResponseRestObject extends AbstractAPIObjectModel {
 	private String idUtilisateur;
 	
 	// Constructeur par défaut
-	public AuthResponseRestObject(){
+	public AuthResponseAPIObject(){
 		super();
 	}
 	

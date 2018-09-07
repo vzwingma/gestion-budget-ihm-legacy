@@ -54,7 +54,7 @@ public abstract class AbstractHTTPClient {
 	 * @return client HTTP
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public Client getClient(HttpAuthenticationFeature feature) {
+	private Client getClient(HttpAuthenticationFeature feature) {
 
 		ClientConfig clientConfig = new ClientConfig();
 		if(feature != null){
@@ -68,7 +68,7 @@ public abstract class AbstractHTTPClient {
 			//			sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
 			//			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
-					//					.sslContext(sslcontext)
+					//	.sslContext(sslcontext)
 					.withConfig(clientConfig)
 					.build();
 		}
@@ -103,14 +103,14 @@ public abstract class AbstractHTTPClient {
 	 * @param responseClassType classe de la réponse
 	 * @return réponse
 	 */
-	public <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> R callHTTPPost(String url, String path, Entity<Q> entityData, Class<R> responseClassType){
+	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> R callHTTPPost(String url, String path, Entity<Q> entityData, Class<R> responseClassType){
 		LOGGER.debug("[API POST] Appel du service [{}{}]", url, path);
 		try{
 			Invocation.Builder invoquer = getInvocation(url, path).header("Content-type", MediaType.APPLICATION_JSON);
 			R response = null;
 			if(responseClassType != null){
 				response = invoquer.post(entityData, responseClassType);
-				LOGGER.debug("[API POST][200] Resultat : {}", response);
+				LOGGER.debug("[API POST][200] Réponse : {}", response);
 			}
 			else{
 				Response res = invoquer.post(entityData);
@@ -144,14 +144,14 @@ public abstract class AbstractHTTPClient {
 	 * @return résultat de l'appel
 	 */
 	@Deprecated
-	public boolean callHTTPGet(String url, String path){
+	protected boolean callHTTPGet(String url, String path){
 		LOGGER.debug("[API GET] Appel du service {}{}", url, path);
 		boolean resultat = false;
 		try{
 
 			Response response = getInvocation(url, path).get();
 			if(response != null){
-				LOGGER.debug("[API GET] Reponse : [{}]", response.getStatus());
+				LOGGER.debug("[API GET] Réponse : [{}]", response.getStatus());
 				resultat = response.getStatus() == 200;
 			}
 		}
@@ -170,13 +170,13 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	public <T> T callHTTPGetData(String url, String path, Class<T> responseClassType){
+	protected <T> T callHTTPGetData(String url, String path, Class<T> responseClassType){
 		LOGGER.debug("[API GET]  Appel du service {}{}", url, path);
 		try{
 
 			T response = getInvocation(url, path).get(responseClassType);
 			if(response != null){
-				LOGGER.debug("[API GET][200] Reponse : [{}]", response);
+				LOGGER.debug("[API GET][200] Réponse : [{}]", response);
 			}
 			return response;
 		}

@@ -3,12 +3,8 @@ package com.terrier.finances.gestion.ui.communs.abstrait.api;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.ws.rs.WebApplicationException;

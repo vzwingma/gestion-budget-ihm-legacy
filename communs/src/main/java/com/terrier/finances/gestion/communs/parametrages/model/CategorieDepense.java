@@ -1,6 +1,5 @@
 package com.terrier.finances.gestion.communs.parametrages.model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;

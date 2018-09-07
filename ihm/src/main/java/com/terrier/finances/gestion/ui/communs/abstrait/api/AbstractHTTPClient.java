@@ -64,6 +64,7 @@ public abstract class AbstractHTTPClient {
 			clientConfig.register(feature);
 
 		}
+		// Register des converters
 		clientConfig.register(new ListAPIObjectModelReader<>(CategorieDepense.class));
 		clientConfig.register(new ListAPIObjectModelReader<>(CompteBancaire.class));
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());

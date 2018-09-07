@@ -103,13 +103,6 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 
 
 		// Comptes pour virement intercomptes
-		getComponent().getComboboxComptes().setItems(
-				getServiceComptes().getComptes(getUserSession().getIdUtilisateur())
-				.stream()
-				.filter(CompteBancaire::isActif)
-				.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
-				.collect(Collectors.toList()));
-		getComponent().getComboboxComptes().clear();
 		getComponent().getComboboxComptes().setTextInputAllowed(false);
 		getComponent().getComboboxComptes().setVisible(false);
 		getComponent().getLayoutCompte().setVisible(false);

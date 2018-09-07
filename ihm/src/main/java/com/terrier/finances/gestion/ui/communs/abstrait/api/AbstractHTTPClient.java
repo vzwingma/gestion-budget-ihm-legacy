@@ -22,8 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
-import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 
 /**
  * Classe d'un client HTTP

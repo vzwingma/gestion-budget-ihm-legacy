@@ -4,7 +4,9 @@
 package com.terrier.finances.gestion.ui.operations.creation.listeners;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
@@ -53,6 +55,14 @@ public class SelectionSousCategorieValueChangeListener extends AbstractComponent
 			 * Sélection d'un virement intercompte
 			 */
 			controleur.getComponent().getComboboxComptes().setVisible(interCompte);
+			if(interCompte && controleur.getComponent().getComboboxComptes().isEmpty()){
+				controleur.getComponent().getComboboxComptes().setItems(
+						getServiceComptes().getComptes(getUserSession().getIdUtilisateur())
+						.stream()
+						.filter(CompteBancaire::isActif)
+						.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
+						.collect(Collectors.toList()));
+			}
 			controleur.getComponent().getLayoutCompte().setVisible(interCompte);
 			controleur.getComponent().getLabelCompte().setVisible(interCompte);
 

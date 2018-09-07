@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.business.UtilisateursService;
@@ -46,11 +47,15 @@ public class FacadeServices {
 	private ParametragesService serviceParams;
 	
     @Autowired
+    @Deprecated
     private UtilisateursService serviceAuth;
 
 	@Autowired
-	private UtilisateurAPIService serviceRestAuth;
+	private UtilisateurAPIService serviceUtilisateurs;
 	
+	@Autowired
+	private ComptesAPIService serviceComptes;
+
 	@Autowired
 	private UserUISessionsService serviceUserSessions;
 
@@ -125,19 +130,35 @@ public class FacadeServices {
         this.serviceAuth = serviceAuth;
     }
 
+
 	/**
-	 * @return the serviceRestAuth
+	 * @return the serviceUtilisateurs
 	 */
-	public UtilisateurAPIService getServiceAPIUtilisateurs() {
-		return serviceRestAuth;
+	public UtilisateurAPIService getServiceUtilisateurs() {
+		return serviceUtilisateurs;
 	}
 
 	/**
-	 * @param serviceRestAuth the serviceRestAuth to set
+	 * @param serviceUtilisateurs the serviceUtilisateurs to set
 	 */
-	public void setServiceRestAuth(com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService serviceRestAuth) {
-		LOGGER.trace("[INIT] Injection de AuthenticationService");
-		this.serviceRestAuth = serviceRestAuth;
+	public void setServiceUtilisateurs(UtilisateurAPIService serviceUtilisateurs) {
+		this.serviceUtilisateurs = serviceUtilisateurs;
 	}
+
+	/**
+	 * @return the serviceComptes
+	 */
+	public ComptesAPIService getServiceComptes() {
+		return serviceComptes;
+	}
+
+	/**
+	 * @param serviceComptes the serviceComptes to set
+	 */
+	public void setServiceComptes(ComptesAPIService serviceComptes) {
+		this.serviceComptes = serviceComptes;
+	}
+	
+	
 
 }

@@ -13,7 +13,6 @@ import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperation
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
-import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
 import com.vaadin.data.ValidationResult;
@@ -43,7 +42,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		super(composant);
 	}
 
-	
+
 	/**
 	 * Validation formulaire
 	 * @param newOperation operation
@@ -96,26 +95,21 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getComboBoxCategorie().setItems(getServiceParams().getCategories().stream().sorted((c1, c2) -> c1.getLibelle().compareTo(c2.getLibelle())));
 		getComponent().getComboBoxCategorie().setEnabled(true);
 
-		
+
 		// Sélection d'une sous catégorie
 		getComponent().getComboBoxSsCategorie().clear();
 		getComponent().getComboBoxSsCategorie().setSelectedItem(null);
 		getComponent().getComboBoxSsCategorie().setEnabled(false);
-		
-		
+
+
 		// Comptes pour virement intercomptes
-		try{
-			getComponent().getComboboxComptes().setItems(
-					getServiceAuthentification().getComptesUtilisateur(getUserSession().getIdUtilisateur())
-					.stream()
-					.filter(CompteBancaire::isActif)
-					.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
-					.collect(Collectors.toList()));
-			getComponent().getComboboxComptes().clear();
-		} catch (DataNotFoundException e) {
-			Notification.show("Erreur grave : Impossible de charger les données", Notification.Type.ERROR_MESSAGE);
-			return;
-		}
+		getComponent().getComboboxComptes().setItems(
+				getServiceComptes().getComptes(getUserSession().getIdUtilisateur())
+				.stream()
+				.filter(CompteBancaire::isActif)
+				.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
+				.collect(Collectors.toList()));
+		getComponent().getComboboxComptes().clear();
 		getComponent().getComboboxComptes().setTextInputAllowed(false);
 		getComponent().getComboboxComptes().setVisible(false);
 		getComponent().getLayoutCompte().setVisible(false);
@@ -135,7 +129,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getComboboxEtat().setTextInputAllowed(false);
 		getComponent().getComboboxEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
-		Object etatNlleDepense = getAPIServiceUtilisateurs().getPreferencesUtilisateur(getUserSession().getIdUtilisateur()).get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+		Object etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur(getUserSession().getIdUtilisateur()).get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
 			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.getEnum((String)etatNlleDepense));
 		}

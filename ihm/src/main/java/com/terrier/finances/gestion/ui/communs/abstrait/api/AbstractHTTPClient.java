@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.communs.abstrait.rest;
+package com.terrier.finances.gestion.ui.communs.abstrait.api;
 
 
 
@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
 
 /**
  * Classe d'un client HTTP
@@ -35,7 +37,8 @@ public abstract class AbstractHTTPClient {
 	// Tout est en JSON
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
-
+	protected final String URI = "http://localhost:8080/ihm/rest";
+	
 	private Client clientHTTP;
 
 	/**
@@ -59,8 +62,11 @@ public abstract class AbstractHTTPClient {
 		ClientConfig clientConfig = new ClientConfig();
 		if(feature != null){
 			clientConfig.register(feature);
-		}
 
+		}
+		clientConfig.register(new ListAPIObjectModelReader<>(CategorieDepense.class));
+		clientConfig.register(new ListAPIObjectModelReader<>(CompteBancaire.class));
+		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
 		try {
 			//			// Install the all-trusting trust manager
 			//			SSLContext sslcontext = SSLContext.getInstance("TLS");

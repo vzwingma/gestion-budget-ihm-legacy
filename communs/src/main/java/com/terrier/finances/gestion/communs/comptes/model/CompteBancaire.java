@@ -3,13 +3,13 @@
  */
 package com.terrier.finances.gestion.communs.comptes.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 
 /**
@@ -18,7 +18,7 @@ import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
  *
  */
 @Document(collection = "comptesbancaires")
-public class CompteBancaire implements Serializable {
+public class CompteBancaire extends AbstractAPIObjectModel {
 
 	// SId
 	private static final long serialVersionUID = -846392155444814540L;

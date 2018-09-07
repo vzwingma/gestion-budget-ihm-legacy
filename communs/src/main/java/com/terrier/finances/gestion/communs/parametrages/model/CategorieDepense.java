@@ -9,13 +9,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+
 /**
  * Catégorie de dépense
  * @author vzwingma
  *
  */
 @Document(collection = "ParamCategoriesDepenses")
-public class CategorieDepense implements Serializable, Comparable<CategorieDepense> {
+public class CategorieDepense extends AbstractAPIObjectModel implements Comparable<CategorieDepense> {
 
 	/**
 	 * 

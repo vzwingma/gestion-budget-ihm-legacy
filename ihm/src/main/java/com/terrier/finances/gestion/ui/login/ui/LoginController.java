@@ -77,7 +77,7 @@ public class LoginController extends AbstractUIController<Login>{
 	 * @param passwordEnClair en clair de l'utilisateur
 	 */
 	public void authenticateUser(String login, String passwordEnClair){
-		AuthResponseAPIObject utilisateur = getAPIServiceUtilisateurs().authenticate(login, passwordEnClair);
+		AuthResponseAPIObject utilisateur = getServiceUtilisateurs().authenticate(login, passwordEnClair);
 		if(utilisateur != null){
 			getUserSession().registerUtilisateur(utilisateur.getIdUtilisateur(), utilisateur.getDroits());
 			LOGGER.info("Accès autorisé pour {}", login);

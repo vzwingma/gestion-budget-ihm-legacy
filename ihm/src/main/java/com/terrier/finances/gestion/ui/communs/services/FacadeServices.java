@@ -9,7 +9,6 @@ import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
-import com.terrier.finances.gestion.services.utilisateurs.business.UtilisateursService;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
 
 /**
@@ -45,10 +44,6 @@ public class FacadeServices {
 
 	@Autowired
 	private ParametragesService serviceParams;
-	
-    @Autowired
-    @Deprecated
-    private UtilisateursService serviceAuth;
 
 	@Autowired
 	private UtilisateurAPIService serviceUtilisateurs;
@@ -113,22 +108,6 @@ public class FacadeServices {
 		LOGGER.trace("[INIT] Injection de UserSessionsManager");
 		this.serviceUserSessions = serviceUserSessions;
 	}
-    /**
-     * @return the serviceAuth
-     */
-	@Deprecated
-    public UtilisateursService getServiceAuth() {
-        return serviceAuth;
-    }
-
-    /**
-     * @param serviceAuth
-     *            the serviceAuth to set
-     */
-    public void setServiceAuth(UtilisateursService serviceAuth) {
-        LOGGER.info("Injection de AuthenticationService");
-        this.serviceAuth = serviceAuth;
-    }
 
 
 	/**
@@ -158,7 +137,4 @@ public class FacadeServices {
 	public void setServiceComptes(ComptesAPIService serviceComptes) {
 		this.serviceComptes = serviceComptes;
 	}
-	
-	
-
 }

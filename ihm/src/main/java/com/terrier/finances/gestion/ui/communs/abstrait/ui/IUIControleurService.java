@@ -7,7 +7,6 @@ import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
-import com.terrier.finances.gestion.services.utilisateurs.business.UtilisateursService;
 import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.terrier.finances.gestion.ui.login.business.UserUISession;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
@@ -56,13 +55,7 @@ public interface IUIControleurService  {
 	default UserUISessionsService getServiceUserSessions(){
 		return FacadeServices.get().getServiceUserSessions();
 	}
-	/**
-	 * @return service auth
-	 */
-	@Deprecated
-	public default UtilisateursService getServiceAuthentification(){
-		return FacadeServices.get().getServiceAuth();
-	}
+
 	/**
 	 * @return service auth
 	 */

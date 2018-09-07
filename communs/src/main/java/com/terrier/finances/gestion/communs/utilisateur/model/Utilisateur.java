@@ -169,17 +169,6 @@ public class Utilisateur implements Serializable {
 		this.id = id;
 	}
 
-	/**
-	 * @param cleDroit
-	 * @return le résultat
-	 */
-	public boolean isEnabled(UtilisateurDroitsEnum cleDroit){
-		if(this.droits != null){
-			Boolean droit = this.droits.get(cleDroit);
-			return droit != null && droit.booleanValue();
-		}
-		return false;
-	}
 	
 	
 	/**

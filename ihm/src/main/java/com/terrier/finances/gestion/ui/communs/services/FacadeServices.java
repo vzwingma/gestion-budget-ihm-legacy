@@ -111,6 +111,7 @@ public class FacadeServices {
     /**
      * @return the serviceAuth
      */
+	@Deprecated
     public UtilisateursService getServiceAuth() {
         return serviceAuth;
     }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
+import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinServlet;
@@ -38,6 +39,8 @@ public class UserUISession {
 	 * Utilisateur courant
 	 */
 	private String idUtilisateur = null;
+	
+	private Map<UtilisateurDroitsEnum, Boolean> droits;
 	/**
 	 * Budget courant
 	 */
@@ -86,6 +89,7 @@ public class UserUISession {
 	protected void deconnexion(){
 		// Suppression de l'utilisateur
 		this.idUtilisateur = null;
+		this.droits = null;
 		this.lastAccessTime = null;
 		this.budgetMensuelCourant = null;
 		this.idSession = null;
@@ -130,9 +134,10 @@ public class UserUISession {
 	 * Enregistrement de l'utilisateur
 	 * @param utilisateur USER
 	 */
-	public boolean registerUtilisateur(String utilisateur){
+	public boolean registerUtilisateur(String utilisateur, Map<UtilisateurDroitsEnum, Boolean> droits){
 		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, utilisateur);
 		this.idUtilisateur = utilisateur;
+		this.droits = droits;
 		return true;
 	}
 
@@ -169,6 +174,19 @@ public class UserUISession {
 		return this.idUtilisateur != null && this.budgetMensuelCourant != null;
 	}
 
+
+	/**
+	 * @param cleDroit
+	 * @return le résultat
+	 */
+	public boolean isEnabled(UtilisateurDroitsEnum cleDroit){
+		if(this.droits != null){
+			Boolean droit = this.droits.get(cleDroit);
+			return droit != null && droit.booleanValue();
+		}
+		return false;
+	}
+	
 	/**
 	 * @return the idSession
 	 */

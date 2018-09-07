@@ -34,11 +34,10 @@ public class UtilisateurAPIService extends AbstractHTTPClient {
 	 * @param motPasseEnClair mdp
 	 * @return si valide
 	 */
-	public String authenticate(String login, String motPasseEnClair){
+	public AuthResponseAPIObject authenticate(String login, String motPasseEnClair){
 		
 		Entity<AuthLoginAPIObject> auth = Entity.entity(new AuthLoginAPIObject(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
-		AuthResponseAPIObject resultat =  callHTTPPost(URI, BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth, AuthResponseAPIObject.class);
-		return resultat != null ? resultat.getIdUtilisateur() : null;
+		return callHTTPPost(URI, BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth, AuthResponseAPIObject.class);
 	}
 	
 	

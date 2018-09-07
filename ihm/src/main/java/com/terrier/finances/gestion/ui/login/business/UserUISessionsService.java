@@ -118,7 +118,7 @@ public class UserUISessionsService implements Runnable, IUIControleurService {
 		final Instant validiteSession  = Instant.now().minus(sessionValidity, ChronoUnit.MINUTES);
 		List<String> idsInvalide = sessionsMap.values()
 			.parallelStream()
-			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))
+//			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))
 			.filter(session -> session.getLastAccessTime().isBefore(validiteSession))
 			.map(UserUISession::getId)
 			.collect(Collectors.toList());

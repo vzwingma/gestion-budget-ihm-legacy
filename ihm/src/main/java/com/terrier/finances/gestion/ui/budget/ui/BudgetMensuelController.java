@@ -16,7 +16,6 @@ import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
-import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
@@ -25,7 +24,6 @@ import com.terrier.finances.gestion.ui.budget.listeners.ActionDeconnexionClickLi
 import com.terrier.finances.gestion.ui.budget.listeners.ActionLockBudgetClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionRefreshMonthBudgetClickListener;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
-import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemCaptionStyle;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemIconStyle;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemStyle;
@@ -175,9 +173,8 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			// Bouton refresh
 			getComponent().getButtonRefreshMonth().setVisible(compteCourant.isActif());
 			
-			Utilisateur utilisateurCourant = FacadeServices.get().getServiceAuth().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur();
 			
-			if(utilisateurCourant.isEnabled(UtilisateurDroitsEnum.DROIT_RAZ_BUDGET) && compteCourant.isActif() ){
+			if(getUserSession().isEnabled(UtilisateurDroitsEnum.DROIT_RAZ_BUDGET) && compteCourant.isActif() ){
 				getComponent().getButtonRefreshMonth().addClickListener(new ActionRefreshMonthBudgetClickListener());
 			}
 			else{
@@ -185,7 +182,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			}
 			// Bouton lock
 			getComponent().getButtonLock().setVisible(compteCourant.isActif());
-			if(utilisateurCourant.isEnabled(UtilisateurDroitsEnum.DROIT_CLOTURE_BUDGET)){
+			if(getUserSession().isEnabled(UtilisateurDroitsEnum.DROIT_CLOTURE_BUDGET)){
 				getComponent().getButtonLock().setCaption("");
 				getComponent().getButtonLock().addClickListener(new ActionLockBudgetClickListener());
 			}

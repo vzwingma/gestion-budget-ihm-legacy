@@ -35,8 +35,9 @@ public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements M
 
 	
 	private boolean isAbstractAPIObjectModel(Class<?> clazz, MediaType mediaType){
-		LOGGER.debug("isReadable : {}/{} : {}", clazz, mediaType, AbstractAPIObjectModel.class.isAssignableFrom(clazz));
-		return MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && AbstractAPIObjectModel.class.isAssignableFrom(clazz);
+		boolean read = MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && AbstractAPIObjectModel.class.isAssignableFrom(clazz);
+		LOGGER.trace("isReadable : {}#{} -> {}", clazz, mediaType, read);
+		return read;
 	}
 
 	@Override

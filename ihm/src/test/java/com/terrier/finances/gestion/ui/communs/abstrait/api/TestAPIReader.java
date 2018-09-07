@@ -55,7 +55,7 @@ public class TestAPIReader {
 	@Test
 	public void testReaderListAPIObjects() throws HttpMessageNotWritableException, IOException{
 		@SuppressWarnings("rawtypes")
-		ListAPIObjectModelReader reader = new ListAPIObjectModelReader(CompteBancaire.class);
+		ListAPIObjectModelReader reader = new ListAPIObjectModelReader();
 		
 		assertFalse(reader.isReadable(AuthLoginAPIObject.class, null, null, MediaType.APPLICATION_JSON_TYPE));
 		assertTrue(reader.isReadable(List.class, null, null, MediaType.APPLICATION_JSON_TYPE));

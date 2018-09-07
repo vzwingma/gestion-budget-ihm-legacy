@@ -65,8 +65,7 @@ public abstract class AbstractHTTPClient {
 
 		}
 		// Register des converters
-		clientConfig.register(new ListAPIObjectModelReader<>(CategorieDepense.class));
-		clientConfig.register(new ListAPIObjectModelReader<>(CompteBancaire.class));
+		clientConfig.register(new ListAPIObjectModelReader<AbstractAPIObjectModel>());
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
 		try {
 			//			// Install the all-trusting trust manager
@@ -182,9 +181,7 @@ public abstract class AbstractHTTPClient {
 		try{
 
 			T response = getInvocation(url, path).get(responseClassType);
-			if(response != null){
-				LOGGER.debug("[API GET][200] Réponse : [{}]", response);
-			}
+			LOGGER.debug("[API GET][200] Réponse : [{}]", response);
 			return response;
 		}
 		catch(WebApplicationException e){

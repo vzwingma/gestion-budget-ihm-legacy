@@ -31,7 +31,7 @@
 	</issueManagement>
 	<scm>
 		<url>https://github.com/vzwingma/gestion-budget/tree/webapp</url>
-		<connection>scm:git:git://github.com/vzwingmagestion-budget.git</connection>
+		<connection>scm:git:git://github.com/vzwingma/gestion-budget.git</connection>
 		<developerConnection>scm:git:git@github.com:vzwingma/gestion-budget.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>

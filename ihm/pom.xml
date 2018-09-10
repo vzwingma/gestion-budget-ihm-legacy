@@ -8,6 +8,7 @@
 	</parent>
 	<groupId>io.github.vzwingma.finances.budget</groupId>
 	<artifactId>ihm</artifactId>
+	<version>7.0.0-SNAPSHOT</version>	
 	<packaging>war</packaging>
 	<name>[Budget] IHM</name>
 	<description>IHM de l'application</description>
@@ -293,4 +294,5 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
 </project>

@@ -13,24 +13,24 @@
 	<description>IHM de l'application</description>
 
 
-    <issueManagement>
-        <url>https://github.com/vzwingma/gestion-budget/issues</url>
-        <system>GitHub Issues</system>
-    </issueManagement>
-    <scm>
-        <url>https://github.com/vzwingma/gestion-budget/tree/webapp</url>
-        <connection>scm:git:git://github.com/vzwingma/gestion-budget.git</connection>
-        <developerConnection>scm:git:git@github.com:vzwingma/gestion-budget.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-    <developers>
-        <developer>
-            <email>vincent.zwingmann@gmail.com</email>
-            <name>Vincent Zwingmann</name>
-            <url>https://github.com/vzwingma</url>
-            <id>vzwingma</id>
-        </developer>
-    </developers>
+	<issueManagement>
+		<url>https://github.com/vzwingma/gestion-budget/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+	<scm>
+		<url>https://github.com/vzwingma/gestion-budget/tree/webapp</url>
+		<connection>scm:git:git://github.com/vzwingma/gestion-budget.git</connection>
+		<developerConnection>scm:git:git@github.com:vzwingma/gestion-budget.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	<developers>
+		<developer>
+			<email>vincent.zwingmann@gmail.com</email>
+			<name>Vincent Zwingmann</name>
+			<url>https://github.com/vzwingma</url>
+			<id>vzwingma</id>
+		</developer>
+	</developers>
 
 	<build>
 		<plugins>
@@ -271,6 +271,26 @@
 		<repository>
 			<id>m2</id>
 			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>oss-snapshot</id>
+			<url>https://oss.sonatype.org/content/groups/public</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>oss-stage</id>
+			<url>https://oss.sonatype.org/content/groups/staging</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 </project>

@@ -6,14 +6,31 @@
 		<artifactId>gestion-budget</artifactId>
 		<version>7.0.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.terrier.finances.budget</groupId>
+	<groupId>io.github.vzwingma.finances.budget</groupId>
 	<artifactId>ihm</artifactId>
 	<packaging>war</packaging>
-	<name>IHM</name>
+	<name>[Budget] IHM</name>
 	<description>IHM de l'application</description>
 
 
-
+    <issueManagement>
+        <url>https://github.com/vzwingma/gestion-budget/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+    <scm>
+        <url>https://github.com/vzwingma/gestion-budget/tree/webapp</url>
+        <connection>scm:git:git://github.com/vzwingma/gestion-budget.git</connection>
+        <developerConnection>scm:git:git@github.com:vzwingma/gestion-budget.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <developers>
+        <developer>
+            <email>vincent.zwingmann@gmail.com</email>
+            <name>Vincent Zwingmann</name>
+            <url>https://github.com/vzwingma</url>
+            <id>vzwingma</id>
+        </developer>
+    </developers>
 
 	<build>
 		<plugins>
@@ -170,9 +187,9 @@
 	<dependencies>
 		<!-- Communs -->
 		<dependency>
-			<groupId>com.terrier.finances.budget</groupId>
+			<groupId>io.github.vzwingma.finances.budget</groupId>
 			<artifactId>communs</artifactId>
-			<version>${project.version}</version>
+			<version>7.0.0-SNAPSHOT</version>
 		</dependency>
 		<!-- Services -->
 		<dependency>

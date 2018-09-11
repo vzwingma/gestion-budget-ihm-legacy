@@ -14,7 +14,6 @@ import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthResponseAP
 import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
-import com.terrier.finances.gestion.services.utilisateurs.business.UtilisateursService;
 import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
 
 /**

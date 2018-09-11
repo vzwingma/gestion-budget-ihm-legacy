@@ -24,7 +24,6 @@
 	</properties>
 
 	<modules>
-		<module>services</module>
 		<module>ihm</module>
 	</modules>
 

@@ -41,8 +41,8 @@ script:
 
 # Déploiement des releaes sur tag : snapshot ou version 
 before_deploy:
-  - cp ~/build/vzwingma/gestion-budget-ihm/target/webapps/budget.war ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker/budget.war
-  - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
+  - cp ~/build/vzwingma/gestion-budget/target/webapps/ihm.war ~/build/vzwingma/gestion-budget/src/main/external-ressources/docker/ihm.war
+  - cd ~/build/vzwingma/gestion-budget/src/main/external-ressources/docker
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
   - docker build -t vzwingmann/gestion_budget_ihm:travis .
   - if [[ $TRAVIS_BRANCH == v* ]]; 
@@ -63,7 +63,7 @@ deploy:
     api-key: $GITHUB_API_KEY
     skip_cleanup: true
     overwrite: true
-    file: /home/travis/build/vzwingma/gestion-budget-ihm/target/webapps/budget.war
+    file: /home/travis/build/vzwingma/gestion-budget/target/webapps/ihm.war
     on:
       repo: vzwingma/gestion-budget-ihm
       tags: true

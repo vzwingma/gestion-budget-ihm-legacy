@@ -3,11 +3,12 @@ package com.terrier.finances.gestion.ui.communs.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
-import com.terrier.finances.gestion.services.budget.business.OperationsService;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
-import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
+import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
+import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
 
@@ -35,15 +36,33 @@ public class FacadeServices {
 		}
 	}
 
+	private String uiRefreshPeriod;
+
+	/**
+	 * @return période de rafraichissement des IHM
+	 */
+	public String getUiRefreshPeriod() {
+		return uiRefreshPeriod;
+	}
+
+
+	/**
+	 * période de rafraichissement des IHM
+	 * @param uiRefreshPeriod
+	 */
+	@Value("${budget.ui.refresh.period:1}")
+	public void setUiRefreshPeriod(String uiRefreshPeriod) {
+		this.uiRefreshPeriod = uiRefreshPeriod;
+	}
 	/**
 	 * 
 	 * Liens vers les services métiers
 	 */
 	@Autowired
-	private OperationsService serviceOperations;
+	private OperationsAPIService serviceOperations;
 
 	@Autowired
-	private ParametragesService serviceParams;
+	private ParametragesAPIService serviceParams;
 
 	@Autowired
 	private UtilisateurAPIService serviceUtilisateurs;
@@ -64,7 +83,7 @@ public class FacadeServices {
 	/**
 	 * @return the serviceDepense
 	 */
-	public OperationsService getServiceOperations() {
+	public OperationsAPIService getServiceOperations() {
 		return serviceOperations;
 	}
 
@@ -72,15 +91,15 @@ public class FacadeServices {
 	 * @param serviceOperations
 	 *            the serviceDepense to set
 	 */
-	public void setServiceOperations(OperationsService serviceOperations) {
-		LOGGER.trace("[INIT] Injection du service métier Operations");
+	public void setServiceOperations(OperationsAPIService serviceOperations) {
+		LOGGER.trace("[INIT] OperationsAPIService");
 		this.serviceOperations = serviceOperations;
 	}
 
 	/**
 	 * @return the serviceParams
 	 */
-	public ParametragesService getServiceParams() {
+	public ParametragesAPIService getServiceParams() {
 		return serviceParams;
 	}
 
@@ -88,8 +107,8 @@ public class FacadeServices {
 	 * @param serviceParams
 	 *            the serviceParams to set
 	 */
-	public void setServiceParams(ParametragesService serviceParams) {
-		LOGGER.trace("[INIT] Injection de ParametragesService");
+	public void setServiceParams(ParametragesAPIService serviceParams) {
+		LOGGER.trace("[INIT] ParametragesAPIService");
 		this.serviceParams = serviceParams;
 	}
 
@@ -105,7 +124,7 @@ public class FacadeServices {
 	 *            the serviceUserSessions to set
 	 */
 	public void setServiceUserSessions(UserUISessionsService serviceUserSessions) {
-		LOGGER.trace("[INIT] Injection de UserSessionsManager");
+		LOGGER.trace("[INIT] UsersSessionsService");
 		this.serviceUserSessions = serviceUserSessions;
 	}
 
@@ -121,6 +140,7 @@ public class FacadeServices {
 	 * @param serviceUtilisateurs the serviceUtilisateurs to set
 	 */
 	public void setServiceUtilisateurs(UtilisateurAPIService serviceUtilisateurs) {
+		LOGGER.trace("[INIT] UtilisateurService");
 		this.serviceUtilisateurs = serviceUtilisateurs;
 	}
 
@@ -135,6 +155,7 @@ public class FacadeServices {
 	 * @param serviceComptes the serviceComptes to set
 	 */
 	public void setServiceComptes(ComptesAPIService serviceComptes) {
+		LOGGER.trace("[INIT] ComptesService");
 		this.serviceComptes = serviceComptes;
 	}
 }

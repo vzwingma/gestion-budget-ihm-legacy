@@ -13,6 +13,7 @@ import javax.annotation.PreDestroy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIControleurService;
@@ -35,8 +36,19 @@ public class UserUISessionsService implements Runnable, IUIControleurService {
 
 	private ScheduledThreadPoolExecutor pool;
 
-	private int sessionValidity; 
-	
+	private int sessionValidity = 10; 
+
+	@Value("${budget.ui.session.validity.period:10}")
+	public void setUiValiditySessionPeriod(String sessionValidity){
+		try{
+			this.sessionValidity = Integer.parseInt(sessionValidity);
+			LOGGER.info("Suivi des sessions utilisateurs. Durée de validité d'une session : {} minutes", sessionValidity);
+		}
+		catch(Exception e){
+			LOGGER.warn("Suivi des sessions utilisateurs. Durée de validité par défaut d'une session : {} minutes", sessionValidity);
+		}
+	}
+
 	/**
 	 * Démarrage du controle des sessions
 	 */
@@ -44,8 +56,6 @@ public class UserUISessionsService implements Runnable, IUIControleurService {
 	public void startSessionsControl(){
 		pool = new ScheduledThreadPoolExecutor(1);
 		pool.scheduleAtFixedRate(this, 0, 1, TimeUnit.MINUTES);
-		sessionValidity = Integer.parseInt(getServiceParams().getUiValiditySessionPeriod());
-		LOGGER.debug("Durée de validité d'une session : {} minutes", sessionValidity);
 	}
 
 	

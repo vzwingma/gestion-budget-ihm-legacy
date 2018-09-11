@@ -43,6 +43,10 @@ public class SelectionCategorieValueChangeListener extends AbstractComponentList
 		controleur.getComponent().getComboBoxSsCategorie().clear();
 		controleur.getComponent().getComboBoxSsCategorie().setSelectedItem(null);
 		
+		controleur.getComponent().getComboboxComptes().setVisible(false);
+		controleur.getComponent().getLayoutCompte().setVisible(false);
+		controleur.getComponent().getLabelCompte().setVisible(false);
+		
 		Optional<CategorieDepense> categories = event.getSelectedItem();
 		if(categories.isPresent()){
 			CategorieDepense categorie = categories.get();

@@ -6,20 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.services.budget.business.OperationsService;
+import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
-import com.terrier.finances.gestion.services.utilisateurs.business.AuthenticationService;
+import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
-
 
 /**
  * Facade des services pour appels depuis l'IHM
+ * 
  * @author vzwingma
  *
  */
 @Controller
 public class FacadeServices {
 
-	
 	/**
 	 * Logger
 	 */
@@ -28,12 +28,13 @@ public class FacadeServices {
 	// Gestionnaire des composants UI
 	private static FacadeServices facadeServices;
 
-	public FacadeServices(){
+	public FacadeServices() {
 		LOGGER.debug("[INIT] UI FacadeServices");
 		synchronized (FacadeServices.class) {
-			facadeServices = this;	
+			facadeServices = this;
 		}
 	}
+
 	/**
 	 * 
 	 * Liens vers les services métiers
@@ -45,19 +46,20 @@ public class FacadeServices {
 	private ParametragesService serviceParams;
 
 	@Autowired
-	private AuthenticationService serviceAuth;
+	private UtilisateurAPIService serviceUtilisateurs;
 	
-	@Autowired 
+	@Autowired
+	private ComptesAPIService serviceComptes;
+
+	@Autowired
 	private UserUISessionsService serviceUserSessions;
 
 	/**
 	 * @return l'instance de la façade des services
 	 */
-	public static FacadeServices get(){
+	public static FacadeServices get() {
 		return facadeServices;
 	}
-	
-	
 
 	/**
 	 * @return the serviceDepense
@@ -67,10 +69,11 @@ public class FacadeServices {
 	}
 
 	/**
-	 * @param serviceOperations the serviceDepense to set
+	 * @param serviceOperations
+	 *            the serviceDepense to set
 	 */
 	public void setServiceOperations(OperationsService serviceOperations) {
-		LOGGER.info("Injection du service métier Operations");
+		LOGGER.trace("[INIT] Injection du service métier Operations");
 		this.serviceOperations = serviceOperations;
 	}
 
@@ -82,29 +85,13 @@ public class FacadeServices {
 	}
 
 	/**
-	 * @param serviceParams the serviceParams to set
+	 * @param serviceParams
+	 *            the serviceParams to set
 	 */
 	public void setServiceParams(ParametragesService serviceParams) {
-		LOGGER.info("Injection de ParametragesService");
+		LOGGER.trace("[INIT] Injection de ParametragesService");
 		this.serviceParams = serviceParams;
 	}
-
-	/**
-	 * @return the serviceAuth
-	 */
-	public AuthenticationService getServiceAuth() {
-		return serviceAuth;
-	}
-
-	/**
-	 * @param serviceAuth the serviceAuth to set
-	 */
-	public void setServiceAuth(AuthenticationService serviceAuth) {
-		LOGGER.info("Injection de AuthenticationService");
-		this.serviceAuth = serviceAuth;
-	}
-
-
 
 	/**
 	 * @return the serviceUserSessions
@@ -113,14 +100,41 @@ public class FacadeServices {
 		return serviceUserSessions;
 	}
 
-
-
 	/**
-	 * @param serviceUserSessions the serviceUserSessions to set
+	 * @param serviceUserSessions
+	 *            the serviceUserSessions to set
 	 */
 	public void setServiceUserSessions(UserUISessionsService serviceUserSessions) {
-		LOGGER.info("Injection de UserSessionsManager");
+		LOGGER.trace("[INIT] Injection de UserSessionsManager");
 		this.serviceUserSessions = serviceUserSessions;
 	}
 
+
+	/**
+	 * @return the serviceUtilisateurs
+	 */
+	public UtilisateurAPIService getServiceUtilisateurs() {
+		return serviceUtilisateurs;
+	}
+
+	/**
+	 * @param serviceUtilisateurs the serviceUtilisateurs to set
+	 */
+	public void setServiceUtilisateurs(UtilisateurAPIService serviceUtilisateurs) {
+		this.serviceUtilisateurs = serviceUtilisateurs;
+	}
+
+	/**
+	 * @return the serviceComptes
+	 */
+	public ComptesAPIService getServiceComptes() {
+		return serviceComptes;
+	}
+
+	/**
+	 * @param serviceComptes the serviceComptes to set
+	 */
+	public void setServiceComptes(ComptesAPIService serviceComptes) {
+		this.serviceComptes = serviceComptes;
+	}
 }

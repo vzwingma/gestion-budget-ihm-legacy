@@ -16,16 +16,14 @@ import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
-import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
-import com.terrier.finances.gestion.communs.utils.exception.BudgetNotFoundException;
-import com.terrier.finances.gestion.communs.utils.exception.CompteClosedException;
-import com.terrier.finances.gestion.communs.utils.exception.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionDeconnexionClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionLockBudgetClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionRefreshMonthBudgetClickListener;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
-import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemCaptionStyle;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemIconStyle;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemStyle;
@@ -125,10 +123,11 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			LOGGER.debug("[INIT] Init du mois géré : {}", dateBudget);
 		}
 		// Label last connexion
-		LocalDateTime dateDernierAcces = getServiceAuthentification().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur().getDernierAcces();
-		if(dateDernierAcces != null){
-			this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + DataUtils.getLibelleDate(dateDernierAcces));
+		LocalDateTime dateDernierAcces = getServiceUtilisateurs().getLastAccessTime(getUserSession().getIdUtilisateur());
+		if(dateDernierAcces == null){
+			dateDernierAcces = LocalDateTime.now();
 		}
+		this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + DataUtils.getLibelleDate(dateDernierAcces));
 
 		// Maj des composants MOIS/COMPTES
 		getComponent().getMois().setResolution(DateResolution.MONTH);
@@ -141,8 +140,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		int ordreCompte = 100;
 		CompteBancaire compteCourant = null;
 
-		try{
-			List<CompteBancaire> comptes = getServiceAuthentification().getComptesUtilisateur(getUserSession().getIdUtilisateur());
+
+		List<CompteBancaire> comptes = getServiceComptes().getComptes(getUserSession().getIdUtilisateur());
+		if(comptes != null){
 			// Ajout de la liste des comptes dans la combobox
 			getComponent().getComboBoxComptes().setItems(comptes);
 			// Sélection du premier du groupe
@@ -173,10 +173,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			getComponent().getButtonDeconnexion().setDescription("Déconnexion de l'application");
 			// Bouton refresh
 			getComponent().getButtonRefreshMonth().setVisible(compteCourant.isActif());
-			
-			Utilisateur utilisateurCourant = FacadeServices.get().getServiceAuth().getBusinessSession(getUserSession().getIdUtilisateur()).getUtilisateur();
-			
-			if(utilisateurCourant.isEnabled(UtilisateurDroitsEnum.DROIT_RAZ_BUDGET) && compteCourant.isActif() ){
+
+
+			if(getUserSession().isEnabled(UtilisateurDroitsEnum.DROIT_RAZ_BUDGET) && compteCourant.isActif() ){
 				getComponent().getButtonRefreshMonth().addClickListener(new ActionRefreshMonthBudgetClickListener());
 			}
 			else{
@@ -184,7 +183,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			}
 			// Bouton lock
 			getComponent().getButtonLock().setVisible(compteCourant.isActif());
-			if(utilisateurCourant.isEnabled(UtilisateurDroitsEnum.DROIT_CLOTURE_BUDGET)){
+			if(getUserSession().isEnabled(UtilisateurDroitsEnum.DROIT_CLOTURE_BUDGET)){
 				getComponent().getButtonLock().setCaption("");
 				getComponent().getButtonLock().addClickListener(new ActionLockBudgetClickListener());
 			}
@@ -219,12 +218,13 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			});
 
 
-		}catch (DataNotFoundException e) {
+		}
+		else{
 			Notification.show("Impossible de charger le budget du compte " + (compteCourant != null ? compteCourant.getLibelle() : "" ) + " du " + dateBudget.get(ChronoField.MONTH_OF_YEAR)+"/"+ dateBudget.get(ChronoField.YEAR), Notification.Type.ERROR_MESSAGE);
 		}
 	}
 
-	
+
 	/**
 	 * Déconnexion de l'utilisateur
 	 */
@@ -271,7 +271,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId(), getUserSession().getIdUtilisateur());
 		miseAJourVueDonnees();
 	}
-	
+
 	/**
 	 * Mise à jour du range fin
 	 * @param dateFin
@@ -300,7 +300,8 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		if(dateFin != null){
 			// Bouton Mois suivant limité au mois prochain si le compte n'est pas clos
 			LocalDate dateRangeBudget = DataUtils.localDateFirstDayOfMonth();
-			if(getServiceAuthentification().isCompteActif(idCompte)){
+			CompteBancaire compte = getServiceComptes().getCompte(idCompte, getUserSession().getIdUtilisateur());
+			if(compte.isActif()){
 				dateRangeBudget = dateRangeBudget.plusMonths(1);
 			}
 			if(dateRangeBudget.isAfter(getComponent().getMois().getRangeEnd())){

@@ -17,34 +17,13 @@
 		<spring.security.version>5.0.7.RELEASE</spring.security.version>
 		<vaadin.version>8.5.1</vaadin.version>
 		<jackson.version>2.9.6</jackson.version>
+		<jersey.version>2.26</jersey.version>
 		<maven.build.timestamp.format>dd/MM/yyyy HH:mm</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 	</properties>
 
-
-
-	<issueManagement>
-		<url>https://github.com/vzwingma/gestion-budget/issues</url>
-		<system>GitHub Issues</system>
-	</issueManagement>
-	<scm>
-		<url>https://github.com/vzwingma/gestion-budget/tree/webapp</url>
-		<connection>scm:git:git://github.com/vzwingmagestion-budget.git</connection>
-		<developerConnection>scm:git:git@github.com:vzwingma/gestion-budget.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-	<developers>
-		<developer>
-			<email>vincent.zwingmann@gmail.com</email>
-			<name>Vincent Zwingmann</name>
-			<url>https://github.com/vzwingma</url>
-			<id>vzwingma</id>
-		</developer>
-	</developers>
-
 	<modules>
-		<module>communs</module>
 		<module>services</module>
 		<module>ihm</module>
 	</modules>

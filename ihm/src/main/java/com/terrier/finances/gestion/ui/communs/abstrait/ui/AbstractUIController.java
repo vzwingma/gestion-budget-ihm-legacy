@@ -10,7 +10,7 @@ import com.vaadin.ui.AbstractComponent;
  * 
  * @param <P> composant associé
  */
-public abstract class AbstractUIController<P extends AbstractComponent> implements IUIService, Serializable {
+public abstract class AbstractUIController<P extends AbstractComponent> implements IUIControleurService, Serializable {
 
 
 	/**

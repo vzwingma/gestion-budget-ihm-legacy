@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIService;
+import com.terrier.finances.gestion.ui.communs.abstrait.ui.IUIControleurService;
 import com.vaadin.ui.UI;
 
 /**
@@ -24,7 +24,7 @@ import com.vaadin.ui.UI;
  *
  */
 @Service
-public class UserUISessionsService implements Runnable, IUIService {
+public class UserUISessionsService implements Runnable, IUIControleurService {
 	/**
 	 * Logger
 	 */
@@ -90,7 +90,7 @@ public class UserUISessionsService implements Runnable, IUIService {
 	 */
 	public void deconnexionUtilisateur(String idSession, boolean redirect){
 		UserUISession session = sessionsMap.get(idSession);
-		getServiceAuthentification().deconnexionBusinessSession(session.getIdUtilisateur());
+		getServiceUtilisateurs().deconnexion(session.getIdUtilisateur());
 		if(redirect){
 			session.deconnexionAndRedirect();
 		}
@@ -118,7 +118,7 @@ public class UserUISessionsService implements Runnable, IUIService {
 		final Instant validiteSession  = Instant.now().minus(sessionValidity, ChronoUnit.MINUTES);
 		List<String> idsInvalide = sessionsMap.values()
 			.parallelStream()
-			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))
+//			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))
 			.filter(session -> session.getLastAccessTime().isBefore(validiteSession))
 			.map(UserUISession::getId)
 			.collect(Collectors.toList());

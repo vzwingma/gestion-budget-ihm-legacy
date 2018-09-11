@@ -25,7 +25,7 @@
 
     <inherits name="com.vaadin.contextmenu.WidgetSet" />
 
-    <inherits name="com.terrier.finances.gestion.ui.AppWidgetSet" />
+    
 
     <inherits name="com.vaadin.DefaultWidgetSet" />
 </module>

@@ -29,9 +29,9 @@
 	<dependencies>
 		<!-- Communs -->
 		<dependency>
-			<groupId>com.terrier.finances.budget</groupId>
+			<groupId>io.github.vzwingma.finances.budget</groupId>
 			<artifactId>communs</artifactId>
-			<version>${project.version}</version>
+			<version>7.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- SPRING -->

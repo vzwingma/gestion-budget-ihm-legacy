@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
@@ -97,7 +97,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c.setStyleGenerator(new GridOperationCellStyle());
 		// Pas éditable
 
-		Column<LigneOperation, CategorieDepense> c2 = addColumn(LigneOperation::getCategorie);
+		Column<LigneOperation, CategorieOperation> c2 = addColumn(LigneOperation::getCategorie);
 		c2.setId(EntetesGridOperationsEnum.CATEGORIE.name())
 			.setCaption(EntetesGridOperationsEnum.CATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)
@@ -108,7 +108,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Pas éditable
 		c2.setEditorBinding(binderLD.bindCategories());
 		
-		Column<LigneOperation, CategorieDepense> c3 = addColumn(LigneOperation::getSsCategorie);
+		Column<LigneOperation, CategorieOperation> c3 = addColumn(LigneOperation::getSsCategorie);
 		c3.setId(EntetesGridOperationsEnum.SSCATEGORIE.name())
 			.setCaption(EntetesGridOperationsEnum.SSCATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)

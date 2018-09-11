@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 
 public class TestSelectionCategorieValueChangeListener {
 
@@ -15,14 +15,14 @@ public class TestSelectionCategorieValueChangeListener {
 	@Test
 	public void addSsCategoriesActives(){
 		
-		List<CategorieDepense> ssCategories = new ArrayList<>();
+		List<CategorieOperation> ssCategories = new ArrayList<>();
 		
-		CategorieDepense catActive = new CategorieDepense();
+		CategorieOperation catActive = new CategorieOperation();
 		catActive.setActif(true);
 		catActive.setId("ACTIVE");
 		ssCategories.add(catActive);
 		
-		CategorieDepense catInactive = new CategorieDepense();
+		CategorieOperation catInactive = new CategorieOperation();
 		catInactive.setActif(false);
 		catInactive.setId("INACTIVE");
 		ssCategories.add(catInactive);

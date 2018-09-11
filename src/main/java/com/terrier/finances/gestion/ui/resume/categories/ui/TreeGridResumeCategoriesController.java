@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.budget.model.ResumeTotalCategories;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
@@ -68,13 +68,13 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 		List<ResumeTotalCategories> listeResumeTotaux = new ArrayList<>();
 
 		// Tri des catégories
-			for (CategorieDepense categorie : getServiceParams().getCategories()) {
+			for (CategorieOperation categorie : getServiceParams().getCategories()) {
 
 				if(categorie != null && budget.getTotalParCategories().get(categorie) != null){
 
 					ResumeTotalCategories totalCat = new ResumeTotalCategories(categorie.getLibelle(), budget.getTotalParCategories().get(categorie)[0], budget.getTotalParCategories().get(categorie)[1]);
 					listeResumeTotaux.add(totalCat);
-					for (CategorieDepense ssCategorie : categorie.getListeSSCategories()) {
+					for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
 						if(budget.getTotalParSSCategories().get(ssCategorie) == null){
 							totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 0D,0D));
 						}

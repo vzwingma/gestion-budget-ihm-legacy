@@ -36,7 +36,7 @@ public class FinancesVaadinUI extends UI
 	private static final Logger LOGGER = LoggerFactory.getLogger(FinancesVaadinUI.class);
 
 
-	@WebServlet(value = {"/ihm/*", "/VAADIN/*"}, asyncSupported = false)
+	@WebServlet(value = {"/ihm/*", "/VAADIN/*"}, asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = FinancesVaadinUI.class, widgetset = "com.terrier.finances.gestion.AppWidgetSet")
 	public static class Servlet extends VaadinServlet {
 
@@ -58,7 +58,7 @@ public class FinancesVaadinUI extends UI
 		UI.setCurrent(this);
 
 		// Refresh
-		int pollInterval = Integer.parseInt(FacadeServices.get().getUiRefreshPeriod());
+		int pollInterval = Integer.parseInt(FacadeServices.get().getServiceParams().getUiRefreshPeriod());
 		UI.getCurrent().setPollInterval(pollInterval);
 		LOGGER.debug("[INIT] FinancesVaadinUI - PoolInterval de {} ms", pollInterval);
 

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
 import com.vaadin.data.Binder;
@@ -32,19 +32,19 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 	private static final long serialVersionUID = -8849882826136832053L;
 
 	
-	private List<CategorieDepense> setCategories ;
+	private List<CategorieOperation> setCategories ;
 
 	/**
 	 * Constructeur
 	 * @param serviceParam
 	 */
-	public LigneOperationEditorBinder(List<CategorieDepense> setCategories){
+	public LigneOperationEditorBinder(List<CategorieOperation> setCategories){
 		this.setCategories = setCategories;
 	}
 
 
-	private ComboBox<CategorieDepense> cCategories = new  ComboBox<>();
-	private ComboBox<CategorieDepense> ssCategories = new  ComboBox<>();
+	private ComboBox<CategorieOperation> cCategories = new  ComboBox<>();
+	private ComboBox<CategorieOperation> ssCategories = new  ComboBox<>();
 	private ComboBox<TypeOperationEnum> cTypes = new ComboBox<>();
 	private TypeOperationEnum expectedType = TypeOperationEnum.DEPENSE;
 
@@ -109,19 +109,19 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneOperation, CategorieDepense> bindCategories(){
+	public Binding<LigneOperation, CategorieOperation> bindCategories(){
 		cCategories.setEnabled(false);
 		return this.forField(cCategories).withValidator(Objects::nonNull, "La catégorie est obligatoire").bind(LigneOperation::getCategorie, LigneOperation::setCategorie);
 	}
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneOperation, CategorieDepense> bindSSCategories(){
+	public Binding<LigneOperation, CategorieOperation> bindSSCategories(){
 
 
 		// Liste des sous catégories 
-		Set<CategorieDepense> sousCategories = setCategories.stream()
-				.map(CategorieDepense::getListeSSCategories)
+		Set<CategorieOperation> sousCategories = setCategories.stream()
+				.map(CategorieOperation::getListeSSCategories)
 				.flatMap(Set::stream)
 				// Sauf transfert intercompte et réservice
 				.filter(c -> 

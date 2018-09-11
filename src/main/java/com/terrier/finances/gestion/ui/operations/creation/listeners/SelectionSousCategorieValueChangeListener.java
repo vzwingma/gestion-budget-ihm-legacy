@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
@@ -21,7 +21,7 @@ import com.vaadin.event.selection.SingleSelectionListener;
  * @author vzwingma
  *
  */
-public class SelectionSousCategorieValueChangeListener extends AbstractComponentListener implements SingleSelectionListener<CategorieDepense>{
+public class SelectionSousCategorieValueChangeListener extends AbstractComponentListener implements SingleSelectionListener<CategorieOperation>{
 
 	// Controleur
 	private CreerDepenseController controleur;
@@ -40,10 +40,10 @@ public class SelectionSousCategorieValueChangeListener extends AbstractComponent
 	 * @see com.vaadin.data.Property.ValueChangeListener#valueChange(com.vaadin.data.Property.ValueChangeEvent)
 	 */
 	@Override
-	public void selectionChange(SingleSelectionEvent<CategorieDepense> event) {
-		Optional<CategorieDepense> catSelected = event.getFirstSelectedItem();
+	public void selectionChange(SingleSelectionEvent<CategorieOperation> event) {
+		Optional<CategorieOperation> catSelected = event.getFirstSelectedItem();
 		if(catSelected.isPresent()){
-			CategorieDepense ssCategorie = catSelected.get();	
+			CategorieOperation ssCategorie = catSelected.get();	
 			boolean interCompte = false;
 			boolean reserve = false;
 			if(ssCategorie != null){

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
@@ -53,7 +53,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 		Optional<EtatOperationEnum> etatSelected = form.getComboboxEtat().getSelectedItem();
 		EtatOperationEnum etat = etatSelected.isPresent() ? etatSelected.get() : EtatOperationEnum.PREVUE;
 		
-		Optional<CategorieDepense> categorieSelected = form.getComboBoxSsCategorie().getSelectedItem();
+		Optional<CategorieOperation> categorieSelected = form.getComboBoxSsCategorie().getSelectedItem();
 		Optional<String> descriptionSelected = form.getTextFieldDescription().getSelectedItem();
 
 

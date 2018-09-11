@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
@@ -19,7 +19,7 @@ import com.vaadin.event.selection.SingleSelectionListener;
  * @author vzwingma
  *
  */
-public class SelectionCategorieValueChangeListener extends AbstractComponentListener implements SingleSelectionListener<CategorieDepense>{
+public class SelectionCategorieValueChangeListener extends AbstractComponentListener implements SingleSelectionListener<CategorieOperation>{
 
 	// Controleur
 	private CreerDepenseController controleur;
@@ -38,7 +38,7 @@ public class SelectionCategorieValueChangeListener extends AbstractComponentList
 	 * @see com.vaadin.event.selection.SelectionListener#selectionChange(com.vaadin.event.selection.SelectionEvent)
 	 */
 	@Override
-	public void selectionChange(SingleSelectionEvent<CategorieDepense> event) {
+	public void selectionChange(SingleSelectionEvent<CategorieOperation> event) {
 		
 		controleur.getComponent().getComboBoxSsCategorie().clear();
 		controleur.getComponent().getComboBoxSsCategorie().setSelectedItem(null);
@@ -47,17 +47,17 @@ public class SelectionCategorieValueChangeListener extends AbstractComponentList
 		controleur.getComponent().getLayoutCompte().setVisible(false);
 		controleur.getComponent().getLabelCompte().setVisible(false);
 		
-		Optional<CategorieDepense> categories = event.getSelectedItem();
+		Optional<CategorieOperation> categories = event.getSelectedItem();
 		if(categories.isPresent()){
-			CategorieDepense categorie = categories.get();
+			CategorieOperation categorie = categories.get();
 			
 			// Sélection d'une catégorie
 			// Alimentation de la liste des sous catégories
 			if(categorie != null && categorie.getListeSSCategories() != null){
 
-				List<CategorieDepense> streamSSCategories = categorie.getListeSSCategories()
+				List<CategorieOperation> streamSSCategories = categorie.getListeSSCategories()
 						.stream()
-						.filter(CategorieDepense::isActif)
+						.filter(CategorieOperation::isActif)
 						.sorted()
 						.collect(Collectors.toList());
 				controleur.getComponent().getComboBoxSsCategorie().setItems(streamSSCategories);

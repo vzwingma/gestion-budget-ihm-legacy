@@ -3,7 +3,6 @@ package com.terrier.finances.gestion.ui.communs.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
@@ -36,24 +35,6 @@ public class FacadeServices {
 		}
 	}
 
-	private String uiRefreshPeriod;
-
-	/**
-	 * @return période de rafraichissement des IHM
-	 */
-	public String getUiRefreshPeriod() {
-		return uiRefreshPeriod;
-	}
-
-
-	/**
-	 * période de rafraichissement des IHM
-	 * @param uiRefreshPeriod
-	 */
-	@Value("${budget.ui.refresh.period:1}")
-	public void setUiRefreshPeriod(String uiRefreshPeriod) {
-		this.uiRefreshPeriod = uiRefreshPeriod;
-	}
 	/**
 	 * 
 	 * Liens vers les services métiers

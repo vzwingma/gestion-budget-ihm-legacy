@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieDepense;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 
 /**
  * Reader d'un {@link ListAPIObjectModelReader}
@@ -37,7 +37,7 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 
 	// Classe des objets Budget, gérés
 	@SuppressWarnings("unchecked")
-	private Class<T>[] classesAPIObjectModel = new Class[]{ CategorieDepense.class, CompteBancaire.class };
+	private Class<T>[] classesAPIObjectModel = new Class[]{ CategorieOperation.class, CompteBancaire.class };
 
 
 	/* (non-Javadoc)

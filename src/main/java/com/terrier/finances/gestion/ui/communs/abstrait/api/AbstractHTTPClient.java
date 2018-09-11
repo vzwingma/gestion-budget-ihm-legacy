@@ -6,6 +6,7 @@ package com.terrier.finances.gestion.ui.communs.abstrait.api;
 
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
@@ -179,6 +180,31 @@ public abstract class AbstractHTTPClient {
 		try{
 
 			T response = getInvocation(url, path).get(responseClassType);
+			LOGGER.debug("[API GET][200] Réponse : [{}]", response);
+			return response;
+		}
+		catch(WebApplicationException e){
+			LOGGER.error("[API GET][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+		}
+		catch(Exception e){
+			LOGGER.error("[API GET] Erreur lors de l'appel", e);
+		}
+		return null;
+	}
+	
+	/**
+	 * Appel HTTP GET
+	 * @param clientHTTP client HTTP
+	 * @param url racine de l'URL
+	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
+	 * @return résultat de l'appel
+	 */
+	protected <T> List<T> callHTTPGetListData(String url, String path, Class<T> responseClassType){
+		LOGGER.debug("[API GET]  Appel du service {}{}", url, path);
+		try{
+
+			@SuppressWarnings("unchecked")
+			List<T> response = getInvocation(url, path).get(List.class);
 			LOGGER.debug("[API GET][200] Réponse : [{}]", response);
 			return response;
 		}

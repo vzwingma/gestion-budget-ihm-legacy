@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthResponseAPIObject;
-import com.terrier.finances.gestion.services.parametrages.business.ParametragesService;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.vaadin.server.ThemeResource;
@@ -28,7 +27,7 @@ public class LoginController extends AbstractUIController<Login>{
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ParametragesService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
 
 	/**

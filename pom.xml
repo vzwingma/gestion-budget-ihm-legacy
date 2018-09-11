@@ -223,7 +223,7 @@
 							<warSourceExcludes>VAADIN/widgetsets/com.terrier.finances.gestion.AppWidgetSet/gwt/standard/*.css</warSourceExcludes>
 							<packagingExcludes>VAADIN/widgetsets/com.terrier.finances.gestion.AppWidgetSet/gwt/standard/*.css</packagingExcludes>
 							<outputDirectory>target/webapps</outputDirectory>
-							<warName>budget</warName>
+							<warName>ihm</warName>
 						</configuration>
 					</plugin>
 				</plugins>

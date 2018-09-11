@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
-import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateurAPIService;
+import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateursAPIService;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
 
 /**
@@ -46,7 +46,7 @@ public class FacadeServices {
 	private ParametragesAPIService serviceParams;
 
 	@Autowired
-	private UtilisateurAPIService serviceUtilisateurs;
+	private UtilisateursAPIService serviceUtilisateurs;
 	
 	@Autowired
 	private ComptesAPIService serviceComptes;
@@ -113,14 +113,14 @@ public class FacadeServices {
 	/**
 	 * @return the serviceUtilisateurs
 	 */
-	public UtilisateurAPIService getServiceUtilisateurs() {
+	public UtilisateursAPIService getServiceUtilisateurs() {
 		return serviceUtilisateurs;
 	}
 
 	/**
 	 * @param serviceUtilisateurs the serviceUtilisateurs to set
 	 */
-	public void setServiceUtilisateurs(UtilisateurAPIService serviceUtilisateurs) {
+	public void setServiceUtilisateurs(UtilisateursAPIService serviceUtilisateurs) {
 		LOGGER.trace("[INIT] UtilisateurService");
 		this.serviceUtilisateurs = serviceUtilisateurs;
 	}

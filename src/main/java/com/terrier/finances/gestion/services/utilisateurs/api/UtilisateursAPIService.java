@@ -22,7 +22,7 @@ import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class UtilisateurAPIService extends AbstractHTTPClient {
+public class UtilisateursAPIService extends AbstractHTTPClient {
 	
 	/**
 	 * Validation login/mdp

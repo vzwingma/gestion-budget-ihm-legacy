@@ -35,7 +35,7 @@ public abstract class AbstractHTTPClient {
 	// Tout est en JSON
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
-	protected final String URI = "http://localhost:8080/ihm/rest";
+	protected final String URI = "http://localhost:8090/services";
 	
 	private Client clientHTTP;
 

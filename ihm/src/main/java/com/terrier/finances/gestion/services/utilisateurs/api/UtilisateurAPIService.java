@@ -25,9 +25,6 @@ import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
 @Controller
 public class UtilisateurAPIService extends AbstractHTTPClient {
 	
-	final String URI = "http://localhost:8080/ihm/rest";
-
-	
 	/**
 	 * Validation login/mdp
 	 * @param login login

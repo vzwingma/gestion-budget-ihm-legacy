@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.communs.utils.data.DataUtils;
@@ -281,9 +282,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			// Bouton Mois précédent limité au mois du
 			// Premier budget du compte de cet utilisateur
 			try {
-				LocalDate[] datePremierDernierBudgets = getServiceOperations().getDatePremierDernierBudgets(idCompte);
-				getComponent().getMois().setRangeStart(datePremierDernierBudgets[0]);
-				getComponent().getMois().setRangeEnd(datePremierDernierBudgets[1]);
+				IntervallesCompteAPIObject datePremierDernierBudgets = getServiceComptes().getIntervallesBudgets(idCompte, getUserSession().getIdUtilisateur());
+				getComponent().getMois().setRangeStart(datePremierDernierBudgets.getLocalDatePremierBudget());
+				getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
 			} catch (DataNotFoundException e) {
 				LOGGER.error("[IHM] Erreur lors du chargement du premier budget");
 			}

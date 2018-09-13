@@ -90,8 +90,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * Lock/unlock d'un budget
 	 * @param budgetActif
 	 */
-	public BudgetMensuel setBudgetActif(BudgetMensuel budgetMensuel, boolean budgetActif, String idUtilisateur){
-		return budgetMensuel;
+	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif, String idUtilisateur){
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT.replace("idBudget", idBudgetMensuel).replace("idUtilisateur", idUtilisateur)).append("?actif=").append(budgetActif).toString();
+		return callHTTPPost(URI, path, null, BudgetMensuel.class);
 	}
 	
 	/**

@@ -239,7 +239,12 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 */
 	public void lockBudget(boolean setBudgetActif){
 		LOGGER.info("[IHM] {} du budget mensuel", setBudgetActif ? "Ouverture" : "Clôture");
-		getUserSession().updateBudgetInSession(getServiceOperations().setBudgetActif(getUserSession().getBudgetCourant(), setBudgetActif, getUserSession().getIdUtilisateur()));
+		BudgetMensuel lock = getServiceOperations().setBudgetActif(getUserSession().getBudgetCourant().getId(), setBudgetActif, getUserSession().getIdUtilisateur());
+		// Si l'opération s'est bien passée, on répercute la modif
+		if(lock != null){
+			getUserSession().updateBudgetInSession(lock);	
+		}
+		
 		miseAJourVueDonnees();
 	}
 

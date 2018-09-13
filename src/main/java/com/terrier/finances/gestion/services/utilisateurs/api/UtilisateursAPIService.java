@@ -3,9 +3,6 @@ package com.terrier.finances.gestion.services.utilisateurs.api;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
@@ -32,7 +29,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 */
 	public AuthResponseAPIObject authenticate(String login, String motPasseEnClair){
 		
-		Entity<AuthLoginAPIObject> auth = Entity.entity(new AuthLoginAPIObject(login, motPasseEnClair), MediaType.APPLICATION_JSON_TYPE);
+		AuthLoginAPIObject auth = new AuthLoginAPIObject(login, motPasseEnClair);
 		return callHTTPPost(URI, BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth, AuthResponseAPIObject.class);
 	}
 	

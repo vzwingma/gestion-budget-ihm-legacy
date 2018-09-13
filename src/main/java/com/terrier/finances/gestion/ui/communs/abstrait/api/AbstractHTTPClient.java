@@ -104,21 +104,21 @@ public abstract class AbstractHTTPClient {
 	/**
 	 * Appel POST 
 	 * @param invocation URL appelée
-	 * @param entityData données envoyé
+	 * @param dataToSend données envoyé
 	 * @param responseClassType classe de la réponse
 	 * @return réponse
 	 */
-	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> R callHTTPPost(String url, String path, Entity<Q> entityData, Class<R> responseClassType){
+	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> R callHTTPPost(String url, String path, Q dataToSend, Class<R> responseClassType){
 		LOGGER.debug("[API POST] Appel du service [{}{}]", url, path);
 		try{
-			Invocation.Builder invoquer = getInvocation(url, path).header("Content-type", MediaType.APPLICATION_JSON);
+			Invocation.Builder invoquer = getInvocation(url, path);
 			R response = null;
 			if(responseClassType != null){
-				response = invoquer.post(entityData, responseClassType);
+				response = invoquer.post(getEntity(dataToSend), responseClassType);
 				LOGGER.debug("[API POST][200] Réponse : {}", response);
 			}
 			else{
-				Response res = invoquer.post(entityData);
+				Response res = invoquer.post(getEntity(dataToSend));
 				if(res.getStatus() > 400){
 					LOGGER.error("[API POST][{}]", res.getStatus());
 				}
@@ -174,11 +174,11 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	protected <T> T callHTTPGetData(String url, String path, Class<T> responseClassType){
+	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String url, String path, Class<R> responseClassType){
 		LOGGER.debug("[API GET]  Appel du service {}{}", url, path);
 		try{
 
-			T response = getInvocation(url, path).get(responseClassType);
+			R response = getInvocation(url, path).get(responseClassType);
 			LOGGER.debug("[API GET][200] Réponse : [{}]", response);
 			return response;
 		}
@@ -198,12 +198,12 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	protected <T> List<T> callHTTPGetListData(String url, String path, Class<T> responseClassType){
+	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String url, String path, Class<R> responseClassType){
 		LOGGER.debug("[API GET]  Appel du service {}{}", url, path);
 		try{
 
 			@SuppressWarnings("unchecked")
-			List<T> response = getInvocation(url, path).get(List.class);
+			List<R> response = getInvocation(url, path).get(List.class);
 			LOGGER.debug("[API GET][200] Réponse : [{}]", response);
 			return response;
 		}
@@ -216,4 +216,8 @@ public abstract class AbstractHTTPClient {
 		return null;
 	}
 
+	
+	protected <R extends AbstractAPIObjectModel> Entity<R> getEntity(R apiObject){
+		return Entity.entity(apiObject, MediaType.APPLICATION_JSON_TYPE);
+	}
 }

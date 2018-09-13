@@ -129,7 +129,8 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * Calcul du budget Courant et sauvegarde
 	 * @param budget budget à sauvegarder
 	 */
-	public BudgetMensuel calculEtSauvegardeBudget(BudgetMensuel budget, String utilisateur){
-		return budget;
+	public BudgetMensuel miseAJourBudget(BudgetMensuel budget, String idUtilisateur){
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID.replace("idBudget", budget.getId()).replace("idUtilisateur", idUtilisateur)).toString();
+		return callHTTPPost(URI, path, budget, BudgetMensuel.class);
 	}
 }

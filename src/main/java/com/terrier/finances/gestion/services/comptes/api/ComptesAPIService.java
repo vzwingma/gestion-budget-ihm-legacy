@@ -22,9 +22,8 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * Comptes d'un utilisateur
 	 * @param idUtilisateur
 	 */
-	@SuppressWarnings("unchecked")
 	public List<CompteBancaire> getComptes(String idUtilisateur){
-		return callHTTPGetData(URI, BudgetApiUrlEnum.COMPTES_LIST_FULL + "/" + idUtilisateur, List.class);
+		return callHTTPGetListData(URI, BudgetApiUrlEnum.COMPTES_LIST_FULL + "/" + idUtilisateur, CompteBancaire.class);
 	}
 	
 	/**

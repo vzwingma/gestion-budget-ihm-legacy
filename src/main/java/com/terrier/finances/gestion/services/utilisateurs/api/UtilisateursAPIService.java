@@ -42,7 +42,8 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur
 	 */
 	public void deconnexion(String idUtilisateur){
-		callHTTPPost(URI, BudgetApiUrlEnum.USERS_DISCONNECT_FULL + "/" + idUtilisateur, null, null);
+		String path = BudgetApiUrlEnum.USERS_DISCONNECT_FULL.replace("{idUtilisateur}", idUtilisateur);
+		callHTTPPost(URI, path, null, null);
 	}
 	
 	

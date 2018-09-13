@@ -330,7 +330,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				// Budget
 				BudgetMensuel budget = getServiceOperations().chargerBudgetMensuel(
 						getUserSession().getIdUtilisateur(),
-						compte,
+						compte.getId(),
 						Month.of(dateMoisSelectionne.getMonthValue()), 
 						dateMoisSelectionne.getYear());
 

@@ -46,7 +46,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return état d'activité du budget
 	 */
 	public boolean isBudgetMensuelActif(String idBudget){
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID).append("?actif=true").toString();
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT).append("?actif=true").toString();
 		return callHTTPGet(URI, path);
 	}
 	

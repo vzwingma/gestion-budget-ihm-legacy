@@ -8,7 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;
@@ -39,16 +40,14 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 
 
 		BudgetMensuel budgetMensuelCourant = getUserSession().getBudgetCourant();
-		String moisAffiche = DataUtils.localDateFirstDayOfMonth(budgetMensuelCourant.getMois()).format(DateTimeFormatter.ofPattern("MMMM YYYY", Locale.FRENCH));
+		String moisAffiche = BudgetDateTimeUtils.localDateFirstDayOfMonth(budgetMensuelCourant.getMois()).format(DateTimeFormatter.ofPattern("MMMM YYYY", Locale.FRENCH));
 
 		/** Alerte **/
 		String warnMoisActif = "";
 		Month moisPrecedent = budgetMensuelCourant.getMois().minus(1);
 		int anneePrecedente = Month.DECEMBER.equals(moisPrecedent) ? budgetMensuelCourant.getAnnee() - 1 : budgetMensuelCourant.getAnnee();
 		
-		Boolean budgetPrecedentActif = page.getControleur().getServiceOperations().isBudgetMensuelActif(
-				budgetMensuelCourant.getCompteBancaire().getId(), 
-				moisPrecedent, anneePrecedente);
+		Boolean budgetPrecedentActif = page.getControleur().getServiceOperations().isBudgetMensuelActif(BudgetDataUtils.getBudgetId(budgetMensuelCourant.getCompteBancaire(), moisPrecedent, anneePrecedente));
 		if(budgetPrecedentActif){
 			warnMoisActif = "<span style=\"color: red;\"><br> Attention : Le mois précédent n'est pas clos !</span><br>Il sera automatiquement clôturé et les opérations en attente, annulées";
 		}

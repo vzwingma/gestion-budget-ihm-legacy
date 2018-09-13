@@ -13,7 +13,7 @@ import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIOb
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthResponseAPIObject;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
 
 /**
@@ -54,7 +54,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	public LocalDateTime getLastAccessTime(String idUtilisateur){
 		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL + "/" + idUtilisateur, UtilisateurPrefsAPIObject.class);
 		if(prefs != null){
-			return DataUtils.getLocalDateTimeFromLong(prefs.getLastAccessTime());
+			return BudgetDateTimeUtils.getLocalDateTimeFromLong(prefs.getLastAccessTime());
 		}
 		return null;
 	}

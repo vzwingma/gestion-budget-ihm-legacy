@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.budget.model.ResumeTotalCategories;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.resume.totaux.ui.GridResumeTotauxController;
@@ -59,7 +59,7 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 	public void miseAJourVueDonnees(BudgetMensuel budget){
 
 		// Libellés
-		LocalDate dateDerniereOperation = DataUtils.getMaxDateListeOperations(budget.getListeOperations());
+		LocalDate dateDerniereOperation = BudgetDataUtils.getMaxDateListeOperations(budget.getListeOperations());
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.auDateFormat));
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(GridResumeTotauxController.finDateFormat));
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
 
 /**
@@ -78,7 +78,7 @@ public class ParametragesAPIService extends AbstractHTTPClient {
 	@Value("${budget.build.time:NOW}")
 	public void setBuildTime(String utcBuildTime) {
 		try {
-			this.buildTime = DataUtils.getUtcToLocalTime(utcBuildTime);
+			this.buildTime = BudgetDateTimeUtils.getUtcToLocalTime(utcBuildTime);
 		} catch (ParseException e) {
 			this.buildTime = utcBuildTime;
 		}

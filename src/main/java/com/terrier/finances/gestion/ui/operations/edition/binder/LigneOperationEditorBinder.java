@@ -13,7 +13,7 @@ import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.vaadin.data.Binder;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
@@ -80,7 +80,7 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 		TextField tValeur = new TextField();
 		// Validation de la valeur
 		return this.forField(tValeur)
-				.withConverter(DataUtils::getValueFromString, String::valueOf)
+				.withConverter(BudgetDataUtils::getValueFromString, String::valueOf)
 				.withValidator(Objects::nonNull, "La valeur ne doit pas être nulle ou incorrecte")
                 .withValidator(v -> (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v))), "La valeur est incorrecte")
 				.bind(LigneOperation::getValeurAbsStringFromDouble, LigneOperation::setValeurAbsStringToDouble);

@@ -17,7 +17,7 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
@@ -118,7 +118,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		this.gridResumeTotauxControleur = getComponent().getGridResumeTotaux().getControleur();
 
 		// Init premiere fois
-		LocalDate dateBudget = DataUtils.localDateFirstDayOfMonth();
+		LocalDate dateBudget = BudgetDateTimeUtils.localDateFirstDayOfMonth();
 		if(getComponent().getMois().getValue() == null){
 			getComponent().getMois().setValue(dateBudget);
 			LOGGER.debug("[INIT] Init du mois géré : {}", dateBudget);
@@ -128,7 +128,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		if(dateDernierAcces == null){
 			dateDernierAcces = LocalDateTime.now();
 		}
-		this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + DataUtils.getLibelleDate(dateDernierAcces));
+		this.getComponent().getLabelLastConnected().setValue("Dernière connexion : \n" + BudgetDateTimeUtils.getLibelleDate(dateDernierAcces));
 
 		// Maj des composants MOIS/COMPTES
 		getComponent().getMois().setResolution(DateResolution.MONTH);
@@ -300,7 +300,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	private void setRangeFinMois(LocalDate dateFin, String idCompte){
 		if(dateFin != null){
 			// Bouton Mois suivant limité au mois prochain si le compte n'est pas clos
-			LocalDate dateRangeBudget = DataUtils.localDateFirstDayOfMonth();
+			LocalDate dateRangeBudget = BudgetDateTimeUtils.localDateFirstDayOfMonth();
 			CompteBancaire compte = getServiceComptes().getCompte(idCompte, getUserSession().getIdUtilisateur());
 			if(compte.isActif()){
 				dateRangeBudget = dateRangeBudget.plusMonths(1);

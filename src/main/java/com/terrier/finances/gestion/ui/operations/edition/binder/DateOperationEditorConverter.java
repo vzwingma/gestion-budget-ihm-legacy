@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.vaadin.data.Converter;
 import com.vaadin.data.Result;
 import com.vaadin.data.ValueContext;
@@ -21,7 +21,7 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	private static final long serialVersionUID = -3920598435421890807L;
 
 	// Format des dates
-	private SimpleDateFormat sfd = new SimpleDateFormat(DataUtils.DATE_DAY_HOUR_PATTERN);
+	private SimpleDateFormat sfd = new SimpleDateFormat(BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN);
 
 	/*
 	 * (non-Javadoc)
@@ -34,7 +34,7 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 		try {
 			return Result.ok(sfd.parse(value));
 		} catch (ParseException e) {
-			return Result.error("Erreur : La date " + value + " n'est pas au format " + DataUtils.DATE_DAY_HOUR_PATTERN);
+			return Result.error("Erreur : La date " + value + " n'est pas au format " + BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN);
 		}
 	}
 

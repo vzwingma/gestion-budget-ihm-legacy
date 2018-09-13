@@ -32,12 +32,22 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return budget mensuel chargé et initialisé à partir des données précédentes
 	 */
 	public BudgetMensuel chargerBudgetMensuel(String idUtilisateur, String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException{
-		return callHTTPGetData(URI, BudgetApiUrlEnum.BUDGET_ID_FULL + "/" + idCompte + "/" + mois.getValue() + "/" + annee + "/" + idUtilisateur, BudgetMensuel.class);
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_QUERY)
+				.append("?idCompte=").append(idCompte)
+				.append("&mois=").append(mois)
+				.append("&annee=").append(annee)
+				.append("&idUtilisateur=").append(idUtilisateur).toString();
+		return callHTTPGetData(URI, path, BudgetMensuel.class);
 	}
 	
 	
-	public boolean isBudgetMensuelActif(String idCompte, Month mois, int annee){
-		return true;
+	/**
+	 * @param idBudget
+	 * @return état d'activité du budget
+	 */
+	public boolean isBudgetMensuelActif(String idBudget){
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID).append("?actif=true").toString();
+		return callHTTPGet(URI, path);
 	}
 	
 	/**

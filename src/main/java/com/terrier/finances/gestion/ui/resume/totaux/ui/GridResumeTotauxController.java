@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.budget.model.TotalBudgetMensuel;
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 
@@ -52,7 +52,7 @@ public class GridResumeTotauxController extends AbstractUIController<GridResumeT
 	 */
 	public void miseAJourVueDonnees(BudgetMensuel budget){
 
-		LocalDate dateDerniereOperation = DataUtils.getMaxDateListeOperations(budget.getListeOperations());
+		LocalDate dateDerniereOperation = BudgetDataUtils.getMaxDateListeOperations(budget.getListeOperations());
 		
 		// Injection des données
 		List<TotalBudgetMensuel> totauxBudget = new ArrayList<>();

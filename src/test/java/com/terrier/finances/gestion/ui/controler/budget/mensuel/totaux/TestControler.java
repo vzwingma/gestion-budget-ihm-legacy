@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.utils.data.DataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.resume.totaux.ui.GridResumeTotauxController;
 
 /**
@@ -23,7 +23,7 @@ public class TestControler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestControler.class);
 	@Test
 	public void testAffichageDate(){
-		LocalDate now = DataUtils.localDateNow();
+		LocalDate now = BudgetDateTimeUtils.localDateNow();
 		LOGGER.info("du {} à fin {}", 
 				now.format(GridResumeTotauxController.auDateFormat), now.format(GridResumeTotauxController.finDateFormat));
 	}

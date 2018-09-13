@@ -145,10 +145,9 @@ public abstract class AbstractHTTPClient {
 	 * Appel HTTP GET
 	 * @param clientHTTP client HTTP
 	 * @param url racine de l'URL
-	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
+	 * @param path paramètres de l'URL
 	 * @return résultat de l'appel
 	 */
-	@Deprecated
 	protected boolean callHTTPGet(String url, String path){
 		LOGGER.debug("[API GET] Appel du service {}{}", url, path);
 		boolean resultat = false;

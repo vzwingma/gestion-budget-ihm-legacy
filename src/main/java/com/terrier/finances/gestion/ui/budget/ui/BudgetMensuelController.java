@@ -84,9 +84,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			BudgetMensuel budgetCourant = getUserSession().getBudgetCourant();
 			if(idSession != null &&  budgetCourant != null){
 				LOGGER.debug("[REFRESH][{}] Dernière mise à jour reçue pour le budget {} : {}", idSession, 
-						budgetCourant.getId(), budgetCourant.getDateMiseAJour() != null ? budgetCourant.getDateMiseAJour().getTime() : "null");
+						budgetCourant.getId(), budgetCourant.getDateMiseAJour() != null ? budgetCourant.getDateMiseAJour() : "null");
 
-				if(getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour(), getUserSession().getIdUtilisateur())){
+				if(!getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour().getTime(), getUserSession().getIdUtilisateur())){
 					LOGGER.info("[REFRESH][{}] Le budget a été mis à jour en base de données.  Mise à jour de l'IHM", idSession);
 					miseAJourVueDonnees();
 				}

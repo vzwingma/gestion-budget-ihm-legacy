@@ -1,7 +1,7 @@
 package com.terrier.finances.gestion.services.operations.api;
 
 import java.time.Month;
-import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.stereotype.Controller;
 
@@ -45,7 +45,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param idBudget
 	 * @return état d'activité du budget
 	 */
-	public boolean isBudgetMensuelActif(String idBudget){
+	public boolean isBudgetMensuelActif(String idBudget, String idUtilisateur){
 		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT).append("?actif=true").toString();
 		return callHTTPGet(URI, path);
 	}
@@ -81,8 +81,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param idBudget identifiant du budget
 	 * @return la date de mise à jour du  budget
 	 */
-	public boolean isBudgetUpToDate(String idBudget, Calendar dateToCompare, String utilisateur) {
-		return true;
+	public boolean isBudgetUpToDate(String idBudget, Date dateToCompare, String utilisateur) {
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT).append("?uptodateto=").append(dateToCompare.getTime()).toString();
+		return callHTTPGet(URI, path);
 	}
 	
 	/**

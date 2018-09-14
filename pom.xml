@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.vzwingma.finances.budget</groupId>
 	<artifactId>ihm</artifactId>
-	<version>7.0.0-SNAPSHOT</version>	
+	<version>7.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>[Budget] IHM</name>
 	<description>IHM de l'application</description>
@@ -12,8 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring.version>5.0.7.RELEASE</spring.version>
-		<spring.security.version>5.0.7.RELEASE</spring.security.version>
+		<spring.version>5.0.9.RELEASE</spring.version>
 		<vaadin.version>8.5.1</vaadin.version>
 		<jackson.version>2.9.6</jackson.version>
 		<jersey.version>2.26</jersey.version>
@@ -151,7 +150,7 @@
 				<configuration>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
-			</plugin>			
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -231,11 +230,36 @@
 		</profile>
 	</profiles>
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		<!-- Communs -->
 		<dependency>
 			<groupId>io.github.vzwingma.finances.budget</groupId>
 			<artifactId>communs</artifactId>
 			<version>7.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>io.springfox</groupId>
+					<artifactId>springfox-swagger2</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.data</groupId>
+					<artifactId>spring-data-mongodb</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- VAADIN -->
 		<dependency>
@@ -356,5 +380,5 @@
 			<url>https://oss.sonatype.org/content/groups/staging</url>
 		</repository>
 	</repositories>
-	
+
 </project>

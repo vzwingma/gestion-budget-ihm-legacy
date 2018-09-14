@@ -15,6 +15,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -107,9 +108,9 @@ public abstract class AbstractHTTPClient {
 				wt=wt.queryParam(e.getKey(), e.getValue());
 			});
 		}
-		LOGGER.info("[API] Appel du service [{}]", wt.getUri());
-		
-		return wt.request(JSON_MEDIA_TYPE).header("Content-type", MediaType.APPLICATION_JSON);
+		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE).header("Content-type", MediaType.APPLICATION_JSON);
+		LOGGER.info("[API={}] Appel du service [{}]", getCodeInvoquer(invoquer), wt.getUri());
+		return invoquer;
 	}
 
 	/**
@@ -146,20 +147,21 @@ public abstract class AbstractHTTPClient {
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
 			R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType){
 		if(path != null){
+			Invocation.Builder invoquer = getInvocation(path, params);
+			int c = invoquer.toString().hashCode();
 			try{
-				Invocation.Builder invoquer = getInvocation(path, params);
 				R response = null;
 				if(responseClassType != null){
 					response = invoquer.post(getEntity(dataToSend), responseClassType);
-					LOGGER.debug("[API POST][200] Réponse : {}", response);
+					LOGGER.debug("[API={}][POST][200] Réponse : {}", c, response);
 				}
 				else{
 					Response res = invoquer.post(getEntity(dataToSend));
 					if(res.getStatus() > 400){
-						LOGGER.error("[API POST][{}]", res.getStatus());
+						LOGGER.error("[API={}][POST][{}]", c, res.getStatus());
 					}
 					else{
-						LOGGER.debug("[API POST][{}]", res.getStatus());
+						LOGGER.debug("[API={}][POST][{}]", c, res.getStatus());
 					}
 				}
 
@@ -168,10 +170,10 @@ public abstract class AbstractHTTPClient {
 				}
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API POST][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 			}
 			catch(Exception e){
-				LOGGER.error("[API POST] Erreur lors de l'appel", e);
+				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
 			}
 		}
 		return null;
@@ -184,6 +186,12 @@ public abstract class AbstractHTTPClient {
 	protected boolean callHTTPGet(String path){
 		return callHTTPGet(path, null);
 	}
+	
+	
+	private int getCodeInvoquer(Invocation.Builder invoquer){
+		return Math.abs(invoquer.toString().hashCode());
+	}
+	
 	/**
 	 * Appel HTTP GET
 	 * @param params params
@@ -193,15 +201,17 @@ public abstract class AbstractHTTPClient {
 	protected boolean callHTTPGet(String path, Map<String, String> params){
 		boolean resultat = false;
 		if(path != null){
+			Invocation.Builder invoquer = getInvocation(path, params);
+			int c = getCodeInvoquer(invoquer);
 			try{
-				Response response = getInvocation(path, params).get();
+				Response response = invoquer.get();
 				if(response != null){
-					LOGGER.debug("[API GET] Réponse : [{}]", response.getStatus());
+					LOGGER.debug("[API={}][GET] Réponse : [{}]", c, response.getStatus());
 					resultat = response.getStatus() == 200;
 				}
 			}
 			catch(Exception e){
-				LOGGER.error("[API GET] Erreur lors de l'appel", e);
+				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
 				resultat = false;
 			}
 		}
@@ -222,17 +232,18 @@ public abstract class AbstractHTTPClient {
 	 */
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType){
 		if(path != null){
+			Builder invoquer = getInvocation(path, params);
+			int c = getCodeInvoquer(invoquer);
 			try{
-
-				R response = getInvocation(path, params).get(responseClassType);
-				LOGGER.debug("[API][GET][200] Réponse : [{}]", response);
+				R response = invoquer.get(responseClassType);
+				LOGGER.debug("[API={}][GET][200] Réponse : [{}]", c, response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API][GET][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+				LOGGER.error("[API={}][GET][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 			}
 			catch(Exception e){
-				LOGGER.error("[API][GET] Erreur lors de l'appel", e);
+				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
 			}
 		}
 		return null;
@@ -250,16 +261,18 @@ public abstract class AbstractHTTPClient {
 	 */
 	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
 		if(path != null){
+			Builder invoquer = getInvocation(path);
+			int c = getCodeInvoquer(invoquer);
 			try{
-				R response = getInvocation(path).delete(responseClassType);
-				LOGGER.debug("[API][DEL][200] Réponse : [{}]", response);
+				R response = invoquer.delete(responseClassType);
+				LOGGER.debug("[API={}][DEL][200] Réponse : [{}]", c, response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API][DEL][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+				LOGGER.error("[API={}][DEL][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 			}
 			catch(Exception e){
-				LOGGER.error("[API][DEL] Erreur lors de l'appel", e);
+				LOGGER.error("[API={}][DEL] Erreur lors de l'appel",c, e);
 			}
 		}
 		return null;
@@ -274,18 +287,19 @@ public abstract class AbstractHTTPClient {
 	 */
 	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path, Class<R> responseClassType){
 		if(path != null){
+			Builder invoquer = getInvocation(path);
+			int c = getCodeInvoquer(invoquer);
 			try{
-
 				@SuppressWarnings("unchecked")
 				List<R> response = getInvocation(path).get(List.class);
-				LOGGER.debug("[API][GET][200] Réponse : [{}]", response);
+				LOGGER.debug("[API={}][GET][200] Réponse : [{}]", c, response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API][GET][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+				LOGGER.error("[API={}][GET][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 			}
 			catch(Exception e){
-				LOGGER.error("[API][GET] Erreur lors de l'appel", e);
+				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
 			}
 		}
 		return null;

@@ -3,9 +3,7 @@ package com.terrier.finances.gestion.services.abstrait.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -17,13 +15,14 @@ import org.junit.Test;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
+import com.terrier.finances.gestion.test.config.AbstractTestServices;
 
 /**
  * Test des API Params
  * @author vzwingma
  *
  */
-public class TestParametrageAPIService {
+public class TestParametrageAPIService extends AbstractTestServices {
 
 	private List<CategorieOperation> categories  = new ArrayList<>();
 	
@@ -52,8 +51,9 @@ public class TestParametrageAPIService {
 	@Test
 	public void testChargerOperations(){
 		
-		ParametragesAPIService service = spy(new ParametragesAPIService());
-		when(service.callHTTPGetListData(anyString(), eq(BudgetApiUrlEnum.PARAMS_CATEGORIES), eq(CategorieOperation.class))).thenReturn(categories);
+		ParametragesAPIService service = spyParamsAPIService();
+		assertNotNull(service);
+		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL), eq(CategorieOperation.class))).thenReturn(categories);
 		
 		List<CategorieOperation> liste = service.getCategories();
 		assertNotNull(liste);

@@ -26,7 +26,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 */
 	public List<CompteBancaire> getComptes(String idUtilisateur){
 		String path = BudgetApiUrlEnum.COMPTES_LIST_FULL.replace("{idUtilisateur}", idUtilisateur);
-		return callHTTPGetListData(URI, path, CompteBancaire.class);
+		return callHTTPGetListData(path, CompteBancaire.class);
 	}
 	
 	/**
@@ -36,7 +36,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 */
 	public CompteBancaire getCompte(String idCompte, String idUtilisateur){
 		String path = BudgetApiUrlEnum.COMPTES_LIST_FULL.replace("{idCompte}", idCompte).replace("{idUtilisateur}", idUtilisateur);
-		return callHTTPGetData(URI, path, CompteBancaire.class);
+		return callHTTPGetData(path, CompteBancaire.class);
 	}
 
 	
@@ -48,7 +48,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 */
 	public IntervallesCompteAPIObject getIntervallesBudgets(String compte, String idUtilisateur) throws DataNotFoundException{
 		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace("{idCompte}", compte);
-		return callHTTPGetData(URI, path, IntervallesCompteAPIObject.class);
+		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
 	}
 	
 	
@@ -60,7 +60,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 */
 	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, String idUtilisateur){
 		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace("{idCompte}", idCompte).replace("{idUtilisateur}", idUtilisateur);
-		LibellesOperationsAPIObject libelles = callHTTPGetData(URI, path, LibellesOperationsAPIObject.class);
+		LibellesOperationsAPIObject libelles = callHTTPGetData(path, LibellesOperationsAPIObject.class);
 		return libelles.getLibellesOperations();
 	}
 }

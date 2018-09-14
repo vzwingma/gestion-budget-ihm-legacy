@@ -32,7 +32,7 @@ public class ParametragesAPIService extends AbstractHTTPClient {
 	 */
 	public List<CategorieOperation> getCategories(){
 		if(listeCategories == null){
-			List<CategorieOperation> resultatCategories = callHTTPGetListData(URI, BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL, CategorieOperation.class);
+			List<CategorieOperation> resultatCategories = callHTTPGetListData(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL, CategorieOperation.class);
 			// Recalcul des liens
 			if(resultatCategories != null){
 				resultatCategories

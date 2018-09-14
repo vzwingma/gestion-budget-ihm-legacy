@@ -30,7 +30,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	public AuthResponseAPIObject authenticate(String login, String motPasseEnClair){
 		
 		AuthLoginAPIObject auth = new AuthLoginAPIObject(login, motPasseEnClair);
-		return callHTTPPost(URI, BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth, AuthResponseAPIObject.class);
+		return callHTTPPost(BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth, AuthResponseAPIObject.class);
 	}
 	
 	
@@ -40,7 +40,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 */
 	public void deconnexion(String idUtilisateur){
 		String path = BudgetApiUrlEnum.USERS_DISCONNECT_FULL.replace("{idUtilisateur}", idUtilisateur);
-		callHTTPPost(URI, path, null, null);
+		callHTTPPost(path, null, null);
 	}
 	
 	
@@ -50,7 +50,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 */
 	public LocalDateTime getLastAccessTime(String idUtilisateur){
 		String path = BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL.replace("{idUtilisateur}", idUtilisateur);
-		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, path, UtilisateurPrefsAPIObject.class);
+		UtilisateurPrefsAPIObject prefs = callHTTPGetData(path, UtilisateurPrefsAPIObject.class);
 		if(prefs != null){
 			return BudgetDateTimeUtils.getLocalDateTimeFromLong(prefs.getLastAccessTime());
 		}
@@ -64,7 +64,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 */
 	public Map<UtilisateurPrefsEnum, String> getPreferencesUtilisateur(String idUtilisateur){
 		String path = BudgetApiUrlEnum.USERS_PREFS_FULL.replace("{idUtilisateur}", idUtilisateur);
-		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, path, UtilisateurPrefsAPIObject.class);
+		UtilisateurPrefsAPIObject prefs = callHTTPGetData(path, UtilisateurPrefsAPIObject.class);
 		if(prefs != null){
 			return prefs.getPreferences();
 		}

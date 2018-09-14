@@ -191,6 +191,33 @@ public abstract class AbstractHTTPClient {
 		return null;
 	}
 	
+	
+
+
+	/**
+	 * Appel HTTP GET
+	 * @param clientHTTP client HTTP
+	 * @param url racine de l'URL
+	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
+	 * @return résultat de l'appel
+	 */
+	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String url, String path, Class<R> responseClassType){
+		LOGGER.debug("[API DEL]  Appel du service {}{}", url, path);
+		try{
+
+			R response = getInvocation(url, path).delete(responseClassType);
+			LOGGER.debug("[API DEL][200] Réponse : [{}]", response);
+			return response;
+		}
+		catch(WebApplicationException e){
+			LOGGER.error("[API DEL][{}] Erreur lors de l'appel", e.getResponse().getStatus());
+		}
+		catch(Exception e){
+			LOGGER.error("[API DEL] Erreur lors de l'appel", e);
+		}
+		return null;
+	}
+	
 	/**
 	 * Appel HTTP GET
 	 * @param clientHTTP client HTTP

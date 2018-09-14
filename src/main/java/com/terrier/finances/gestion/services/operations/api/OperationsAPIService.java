@@ -50,18 +50,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		return callHTTPGet(URI, path);
 	}
 	
-	/**
-	 * Mise à jour de la ligne de dépense du budget
-	 * @param ligneId ligne à modifier
-	 * @param etat état de la ligne
-	 * @param auteur auteur de l'action
-	 * @throws DataNotFoundException erreur ligne non trouvé
-	 * @throws BudgetNotFoundException not found
-	 */
-	public BudgetMensuel majEtatLigneOperation(BudgetMensuel budget, String ligneId, EtatOperationEnum etat, String idUtilisateur) throws DataNotFoundException, BudgetNotFoundException{
-		return budget;
-	}
-	
+
 
 	
 	/**
@@ -71,8 +60,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws BudgetNotFoundException budget introuvable
 	 * @throws CompteClosedException compte clos. Impossible de réinitialiser
 	 */
-	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budgetMensuel, String idUtilisateur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
-		return budgetMensuel;
+	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget, String idUtilisateur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID.replace("idBudget", budget.getId()).replace("idUtilisateur", idUtilisateur)).toString();
+		return callHTTPDeleteData(URI, path, BudgetMensuel.class);
 	}
 	
 	
@@ -117,6 +107,22 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	public BudgetMensuel ajoutOperationEtCalcul(String idBudget, LigneOperation ligneOperation, String idUtilisateur) throws BudgetNotFoundException{
 		return new BudgetMensuel();
 	}
+	
+	
+	/**
+	 * Mise à jour de la ligne de dépense du budget
+	 * @param ligneId ligne à modifier
+	 * @param etat état de la ligne
+	 * @param auteur auteur de l'action
+	 * @throws DataNotFoundException erreur ligne non trouvé
+	 * @throws BudgetNotFoundException not found
+	 */
+	public BudgetMensuel majEtatLigneOperation(BudgetMensuel budget, String ligneId, EtatOperationEnum etat, String idUtilisateur) throws DataNotFoundException, BudgetNotFoundException{
+		return budget;
+	}
+	
+	
+	
 	/**
 	 * Mise à jour de la ligne comme dernière opération
 	 * @param ligneId

@@ -1,11 +1,13 @@
 package com.terrier.finances.gestion.services.comptes.api;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
+import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
@@ -45,5 +47,18 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	public IntervallesCompteAPIObject getIntervallesBudgets(String compte, String idUtilisateur) throws DataNotFoundException{
 		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace("{idCompte}", compte);
 		return callHTTPGetData(URI, path, IntervallesCompteAPIObject.class);
+	}
+	
+	
+	/**
+	 * Retourne l'ensemble des libelles des opérations pour un compte
+	 * @param idCompte compte de l'utilisateur
+	 * @param idUtilisateur utilisateur
+	 * @return le set des libelles des opérations
+	 */
+	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, String idUtilisateur){
+		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace("{idCompte}", idCompte).replace("{idUtilisateur}", idUtilisateur);
+		LibellesOperationsAPIObject libelles = callHTTPGetData(URI, path, LibellesOperationsAPIObject.class);
+		return libelles.getLibellesOperations();
 	}
 }

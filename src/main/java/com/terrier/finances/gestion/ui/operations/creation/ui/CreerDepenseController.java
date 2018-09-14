@@ -133,7 +133,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getCheckBoxPeriodique().setValue(Boolean.FALSE);
 		getComponent().getCheckBoxPeriodique().clear();
 		// Description
-		getComponent().getTextFieldDescription().setItems(getUserSession().getBudgetCourant().getSetLibellesDepensesForAutocomplete());
+		getComponent().getTextFieldDescription().setItems(getServiceComptes().getLibellesOperationsForAutocomplete(getUserSession().getBudgetCourant().getCompteBancaire().getId(), getUserSession().getIdUtilisateur()));
 		getComponent().getTextFieldDescription().clear();
 	}
 }

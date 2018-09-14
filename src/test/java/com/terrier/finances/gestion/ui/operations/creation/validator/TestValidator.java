@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.business.validator;
+package com.terrier.finances.gestion.ui.operations.creation.validator;
 
 import static org.junit.Assert.assertEquals;
 

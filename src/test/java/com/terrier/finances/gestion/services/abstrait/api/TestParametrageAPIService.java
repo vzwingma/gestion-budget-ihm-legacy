@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.ui.communs.abstrait.api;
+package com.terrier.finances.gestion.services.abstrait.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

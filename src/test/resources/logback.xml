@@ -19,8 +19,6 @@
 	</appender>
 
 	<logger name="root" level="INFO" />
-	<logger name="org.hibernate" level="INFO" />
-	<logger name="org.mongodb.driver" level="INFO" />
 	<!-- interrogation -->
 	<logger name="com.terrier.finances" level="DEBUG" additivity="false">
 		<appender-ref ref="CONSOLE" />

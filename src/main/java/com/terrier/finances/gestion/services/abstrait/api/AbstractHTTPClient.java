@@ -122,16 +122,32 @@ public abstract class AbstractHTTPClient {
 
 
 	/**
-	 * Appel POST 
-	 * @param invocation URL appelée
-	 * @param dataToSend données envoyé
-	 * @param responseClassType classe de la réponse
+	 * Appel POST vers les API Services
+	 * @param path chemin
+	 * @param dataToSend body à envoyer
+	 * @param responseClassType réponse type
 	 * @return réponse
 	 */
-	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType){
+	protected 
+		<Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel>
+		R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType){
+		return callHTTPPost(path, null, dataToSend, responseClassType);
+	}
+
+
+	/**
+	 * Appel POST vers les API Services
+	 * @param path chemin
+	 * @param params paramètres
+	 * @param dataToSend body à envoyer
+	 * @param responseClassType réponse type
+	 * @return réponse
+	 */
+	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
+			R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType){
 		if(path != null){
 			try{
-				Invocation.Builder invoquer = getInvocation(path);
+				Invocation.Builder invoquer = getInvocation(path, params);
 				R response = null;
 				if(responseClassType != null){
 					response = invoquer.post(getEntity(dataToSend), responseClassType);
@@ -160,20 +176,25 @@ public abstract class AbstractHTTPClient {
 		}
 		return null;
 	}
-
-
 	/**
 	 * Appel HTTP GET
-	 * @param clientHTTP client HTTP
-	 * @param url racine de l'URL
 	 * @param path paramètres de l'URL
 	 * @return résultat de l'appel
 	 */
 	protected boolean callHTTPGet(String path){
+		return callHTTPGet(path, null);
+	}
+	/**
+	 * Appel HTTP GET
+	 * @param params params
+	 * @param path paramètres de l'URL
+	 * @return résultat de l'appel
+	 */
+	protected boolean callHTTPGet(String path, Map<String, String> params){
 		boolean resultat = false;
 		if(path != null){
 			try{
-				Response response = getInvocation(path).get();
+				Response response = getInvocation(path, params).get();
 				if(response != null){
 					LOGGER.debug("[API GET] Réponse : [{}]", response.getStatus());
 					resultat = response.getStatus() == 200;

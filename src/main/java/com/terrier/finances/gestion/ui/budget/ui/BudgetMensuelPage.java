@@ -1,7 +1,7 @@
 package com.terrier.finances.gestion.ui.budget.ui;
 
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIComponent;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIComponent;
 import com.terrier.finances.gestion.ui.operations.ui.GridOperations;
 import com.terrier.finances.gestion.ui.resume.categories.ui.TreeGridResumeCategories;
 import com.terrier.finances.gestion.ui.resume.totaux.ui.GridResumeTotaux;

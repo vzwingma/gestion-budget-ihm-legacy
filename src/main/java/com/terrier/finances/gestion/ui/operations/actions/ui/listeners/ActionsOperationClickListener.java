@@ -14,9 +14,9 @@ import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperation
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
+import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
+import com.terrier.finances.gestion.ui.communs.ConfirmDialog.ConfirmationDialogCallback;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
-import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;
-import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog.ConfirmationDialogCallback;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;

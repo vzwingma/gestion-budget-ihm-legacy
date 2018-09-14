@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
+import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
+import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 
 /**
  * @author vzwingma

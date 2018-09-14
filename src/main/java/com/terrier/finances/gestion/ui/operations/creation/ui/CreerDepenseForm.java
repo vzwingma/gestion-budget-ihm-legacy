@@ -6,7 +6,7 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIComponent;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIComponent;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemCaptionStyle;
 import com.terrier.finances.gestion.ui.operations.creation.listeners.ActionValiderCreationDepenseClickListener;
 import com.terrier.finances.gestion.ui.operations.creation.listeners.SelectionCategorieValueChangeListener;

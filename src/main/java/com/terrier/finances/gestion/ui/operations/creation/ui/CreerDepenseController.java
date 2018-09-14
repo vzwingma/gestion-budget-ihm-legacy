@@ -12,7 +12,7 @@ import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperation
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.ui.Notification;
@@ -82,7 +82,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 
 	/**
 	 * Complétion des éléments du formulaire
-	 * @see com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController#miseAJourVueDonnees()
+	 * @see com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController#miseAJourVueDonnees()
 	 */
 	@Override
 	public void miseAJourVueDonnees() {

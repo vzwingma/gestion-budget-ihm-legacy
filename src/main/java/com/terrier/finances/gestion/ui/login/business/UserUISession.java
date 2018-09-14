@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;

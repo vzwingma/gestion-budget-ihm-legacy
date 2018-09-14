@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.ui.communs.abstrait.ui;
+package com.terrier.finances.gestion.ui.communs.abstrait;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import com.vaadin.ui.AbstractComponent;
  * 
  * @param <P> composant associé
  */
-public abstract class AbstractUIController<P extends AbstractComponent> implements IUIControleurService, Serializable {
+public abstract class AbstractUIController<P extends AbstractComponent> implements IUIControllerService, Serializable {
 
 
 	/**

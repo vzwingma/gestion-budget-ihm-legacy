@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.communs.abstrait.api;
+package com.terrier.finances.gestion.services.abstrait.api;
 
 
 
@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
+import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 
 /**
  * Classe d'un client HTTP

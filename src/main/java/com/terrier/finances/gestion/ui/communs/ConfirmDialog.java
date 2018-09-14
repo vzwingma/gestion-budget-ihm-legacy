@@ -1,6 +1,6 @@
-package com.terrier.finances.gestion.ui.communs.ui;
+package com.terrier.finances.gestion.ui.communs;
 
-import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
+import com.terrier.finances.gestion.services.FacadeServices;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;

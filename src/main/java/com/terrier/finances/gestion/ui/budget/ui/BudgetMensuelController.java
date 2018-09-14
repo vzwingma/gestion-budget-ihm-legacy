@@ -24,7 +24,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.ui.budget.listeners.ActionDeconnexionClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionLockBudgetClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionRefreshMonthBudgetClickListener;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemCaptionStyle;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemIconStyle;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemStyle;

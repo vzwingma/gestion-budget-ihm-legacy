@@ -11,7 +11,7 @@ import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthResponseAP
 import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
-import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 
 /**
  * Service API vers {@link UtilisateursService}
@@ -49,7 +49,8 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur
 	 */
 	public LocalDateTime getLastAccessTime(String idUtilisateur){
-		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL + "/" + idUtilisateur, UtilisateurPrefsAPIObject.class);
+		String path = BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL.replace("{idUtilisateur}", idUtilisateur);
+		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, path, UtilisateurPrefsAPIObject.class);
 		if(prefs != null){
 			return BudgetDateTimeUtils.getLocalDateTimeFromLong(prefs.getLastAccessTime());
 		}
@@ -62,7 +63,8 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur
 	 */
 	public Map<UtilisateurPrefsEnum, String> getPreferencesUtilisateur(String idUtilisateur){
-		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, BudgetApiUrlEnum.USERS_PREFS_FULL + "/" + idUtilisateur, UtilisateurPrefsAPIObject.class);
+		String path = BudgetApiUrlEnum.USERS_PREFS_FULL.replace("{idUtilisateur}", idUtilisateur);
+		UtilisateurPrefsAPIObject prefs = callHTTPGetData(URI, path, UtilisateurPrefsAPIObject.class);
 		if(prefs != null){
 			return prefs.getPreferences();
 		}

@@ -11,8 +11,8 @@ import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
+import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
-import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 

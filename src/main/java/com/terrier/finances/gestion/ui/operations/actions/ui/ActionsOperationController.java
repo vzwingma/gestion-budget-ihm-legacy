@@ -2,7 +2,7 @@ package com.terrier.finances.gestion.ui.operations.actions.ui;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.ui.Button;
 
 /**

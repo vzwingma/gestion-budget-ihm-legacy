@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.communs.abstrait.ui;
+package com.terrier.finances.gestion.ui.communs.abstrait;
 
+import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateursAPIService;
-import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
 import com.terrier.finances.gestion.ui.login.business.UserUISession;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
 import com.vaadin.ui.Window;
@@ -17,7 +17,7 @@ import com.vaadin.ui.Window;
  * @author vzwingma
  *
  */
-public interface IUIControleurService  {
+public interface IUIControllerService  {
 
 
 	/**

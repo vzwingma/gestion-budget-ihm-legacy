@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridOperationsEnum;
 
 /**
@@ -34,7 +34,7 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 
 	/**
 	 * Mise à jour de la vue
-	 * @see com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController#miseAJourVueDonnees()
+	 * @see com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController#miseAJourVueDonnees()
 	 */
 	@Override
 	public void miseAJourVueDonnees() {

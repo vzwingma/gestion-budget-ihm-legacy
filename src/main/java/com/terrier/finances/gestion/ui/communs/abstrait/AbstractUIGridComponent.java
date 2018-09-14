@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.terrier.finances.gestion.ui.communs.abstrait.ui;
+package com.terrier.finances.gestion.ui.communs.abstrait;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

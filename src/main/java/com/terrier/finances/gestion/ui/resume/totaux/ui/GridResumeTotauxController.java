@@ -12,7 +12,7 @@ import java.util.Locale;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.budget.model.TotalBudgetMensuel;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 
 /**

@@ -10,7 +10,7 @@ import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteA
 import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
-import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 
 /**
  * Service API vers {@link ComptesService}
@@ -25,7 +25,8 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur
 	 */
 	public List<CompteBancaire> getComptes(String idUtilisateur){
-		return callHTTPGetListData(URI, BudgetApiUrlEnum.COMPTES_LIST_FULL + "/" + idUtilisateur, CompteBancaire.class);
+		String path = BudgetApiUrlEnum.COMPTES_LIST_FULL.replace("{idUtilisateur}", idUtilisateur);
+		return callHTTPGetListData(URI, path, CompteBancaire.class);
 	}
 	
 	/**
@@ -34,7 +35,8 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur
 	 */
 	public CompteBancaire getCompte(String idCompte, String idUtilisateur){
-		return callHTTPGetData(URI, BudgetApiUrlEnum.COMPTES_ID_FULL + "/" + idCompte + "/" + idUtilisateur, CompteBancaire.class);
+		String path = BudgetApiUrlEnum.COMPTES_LIST_FULL.replace("{idCompte}", idCompte).replace("{idUtilisateur}", idUtilisateur);
+		return callHTTPGetData(URI, path, CompteBancaire.class);
 	}
 
 	

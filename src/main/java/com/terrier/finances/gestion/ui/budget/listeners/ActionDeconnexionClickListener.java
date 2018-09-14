@@ -4,9 +4,9 @@
 package com.terrier.finances.gestion.ui.budget.listeners;
 
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
+import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
+import com.terrier.finances.gestion.ui.communs.ConfirmDialog.ConfirmationDialogCallback;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
-import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog;
-import com.terrier.finances.gestion.ui.communs.ui.ConfirmDialog.ConfirmationDialogCallback;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;

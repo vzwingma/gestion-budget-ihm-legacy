@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.ui.communs.abstrait.api;
+package com.terrier.finances.gestion.services.abstrait.api.converters;
 
 import java.io.IOException;
 import java.io.InputStream;

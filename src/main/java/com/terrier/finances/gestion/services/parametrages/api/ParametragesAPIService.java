@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
-import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 
 /**
  * Service API vers {@link ParametrageControlleur}
@@ -32,7 +32,7 @@ public class ParametragesAPIService extends AbstractHTTPClient {
 	 */
 	public List<CategorieOperation> getCategories(){
 		if(listeCategories == null){
-			List<CategorieOperation> resultatCategories = callHTTPGetListData(URI, BudgetApiUrlEnum.PARAMS_CATEGORIES, CategorieOperation.class);
+			List<CategorieOperation> resultatCategories = callHTTPGetListData(URI, BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL, CategorieOperation.class);
 			// Recalcul des liens
 			if(resultatCategories != null){
 				resultatCategories

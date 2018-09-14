@@ -13,7 +13,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
-import com.terrier.finances.gestion.ui.communs.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 
 /**
  * API  vers le domaine Budget
@@ -32,7 +32,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return budget mensuel chargé et initialisé à partir des données précédentes
 	 */
 	public BudgetMensuel chargerBudgetMensuel(String idUtilisateur, String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException{
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_QUERY)
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_QUERY_FULL)
 				.append("?idCompte=").append(idCompte)
 				.append("&mois=").append(mois)
 				.append("&annee=").append(annee)
@@ -46,7 +46,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return état d'activité du budget
 	 */
 	public boolean isBudgetMensuelActif(String idBudget, String idUtilisateur){
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT).append("?actif=true").toString();
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT_FULL).append("?actif=true").toString();
 		return callHTTPGet(URI, path);
 	}
 	
@@ -61,7 +61,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws CompteClosedException compte clos. Impossible de réinitialiser
 	 */
 	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget, String idUtilisateur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID.replace("idBudget", budget.getId()).replace("idUtilisateur", idUtilisateur)).toString();
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("idBudget", budget.getId()).replace("idUtilisateur", idUtilisateur)).toString();
 		return callHTTPDeleteData(URI, path, BudgetMensuel.class);
 	}
 	
@@ -72,7 +72,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return la date de mise à jour du  budget
 	 */
 	public boolean isBudgetUpToDate(String idBudget, Date dateToCompare, String utilisateur) {
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT).append("?uptodateto=").append(dateToCompare.getTime()).toString();
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT_FULL).append("?uptodateto=").append(dateToCompare.getTime()).toString();
 		return callHTTPGet(URI, path);
 	}
 	
@@ -81,7 +81,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param budgetActif
 	 */
 	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif, String idUtilisateur){
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT.replace("idBudget", idBudgetMensuel).replace("idUtilisateur", idUtilisateur)).append("?actif=").append(budgetActif).toString();
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("idBudget", idBudgetMensuel).replace("idUtilisateur", idUtilisateur)).append("?actif=").append(budgetActif).toString();
 		return callHTTPPost(URI, path, null, BudgetMensuel.class);
 	}
 	
@@ -136,7 +136,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param budget budget à sauvegarder
 	 */
 	public BudgetMensuel miseAJourBudget(BudgetMensuel budget, String idUtilisateur){
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID.replace("idBudget", budget.getId()).replace("idUtilisateur", idUtilisateur)).toString();
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("idBudget", budget.getId()).replace("idUtilisateur", idUtilisateur)).toString();
 		return callHTTPPost(URI, path, budget, BudgetMensuel.class);
 	}
 }

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthResponseAPIObject;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIController;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Notification;
 

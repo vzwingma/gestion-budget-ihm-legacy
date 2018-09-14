@@ -8,7 +8,7 @@ import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
-import com.terrier.finances.gestion.ui.communs.abstrait.ui.AbstractUIGridComponent;
+import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
 import com.terrier.finances.gestion.ui.operations.actions.ui.renderers.ActionsOperationRenderer;
 import com.terrier.finances.gestion.ui.operations.edition.binder.LigneOperationEditorBinder;

@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.ui.communs.services.FacadeServices;
+import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.ui.login.ui.Login;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;

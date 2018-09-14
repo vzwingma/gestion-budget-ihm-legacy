@@ -11,7 +11,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -21,10 +23,11 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
+import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
-import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
-import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 
 /**
  * @author vzwingma
@@ -77,11 +80,110 @@ public class TestAPIReader {
 		c2.setOrdre(0);
 		listeComptes.add(c2);
 		String jsonComptes = new ObjectMapper().writeValueAsString(listeComptes);
-		System.err.println(jsonComptes);
 		InputStream entityStream = new ByteArrayInputStream(jsonComptes.getBytes(StandardCharsets.UTF_8));
 		
 		List<CompteBancaire> obj = reader.readFrom(ArrayList.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
 		assertEquals("c1", obj.get(0).getId());
+	}
+	
+	
 
+	
+	@Test
+	public void testConvertBudget() throws Exception {
+
+		// Budget
+		CompteBancaire c1 = new CompteBancaire();
+		c1.setActif(true);
+		c1.setId("C1");
+		c1.setLibelle("Libelle1");
+		c1.setOrdre(1);
+
+		BudgetMensuel bo = new BudgetMensuel();
+		bo.setCompteBancaire(c1);
+		bo.setMois(Month.JANUARY);
+		bo.setAnnee(2018);
+		bo.setActif(false);
+		bo.setId("BUDGETTEST");
+		bo.setSoldeFin(0D);
+		bo.setSoldeNow(1000D);
+		Calendar c = Calendar.getInstance();
+		bo.setDateMiseAJour(c);
+		bo.setResultatMoisPrecedent(0D, 100D);
+		
+		CategorieOperation cat = new CategorieOperation();
+		cat.setCategorie(true);
+		cat.setId("IdTest");
+		cat.setLibelle("LibelleTest");
+		bo.getTotalParCategories().put(cat, new Double[]{ 100D, 200D});
+		
+		CategorieOperation ssCat = new CategorieOperation();
+		ssCat.setCategorie(false);
+		ssCat.setId("IdTest");
+		ssCat.setLibelle("LibelleTest");
+		bo.getTotalParSSCategories().put(ssCat, new Double[]{ 100D, 200D});
+
+		
+		Utilisateur user = new Utilisateur();
+		user.setId("userTest");
+		user.setLibelle("userTest");
+		user.setLogin("userTest");
+		
+		APIObjectModelReader<BudgetMensuel> reader = new APIObjectModelReader<>();
+		assertTrue(reader.isReadable(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE));
+		
+
+		String jsonComptes = new ObjectMapper().writeValueAsString(bo);
+		InputStream entityStream = new ByteArrayInputStream(jsonComptes.getBytes(StandardCharsets.UTF_8));
+		
+		BudgetMensuel boRead = reader.readFrom(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
+		assertEquals(boRead.getClass().getName(), BudgetMensuel.class.getName());
+
+		assertEquals(bo.getId(), boRead.getId());
+		assertEquals(bo.getMarge(), boRead.getMarge());
+		assertEquals(bo.getSoldeReelFin(), boRead.getSoldeReelFin(), 1);
+		assertEquals(bo.getSoldeReelNow(), boRead.getSoldeReelNow(), 1);
+		
+		assertEquals(1, boRead.getTotalParCategories().size());
+		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next().getId());
+		assertEquals(1, boRead.getTotalParSSCategories().size());
+		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next().getId());
+	}
+	
+	
+	@Test
+	public void testConvertMap() throws IOException{
+		// Budget
+		BudgetMensuel bo = new BudgetMensuel();
+		bo.setId("BUDGETTEST");
+		bo.setSoldeFin(0D);
+		bo.setSoldeNow(1000D);
+		
+		CategorieOperation cat = new CategorieOperation();
+		cat.setCategorie(true);
+		cat.setId("IdTest");
+		cat.setLibelle("LibelleTest");
+		bo.getTotalParCategories().put(cat, new Double[]{ 100D, 200D});
+		
+		CategorieOperation ssCat = new CategorieOperation();
+		ssCat.setCategorie(false);
+		ssCat.setId("IdTest");
+		ssCat.setLibelle("LibelleTest");
+		bo.getTotalParSSCategories().put(ssCat, new Double[]{ 100D, 200D});
+		
+		APIObjectModelReader<BudgetMensuel> reader = new APIObjectModelReader<>();
+		assertTrue(reader.isReadable(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE));
+
+		String jsonComptes = new ObjectMapper().writeValueAsString(bo);
+		InputStream entityStream = new ByteArrayInputStream(jsonComptes.getBytes(StandardCharsets.UTF_8));
+		
+		
+		BudgetMensuel boRead = reader.readFrom(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
+		assertEquals(boRead.getClass().getName(), BudgetMensuel.class.getName());
+
+		assertEquals(1, boRead.getTotalParCategories().size());
+		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next().getId());
+		assertEquals(1, boRead.getTotalParSSCategories().size());
+		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next().getId());
 	}
 }

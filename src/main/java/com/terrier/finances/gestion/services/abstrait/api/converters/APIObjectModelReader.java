@@ -14,7 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+import com.terrier.finances.gestion.communs.api.converter.CategorieOperationsKeyDeserializer;
+import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 
 /**
  * Reader d'un {@link APIObjectModelReader}
@@ -26,7 +29,15 @@ public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements M
 
 	private static final Logger LOGGER = LoggerFactory.getLogger( APIObjectModelReader.class );
 	
-	private ObjectMapper mapper = new ObjectMapper();
+	private ObjectMapper mapper;
+	
+	public APIObjectModelReader() {
+		mapper = new ObjectMapper();
+		SimpleModule simpleModule = new SimpleModule();
+		simpleModule.addKeyDeserializer(CategorieOperation.class, new CategorieOperationsKeyDeserializer());
+		mapper.registerModule(simpleModule);
+	}
+	
 	
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {

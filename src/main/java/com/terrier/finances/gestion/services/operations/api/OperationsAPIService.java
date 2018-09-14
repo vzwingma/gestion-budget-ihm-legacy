@@ -38,7 +38,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 
 		Map<String, String> params = new HashMap<>();
 		params.put("idCompte", idCompte);
-		params.put("mois", mois.toString());
+		params.put("mois", Integer.toString(mois.getValue()));
 		params.put("annee", Integer.toString(annee));
 		params.put("idUtilisateur", idUtilisateur);
 		

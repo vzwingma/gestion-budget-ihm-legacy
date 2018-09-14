@@ -65,8 +65,7 @@ public class TestValidator {
 		
 		LigneOperation operation = new LigneOperation();
 		operation.setCategorie(new CategorieOperation());
-		operation.setSsCategorie(new CategorieOperation());
-		operation.getSsCategorie().setId(IdsCategoriesEnum.SALAIRE.getId());
+		operation.setSsCategorie(new CategorieOperation(IdsCategoriesEnum.SALAIRE));
 		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");		
 		operation.setValeurAbsStringToDouble("-123");

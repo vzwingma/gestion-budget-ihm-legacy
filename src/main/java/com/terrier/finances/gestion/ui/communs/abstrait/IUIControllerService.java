@@ -8,8 +8,8 @@ import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateursAPIService;
-import com.terrier.finances.gestion.ui.login.business.UserUISession;
 import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
+import com.terrier.finances.gestion.ui.login.model.UserUISession;
 import com.vaadin.ui.Window;
 
 /**

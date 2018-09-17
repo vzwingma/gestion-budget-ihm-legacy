@@ -24,9 +24,8 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * Comptes d'un utilisateur
 	 * @param idUtilisateur
 	 */
-	public List<CompteBancaire> getComptes(String idUtilisateur){
-		String path = BudgetApiUrlEnum.COMPTES_LIST_FULL.replace("{idUtilisateur}", idUtilisateur);
-		return callHTTPGetListData(path, CompteBancaire.class);
+	public List<CompteBancaire> getComptes(){
+		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL, CompteBancaire.class);
 	}
 	
 	/**
@@ -34,8 +33,8 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @param idCompte
 	 * @param idUtilisateur
 	 */
-	public CompteBancaire getCompte(String idCompte, String idUtilisateur){
-		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace("{idCompte}", idCompte).replace("{idUtilisateur}", idUtilisateur);
+	public CompteBancaire getCompte(String idCompte){
+		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace("{idCompte}", idCompte);
 		return callHTTPGetData(path, CompteBancaire.class);
 	}
 
@@ -46,7 +45,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @param compte id du compte
 	 * @return la date du premier budget décrit pour cet utilisateur
 	 */
-	public IntervallesCompteAPIObject getIntervallesBudgets(String compte, String idUtilisateur) throws DataNotFoundException{
+	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws DataNotFoundException{
 		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace("{idCompte}", compte);
 		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
 	}
@@ -58,8 +57,8 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur utilisateur
 	 * @return le set des libelles des opérations
 	 */
-	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, String idUtilisateur){
-		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace("{idCompte}", idCompte).replace("{idUtilisateur}", idUtilisateur);
+	public Set<String> getLibellesOperationsForAutocomplete(String idCompte){
+		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace("{idCompte}", idCompte);
 		LibellesOperationsAPIObject libelles = callHTTPGetData(path, LibellesOperationsAPIObject.class);
 		return libelles.getLibellesOperations();
 	}

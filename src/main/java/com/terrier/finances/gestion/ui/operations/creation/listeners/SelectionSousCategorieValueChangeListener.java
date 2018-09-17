@@ -57,7 +57,7 @@ public class SelectionSousCategorieValueChangeListener extends AbstractComponent
 			controleur.getComponent().getComboboxComptes().setVisible(interCompte);
 			if(interCompte && controleur.getComponent().getComboboxComptes().isEmpty()){
 				controleur.getComponent().getComboboxComptes().setItems(
-						getServiceComptes().getComptes(getUserSession().getIdUtilisateur())
+						getServiceComptes().getComptes()
 						.stream()
 						.filter(CompteBancaire::isActif)
 						.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))

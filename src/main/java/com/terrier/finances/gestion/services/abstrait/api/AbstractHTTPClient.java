@@ -14,8 +14,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+import com.terrier.finances.gestion.communs.api.security.JwtConfig;
+import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 
@@ -92,6 +94,13 @@ public abstract class AbstractHTTPClient {
 
 
 	/**
+	 * 
+	 * @return JWT Token de l'utilisateur
+	 */
+	private String getJwtToken(){
+		return FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
+	}
+	/**
 	 * Invvocation
 	 * @param path chemin
 	 * @param queryParams paramètres de requêtes (si existants)
@@ -102,14 +111,21 @@ public abstract class AbstractHTTPClient {
 		if(path != null){
 			wt = wt.path(path);
 		}
+		
 		if(queryParams != null && !queryParams.isEmpty()){
 			queryParams.entrySet().stream()
 			.forEach(e -> {
 				wt=wt.queryParam(e.getKey(), e.getValue());
 			});
 		}
-		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE).header("Content-type", MediaType.APPLICATION_JSON);
-		LOGGER.info("[API={}] Appel du service [{}]", getCodeInvoquer(invoquer), wt.getUri());
+		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE)
+											.header("Content-type", MediaType.APPLICATION_JSON);
+		int c = getCodeInvoquer(invoquer);
+		if(getJwtToken() != null){
+			invoquer.header(JwtConfig.JWT_AUTH_HEADER, getJwtToken());
+			LOGGER.info("[API={}][JWT Token={}]", c, getJwtToken());
+		}
+		LOGGER.info("[API={}] Appel du service [{}]", c, wt.getUri());
 		return invoquer;
 	}
 
@@ -125,13 +141,45 @@ public abstract class AbstractHTTPClient {
 	/**
 	 * Appel POST vers les API Services
 	 * @param path chemin
+	 * @param params paramètres
 	 * @param dataToSend body à envoyer
 	 * @param responseClassType réponse type
 	 * @return réponse
 	 */
-	protected 
-		<Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel>
-		R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType){
+	protected <Q extends AbstractAPIObjectModel> 
+	Response callHTTPPost(String path, Q dataToSend){
+		if(path != null){
+			Invocation.Builder invoquer = getInvocation(path);
+			int c = invoquer.toString().hashCode();
+			try{
+				Response res = invoquer.post(getEntity(dataToSend));
+				if(res.getStatus() > 400){
+					LOGGER.error("[API={}][POST][{}]", c, res.getStatus());
+				}
+				else{
+					LOGGER.debug("[API={}][POST][{}]", c, res.getStatus());
+				}
+				return res;
+			}
+			catch(WebApplicationException e){
+				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+			}
+			catch(Exception e){
+				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Appel POST vers les API Services
+	 * @param path chemin
+	 * @param dataToSend body à envoyer
+	 * @param responseClassType réponse type
+	 * @return réponse
+	 */
+	protected  <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel>
+	R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType){
 		return callHTTPPost(path, null, dataToSend, responseClassType);
 	}
 
@@ -145,29 +193,14 @@ public abstract class AbstractHTTPClient {
 	 * @return réponse
 	 */
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
-			R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType){
+	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType){
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path, params);
 			int c = invoquer.toString().hashCode();
 			try{
-				R response = null;
-				if(responseClassType != null){
-					response = invoquer.post(getEntity(dataToSend), responseClassType);
-					LOGGER.debug("[API={}][POST][200] Réponse : {}", c, response);
-				}
-				else{
-					Response res = invoquer.post(getEntity(dataToSend));
-					if(res.getStatus() > 400){
-						LOGGER.error("[API={}][POST][{}]", c, res.getStatus());
-					}
-					else{
-						LOGGER.debug("[API={}][POST][{}]", c, res.getStatus());
-					}
-				}
-
-				if(response != null){
-					return response;
-				}
+				R response = invoquer.post(getEntity(dataToSend), responseClassType);
+				LOGGER.debug("[API={}][POST][200] Réponse : {}", c, response);
+				return response;
 			}
 			catch(WebApplicationException e){
 				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
@@ -186,12 +219,12 @@ public abstract class AbstractHTTPClient {
 	protected boolean callHTTPGet(String path){
 		return callHTTPGet(path, null);
 	}
-	
-	
+
+
 	private int getCodeInvoquer(Invocation.Builder invoquer){
 		return Math.abs(invoquer.toString().hashCode());
 	}
-	
+
 	/**
 	 * Appel HTTP GET
 	 * @param params params
@@ -219,7 +252,7 @@ public abstract class AbstractHTTPClient {
 	}
 
 
-	
+
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Class<R> responseClassType){
 		return callHTTPGetData(path, null, responseClassType);
 	}

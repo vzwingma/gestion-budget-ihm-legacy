@@ -48,7 +48,7 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 		int anneePrecedente = Month.DECEMBER.equals(moisPrecedent) ? budgetMensuelCourant.getAnnee() - 1 : budgetMensuelCourant.getAnnee();
 		
 		Boolean budgetPrecedentActif = page.getControleur().getServiceOperations()
-				.isBudgetMensuelActif(BudgetDataUtils.getBudgetId(budgetMensuelCourant.getCompteBancaire(), moisPrecedent, anneePrecedente), getUserSession().getIdUtilisateur());
+				.isBudgetMensuelActif(BudgetDataUtils.getBudgetId(budgetMensuelCourant.getCompteBancaire(), moisPrecedent, anneePrecedente));
 		if(budgetPrecedentActif){
 			warnMoisActif = "<span style=\"color: red;\"><br> Attention : Le mois précédent n'est pas clos !</span><br>Il sera automatiquement clôturé et les opérations en attente, annulées";
 		}

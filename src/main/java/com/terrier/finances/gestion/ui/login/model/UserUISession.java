@@ -1,4 +1,4 @@
-package com.terrier.finances.gestion.ui.login.business;
+package com.terrier.finances.gestion.ui.login.model;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.finances.gestion.communs.api.security.JwtConfig;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
@@ -19,6 +20,8 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
+
+import io.jsonwebtoken.Claims;
 
 /**
  * Session Utilisateur dans l'application, coté IHM
@@ -41,6 +44,10 @@ public class UserUISession {
 	private String idUtilisateur = null;
 	
 	private Map<UtilisateurDroitsEnum, Boolean> droits;
+	
+	private String jwtToken;
+	
+	private Claims jwtClaims;
 	/**
 	 * Budget courant
 	 */
@@ -90,6 +97,8 @@ public class UserUISession {
 		// Suppression de l'utilisateur
 		this.idUtilisateur = null;
 		this.droits = null;
+		this.jwtClaims = null;
+		this.jwtToken = null;
 		this.lastAccessTime = null;
 		this.budgetMensuelCourant = null;
 		this.idSession = null;
@@ -132,21 +141,14 @@ public class UserUISession {
 
 	/**
 	 * Enregistrement de l'utilisateur
-	 * @param utilisateur USER
+	 * @param idUtilisateur USER
 	 */
-	public boolean registerUtilisateur(String utilisateur, Map<UtilisateurDroitsEnum, Boolean> droits){
-		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, utilisateur);
-		this.idUtilisateur = utilisateur;
-		this.droits = droits;
+	public boolean registerUtilisateur(String idUtilisateur, String token){
+		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, idUtilisateur);
+		this.idUtilisateur = idUtilisateur;
+		this.jwtToken = token;
+		this.jwtClaims = JwtConfig.getJWTClaims(token);
 		return true;
-	}
-
-
-	/**
-	 * @return the utilisateurCourant
-	 */
-	public String getIdUtilisateur() {
-		return idUtilisateur;
 	}
 
 
@@ -238,4 +240,22 @@ public class UserUISession {
 		UI.getCurrent().addWindow(popupModale);
 		this.popupModale = popupModale;
 	}
+
+
+	/**
+	 * @return the jwtToken
+	 */
+	public String getJwtToken() {
+		return jwtToken;
+	}
+
+
+	/**
+	 * @return the jwtClaims
+	 */
+	public Claims getJwtClaims() {
+		return jwtClaims;
+	}
+	
+	
 }

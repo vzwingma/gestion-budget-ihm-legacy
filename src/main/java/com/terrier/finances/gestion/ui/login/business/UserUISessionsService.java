@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.terrier.finances.gestion.ui.communs.abstrait.IUIControllerService;
+import com.terrier.finances.gestion.ui.login.model.UserUISession;
 import com.vaadin.ui.UI;
 
 /**
@@ -100,7 +101,7 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 	 */
 	public void deconnexionUtilisateur(String idSession, boolean redirect){
 		UserUISession session = sessionsMap.get(idSession);
-		getServiceUtilisateurs().deconnexion(session.getIdUtilisateur());
+		getServiceUtilisateurs().deconnexion();
 		if(redirect){
 			session.deconnexionAndRedirect();
 		}

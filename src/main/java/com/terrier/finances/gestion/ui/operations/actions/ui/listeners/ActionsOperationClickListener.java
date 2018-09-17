@@ -86,7 +86,7 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 				}
 			}
 			event.getButton().setVisible(false);	
-			updateLigne(etat, getUserSession().getIdUtilisateur());
+			updateLigne(etat);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 	/**
 	 * Mise à jour de la ligne
 	 */
-	private void updateLigne(EtatOperationEnum etat, String idUtilisateur){
+	private void updateLigne(EtatOperationEnum etat){
 
 		// Mise à jour de l'état
 		actions.getControleur().miseAJourEtatLigne(etat);
@@ -104,7 +104,7 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 		try{
 			getUserSession().updateBudgetInSession(
 					getControleur(BudgetMensuelController.class).getServiceOperations()
-					.majEtatLigneOperation(budget, actions.getControleur().getOperation().getId(), etat, idUtilisateur));
+					.majEtatLigneOperation(budget, actions.getControleur().getOperation().getId(), etat));
 		}
 		catch(DataNotFoundException|BudgetNotFoundException e){
 			Notification.show("l'opération est introuvable ou n'a pas été enregistrée", Type.ERROR_MESSAGE);
@@ -121,7 +121,7 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 	@Override
 	public void response(boolean ok) {
 		if(ok){
-			updateLigne(null, getUserSession().getIdUtilisateur());
+			updateLigne(null);
 		}
 	}
 }

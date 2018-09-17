@@ -33,15 +33,13 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param annee année
 	 * @return budget mensuel chargé et initialisé à partir des données précédentes
 	 */
-	public BudgetMensuel chargerBudgetMensuel(String idUtilisateur, String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException{
+	public BudgetMensuel chargerBudgetMensuel(String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException{
 		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_QUERY_FULL).toString();
 
 		Map<String, String> params = new HashMap<>();
 		params.put("idCompte", idCompte);
 		params.put("mois", Integer.toString(mois.getValue()));
 		params.put("annee", Integer.toString(annee));
-		params.put("idUtilisateur", idUtilisateur);
-		
 		return callHTTPGetData(path, params, BudgetMensuel.class);
 	}
 	
@@ -50,8 +48,8 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param idBudget
 	 * @return état d'activité du budget
 	 */
-	public boolean isBudgetMensuelActif(String idBudget, String idUtilisateur){
-		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudget).replace("{idUtilisateur}", idUtilisateur);
+	public boolean isBudgetMensuelActif(String idBudget){
+		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudget);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", "true");
 		return callHTTPGet(path, params);
@@ -67,8 +65,8 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws BudgetNotFoundException budget introuvable
 	 * @throws CompteClosedException compte clos. Impossible de réinitialiser
 	 */
-	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget, String idUtilisateur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId()).replace("{idUtilisateur}", idUtilisateur)).toString();
+	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId())).toString();
 		return callHTTPDeleteData(path, BudgetMensuel.class);
 	}
 	
@@ -78,8 +76,8 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param idBudget identifiant du budget
 	 * @return la date de mise à jour du  budget
 	 */
-	public boolean isBudgetUpToDate(String idBudget, Date dateToCompare, String idUtilisateur) {
-		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudget).replace("{idUtilisateur}", idUtilisateur);
+	public boolean isBudgetUpToDate(String idBudget, Date dateToCompare) {
+		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudget);
 		Map<String, String> params = new HashMap<>();
 		params.put("uptodateto", Long.toString(dateToCompare.getTime()));
 		return callHTTPGet(path, params);
@@ -89,8 +87,8 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * Lock/unlock d'un budget
 	 * @param budgetActif
 	 */
-	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif, String idUtilisateur){
-		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudgetMensuel).replace("{idUtilisateur}", idUtilisateur);
+	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif){
+		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudgetMensuel);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", Boolean.toString(budgetActif));
 		return callHTTPPost(path, params, null, BudgetMensuel.class);
@@ -105,7 +103,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException erreur données
 	 * @throws CompteClosedException 
 	 */
-	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation ligneOperation, CompteBancaire compteCrediteur, String idUtilisateur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException{
+	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation ligneOperation, CompteBancaire compteCrediteur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException{
 		return null;
 	}
 	
@@ -115,7 +113,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur auteur de l'action 
 	 * @throws BudgetNotFoundException 
 	 */
-	public BudgetMensuel ajoutOperationEtCalcul(String idBudget, LigneOperation ligneOperation, String idUtilisateur) throws BudgetNotFoundException{
+	public BudgetMensuel ajoutOperationEtCalcul(String idBudget, LigneOperation ligneOperation) throws BudgetNotFoundException{
 		return new BudgetMensuel();
 	}
 	
@@ -128,7 +126,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException erreur ligne non trouvé
 	 * @throws BudgetNotFoundException not found
 	 */
-	public BudgetMensuel majEtatLigneOperation(BudgetMensuel budget, String ligneId, EtatOperationEnum etat, String idUtilisateur) throws DataNotFoundException, BudgetNotFoundException{
+	public BudgetMensuel majEtatLigneOperation(BudgetMensuel budget, String ligneId, EtatOperationEnum etat) throws DataNotFoundException, BudgetNotFoundException{
 		return budget;
 	}
 	
@@ -138,7 +136,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * Mise à jour de la ligne comme dernière opération
 	 * @param ligneId
 	 */
-	public void setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId, String idUtilisateur){
+	public void setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId){
 		
 	}
 	
@@ -146,8 +144,8 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * Calcul du budget Courant et sauvegarde
 	 * @param budget budget à sauvegarder
 	 */
-	public BudgetMensuel miseAJourBudget(BudgetMensuel budget, String idUtilisateur){
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId()).replace("{idUtilisateur}", idUtilisateur)).toString();
+	public BudgetMensuel miseAJourBudget(BudgetMensuel budget){
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId())).toString();
 		return callHTTPPost(path, budget, BudgetMensuel.class);
 	}
 }

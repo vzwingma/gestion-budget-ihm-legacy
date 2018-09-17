@@ -56,12 +56,12 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getSsCategorie().getId())
 						&& compteTransfert.isPresent()){
 					LOGGER.info("[IHM] Ajout d'un nouveau transfert intercompte");
-					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get(), getUserSession().getIdUtilisateur()));
+					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get()));
 					Notification.show("Le transfert inter-compte a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				else{
 					LOGGER.info("[IHM] Ajout d'une nouvelle dépense");
-					getUserSession().updateBudgetInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation, getUserSession().getIdUtilisateur()));
+					getUserSession().updateBudgetInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation));
 					Notification.show("l'opération a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				return true;
@@ -121,7 +121,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getComboboxEtat().setTextInputAllowed(false);
 		getComponent().getComboboxEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
-		Object etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur(getUserSession().getIdUtilisateur()).get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+		Object etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur().get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
 		if(etatNlleDepense != null){
 			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.getEnum((String)etatNlleDepense));
 		}
@@ -133,7 +133,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getCheckBoxPeriodique().setValue(Boolean.FALSE);
 		getComponent().getCheckBoxPeriodique().clear();
 		// Description
-		getComponent().getTextFieldDescription().setItems(getServiceComptes().getLibellesOperationsForAutocomplete(getUserSession().getBudgetCourant().getCompteBancaire().getId(), getUserSession().getIdUtilisateur()));
+		getComponent().getTextFieldDescription().setItems(getServiceComptes().getLibellesOperationsForAutocomplete(getUserSession().getBudgetCourant().getCompteBancaire().getId()));
 		getComponent().getTextFieldDescription().clear();
 	}
 }

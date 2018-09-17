@@ -123,7 +123,7 @@ public abstract class AbstractHTTPClient {
 		int c = getCodeInvoquer(invoquer);
 		if(getJwtToken() != null){
 			invoquer.header(JwtConfig.JWT_AUTH_HEADER, getJwtToken());
-			LOGGER.info("[API={}][JWT Token={}]", c, getJwtToken());
+			LOGGER.trace("[API={}][JWT Token={}]", c, getJwtToken());
 		}
 		LOGGER.info("[API={}] Appel du service [{}]", c, wt.getUri());
 		return invoquer;

@@ -76,7 +76,7 @@ public class UserUISession {
 	/**
 	 * Déconnexion de l'utilisateur manuellement
 	 */
-	protected void deconnexionAndRedirect(){
+	public void deconnexionAndRedirect(){
 		// Déconnexion métier et invalidation Session Vaadin
 		deconnexion();
 		//Redirect the user to the login/default Page
@@ -93,7 +93,7 @@ public class UserUISession {
 	/**
 	 * Auto déconnexion, sans redirection
 	 */
-	protected void deconnexion(){
+	public void deconnexion(){
 		// Suppression de l'utilisateur
 		this.idUtilisateur = null;
 		this.droits = null;

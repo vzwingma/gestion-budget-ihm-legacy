@@ -53,7 +53,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 			// Si oui création
 			BudgetMensuel budget = getUserSession().getBudgetCourant();
 			try{
-				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getSsCategorie().getId())
+				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getIdSsCategorie())
 						&& compteTransfert.isPresent()){
 					LOGGER.info("[IHM] Ajout d'un nouveau transfert intercompte");
 					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get()));

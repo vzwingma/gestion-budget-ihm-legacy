@@ -66,7 +66,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 				form.getCheckBoxPeriodique().getValue());
 
 		// #121 : Opération de réserve: toujours validée
-		if(IdsCategoriesEnum.RESERVE.getId().equals(newOperation.getSsCategorie().getId())){
+		if(IdsCategoriesEnum.RESERVE.getId().equals(newOperation.getIdSsCategorie())){
 			newOperation.setEtat(EtatOperationEnum.REALISEE);
 		}
 		LOGGER.debug("[IHM]  >  {}", newOperation);

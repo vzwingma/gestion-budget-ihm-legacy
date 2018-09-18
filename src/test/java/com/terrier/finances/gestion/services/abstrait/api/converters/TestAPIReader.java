@@ -115,13 +115,13 @@ public class TestAPIReader {
 		cat.setCategorie(true);
 		cat.setId("IdTest");
 		cat.setLibelle("LibelleTest");
-		bo.getTotalParCategories().put(cat, new Double[]{ 100D, 200D});
+		bo.getTotalParCategories().put(cat.getId(), new Double[]{ 100D, 200D});
 		
 		CategorieOperation ssCat = new CategorieOperation();
 		ssCat.setCategorie(false);
 		ssCat.setId("IdTest");
 		ssCat.setLibelle("LibelleTest");
-		bo.getTotalParSSCategories().put(ssCat, new Double[]{ 100D, 200D});
+		bo.getTotalParSSCategories().put(ssCat.getId(), new Double[]{ 100D, 200D});
 
 		
 		Utilisateur user = new Utilisateur();
@@ -145,9 +145,9 @@ public class TestAPIReader {
 		assertEquals(bo.getSoldeReelNow(), boRead.getSoldeReelNow(), 1);
 		
 		assertEquals(1, boRead.getTotalParCategories().size());
-		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next().getId());
+		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next());
 		assertEquals(1, boRead.getTotalParSSCategories().size());
-		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next().getId());
+		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next());
 	}
 	
 	
@@ -163,13 +163,13 @@ public class TestAPIReader {
 		cat.setCategorie(true);
 		cat.setId("IdTest");
 		cat.setLibelle("LibelleTest");
-		bo.getTotalParCategories().put(cat, new Double[]{ 100D, 200D});
+		bo.getTotalParCategories().put(cat.getId(), new Double[]{ 100D, 200D});
 		
 		CategorieOperation ssCat = new CategorieOperation();
 		ssCat.setCategorie(false);
 		ssCat.setId("IdTest");
 		ssCat.setLibelle("LibelleTest");
-		bo.getTotalParSSCategories().put(ssCat, new Double[]{ 100D, 200D});
+		bo.getTotalParSSCategories().put(ssCat.getId(), new Double[]{ 100D, 200D});
 		
 		APIObjectModelReader<BudgetMensuel> reader = new APIObjectModelReader<>();
 		assertTrue(reader.isReadable(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE));
@@ -182,8 +182,8 @@ public class TestAPIReader {
 		assertEquals(boRead.getClass().getName(), BudgetMensuel.class.getName());
 
 		assertEquals(1, boRead.getTotalParCategories().size());
-		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next().getId());
+		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next());
 		assertEquals(1, boRead.getTotalParSSCategories().size());
-		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next().getId());
+		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next());
 	}
 }

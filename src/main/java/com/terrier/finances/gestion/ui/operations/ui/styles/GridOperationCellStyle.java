@@ -24,7 +24,7 @@ public class GridOperationCellStyle implements StyleGenerator<LigneOperation> {
 		StringBuilder style = new StringBuilder("v-grid-row-");
 		//  Sauf pour les dépenses réalisées, et celle réserve
 
-		if(!IdsCategoriesEnum.RESERVE.getId().equals(depense.getSsCategorie().getId())){
+		if(!IdsCategoriesEnum.RESERVE.getId().equals(depense.getIdSsCategorie())){
 			style.append(depense.getEtat().getId());
 		}
 

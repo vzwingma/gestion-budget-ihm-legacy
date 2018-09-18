@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 
@@ -37,7 +38,7 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 
 	// Classe des objets Budget, gérés
 	@SuppressWarnings("unchecked")
-	private Class<T>[] classesAPIObjectModel = new Class[]{ CategorieOperation.class, CompteBancaire.class };
+	private Class<T>[] classesAPIObjectModel = new Class[]{ CategorieOperation.class, CompteBancaire.class, BudgetMensuel.class };
 
 
 	/* (non-Javadoc)

@@ -78,7 +78,7 @@ public class LoginController extends AbstractUIController<Login>{
 	public void authenticateUser(String login, String passwordEnClair){
 		String jwtToken = getServiceUtilisateurs().authenticate(login, passwordEnClair);
 		if(jwtToken != null){
-			getUserSession().registerUtilisateur(JwtConfig.getJWTClaims(jwtToken).getId(), jwtToken);
+			getUserSession().registerUtilisateur((String)JwtConfig.getJWTClaims(jwtToken).get(JwtConfig.JWT_CLAIM_USERID_HEADER), jwtToken);
 			LOGGER.info("Accès autorisé pour {}", login);
 			// MAJ
 			getUserSession().getMainLayout().removeAllComponents();

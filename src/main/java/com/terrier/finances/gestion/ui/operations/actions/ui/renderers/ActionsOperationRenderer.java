@@ -21,7 +21,7 @@ public class ActionsOperationRenderer extends ComponentRenderer {
 	public JsonValue encode(Component value) {
 		if(value instanceof ActionsOperation){
 			ActionsOperation actions = (ActionsOperation)value;
-			if(IdsCategoriesEnum.RESERVE.getId().equals(actions.getControleur().getOperation().getSsCategorie().getId())){
+			if(IdsCategoriesEnum.RESERVE.getId().equals(actions.getControleur().getOperation().getIdSsCategorie())){
 				return null;
 			}
 		}

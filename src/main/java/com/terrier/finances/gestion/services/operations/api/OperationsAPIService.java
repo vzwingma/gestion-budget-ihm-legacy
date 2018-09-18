@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
@@ -12,10 +13,12 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 
 /**
  * API  vers le domaine Budget
@@ -25,6 +28,8 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 @Controller
 public class OperationsAPIService extends AbstractHTTPClient {
 
+	@Autowired
+	ParametragesAPIService parametrageAPIServices;
 	
 	/**
 	 * Chargement du budget du mois courant
@@ -40,7 +45,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		params.put("idCompte", idCompte);
 		params.put("mois", Integer.toString(mois.getValue()));
 		params.put("annee", Integer.toString(annee));
-		return callHTTPGetData(path, params, BudgetMensuel.class);
+		BudgetMensuel budget = callHTTPGetData(path, params, BudgetMensuel.class);
+		completeCategoriesOnOperation(budget);
+		return budget;
 	}
 	
 	
@@ -67,7 +74,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 */
 	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
 		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId())).toString();
-		return callHTTPDeleteData(path, BudgetMensuel.class);
+		BudgetMensuel budgetInit = callHTTPDeleteData(path, BudgetMensuel.class);
+		completeCategoriesOnOperation(budgetInit);
+		return budgetInit;
 	}
 	
 	
@@ -91,7 +100,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudgetMensuel);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", Boolean.toString(budgetActif));
-		return callHTTPPost(path, params, null, BudgetMensuel.class);
+		BudgetMensuel budget = callHTTPPost(path, params, null, BudgetMensuel.class);
+		completeCategoriesOnOperation(budget);
+		return budget;
 	}
 	
 	/**
@@ -146,6 +157,21 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 */
 	public BudgetMensuel miseAJourBudget(BudgetMensuel budget){
 		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId())).toString();
-		return callHTTPPost(path, budget, BudgetMensuel.class);
+		BudgetMensuel budgetUpdated =  callHTTPPost(path, budget, BudgetMensuel.class);
+		completeCategoriesOnOperation(budgetUpdated);
+		return budgetUpdated;
+	}
+	
+	
+	/**
+	 * Réinjection des catégories dans les opérations du budget
+	 * @param budget
+	 */
+	private void completeCategoriesOnOperation(BudgetMensuel budget){
+		if(budget != null && budget.getListeOperations() != null && !budget.getListeOperations().isEmpty()){
+			budget.getListeOperations()
+				.stream()
+				.forEach(op -> op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getIdSsCategorie(), parametrageAPIServices.getCategories())));
+		}
 	}
 }

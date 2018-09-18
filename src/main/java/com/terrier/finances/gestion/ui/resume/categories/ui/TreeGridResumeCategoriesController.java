@@ -72,16 +72,16 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 
 				if(categorie != null && budget.getTotalParCategories().get(categorie) != null){
 
-					ResumeTotalCategories totalCat = new ResumeTotalCategories(categorie.getLibelle(), budget.getTotalParCategories().get(categorie)[0], budget.getTotalParCategories().get(categorie)[1]);
+					ResumeTotalCategories totalCat = new ResumeTotalCategories(categorie.getLibelle(), budget.getTotalParCategories().get(categorie.getId())[0], budget.getTotalParCategories().get(categorie.getId())[1]);
 					listeResumeTotaux.add(totalCat);
 					for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
-						if(budget.getTotalParSSCategories().get(ssCategorie) == null){
+						if(budget.getTotalParSSCategories().get(ssCategorie.getId()) == null){
 							totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 0D,0D));
 						}
 						else{
 							totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 
-									budget.getTotalParSSCategories().get(ssCategorie)[0], 
-									budget.getTotalParSSCategories().get(ssCategorie)[1]));
+									budget.getTotalParSSCategories().get(ssCategorie.getId())[0], 
+									budget.getTotalParSSCategories().get(ssCategorie.getId())[1]));
 						}
 					}
 				}

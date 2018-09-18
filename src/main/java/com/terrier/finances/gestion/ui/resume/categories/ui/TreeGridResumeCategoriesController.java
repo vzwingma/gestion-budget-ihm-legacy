@@ -68,34 +68,34 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 		List<ResumeTotalCategories> listeResumeTotaux = new ArrayList<>();
 
 		// Tri des catégories
-			for (CategorieOperation categorie : getServiceParams().getCategories()) {
+		for (CategorieOperation categorie : getServiceParams().getCategories()) {
 
-				if(categorie != null && budget.getTotalParCategories().get(categorie) != null){
+			if(categorie != null && budget.getTotalParCategories().get(categorie.getId()) != null){
 
-					ResumeTotalCategories totalCat = new ResumeTotalCategories(categorie.getLibelle(), budget.getTotalParCategories().get(categorie.getId())[0], budget.getTotalParCategories().get(categorie.getId())[1]);
-					listeResumeTotaux.add(totalCat);
-					for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
-						if(budget.getTotalParSSCategories().get(ssCategorie.getId()) == null){
-							totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 0D,0D));
-						}
-						else{
-							totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 
-									budget.getTotalParSSCategories().get(ssCategorie.getId())[0], 
-									budget.getTotalParSSCategories().get(ssCategorie.getId())[1]));
-						}
+				ResumeTotalCategories totalCat = new ResumeTotalCategories(categorie.getLibelle(), budget.getTotalParCategories().get(categorie.getId())[0], budget.getTotalParCategories().get(categorie.getId())[1]);
+				listeResumeTotaux.add(totalCat);
+				for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
+					if(budget.getTotalParSSCategories().get(ssCategorie.getId()) == null){
+						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 0D,0D));
+					}
+					else{
+						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 
+								budget.getTotalParSSCategories().get(ssCategorie.getId())[0], 
+								budget.getTotalParSSCategories().get(ssCategorie.getId())[1]));
 					}
 				}
-				else{
-					LOGGER.trace("Attention : Catégorie vide");
-				}
 			}
+			else{
+				LOGGER.trace("Attention : Catégorie vide");
+			}
+		}
 		listeResumeTotaux.sort((r1, r2) -> r1.getTypeTotal().compareTo(r2.getTypeTotal()));
 
 		getComponent().setItems(listeResumeTotaux, ResumeTotalCategories::getSousCategories);
 		this.gridCollapsed = true;
 		collapseExpendTreeGrid();
 	}
-	
+
 	/**
 	 * Collapse/expand
 	 */

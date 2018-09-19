@@ -272,9 +272,12 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * Set opération comme dernière
 	 * @param operation
 	 */
-	public void setLigneDepenseAsDerniereOperation(LigneOperation operation){
-		getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId());
-		miseAJourVueDonnees();
+	public boolean setLigneDepenseAsDerniereOperation(LigneOperation operation){
+		if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId())){
+			miseAJourVueDonnees();
+			return true;
+		}
+		return false;
 	}
 
 	/**

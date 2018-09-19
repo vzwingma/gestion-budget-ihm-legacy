@@ -34,8 +34,7 @@ public class GridOperationsRightClickListener implements GridContextMenuOpenList
 
 	@Override
 	public void onContextMenuOpen(GridContextMenuOpenEvent<LigneOperation> event) {
-		if(this.controleur != null){
-			this.controleur.getBudgetControleur().setLigneDepenseAsDerniereOperation(event.getItem());
+		if(this.controleur != null && this.controleur.getBudgetControleur().setLigneDepenseAsDerniereOperation(event.getItem())){
 			Notification.show("L'opération est tagguée comme la dernière opération exécutée", Notification.Type.TRAY_NOTIFICATION);
 		}
 		else{

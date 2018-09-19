@@ -5,13 +5,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
@@ -39,13 +40,11 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return budget mensuel chargé et initialisé à partir des données précédentes
 	 */
 	public BudgetMensuel chargerBudgetMensuel(String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException{
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_QUERY_FULL).toString();
-
 		Map<String, String> params = new HashMap<>();
 		params.put("idCompte", idCompte);
 		params.put("mois", Integer.toString(mois.getValue()));
 		params.put("annee", Integer.toString(annee));
-		BudgetMensuel budget = callHTTPGetData(path, params, BudgetMensuel.class);
+		BudgetMensuel budget = callHTTPGetData(BudgetApiUrlEnum.BUDGET_QUERY_FULL, params, BudgetMensuel.class);
 		completeCategoriesOnOperation(budget);
 		return budget;
 	}
@@ -118,27 +117,20 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		return null;
 	}
 	
-	/**
-	 * Ajout d'une ligne de dépense
-	 * @param ligneOperation ligne de dépense
-	 * @param idUtilisateur auteur de l'action 
-	 * @throws BudgetNotFoundException 
-	 */
-	public BudgetMensuel ajoutOperationEtCalcul(String idBudget, LigneOperation ligneOperation) throws BudgetNotFoundException{
-		return new BudgetMensuel();
-	}
-	
 	
 	/**
 	 * Mise à jour de la ligne de dépense du budget
-	 * @param ligneId ligne à modifier
+	 * @param ligneId ligne à modifier (ou à créer si elle n'existe pas
 	 * @param etat état de la ligne
 	 * @param auteur auteur de l'action
 	 * @throws DataNotFoundException erreur ligne non trouvé
 	 * @throws BudgetNotFoundException not found
 	 */
-	public BudgetMensuel majEtatLigneOperation(BudgetMensuel budget, String ligneId, EtatOperationEnum etat) throws DataNotFoundException, BudgetNotFoundException{
-		return budget;
+	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException{
+		String path = new StringBuilder().append(BudgetApiUrlEnum.BUDGET_OPERATIONS_BASE.replace("{idBudget}", idBudget)).toString();
+		BudgetMensuel budgetUpdated =  callHTTPPost(path.toString(), operation, BudgetMensuel.class);
+		completeCategoriesOnOperation(budgetUpdated);
+		return budgetUpdated;
 	}
 	
 	
@@ -147,8 +139,12 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * Mise à jour de la ligne comme dernière opération
 	 * @param ligneId
 	 */
-	public void setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId){
-		
+	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId){
+		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_OPERATIONS_ID_ETAT_FULL.replace("{idBudget}", budget.getId()).replace("{idOperation}", ligneId)).toString();
+		Map<String, Boolean> params = new HashMap<>();
+		params.put("derniereOperation", true);
+		Response response = callHTTPPost(path, budget);
+		return response.getStatus() == 200;
 	}
 	
 	/**

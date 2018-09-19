@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
+import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
@@ -101,10 +102,14 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 
 		// Recalcul du budget
 		BudgetMensuel budget = getUserSession().getBudgetCourant();
+		
+		LigneOperation operationModifiee = actions.getControleur().getOperation();
+		operationModifiee.setEtat(etat);
+		
 		try{
 			getUserSession().updateBudgetInSession(
 					getControleur(BudgetMensuelController.class).getServiceOperations()
-					.majEtatLigneOperation(budget, actions.getControleur().getOperation().getId(), etat));
+					.majLigneOperation(budget.getId(), operationModifiee));
 		}
 		catch(DataNotFoundException|BudgetNotFoundException e){
 			Notification.show("l'opération est introuvable ou n'a pas été enregistrée", Type.ERROR_MESSAGE);

@@ -21,6 +21,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionDeconnexionClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionLockBudgetClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionRefreshMonthBudgetClickListener;
@@ -124,7 +125,13 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			LOGGER.debug("[INIT] Init du mois géré : {}", dateBudget);
 		}
 		// Label last connexion
-		LocalDateTime dateDernierAcces = getServiceUtilisateurs().getLastAccessTime();
+		LocalDateTime dateDernierAcces;
+		try {
+			dateDernierAcces = getServiceUtilisateurs().getLastAccessTime();
+		} catch (UserNotAuthorizedException e1) {
+			deconnexion();
+			return;
+		}
 		if(dateDernierAcces == null){
 			dateDernierAcces = LocalDateTime.now();
 		}
@@ -203,7 +210,11 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				LocalDate oldDateBudget = event.getOldValue().atStartOfDay(ZoneId.systemDefault()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().with(ChronoField.DAY_OF_MONTH, 1);
 				if(!newDateBudget.isEqual(oldDateBudget)){
 					LOGGER.info("Changement du mois : {}/{} -> {}/{}", oldDateBudget.getMonth(), oldDateBudget.getYear(), newDateBudget.getMonth(), newDateBudget.getYear());
-					setRangeFinMois(newDateBudget, compte.getId());
+					try {
+						setRangeFinMois(newDateBudget, compte.getId());
+					} catch (UserNotAuthorizedException e) {
+						deconnexion();
+					}
 					miseAJourVueDonnees();			
 				}
 			});
@@ -239,13 +250,19 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 */
 	public void lockBudget(boolean setBudgetActif){
 		LOGGER.info("[IHM] {} du budget mensuel", setBudgetActif ? "Ouverture" : "Clôture");
-		BudgetMensuel lock = getServiceOperations().setBudgetActif(getUserSession().getBudgetCourant().getId(), setBudgetActif);
-		// Si l'opération s'est bien passée, on répercute la modif
-		if(lock != null){
-			getUserSession().updateBudgetInSession(lock);	
+		try {
+			BudgetMensuel lock = getServiceOperations().setBudgetActif(getUserSession().getBudgetCourant().getId(), setBudgetActif);
+			// Si l'opération s'est bien passée, on répercute la modif
+			if(lock != null){
+				getUserSession().updateBudgetInSession(lock);	
+			}
+			
+			miseAJourVueDonnees();
+		} catch (UserNotAuthorizedException e) {
+			deconnexion();
+			return;
 		}
 		
-		miseAJourVueDonnees();
 	}
 
 	/**
@@ -273,9 +290,13 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * @param operation
 	 */
 	public boolean setLigneDepenseAsDerniereOperation(LigneOperation operation){
-		if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId())){
-			miseAJourVueDonnees();
-			return true;
+		try {
+			if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId())){
+				miseAJourVueDonnees();
+				return true;
+			}
+		} catch (UserNotAuthorizedException e) {
+			deconnexion();
 		}
 		return false;
 	}
@@ -294,6 +315,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
 			} catch (DataNotFoundException e) {
 				LOGGER.error("[IHM] Erreur lors du chargement du premier budget");
+			} catch (UserNotAuthorizedException e) {
+				deconnexion();
+				return;
 			}
 
 		}
@@ -303,8 +327,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	/**
 	 * Mise à jour du range fin
 	 * @param dateFin
+	 * @throws UserNotAuthorizedException 
 	 */
-	private void setRangeFinMois(LocalDate dateFin, String idCompte){
+	private void setRangeFinMois(LocalDate dateFin, String idCompte) throws UserNotAuthorizedException{
 		if(dateFin != null){
 			// Bouton Mois suivant limité au mois prochain si le compte n'est pas clos
 			LocalDate dateRangeBudget = BudgetDateTimeUtils.localDateFirstDayOfMonth();
@@ -323,7 +348,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	/* (non-Javadoc)
 	 * @see com.terrier.finances.gestion.ui.controler.AbstractUIController#chargeDonnees()
 	 */
-	private BudgetMensuel chargeDonnees() throws DataNotFoundException {
+	private BudgetMensuel chargeDonnees() throws DataNotFoundException, UserNotAuthorizedException {
 		LOGGER.debug("[BUDGET] Chargement du budget pour le tableau de suivi des dépenses");
 
 		CompteBancaire compte = getComponent().getComboBoxComptes().getValue();
@@ -373,7 +398,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				Notification.show("Création du budget mensuel. Le mois précédent est automatiquement clôturé et les opérations prévues sont annulées", Notification.Type.WARNING_MESSAGE);
 				budgetCourant.setNewBudget(false);
 			}
-		} catch (final DataNotFoundException e) {
+		} catch (final DataNotFoundException | UserNotAuthorizedException e) {
 			LOGGER.warn("[BUDGET] Budget non trouvé.");
 			Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
 			return;

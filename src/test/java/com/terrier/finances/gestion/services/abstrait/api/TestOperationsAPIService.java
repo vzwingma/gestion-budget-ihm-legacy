@@ -13,6 +13,7 @@ import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
 import com.terrier.finances.gestion.test.config.AbstractTestServices;
 
@@ -25,7 +26,7 @@ public class TestOperationsAPIService extends AbstractTestServices {
 
 
 	@Test
-	public void testChargerBudgetMensuel() throws BudgetNotFoundException, DataNotFoundException{
+	public void testChargerBudgetMensuel() throws BudgetNotFoundException, DataNotFoundException, UserNotAuthorizedException{
 
 		OperationsAPIService service = spyOperationsAPIService();
 		assertNotNull(service);

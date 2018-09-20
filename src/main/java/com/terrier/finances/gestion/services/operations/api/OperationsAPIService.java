@@ -18,6 +18,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 
@@ -38,8 +39,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param mois mois 
 	 * @param annee année
 	 * @return budget mensuel chargé et initialisé à partir des données précédentes
+	 * @throws UserNotAuthorizedException 
 	 */
-	public BudgetMensuel chargerBudgetMensuel(String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException{
+	public BudgetMensuel chargerBudgetMensuel(String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException, UserNotAuthorizedException{
 		Map<String, String> params = new HashMap<>();
 		params.put("idCompte", idCompte);
 		params.put("mois", Integer.toString(mois.getValue()));
@@ -72,7 +74,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws CompteClosedException compte clos. Impossible de réinitialiser
 	 */
 	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId())).toString();
+		String path = BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId());
 		BudgetMensuel budgetInit = callHTTPDeleteData(path, BudgetMensuel.class);
 		completeCategoriesOnOperation(budgetInit);
 		return budgetInit;
@@ -94,8 +96,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	/**
 	 * Lock/unlock d'un budget
 	 * @param budgetActif
+	 * @throws UserNotAuthorizedException 
 	 */
-	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif){
+	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif) throws UserNotAuthorizedException{
 		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudgetMensuel);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", Boolean.toString(budgetActif));
@@ -125,10 +128,11 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @param auteur auteur de l'action
 	 * @throws DataNotFoundException erreur ligne non trouvé
 	 * @throws BudgetNotFoundException not found
+	 * @throws UserNotAuthorizedException 
 	 */
-	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException{
-		String path = new StringBuilder().append(BudgetApiUrlEnum.BUDGET_OPERATIONS_BASE.replace("{idBudget}", idBudget)).toString();
-		BudgetMensuel budgetUpdated =  callHTTPPost(path.toString(), operation, BudgetMensuel.class);
+	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException, UserNotAuthorizedException{
+		String path = BudgetApiUrlEnum.BUDGET_OPERATIONS_FULL.replace("{idBudget}", idBudget);
+		BudgetMensuel budgetUpdated =  callHTTPPost(path, operation, BudgetMensuel.class);
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
 	}
@@ -138,26 +142,13 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	/**
 	 * Mise à jour de la ligne comme dernière opération
 	 * @param ligneId
+	 * @throws UserNotAuthorizedException erreur auth
 	 */
-	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId){
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_OPERATIONS_ID_ETAT_FULL.replace("{idBudget}", budget.getId()).replace("{idOperation}", ligneId)).toString();
-		Map<String, Boolean> params = new HashMap<>();
-		params.put("derniereOperation", true);
+	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId) throws UserNotAuthorizedException{
+		String path = (BudgetApiUrlEnum.BUDGET_OPERATIONS_ID_DERNIERE_FULL.replace("{idBudget}", budget.getId()).replace("{idOperation}", ligneId));
 		Response response = callHTTPPost(path, budget);
 		return response.getStatus() == 200;
 	}
-	
-	/**
-	 * Calcul du budget Courant et sauvegarde
-	 * @param budget budget à sauvegarder
-	 */
-	public BudgetMensuel miseAJourBudget(BudgetMensuel budget){
-		String path = new StringBuilder(BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId())).toString();
-		BudgetMensuel budgetUpdated =  callHTTPPost(path, budget, BudgetMensuel.class);
-		completeCategoriesOnOperation(budgetUpdated);
-		return budgetUpdated;
-	}
-	
 	
 	/**
 	 * Réinjection des catégories dans les opérations du budget

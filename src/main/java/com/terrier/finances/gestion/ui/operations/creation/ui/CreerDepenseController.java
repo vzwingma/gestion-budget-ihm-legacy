@@ -12,6 +12,7 @@ import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperation
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
 import com.vaadin.data.ValidationResult;
@@ -56,12 +57,15 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getIdSsCategorie())
 						&& compteTransfert.isPresent()){
 					LOGGER.info("[IHM] Ajout d'un nouveau transfert intercompte");
-					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get()));
+					getUserSession().updateBudgetInSession(getServiceOperations().majLigneOperation(budget.getId(), newOperation));
+					
+					//getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get()));
 					Notification.show("Le transfert inter-compte a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				else{
 					LOGGER.info("[IHM] Ajout d'une nouvelle dépense");
-					getUserSession().updateBudgetInSession(getServiceOperations().ajoutOperationEtCalcul(budget.getId(), newOperation));
+					// On s'assure que c'est une création
+					getUserSession().updateBudgetInSession(getServiceOperations().majLigneOperation(budget.getId(), newOperation));
 					Notification.show("l'opération a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				return true;
@@ -121,7 +125,12 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getComboboxEtat().setTextInputAllowed(false);
 		getComponent().getComboboxEtat().clear();
 		// #50 : Gestion du style par préférence utilisateur
-		Object etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur().get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+		Object etatNlleDepense = null;
+		try {
+			etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur().get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+		} catch (UserNotAuthorizedException e1) {
+			LOGGER.warn("Impossible de trouver les préférences utilisateurs");
+		}
 		if(etatNlleDepense != null){
 			getComponent().getComboboxEtat().setSelectedItem(EtatOperationEnum.getEnum((String)etatNlleDepense));
 		}
@@ -133,7 +142,13 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		getComponent().getCheckBoxPeriodique().setValue(Boolean.FALSE);
 		getComponent().getCheckBoxPeriodique().clear();
 		// Description
-		getComponent().getTextFieldDescription().setItems(getServiceComptes().getLibellesOperationsForAutocomplete(getUserSession().getBudgetCourant().getCompteBancaire().getId()));
+		try {
+			getComponent().getTextFieldDescription().setItems(getServiceComptes().getLibellesOperationsForAutocomplete(
+					getUserSession().getBudgetCourant().getCompteBancaire().getId(),
+					getUserSession().getBudgetCourant().getAnnee()));
+		} catch (Exception e) {
+			LOGGER.error("Erreur lors de l'accès à l'autocompletion des libellés");
+		}
 		getComponent().getTextFieldDescription().clear();
 	}
 }

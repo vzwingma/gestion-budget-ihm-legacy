@@ -14,6 +14,7 @@ import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
 import com.terrier.finances.gestion.ui.communs.ConfirmDialog.ConfirmationDialogCallback;
@@ -107,17 +108,13 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 		operationModifiee.setEtat(etat);
 		
 		try{
-			getUserSession().updateBudgetInSession(
-					getControleur(BudgetMensuelController.class).getServiceOperations()
-					.majLigneOperation(budget.getId(), operationModifiee));
+			BudgetMensuel budgetUpdated = getControleur(BudgetMensuelController.class).getServiceOperations().majLigneOperation(budget.getId(), operationModifiee);
+			getUserSession().updateBudgetInSession(budgetUpdated);
+			getControleur(BudgetMensuelController.class).miseAJourVueDonnees();
 		}
-		catch(DataNotFoundException|BudgetNotFoundException e){
+		catch(DataNotFoundException|BudgetNotFoundException | UserNotAuthorizedException e){
 			Notification.show("l'opération est introuvable ou n'a pas été enregistrée", Type.ERROR_MESSAGE);
 		}
-
-		getControleur(BudgetMensuelController.class).miseAJourVueDonnees();
-
-
 	}
 
 	/* (non-Javadoc)

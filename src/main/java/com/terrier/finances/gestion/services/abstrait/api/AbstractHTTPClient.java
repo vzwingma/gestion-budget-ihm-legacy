@@ -18,6 +18,7 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.JwtConfig;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
@@ -145,9 +147,10 @@ public abstract class AbstractHTTPClient {
 	 * @param dataToSend body à envoyer
 	 * @param responseClassType réponse type
 	 * @return réponse
+	 * @throws UserNotAuthorizedException  erreur d'auth
 	 */
 	protected <Q extends AbstractAPIObjectModel> 
-	Response callHTTPPost(String path, Q dataToSend){
+	Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException {
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path);
 			int c = invoquer.toString().hashCode();
@@ -163,6 +166,9 @@ public abstract class AbstractHTTPClient {
 			}
 			catch(WebApplicationException e){
 				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
+					throw new UserNotAuthorizedException();
+				}
 			}
 			catch(Exception e){
 				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
@@ -177,9 +183,10 @@ public abstract class AbstractHTTPClient {
 	 * @param dataToSend body à envoyer
 	 * @param responseClassType réponse type
 	 * @return réponse
+	 * @throws UserNotAuthorizedException 
 	 */
 	protected  <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel>
-	R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType){
+	R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException{
 		return callHTTPPost(path, null, dataToSend, responseClassType);
 	}
 
@@ -191,12 +198,13 @@ public abstract class AbstractHTTPClient {
 	 * @param dataToSend body à envoyer
 	 * @param responseClassType réponse type
 	 * @return réponse
+	 * @throws UserNotAuthorizedException 
 	 */
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
-	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType){
+	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException{
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path, params);
-			int c = invoquer.toString().hashCode();
+			int c = getCodeInvoquer(invoquer);
 			try{
 				R response = invoquer.post(getEntity(dataToSend), responseClassType);
 				LOGGER.debug("[API={}][POST][200] Réponse : {}", c, response);
@@ -204,6 +212,9 @@ public abstract class AbstractHTTPClient {
 			}
 			catch(WebApplicationException e){
 				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
+					throw new UserNotAuthorizedException();
+				}
 			}
 			catch(Exception e){
 				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
@@ -241,6 +252,9 @@ public abstract class AbstractHTTPClient {
 				if(response != null){
 					LOGGER.debug("[API={}][GET] Réponse : [{}]", c, response.getStatus());
 					resultat = response.getStatus() == 200;
+					if(response.getStatusInfo().equals(Status.UNAUTHORIZED)) {
+						throw new UserNotAuthorizedException();
+					}
 				}
 			}
 			catch(Exception e){
@@ -253,7 +267,7 @@ public abstract class AbstractHTTPClient {
 
 
 
-	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Class<R> responseClassType){
+	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Class<R> responseClassType) throws UserNotAuthorizedException{
 		return callHTTPGetData(path, null, responseClassType);
 	}
 	/**
@@ -262,8 +276,9 @@ public abstract class AbstractHTTPClient {
 	 * @param url racine de l'URL
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
+	 * @throws UserNotAuthorizedException 
 	 */
-	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType){
+	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType) throws UserNotAuthorizedException{
 		if(path != null){
 			Builder invoquer = getInvocation(path, params);
 			int c = getCodeInvoquer(invoquer);
@@ -274,6 +289,9 @@ public abstract class AbstractHTTPClient {
 			}
 			catch(WebApplicationException e){
 				LOGGER.error("[API={}][GET][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
+					throw new UserNotAuthorizedException();
+				}
 			}
 			catch(Exception e){
 				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);

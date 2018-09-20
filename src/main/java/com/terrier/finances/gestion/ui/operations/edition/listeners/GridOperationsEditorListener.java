@@ -2,6 +2,9 @@ package com.terrier.finances.gestion.ui.operations.edition.listeners;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.operations.ui.GridOperationsController;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.components.grid.EditorCancelEvent;
@@ -47,13 +50,18 @@ public class GridOperationsEditorListener implements EditorCancelListener<LigneO
 	 */	
 	@Override
 	public void onEditorSave(EditorSaveEvent<LigneOperation> event) {
-		// Recalcul du budget
-		BudgetMensuel budget = this.controler.getServiceOperations().miseAJourBudget(this.controler.getUserSession().getBudgetCourant());
-		this.controler.getUserSession().updateBudgetInSession(budget);
-		// MAJ des tableaux
-		this.controler.getBudgetControleur().miseAJourVueDonnees();
-		Notification.show("L'opération a bien été mise à jour", Notification.Type.TRAY_NOTIFICATION);
-		this.controler.updateViewGridOnEditableMode(false);
+		try {
+			// Recalcul du budget
+			BudgetMensuel budget = this.controler.getServiceOperations().majLigneOperation(this.controler.getUserSession().getBudgetCourant().getId(), event.getBean());
+			this.controler.getUserSession().updateBudgetInSession(budget);
+			// MAJ des tableaux
+			this.controler.getBudgetControleur().miseAJourVueDonnees();
+			Notification.show("L'opération a bien été mise à jour", Notification.Type.TRAY_NOTIFICATION);
+			this.controler.updateViewGridOnEditableMode(false);
+		} catch (DataNotFoundException | BudgetNotFoundException | UserNotAuthorizedException e) {
+			Notification.show("Erreur lors de la mise à jour de l'opération \n [" + e.getMessage() + "]", Notification.Type.WARNING_MESSAGE);
+		}
+		
 	}
 }
 

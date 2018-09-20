@@ -131,8 +131,15 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException 
 	 */
 	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException, UserNotAuthorizedException{
-		String path = BudgetApiUrlEnum.BUDGET_OPERATIONS_FULL.replace("{idBudget}", idBudget);
-		BudgetMensuel budgetUpdated =  callHTTPPost(path, operation, BudgetMensuel.class);
+	
+		BudgetMensuel budgetUpdated = null;
+		if(operation.getEtat() != null)
+		{
+			budgetUpdated =  callHTTPPost(BudgetApiUrlEnum.BUDGET_OPERATIONS_FULL.replace("{idBudget}", idBudget), operation, BudgetMensuel.class);
+		}
+		else {
+			budgetUpdated =  callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_OPERATIONS_ID_FULL.replace("{idBudget}", idBudget).replace("{idOperation}", operation.getId()), BudgetMensuel.class);
+		}
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
 	}

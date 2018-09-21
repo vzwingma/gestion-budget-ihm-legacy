@@ -74,6 +74,7 @@ public class ActionsOperationController extends AbstractUIController<ActionsOper
 	 */
 	public void setOperation(LigneOperation operation) {
 		this.operation = operation;
+		miseAJourEtatLigne(this.operation.getEtat());
 	}
 }
 

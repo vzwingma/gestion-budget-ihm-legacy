@@ -2,6 +2,7 @@ package com.terrier.finances.gestion.ui.login.model;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -38,13 +39,9 @@ public class UserUISession {
 	private String idSession;
 
 	private Instant lastAccessTime;
-	/**
-	 * Utilisateur courant
+	/*
+	 * JWT
 	 */
-	private String idUtilisateur = null;
-	
-	private Map<UtilisateurDroitsEnum, Boolean> droits;
-	
 	private String jwtToken;
 	
 	private Claims jwtClaims;
@@ -94,9 +91,7 @@ public class UserUISession {
 	 * Auto déconnexion, sans redirection
 	 */
 	public void deconnexion(){
-		// Suppression de l'utilisateur
-		this.idUtilisateur = null;
-		this.droits = null;
+		// Purge
 		this.jwtClaims = null;
 		this.jwtToken = null;
 		this.lastAccessTime = null;
@@ -143,11 +138,10 @@ public class UserUISession {
 	 * Enregistrement de l'utilisateur
 	 * @param idUtilisateur USER
 	 */
-	public boolean registerUtilisateur(String idUtilisateur, String token){
-		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, idUtilisateur);
-		this.idUtilisateur = idUtilisateur;
+	public boolean registerUtilisateur(String token){
 		this.jwtToken = token;
 		this.jwtClaims = JwtConfig.getJWTClaims(token);
+		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfig.JWT_CLAIM_USERID_HEADER));
 		return true;
 	}
 
@@ -173,7 +167,7 @@ public class UserUISession {
 	 * @return session active
 	 */
 	public boolean isActive(){
-		return this.idUtilisateur != null && this.budgetMensuelCourant != null;
+		return this.jwtToken != null && this.budgetMensuelCourant != null;
 	}
 
 
@@ -182,9 +176,8 @@ public class UserUISession {
 	 * @return le résultat
 	 */
 	public boolean isEnabled(UtilisateurDroitsEnum cleDroit){
-		if(this.droits != null){
-			Boolean droit = this.droits.get(cleDroit);
-			return droit != null && droit.booleanValue();
+		if(getJwtClaims() != null){
+			return getJwtClaims().get(JwtConfig.JWT_CLAIM_AUTORITIES_HEADER, List.class).contains(cleDroit.name());
 		}
 		return false;
 	}

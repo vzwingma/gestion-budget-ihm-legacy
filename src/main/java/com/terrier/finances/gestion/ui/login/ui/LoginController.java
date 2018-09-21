@@ -6,7 +6,6 @@ package com.terrier.finances.gestion.ui.login.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.api.security.JwtConfig;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.server.ThemeResource;
@@ -78,7 +77,7 @@ public class LoginController extends AbstractUIController<Login>{
 	public void authenticateUser(String login, String passwordEnClair){
 		String jwtToken = getServiceUtilisateurs().authenticate(login, passwordEnClair);
 		if(jwtToken != null){
-			getUserSession().registerUtilisateur((String)JwtConfig.getJWTClaims(jwtToken).get(JwtConfig.JWT_CLAIM_USERID_HEADER), jwtToken);
+			getUserSession().registerUtilisateur(jwtToken);
 			LOGGER.info("Accès autorisé pour {}", login);
 			// MAJ
 			getUserSession().getMainLayout().removeAllComponents();

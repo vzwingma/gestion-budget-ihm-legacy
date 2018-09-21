@@ -167,7 +167,7 @@ public abstract class AbstractHTTPClient {
 			catch(WebApplicationException e){
 				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
-					throw new UserNotAuthorizedException();
+					throw new UserNotAuthorizedException("Utilisateur non authentifié");
 				}
 			}
 			catch(Exception e){
@@ -213,7 +213,7 @@ public abstract class AbstractHTTPClient {
 			catch(WebApplicationException e){
 				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
-					throw new UserNotAuthorizedException();
+					throw new UserNotAuthorizedException("Utilisateur non authentifié");
 				}
 			}
 			catch(Exception e){
@@ -253,7 +253,7 @@ public abstract class AbstractHTTPClient {
 					LOGGER.debug("[API={}][GET] Réponse : [{}]", c, response.getStatus());
 					resultat = response.getStatus() == 200;
 					if(response.getStatusInfo().equals(Status.UNAUTHORIZED)) {
-						throw new UserNotAuthorizedException();
+						throw new UserNotAuthorizedException("Utilisateur non authentifié");
 					}
 				}
 			}
@@ -290,7 +290,7 @@ public abstract class AbstractHTTPClient {
 			catch(WebApplicationException e){
 				LOGGER.error("[API={}][GET][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
-					throw new UserNotAuthorizedException();
+					throw new UserNotAuthorizedException("Utilisateur non authentifié");
 				}
 			}
 			catch(Exception e){

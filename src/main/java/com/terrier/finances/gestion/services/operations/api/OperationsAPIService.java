@@ -115,9 +115,14 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws BudgetNotFoundException erreur budget introuvable
 	 * @throws DataNotFoundException erreur données
 	 * @throws CompteClosedException 
+	 * @throws UserNotAuthorizedException 
 	 */
-	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation ligneOperation, CompteBancaire compteCrediteur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException{
-		return null;
+	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation operation, CompteBancaire compteCrediteur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException, UserNotAuthorizedException{
+		BudgetMensuel budgetUpdated = null;
+		String url = BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL.replace("{idBudget}", idBudget).replace("{idOperation}", operation.getId()).replace("{idCompte}", compteCrediteur.getId());
+		budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
+		completeCategoriesOnOperation(budgetUpdated);
+		return budgetUpdated;
 	}
 	
 	
@@ -133,12 +138,13 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException, UserNotAuthorizedException{
 	
 		BudgetMensuel budgetUpdated = null;
+		String url = BudgetApiUrlEnum.BUDGET_OPERATION_FULL.replace("{idBudget}", idBudget).replace("{idOperation}", operation.getId());
 		if(operation.getEtat() != null)
 		{
-			budgetUpdated =  callHTTPPost(BudgetApiUrlEnum.BUDGET_OPERATIONS_FULL.replace("{idBudget}", idBudget), operation, BudgetMensuel.class);
+			budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
 		}
 		else {
-			budgetUpdated =  callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_OPERATIONS_ID_FULL.replace("{idBudget}", idBudget).replace("{idOperation}", operation.getId()), BudgetMensuel.class);
+			budgetUpdated =  callHTTPDeleteData(url, BudgetMensuel.class);
 		}
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
@@ -152,7 +158,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException erreur auth
 	 */
 	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId) throws UserNotAuthorizedException{
-		String path = (BudgetApiUrlEnum.BUDGET_OPERATIONS_ID_DERNIERE_FULL.replace("{idBudget}", budget.getId()).replace("{idOperation}", ligneId));
+		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace("{idBudget}", budget.getId()).replace("{idOperation}", ligneId));
 		Response response = callHTTPPost(path, budget);
 		return response.getStatus() == 200;
 	}

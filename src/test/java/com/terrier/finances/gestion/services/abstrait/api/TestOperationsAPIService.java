@@ -1,13 +1,13 @@
 package com.terrier.finances.gestion.services.abstrait.api;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.time.Month;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;

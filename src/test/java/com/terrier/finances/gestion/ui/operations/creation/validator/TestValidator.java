@@ -1,15 +1,14 @@
 package com.terrier.finances.gestion.ui.operations.creation.validator;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
-import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
 import com.vaadin.data.ValidationResult;
 
 public class TestValidator {

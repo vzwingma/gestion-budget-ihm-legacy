@@ -1,16 +1,16 @@
 package com.terrier.finances.gestion.services.abstrait.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
@@ -26,7 +26,7 @@ public class TestParametrageAPIService extends AbstractTestServices {
 
 	private List<CategorieOperation> categories  = new ArrayList<>();
 	
-	@Before
+	@BeforeEach
 	public void initData(){
 		CategorieOperation catAlimentation = new CategorieOperation();
 		catAlimentation.setId("8f1614c9-503c-4e7d-8cb5-0c9a9218b84a");

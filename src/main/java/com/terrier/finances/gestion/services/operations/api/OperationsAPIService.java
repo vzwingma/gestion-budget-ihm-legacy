@@ -60,7 +60,11 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", "true");
-		return callHTTPGet(path, params);
+		try {
+			return callHTTPGet(path, params);
+		} catch (UserNotAuthorizedException e) {
+			return false;
+		}
 	}
 	
 
@@ -91,7 +95,11 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget);
 		Map<String, String> params = new HashMap<>();
 		params.put("uptodateto", Long.toString(dateToCompare.getTime()));
-		return callHTTPGet(path, params);
+		try {
+			return callHTTPGet(path, params);
+		} catch (UserNotAuthorizedException e) {
+			return false;
+		}
 	}
 	
 	/**

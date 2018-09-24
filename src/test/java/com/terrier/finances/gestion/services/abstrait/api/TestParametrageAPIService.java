@@ -3,6 +3,7 @@ package com.terrier.finances.gestion.services.abstrait.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -56,7 +57,7 @@ public class TestParametrageAPIService extends AbstractTestServices {
 		
 		ParametragesAPIService service = spyParamsAPIService();
 		assertNotNull(service);
-		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL))).thenReturn(categories);
+		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL), any())).thenReturn(categories);
 		
 		List<CategorieOperation> liste = service.getCategories();
 		assertNotNull(liste);

@@ -148,7 +148,6 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		int ordreCompte = 100;
 		CompteBancaire compteCourant = null;
 
-
 		List<CompteBancaire> comptes = getServiceComptes().getComptes();
 		if(comptes != null){
 			// Ajout de la liste des comptes dans la combobox

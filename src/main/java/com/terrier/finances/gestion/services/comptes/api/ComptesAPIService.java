@@ -31,8 +31,9 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 */
 	public List<CompteBancaire> getComptes() {
 		try {
-			return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL);
+			return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL, CompteBancaire.class);
 		} catch (UserNotAuthorizedException e) {
+			LOGGER.error("Utilisateur non authorisé");
 			return new ArrayList<>();
 		}
 	}

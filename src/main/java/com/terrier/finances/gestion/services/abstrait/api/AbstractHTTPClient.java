@@ -383,7 +383,9 @@ public abstract class AbstractHTTPClient {
 			return envVar;
 		}
 		else {
-			LOGGER.warn("La clé {0} n'est pas définie. Utilisation de la valeur par défaut : {1} ", cle.name(), defaultVar);
+			if(LOGGER.isWarnEnabled()) {
+				LOGGER.warn("La clé {} n'est pas définie. Utilisation de la valeur par défaut : {} ", cle.name(), defaultVar);
+			}
 			 return defaultVar;
 		}
 	}

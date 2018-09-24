@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -48,7 +47,7 @@ public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements M
 	@Override
 	public T readFrom(Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-					throws IOException, WebApplicationException {
+					throws IOException {
 		return mapper.readValue(entityStream, type);
 	}
 }

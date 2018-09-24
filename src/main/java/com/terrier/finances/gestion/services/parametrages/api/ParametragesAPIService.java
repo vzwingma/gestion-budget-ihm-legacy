@@ -32,16 +32,15 @@ public class ParametragesAPIService extends AbstractHTTPClient {
 	 */
 	public List<CategorieOperation> getCategories(){
 		if(listeCategories == null){
-			List<CategorieOperation> resultatCategories = callHTTPGetListData(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL, CategorieOperation.class);
+			List<CategorieOperation> resultatCategories = callHTTPGetListData(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL);
 			// Recalcul des liens sur les catégories parentes
 			if(resultatCategories != null){
 				resultatCategories
 					.parallelStream()
-					.forEach(c -> {
+					.forEach(c -> 
 						c.getListeSSCategories()
 							.parallelStream()
-							.forEach(ssc -> ssc.setCategorieParente(c));
-					});
+							.forEach(ssc -> ssc.setCategorieParente(c)));
 				this.listeCategories = resultatCategories;
 			}
 		}

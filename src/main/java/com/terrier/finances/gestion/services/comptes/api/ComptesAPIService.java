@@ -28,7 +28,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @param idUtilisateur
 	 */
 	public List<CompteBancaire> getComptes(){
-		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL, CompteBancaire.class);
+		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL);
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException 
 	 */
 	public CompteBancaire getCompte(String idCompte) throws UserNotAuthorizedException{
-		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace("{idCompte}", idCompte);
+		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
 		return callHTTPGetData(path, CompteBancaire.class);
 	}
 
@@ -50,8 +50,8 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @return la date du premier budget décrit pour cet utilisateur
 	 * @throws UserNotAuthorizedException 
 	 */
-	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws DataNotFoundException, UserNotAuthorizedException{
-		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace("{idCompte}", compte);
+	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws UserNotAuthorizedException, DataNotFoundException{
+		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, compte);
 		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
 	}
 	
@@ -64,7 +64,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException 
 	 */
 	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException{
-		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace("{idCompte}", idCompte);
+		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
 		Map<String, String> params = new HashMap<>();
 		params.put("annee", Integer.toString(annee));
 		LibellesOperationsAPIObject libelles = callHTTPGetData(path, params, LibellesOperationsAPIObject.class);

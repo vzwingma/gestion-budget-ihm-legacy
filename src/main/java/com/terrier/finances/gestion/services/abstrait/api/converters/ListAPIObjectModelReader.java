@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -57,7 +57,7 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 	@Override
 	public List<T> readFrom(Class<List<T>> type, Type genericType, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-					throws IOException, WebApplicationException {
+					throws IOException {
 
 		String entity = IOUtils.toString(entityStream, "UTF-8");
 		
@@ -67,7 +67,7 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 				return listeObjects;
 			}
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	private List<T> tryToParse(String entity, Class<T> classeAPIObjectModel){
@@ -81,6 +81,6 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 		catch(Exception e){
 			LOGGER.trace("Erreur lors du try to parse : ", e);
 		}
-		return null;
+		return  new ArrayList<>();
 	}
 }

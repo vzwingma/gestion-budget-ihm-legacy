@@ -57,7 +57,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return état d'activité du budget
 	 */
 	public boolean isBudgetMensuelActif(String idBudget){
-		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudget);
+		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", "true");
 		return callHTTPGet(path, params);
@@ -74,7 +74,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws CompteClosedException compte clos. Impossible de réinitialiser
 	 */
 	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
-		String path = BudgetApiUrlEnum.BUDGET_ID_FULL.replace("{idBudget}", budget.getId());
+		String path = BudgetApiUrlEnum.BUDGET_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId());
 		BudgetMensuel budgetInit = callHTTPDeleteData(path, BudgetMensuel.class);
 		completeCategoriesOnOperation(budgetInit);
 		return budgetInit;
@@ -87,7 +87,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @return la date de mise à jour du  budget
 	 */
 	public boolean isBudgetUpToDate(String idBudget, Date dateToCompare) {
-		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudget);
+		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget);
 		Map<String, String> params = new HashMap<>();
 		params.put("uptodateto", Long.toString(dateToCompare.getTime()));
 		return callHTTPGet(path, params);
@@ -99,7 +99,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException 
 	 */
 	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif) throws UserNotAuthorizedException{
-		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace("{idBudget}", idBudgetMensuel);
+		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudgetMensuel);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", Boolean.toString(budgetActif));
 		BudgetMensuel budget = callHTTPPost(path, params, null, BudgetMensuel.class);
@@ -119,7 +119,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 */
 	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation operation, CompteBancaire compteCrediteur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException, UserNotAuthorizedException{
 		BudgetMensuel budgetUpdated = null;
-		String url = BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL.replace("{idBudget}", idBudget).replace("{idOperation}", operation.getId()).replace("{idCompte}", compteCrediteur.getId());
+		String url = BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, operation.getId()).replace("{idCompte}", compteCrediteur.getId());
 		budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
@@ -138,7 +138,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException, UserNotAuthorizedException{
 	
 		BudgetMensuel budgetUpdated = null;
-		String url = BudgetApiUrlEnum.BUDGET_OPERATION_FULL.replace("{idBudget}", idBudget).replace("{idOperation}", operation.getId());
+		String url = BudgetApiUrlEnum.BUDGET_OPERATION_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, operation.getId());
 		if(operation.getEtat() != null)
 		{
 			budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
@@ -158,7 +158,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException erreur auth
 	 */
 	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId) throws UserNotAuthorizedException{
-		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace("{idBudget}", budget.getId()).replace("{idOperation}", ligneId));
+		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId()).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, ligneId));
 		Response response = callHTTPPost(path, budget);
 		return response.getStatus() == 200;
 	}

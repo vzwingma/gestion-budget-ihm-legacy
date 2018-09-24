@@ -56,4 +56,43 @@ public abstract class AbstractUIGridComponent<C extends AbstractUIController<?>,
 	 * @return création d'un controleur
 	 */
 	public abstract C createControleurGrid();
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((controleurGrid == null) ? 0 : controleurGrid.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof AbstractUIGridComponent)) {
+			return false;
+		}
+		@SuppressWarnings("unchecked")
+		AbstractUIGridComponent<AbstractUIController<?>, D> other = (AbstractUIGridComponent<AbstractUIController<?>, D>) obj;
+		if (controleurGrid == null) {
+			if (other.controleurGrid != null) {
+				return false;
+			}
+		} else if (!controleurGrid.equals(other.controleurGrid)) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

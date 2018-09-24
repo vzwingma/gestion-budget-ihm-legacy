@@ -58,4 +58,39 @@ public abstract class AbstractUITreeGridComponent<C extends AbstractUIController
 	 */
 	public abstract C createControleurTreeGrid();
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((controleur == null) ? 0 : controleur.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof AbstractUITreeGridComponent)) {
+			return false;
+		}
+		AbstractUITreeGridComponent<?, ?> other = (AbstractUITreeGridComponent<?, ?>) obj;
+		if (controleur == null) {
+			if (other.controleur != null) {
+				return false;
+			}
+		} else if (!controleur.equals(other.controleur)) {
+			return false;
+		}
+		return true;
+	}
 }

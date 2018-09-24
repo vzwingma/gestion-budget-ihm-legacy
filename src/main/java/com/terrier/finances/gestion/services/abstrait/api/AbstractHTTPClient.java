@@ -6,6 +6,7 @@ package com.terrier.finances.gestion.services.abstrait.api;
 
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,13 +46,13 @@ public abstract class AbstractHTTPClient {
 	// Tout est en JSON
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
-	protected final String URI;
+	protected final String serviceURI;
 
 	private Client clientHTTP;
 
 	
 	public AbstractHTTPClient() {
-		URI = getStringEnvVar(ServicesConfigEnum.SERVICE_CONFIG_URL, "http://localhost:8090/services");
+		serviceURI = getStringEnvVar(ServicesConfigEnum.SERVICE_CONFIG_URL, "http://localhost:8090/services");
 	}
 	
 	/**
@@ -115,16 +116,14 @@ public abstract class AbstractHTTPClient {
 	 * @return invocation prête
 	 */
 	private Invocation.Builder getInvocation(String path, Map<String, String> queryParams){
-		wt = getClient().target(URI);
+		wt = getClient().target(serviceURI);
 		if(path != null){
 			wt = wt.path(path);
 		}
 		
 		if(queryParams != null && !queryParams.isEmpty()){
 			queryParams.entrySet().stream()
-			.forEach(e -> {
-				wt=wt.queryParam(e.getKey(), e.getValue());
-			});
+			.forEach(e -> wt=wt.queryParam(e.getKey(), e.getValue()));
 		}
 		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE)
 											.header("Content-type", MediaType.APPLICATION_JSON);
@@ -335,6 +334,7 @@ public abstract class AbstractHTTPClient {
 		return null;
 	}
 
+
 	/**
 	 * Appel HTTP GET
 	 * @param clientHTTP client HTTP
@@ -342,7 +342,7 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path, Class<R> responseClassType){
+	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path){
 		if(path != null){
 			Builder invoquer = getInvocation(path);
 			int c = getCodeInvoquer(invoquer);
@@ -359,10 +359,14 @@ public abstract class AbstractHTTPClient {
 				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
 			}
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
-
+	/**
+	 * Création d'une Entity
+	 * @param apiObject object API
+	 * @return entity englobant l'API Object
+	 */
 	protected <R extends AbstractAPIObjectModel> Entity<R> getEntity(R apiObject){
 		return Entity.entity(apiObject, MediaType.APPLICATION_JSON_TYPE);
 	}
@@ -379,7 +383,7 @@ public abstract class AbstractHTTPClient {
 			return envVar;
 		}
 		else {
-			LOGGER.warn("La clé {} n'est définie. Utilisation de la valeur par défaut : {} ", cle.name(), defaultVar);
+			LOGGER.warn("La clé {0} n'est pas définie. Utilisation de la valeur par défaut : {1} ", cle.name(), defaultVar);
 			 return defaultVar;
 		}
 	}

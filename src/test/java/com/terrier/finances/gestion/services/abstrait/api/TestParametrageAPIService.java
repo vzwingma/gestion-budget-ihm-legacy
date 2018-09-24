@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
@@ -24,7 +25,7 @@ import com.terrier.finances.gestion.test.config.AbstractTestServices;
  */
 public class TestParametrageAPIService extends AbstractTestServices {
 
-	private List<CategorieOperation> categories  = new ArrayList<>();
+	private List<AbstractAPIObjectModel> categories  = new ArrayList<>();
 	
 	@BeforeEach
 	public void initData(){
@@ -53,7 +54,7 @@ public class TestParametrageAPIService extends AbstractTestServices {
 		
 		ParametragesAPIService service = spyParamsAPIService();
 		assertNotNull(service);
-		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL), eq(CategorieOperation.class))).thenReturn(categories);
+		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL))).thenReturn(categories);
 		
 		List<CategorieOperation> liste = service.getCategories();
 		assertNotNull(liste);

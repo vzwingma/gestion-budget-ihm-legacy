@@ -260,7 +260,6 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			miseAJourVueDonnees();
 		} catch (UserNotAuthorizedException e) {
 			deconnexion();
-			return;
 		}
 		
 	}

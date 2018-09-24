@@ -19,10 +19,3 @@
 <a href="https://sonarcloud.io/dashboard?id=gestion-budget"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget&metric=sqale_rating" /></a>
 <a href="https://sonarcloud.io/dashboard?id=gestion-budget"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget&metric=reliability_rating" /></a>
 <a href="https://sonarcloud.io/dashboard?id=gestion-budget"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget&metric=security_rating" /></a>
-
-
-### Swagger des API
-
-Swagger UI  : <a href='http://localhost:8080/gestion-budget/swagger-ui.html'>/gestion-budget/swagger-ui.html</a>
-
-API docs v2 : <a href='http://localhost:8080/gestion-budget/v2/api-docs'>/gestion-budget/v2/api-docs</a>

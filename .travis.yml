@@ -32,9 +32,9 @@ script:
     then 
       echo "ReTag de snapshot"; 
       git tag -d snapshot; 
-      git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget :refs/tags/snapshot; 
+      git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm :refs/tags/snapshot; 
       git tag snapshot; 
-      git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget --tags; 
+      git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm --tags; 
     else 
       echo "Pas de reTag de snapshot"; 
     fi
@@ -65,5 +65,5 @@ deploy:
     overwrite: true
     file: /home/travis/build/vzwingma/gestion-budget/target/webapps/ihm.war
     on:
-      repo: vzwingma/gestion-budget
+      repo: vzwingma/gestion-budget-ihm
       tags: true

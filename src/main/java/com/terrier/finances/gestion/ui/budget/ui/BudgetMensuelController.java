@@ -274,7 +274,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 					getUserSession().getBudgetCourant()));
 			// Ack pour forcer le "refreshAllTable"
 			miseAJourVueDonnees();
-		} catch (BudgetNotFoundException | DataNotFoundException | CompteClosedException e) {
+		} catch (BudgetNotFoundException | DataNotFoundException | CompteClosedException | UserNotAuthorizedException e) {
 			LOGGER.error("[BUDGET] Erreur lors de la réinitialisation du compte", e);
 			Notification.show("Impossible de réinitialiser le mois courant "+
 					getUserSession().getBudgetCourant().getMois()+"/"+ getUserSession().getBudgetCourant().getAnnee()

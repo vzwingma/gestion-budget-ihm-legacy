@@ -25,6 +25,8 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.springframework.http.HttpMethod;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.JwtConfig;
@@ -42,7 +44,7 @@ import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObje
 public abstract class AbstractHTTPClient {
 
 
-	private static final Logger LOGGER = LoggerFactory.getLogger( AbstractHTTPClient.class );
+	protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractHTTPClient.class );
 	// Tout est en JSON
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
@@ -50,11 +52,12 @@ public abstract class AbstractHTTPClient {
 
 	private Client clientHTTP;
 
-	
+
 	public AbstractHTTPClient() {
 		serviceURI = getStringEnvVar(ServicesConfigEnum.SERVICE_CONFIG_URL, "http://localhost:8090/services");
+		MDC.put("key", "[API={}]");
 	}
-	
+
 	/**
 	 * @return client HTTP
 	 */
@@ -120,19 +123,19 @@ public abstract class AbstractHTTPClient {
 		if(path != null){
 			wt = wt.path(path);
 		}
-		
+
 		if(queryParams != null && !queryParams.isEmpty()){
 			queryParams.entrySet().stream()
 			.forEach(e -> wt=wt.queryParam(e.getKey(), e.getValue()));
 		}
 		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE)
-											.header("Content-type", MediaType.APPLICATION_JSON);
+				.header("Content-type", MediaType.APPLICATION_JSON);
 		int c = getCodeInvoquer(invoquer);
 		if(getJwtToken() != null){
 			invoquer.header(JwtConfig.JWT_AUTH_HEADER, getJwtToken());
-			LOGGER.trace("[API={}][JWT Token={}]", c, getJwtToken());
+			LOGGER.trace("[JWT Token={}]", c, getJwtToken());
 		}
-		LOGGER.info("[API={}] Appel du service [{}]", c, wt.getUri());
+		LOGGER.info(" Appel du service [{}]", c, wt.getUri());
 		return invoquer;
 	}
 
@@ -162,21 +165,21 @@ public abstract class AbstractHTTPClient {
 			try{
 				Response res = invoquer.post(getEntity(dataToSend));
 				if(res.getStatus() > 400){
-					LOGGER.error("[API={}][POST][{}]", c, res.getStatus());
+					LOGGER.error("[POST][{}]", c, res.getStatus());
 				}
 				else{
-					LOGGER.debug("[API={}][POST][{}]", c, res.getStatus());
+					LOGGER.debug("[POST][{}]", c, res.getStatus());
 				}
 				return res;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				LOGGER.error("[POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
 					throw new UserNotAuthorizedException("Utilisateur non authentifié");
 				}
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
+				LOGGER.error("[POST] Erreur lors de l'appel", c, e);
 			}
 		}
 		return null;
@@ -212,17 +215,17 @@ public abstract class AbstractHTTPClient {
 			int c = getCodeInvoquer(invoquer);
 			try{
 				R response = invoquer.post(getEntity(dataToSend), responseClassType);
-				LOGGER.debug("[API={}][POST][200] Réponse : {}", c, response);
+				LOGGER.debug("[POST][200] Réponse : {}", c, response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API={}][POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				LOGGER.error("[POST][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
 				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
 					throw new UserNotAuthorizedException("Utilisateur non authentifié");
 				}
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
+				LOGGER.error("[POST] Erreur lors de l'appel", c, e);
 			}
 		}
 		return null;
@@ -255,7 +258,7 @@ public abstract class AbstractHTTPClient {
 			try{
 				Response response = invoquer.get();
 				if(response != null){
-					LOGGER.debug("[API={}][GET] Réponse : [{}]", c, response.getStatus());
+					LOGGER.debug("[GET] Réponse : [{}]", c, response.getStatus());
 					resultat = response.getStatus() == 200;
 					if(response.getStatusInfo().equals(Status.UNAUTHORIZED)) {
 						throw new UserNotAuthorizedException("Utilisateur non authentifié");
@@ -263,7 +266,7 @@ public abstract class AbstractHTTPClient {
 				}
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
+				LOGGER.error("[GET] Erreur lors de l'appel", c, e);
 				resultat = false;
 			}
 		}
@@ -289,23 +292,31 @@ public abstract class AbstractHTTPClient {
 			int c = getCodeInvoquer(invoquer);
 			try{
 				R response = invoquer.get(responseClassType);
-				LOGGER.debug("[API={}][GET][200] Réponse : [{}]", c, response);
+				LOGGER.debug("[GET][200] Réponse : [{}]", c, response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API={}][GET][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
-				if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
-					throw new UserNotAuthorizedException("Utilisateur non authentifié");
-				}
+				catchWebApplicationException(c, HttpMethod.GET, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
+				LOGGER.error("[GET] Erreur lors de l'appel", c, e);
 			}
 		}
 		return null;
 	}
 
-
+	/**
+	 * Catch 401 error
+	 * @param c code API
+	 * @param e Exception
+	 * @throws UserNotAuthorizedException
+	 */
+	private void catchWebApplicationException(int c, HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException {
+		LOGGER.error("[{}][{}] Erreur lors de l'appel", c, verbe.name(), e.getResponse().getStatus());
+		if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
+			throw new UserNotAuthorizedException("Utilisateur non authentifié");
+		}
+	}
 
 
 	/**
@@ -314,21 +325,22 @@ public abstract class AbstractHTTPClient {
 	 * @param url racine de l'URL
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
+	 * @throws UserNotAuthorizedException 
 	 */
-	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
+	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType) throws UserNotAuthorizedException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);
 			int c = getCodeInvoquer(invoquer);
 			try{
 				R response = invoquer.delete(responseClassType);
-				LOGGER.debug("[API={}][DEL][200] Réponse : [{}]", c, response);
+				LOGGER.debug("[DEL][200] Réponse : [{}]", c, response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API={}][DEL][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				catchWebApplicationException(c, HttpMethod.DELETE, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][DEL] Erreur lors de l'appel",c, e);
+				LOGGER.error("[DEL] Erreur lors de l'appel",c, e);
 			}
 		}
 		return null;
@@ -341,22 +353,23 @@ public abstract class AbstractHTTPClient {
 	 * @param url racine de l'URL
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
+	 * @throws UserNotAuthorizedException 
 	 */
-	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path){
+	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path) throws UserNotAuthorizedException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);
 			int c = getCodeInvoquer(invoquer);
 			try{
 				@SuppressWarnings("unchecked")
 				List<R> response = getInvocation(path).get(List.class);
-				LOGGER.debug("[API={}][GET][200] Réponse : [{}]", c, response);
+				LOGGER.debug("[GET][200] Réponse : [{}]", c, response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API={}][GET][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				catchWebApplicationException(c, HttpMethod.GET, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
+				LOGGER.error("[GET] Erreur lors de l'appel", c, e);
 			}
 		}
 		return new ArrayList<>();
@@ -370,7 +383,7 @@ public abstract class AbstractHTTPClient {
 	protected <R extends AbstractAPIObjectModel> Entity<R> getEntity(R apiObject){
 		return Entity.entity(apiObject, MediaType.APPLICATION_JSON_TYPE);
 	}
-	
+
 
 	/**
 	 * Retourne la valeur string de la variable d'environnement
@@ -386,7 +399,7 @@ public abstract class AbstractHTTPClient {
 			if(LOGGER.isWarnEnabled()) {
 				LOGGER.warn("La clé {} n'est pas définie. Utilisation de la valeur par défaut : {} ", cle.name(), defaultVar);
 			}
-			 return defaultVar;
+			return defaultVar;
 		}
 	}
 }

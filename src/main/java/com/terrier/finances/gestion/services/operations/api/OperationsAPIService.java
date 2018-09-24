@@ -72,8 +72,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur sur les données
 	 * @throws BudgetNotFoundException budget introuvable
 	 * @throws CompteClosedException compte clos. Impossible de réinitialiser
+	 * @throws UserNotAuthorizedException erreur d'authentification
 	 */
-	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException {
+	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException, UserNotAuthorizedException {
 		String path = BudgetApiUrlEnum.BUDGET_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId());
 		BudgetMensuel budgetInit = callHTTPDeleteData(path, BudgetMensuel.class);
 		completeCategoriesOnOperation(budgetInit);

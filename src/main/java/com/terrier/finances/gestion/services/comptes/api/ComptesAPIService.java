@@ -1,5 +1,6 @@
 package com.terrier.finances.gestion.services.comptes.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,14 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	/**
 	 * Comptes d'un utilisateur
 	 * @param idUtilisateur
+	 * @throws UserNotAuthorizedException 
 	 */
-	public List<CompteBancaire> getComptes(){
-		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL);
+	public List<CompteBancaire> getComptes() {
+		try {
+			return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL);
+		} catch (UserNotAuthorizedException e) {
+			return new ArrayList<>();
+		}
 	}
 	
 	/**

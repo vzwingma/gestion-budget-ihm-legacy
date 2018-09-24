@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 import com.terrier.finances.gestion.test.config.AbstractTestServices;
 
@@ -47,10 +48,11 @@ public class TestParametrageAPIService extends AbstractTestServices {
 
 	}
 	/**
+	 * @throws UserNotAuthorizedException 
 	 * 
 	 */
 	@Test
-	public void testChargerOperations(){
+	public void testChargerOperations() throws UserNotAuthorizedException{
 		
 		ParametragesAPIService service = spyParamsAPIService();
 		assertNotNull(service);

@@ -70,6 +70,11 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 		return new ArrayList<>();
 	}
 
+	/**
+	 * @param entity
+	 * @param classeAPIObjectModel
+	 * @return null si erreur dans le parse
+	 */
 	private List<T> tryToParse(String entity, Class<T> classeAPIObjectModel){
 		try{
 	
@@ -81,6 +86,6 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 		catch(Exception e){
 			LOGGER.trace("Erreur lors du try to parse : ", e);
 		}
-		return  new ArrayList<>();
+		return null;
 	}
 }

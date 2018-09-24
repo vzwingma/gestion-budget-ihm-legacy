@@ -29,6 +29,7 @@ import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.JwtConfig;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.FacadeServices;
+import com.terrier.finances.gestion.services.ServicesConfigEnum;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 
@@ -44,10 +45,15 @@ public abstract class AbstractHTTPClient {
 	// Tout est en JSON
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
-	protected final String URI = "http://localhost:8090/services";
+	protected final String URI;
 
 	private Client clientHTTP;
 
+	
+	public AbstractHTTPClient() {
+		URI = getStringEnvVar(ServicesConfigEnum.URL_SERVICES, "http://localhost:8090/services");
+	}
+	
 	/**
 	 * @return client HTTP
 	 */
@@ -359,5 +365,22 @@ public abstract class AbstractHTTPClient {
 
 	protected <R extends AbstractAPIObjectModel> Entity<R> getEntity(R apiObject){
 		return Entity.entity(apiObject, MediaType.APPLICATION_JSON_TYPE);
+	}
+	
+
+	/**
+	 * Retourne la valeur string de la variable d'environnement
+	 * @param cle
+	 * @return valeur de la clé
+	 */
+	private String getStringEnvVar(ServicesConfigEnum cle, String defaultVar){
+		String envVar = System.getenv(cle.name());
+		if(envVar != null) {
+			return envVar;
+		}
+		else {
+			LOGGER.warn("La clé {} n'est définie. Utilisation de la valeur par défaut : {} ", cle.name(), defaultVar);
+			 return defaultVar;
+		}
 	}
 }

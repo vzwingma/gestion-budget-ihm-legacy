@@ -1,0 +1,73 @@
+package com.terrier.finances.gestion.services.comptes.api;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.springframework.stereotype.Controller;
+
+import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
+import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
+import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+
+/**
+ * Service API vers {@link ComptesService}
+ * @author vzwingma
+ *
+ */
+@Controller
+public class ComptesAPIService extends AbstractHTTPClient {
+	
+	/**
+	 * Comptes d'un utilisateur
+	 * @param idUtilisateur
+	 */
+	public List<CompteBancaire> getComptes(){
+		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL, CompteBancaire.class);
+	}
+	
+	/**
+	 * Compte d'un utilisateur
+	 * @param idCompte
+	 * @param idUtilisateur
+	 * @throws UserNotAuthorizedException 
+	 */
+	public CompteBancaire getCompte(String idCompte) throws UserNotAuthorizedException{
+		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace("{idCompte}", idCompte);
+		return callHTTPGetData(path, CompteBancaire.class);
+	}
+
+	
+	/**
+	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur
+	 * @param utilisateur utilisateur
+	 * @param compte id du compte
+	 * @return la date du premier budget décrit pour cet utilisateur
+	 * @throws UserNotAuthorizedException 
+	 */
+	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws DataNotFoundException, UserNotAuthorizedException{
+		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace("{idCompte}", compte);
+		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
+	}
+	
+	
+	/**
+	 * Retourne l'ensemble des libelles des opérations pour un compte
+	 * @param idCompte compte de l'utilisateur
+	 * @param idUtilisateur utilisateur
+	 * @return le set des libelles des opérations
+	 * @throws UserNotAuthorizedException 
+	 */
+	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException{
+		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace("{idCompte}", idCompte);
+		Map<String, String> params = new HashMap<>();
+		params.put("annee", Integer.toString(annee));
+		LibellesOperationsAPIObject libelles = callHTTPGetData(path, params, LibellesOperationsAPIObject.class);
+		return libelles.getLibellesOperations();
+	}
+}

@@ -51,7 +51,7 @@ public abstract class AbstractHTTPClient {
 
 	
 	public AbstractHTTPClient() {
-		URI = getStringEnvVar(ServicesConfigEnum.URL_SERVICES, "http://localhost:8090/services");
+		URI = getStringEnvVar(ServicesConfigEnum.SERVICE_CONFIG_URL, "http://localhost:8090/services");
 	}
 	
 	/**

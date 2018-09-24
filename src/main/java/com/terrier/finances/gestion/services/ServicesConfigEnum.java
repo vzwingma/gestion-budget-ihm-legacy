@@ -2,5 +2,5 @@ package com.terrier.finances.gestion.services;
 
 public enum ServicesConfigEnum {
 
-	URL_SERVICES;
+	SERVICE_CONFIG_URL;
 }

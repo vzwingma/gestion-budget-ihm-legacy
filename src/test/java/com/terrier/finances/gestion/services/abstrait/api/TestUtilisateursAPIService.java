@@ -9,7 +9,7 @@ import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-import com.terrier.finances.gestion.communs.api.security.JwtConfig;
+import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -26,18 +26,18 @@ public class TestUtilisateursAPIService {
 		String token = Jwts.builder()
 				.setSubject("5484268384b7ff1e5f26b692")
 				.setId("adc70a6a-79e9-4725-b72e-92d2a256b7ba")
-				.claim(JwtConfig.JWT_CLAIM_USERID_HEADER, "5484268384b7ff1e5f26b692")
+				.claim(JwtConfigEnum.JWT_CLAIM_HEADER_USERID, "5484268384b7ff1e5f26b692")
 				.setIssuedAt(new Date(c))
 				.setIssuer("Budget-Services v1")
-				.setExpiration(new Date(c + JwtConfig.JWT_EXPIRATION_S * 1000))  // in milliseconds
-				.signWith(SignatureAlgorithm.HS512, JwtConfig.JWT_SECRET_KEY.getBytes())
+				.setExpiration(new Date(c + JwtConfigEnum.JWT_EXPIRATION_S * 1000))  // in milliseconds
+				.signWith(SignatureAlgorithm.HS512, JwtConfigEnum.JWT_SECRET_KEY.getBytes())
 				.compact();
 
 		assertNotNull(token);
-		Claims claims = JwtConfig.getJWTClaims(token);
+		Claims claims = JwtConfigEnum.getJWTClaims(token);
 		assertNotNull(claims);
 		assertEquals("adc70a6a-79e9-4725-b72e-92d2a256b7ba", claims.getId());
-		assertEquals("5484268384b7ff1e5f26b692", claims.get(JwtConfig.JWT_CLAIM_USERID_HEADER));
+		assertEquals("5484268384b7ff1e5f26b692", claims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
 
 	}
 
@@ -48,7 +48,7 @@ public class TestUtilisateursAPIService {
 
 		assertNotNull(token);
 		assertThrows(ExpiredJwtException.class, () -> {
-			JwtConfig.getJWTClaims(token);
+			JwtConfigEnum.getJWTClaims(token);
 		});
 	}
 }

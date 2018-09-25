@@ -25,6 +25,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedEx
 import com.terrier.finances.gestion.ui.budget.listeners.ActionDeconnexionClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionLockBudgetClickListener;
 import com.terrier.finances.gestion.ui.budget.listeners.ActionRefreshMonthBudgetClickListener;
+import com.terrier.finances.gestion.ui.communs.InformationDialog;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemCaptionStyle;
 import com.terrier.finances.gestion.ui.comptes.ui.styles.ComptesItemIconStyle;
@@ -69,7 +70,13 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		// Ajout du pooling listener de l'UI sur ce controleur
 		UI.getCurrent().addPollListener(this);
 
-		initDynamicComponentsOnPage();
+		try {
+			initDynamicComponentsOnPage();
+		} catch (UserNotAuthorizedException e) {
+			forceDisconnect();
+		} catch (DataNotFoundException e) {
+			Notification.show("Impossible de charger les données du budget. Veuillez réessayer",  Notification.Type.ERROR_MESSAGE);
+		}
 	}
 
 	/**
@@ -104,8 +111,10 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	/**
 	 * Init du suivi
 	 * @param gridOperationsControleur tableau de suivi
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public void initDynamicComponentsOnPage(){
+	public void initDynamicComponentsOnPage() throws UserNotAuthorizedException, DataNotFoundException{
 
 		// Init des boutons
 		getComponent().getButtonCreate().addClickListener(new ActionCreerDepenseClickListener());
@@ -125,13 +134,8 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			LOGGER.debug("[INIT] Init du mois géré : {}", dateBudget);
 		}
 		// Label last connexion
-		LocalDateTime dateDernierAcces;
-		try {
-			dateDernierAcces = getServiceUtilisateurs().getLastAccessTime();
-		} catch (UserNotAuthorizedException e1) {
-			deconnexion();
-			return;
-		}
+		LocalDateTime dateDernierAcces = getServiceUtilisateurs().getLastAccessTime();
+
 		if(dateDernierAcces == null){
 			dateDernierAcces = LocalDateTime.now();
 		}
@@ -211,10 +215,13 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 					LOGGER.info("Changement du mois : {}/{} -> {}/{}", oldDateBudget.getMonth(), oldDateBudget.getYear(), newDateBudget.getMonth(), newDateBudget.getYear());
 					try {
 						setRangeFinMois(newDateBudget, compte.getId());
+						miseAJourVueDonnees();
 					} catch (UserNotAuthorizedException e) {
-						deconnexion();
+						forceDisconnect();						
+					} catch (DataNotFoundException e) {
+						Notification.show("Impossible de changer de mois. Veuillez réessayer ultérieurement", Notification.Type.ERROR_MESSAGE);
 					}
-					miseAJourVueDonnees();			
+
 				}
 			});
 
@@ -222,9 +229,15 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			getComponent().getComboBoxComptes().addValueChangeListener(event -> {
 				if(event.getOldValue() != null){
 					LOGGER.info("Changement du compte : {}->{}", event.getOldValue().getId(), event.getValue().getId());
-					// Modification du compte
-					initRangeDebutFinMois(event.getValue().getId());
-					miseAJourVueDonnees();
+					try {
+						// Modification du compte
+						initRangeDebutFinMois(event.getValue().getId());
+						miseAJourVueDonnees();
+					} catch (UserNotAuthorizedException e) {
+						forceDisconnect();						
+					} catch (DataNotFoundException e) {
+						Notification.show("Impossible de changer de compte. Veuillez réessayer ultérieurement", Notification.Type.ERROR_MESSAGE);
+					}
 				}
 			});
 
@@ -233,6 +246,16 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		else{
 			Notification.show("Impossible de charger le budget du compte " + (compteCourant != null ? compteCourant.getLibelle() : "" ) + " du " + dateBudget.get(ChronoField.MONTH_OF_YEAR)+"/"+ dateBudget.get(ChronoField.YEAR), Notification.Type.ERROR_MESSAGE);
 		}
+	}
+
+
+	/**
+	 * Force disconnect si auth non authentifié
+	 */
+	private void forceDisconnect() {
+		setPopupModale(new InformationDialog("Session expirée", "L'utilisateur n'est plus authentifié. \n Retour à la page de login", "OK", 
+				() -> deconnexion()));
+
 	}
 
 
@@ -246,8 +269,10 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 	/**
 	 * Finalisation du budget
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public void lockBudget(boolean setBudgetActif){
+	public void lockBudget(boolean setBudgetActif) throws DataNotFoundException{
 		LOGGER.info("[IHM] {} du budget mensuel", setBudgetActif ? "Ouverture" : "Clôture");
 		try {
 			BudgetMensuel lock = getServiceOperations().setBudgetActif(getUserSession().getBudgetCourant().getId(), setBudgetActif);
@@ -255,12 +280,11 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			if(lock != null){
 				getUserSession().updateBudgetInSession(lock);	
 			}
-			
 			miseAJourVueDonnees();
-		} catch (UserNotAuthorizedException e) {
-			deconnexion();
 		}
-		
+		catch (UserNotAuthorizedException e) {
+			forceDisconnect();
+		}
 	}
 
 	/**
@@ -286,15 +310,17 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	/**
 	 * Set opération comme dernière
 	 * @param operation
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public boolean setLigneDepenseAsDerniereOperation(LigneOperation operation){
+	public boolean setLigneDepenseAsDerniereOperation(LigneOperation operation) throws DataNotFoundException{
 		try {
 			if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId())){
 				miseAJourVueDonnees();
 				return true;
 			}
 		} catch (UserNotAuthorizedException e) {
-			deconnexion();
+			forceDisconnect();
 		}
 		return false;
 	}
@@ -302,22 +328,16 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	/**
 	 * Mise à jour du range fin
 	 * @param dateFin
+	 * @throws UserNotAuthorizedException erreur d'authentification
+	 * @throws DataNotFoundException  erreur d'accès
 	 */
-	public void initRangeDebutFinMois(String idCompte){
+	public void initRangeDebutFinMois(String idCompte) throws UserNotAuthorizedException, DataNotFoundException{
 		if(idCompte != null){
 			// Bouton Mois précédent limité au mois du
 			// Premier budget du compte de cet utilisateur
-			try {
-				IntervallesCompteAPIObject datePremierDernierBudgets = getServiceComptes().getIntervallesBudgets(idCompte);
-				getComponent().getMois().setRangeStart(datePremierDernierBudgets.getLocalDatePremierBudget());
-				getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
-			} catch (DataNotFoundException e) {
-				LOGGER.error("[IHM] Erreur lors du chargement du premier budget");
-			} catch (UserNotAuthorizedException e) {
-				deconnexion();
-				return;
-			}
-
+			IntervallesCompteAPIObject datePremierDernierBudgets = getServiceComptes().getIntervallesBudgets(idCompte);
+			getComponent().getMois().setRangeStart(datePremierDernierBudgets.getLocalDatePremierBudget());
+			getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
 		}
 		LOGGER.debug("[IHM] > Affichage limité à > [{}/{}]", getComponent().getMois().getRangeStart(), getComponent().getMois().getRangeEnd());
 
@@ -325,9 +345,10 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	/**
 	 * Mise à jour du range fin
 	 * @param dateFin
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	private void setRangeFinMois(LocalDate dateFin, String idCompte) throws UserNotAuthorizedException{
+	private void setRangeFinMois(LocalDate dateFin, String idCompte) throws UserNotAuthorizedException, DataNotFoundException{
 		if(dateFin != null){
 			// Bouton Mois suivant limité au mois prochain si le compte n'est pas clos
 			LocalDate dateRangeBudget = BudgetDateTimeUtils.localDateFirstDayOfMonth();
@@ -438,4 +459,5 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 		LOGGER.debug("[IHM] << Mise à jour des vues <<");
 	}
+
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 
@@ -47,7 +48,7 @@ public class ParametragesAPIService extends AbstractHTTPClient {
 					this.listeCategories = resultatCategories;
 				}
 			}
-			catch (UserNotAuthorizedException e) {
+			catch (UserNotAuthorizedException | DataNotFoundException e) {
 				LOGGER.error("Impossible de charger les catégories" ,e );
 			}
 		}

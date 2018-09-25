@@ -12,6 +12,7 @@ import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperation
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.creation.validator.OperationValidator;
@@ -125,7 +126,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		Object etatNlleDepense = null;
 		try {
 			etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur().get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
-		} catch (UserNotAuthorizedException e1) {
+		} catch (UserNotAuthorizedException | DataNotFoundException e1) {
 			LOGGER.warn("Impossible de trouver les préférences utilisateurs");
 		}
 		if(etatNlleDepense != null){

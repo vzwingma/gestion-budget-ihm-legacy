@@ -9,12 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import com.terrier.finances.gestion.communs.api.security.JwtConfig;
+import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 
@@ -34,14 +35,15 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	 * @param login login
 	 * @param motPasseEnClair mdp
 	 * @return si valide
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public String authenticate(String login, String motPasseEnClair){
+	public String authenticate(String login, String motPasseEnClair) throws DataNotFoundException{
 
 		AuthLoginAPIObject auth = new AuthLoginAPIObject(login, motPasseEnClair);
 		String jwtHeader  = null;
 		try {
 			Response resopnse = callHTTPPost(BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth);
-			jwtHeader = resopnse.getHeaderString(JwtConfig.JWT_AUTH_HEADER);
+			jwtHeader = resopnse.getHeaderString(JwtConfigEnum.JWT_HEADER_AUTH);
 			LOGGER.info("[SEC] Authentification : {}", jwtHeader);
 		} catch (UserNotAuthorizedException e) {
 			LOGGER.warn("Ne peut pas arriver pour cette API");
@@ -59,7 +61,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	public void deconnexion() {
 		try {
 			callHTTPPost(BudgetApiUrlEnum.USERS_DISCONNECT_FULL, null);
-		} catch (UserNotAuthorizedException e) {
+		} catch (UserNotAuthorizedException | DataNotFoundException e) {
 			LOGGER.trace("Ne peut pas arriver pour cette API");
 		}
 	}
@@ -68,9 +70,10 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	/**
 	 * Déconnexion d'un utilisateur
 	 * @param idUtilisateur
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public LocalDateTime getLastAccessTime() throws UserNotAuthorizedException{
+	public LocalDateTime getLastAccessTime() throws UserNotAuthorizedException, DataNotFoundException{
 		UtilisateurPrefsAPIObject prefs = callHTTPGetData(BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL, UtilisateurPrefsAPIObject.class);
 		if(prefs != null){
 			return BudgetDateTimeUtils.getLocalDateTimeFromLong(prefs.getLastAccessTime());
@@ -82,9 +85,10 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 	/**
 	 * Déconnexion d'un utilisateur
 	 * @param idUtilisateur
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public Map<UtilisateurPrefsEnum, String> getPreferencesUtilisateur() throws UserNotAuthorizedException{
+	public Map<UtilisateurPrefsEnum, String> getPreferencesUtilisateur() throws UserNotAuthorizedException, DataNotFoundException{
 		UtilisateurPrefsAPIObject prefs = callHTTPGetData(BudgetApiUrlEnum.USERS_PREFS_FULL, UtilisateurPrefsAPIObject.class);
 		if(prefs != null){
 			return prefs.getPreferences();

@@ -8,7 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.api.security.JwtConfig;
+import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
@@ -140,8 +140,8 @@ public class UserUISession {
 	 */
 	public boolean registerUtilisateur(String token){
 		this.jwtToken = token;
-		this.jwtClaims = JwtConfig.getJWTClaims(token);
-		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfig.JWT_CLAIM_USERID_HEADER));
+		this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
+		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
 		return true;
 	}
 
@@ -177,7 +177,7 @@ public class UserUISession {
 	 */
 	public boolean isEnabled(UtilisateurDroitsEnum cleDroit){
 		if(getJwtClaims() != null){
-			return getJwtClaims().get(JwtConfig.JWT_CLAIM_AUTORITIES_HEADER, List.class).contains(cleDroit.name());
+			return getJwtClaims().get(JwtConfigEnum.JWT_CLAIM_HEADER_AUTORITIES, List.class).contains(cleDroit.name());
 		}
 		return false;
 	}

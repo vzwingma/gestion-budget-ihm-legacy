@@ -17,7 +17,6 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
-import com.terrier.finances.gestion.ui.communs.ConfirmDialog.ConfirmationDialogCallback;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
 import com.vaadin.ui.Button;
@@ -32,7 +31,7 @@ import com.vaadin.ui.Notification.Type;
  * @author vzwingma
  *
  */
-public class ActionsOperationClickListener extends AbstractComponentListener implements Button.ClickListener, ConfirmationDialogCallback {
+public class ActionsOperationClickListener extends AbstractComponentListener implements Button.ClickListener {
 
 	/**
 	 * 
@@ -70,11 +69,15 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 			LOGGER.trace("Action : Supprimé");
 			etat = null;
 			// Confirmation
-			ConfirmDialog confirm = new ConfirmDialog("Suppression de l'opération", 
-					"Voulez-vous supprimer l'opération ?", "Oui", "Non", this);
-			confirm.setWidth("400px");
-			confirm.setHeight("150px");
-			setPopupModale(confirm);			
+			setPopupModale(new ConfirmDialog("Suppression de l'opération", 
+					"Voulez-vous supprimer l'opération ?", "Oui", "Non", 
+					
+					(ok) -> {
+						if(ok){
+							updateLigne(null);
+						}
+					}
+					));			
 		}		
 
 
@@ -114,16 +117,6 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 		}
 		catch(DataNotFoundException|BudgetNotFoundException | UserNotAuthorizedException e){
 			Notification.show("l'opération est introuvable ou n'a pas été enregistrée", Type.ERROR_MESSAGE);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.terrier.finances.gestion.ui.components.confirm.ConfirmDialog.ConfirmationDialogCallback#response(boolean)
-	 */
-	@Override
-	public void response(boolean ok) {
-		if(ok){
-			updateLigne(null);
 		}
 	}
 }

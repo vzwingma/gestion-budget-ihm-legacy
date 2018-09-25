@@ -253,12 +253,12 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * Force disconnect si auth non authentifié
 	 */
 	private void forceDisconnect() {
-		// Confirmation
 		setPopupModale(new InformationDialog("Session expirée", "L'utilisateur n'est plus authentifié. \n Retour à la page de login", "OK", 
-				() -> deconnexion()));	
+				() -> deconnexion()));
+
 	}
 
-	
+
 	/**
 	 * Déconnexion de l'utilisateur
 	 */

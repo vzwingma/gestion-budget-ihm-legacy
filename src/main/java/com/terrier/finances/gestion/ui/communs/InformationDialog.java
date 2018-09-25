@@ -40,8 +40,7 @@ public final class InformationDialog extends Window implements Button.ClickListe
 	public InformationDialog(final String caption, final String message, final String buttonLabel, final InformationDialogCallback callback) {
 
 		super(caption);
-		setWidth(INFORMATION_DIALOG_WIDTH, Unit.PIXELS);
-		setHeight(INFORMATION_DIALOG_HEIGHT, Unit.PIXELS);
+
 		okButton = new Button(buttonLabel, this);
 		okButton.setStyleName("friendly");
 		setModal(true);
@@ -64,6 +63,8 @@ public final class InformationDialog extends Window implements Button.ClickListe
 
 		((VerticalLayout) getContent()).setHeight(ONE_HUNDRED_PERCENT, Unit.PERCENTAGE);
 		((VerticalLayout) getContent()).setComponentAlignment(buttonLayout, Alignment.MIDDLE_CENTER);
+		setWidth(INFORMATION_DIALOG_WIDTH, Unit.PIXELS);
+		setHeight(INFORMATION_DIALOG_HEIGHT, Unit.PIXELS);
 	}
 	
 

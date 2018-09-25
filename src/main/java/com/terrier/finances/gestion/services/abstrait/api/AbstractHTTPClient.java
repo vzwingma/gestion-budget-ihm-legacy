@@ -9,9 +9,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -22,7 +22,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -30,6 +29,7 @@ import org.springframework.http.HttpMethod;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.ServicesConfigEnum;
@@ -50,22 +50,11 @@ public abstract class AbstractHTTPClient {
 
 	protected final String serviceURI;
 
-	private Client clientHTTP;
-
-	
 	public AbstractHTTPClient() {
 		serviceURI = getStringEnvVar(ServicesConfigEnum.SERVICE_CONFIG_URL, "http://localhost:8090/services");
 	}
 	
-	/**
-	 * @return client HTTP
-	 */
-	private Client getClient(){
-		if(clientHTTP == null){
-			this.clientHTTP = getClient(null);
-		}
-		return this.clientHTTP;
-	}
+
 
 	/**
 	 * Créé un client HTTP 
@@ -73,36 +62,27 @@ public abstract class AbstractHTTPClient {
 	 * @return client HTTP
 	 * @throws NoSuchAlgorithmException 
 	 */
-	private Client getClient(HttpAuthenticationFeature feature) {
+	private WebTarget getClient() {
 
 		ClientConfig clientConfig = new ClientConfig();
-		if(feature != null){
-			clientConfig.register(feature);
-
-		}
 		// Register des converters
 		clientConfig.register(new ListAPIObjectModelReader<AbstractAPIObjectModel>());
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
 		try {
-			//			// Install the all-trusting trust manager
+			// Install the all-trusting trust manager
 			//			SSLContext sslcontext = SSLContext.getInstance("TLS");
-			//
 			//			sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
 			//			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
 					//	.sslContext(sslcontext)
 					.withConfig(clientConfig)
-					.build();
+					.build().target(serviceURI);
 		}
 		catch(Exception e){
 			LOGGER.error("Erreur envoi : Erreur lors de la création du Client HTTP {}", e.getMessage());
-			return ClientBuilder.newClient(clientConfig);
+			return ClientBuilder.newClient(clientConfig).target(serviceURI);
 		}
 	}
-
-
-	private WebTarget wt;
-
 
 	/**
 	 * 
@@ -118,17 +98,17 @@ public abstract class AbstractHTTPClient {
 	 * @return invocation prête
 	 */
 	private Invocation.Builder getInvocation(String path, Map<String, String> queryParams){
-		wt = getClient().target(serviceURI);
+		WebTarget wt = getClient();
 		if(path != null){
 			wt = wt.path(path);
 		}
-		
 		if(queryParams != null && !queryParams.isEmpty()){
-			queryParams.entrySet().stream()
-			.forEach(e -> wt=wt.queryParam(e.getKey(), e.getValue()));
+			for (Entry<String, String> params : queryParams.entrySet()) {
+				wt=wt.queryParam(params.getKey(), params.getValue());
+			}
 		}
 		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE);
-		int c = getCodeInvoquer(invoquer);
+		int c = getCorrelationId(invoquer);
 		// Entêtes
 		invoquer.header("Content-type", MediaType.APPLICATION_JSON);
 		if(getJwtToken() != null){
@@ -156,13 +136,14 @@ public abstract class AbstractHTTPClient {
 	 * @param dataToSend body à envoyer
 	 * @param responseClassType réponse type
 	 * @return réponse
-	 * @throws UserNotAuthorizedException  erreur d'auth
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	protected <Q extends AbstractAPIObjectModel> 
-	Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException {
+	Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path);
-			int c = invoquer.toString().hashCode();
+			int c = getCorrelationId(invoquer);
 			try{
 				Response res = invoquer.post(getEntity(dataToSend));
 				if(res.getStatus() > 400){
@@ -189,10 +170,11 @@ public abstract class AbstractHTTPClient {
 	 * @param dataToSend body à envoyer
 	 * @param responseClassType réponse type
 	 * @return réponse
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	protected  <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel>
-	R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException{
+	R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPPost(path, null, dataToSend, responseClassType);
 	}
 
@@ -205,12 +187,13 @@ public abstract class AbstractHTTPClient {
 	 * @param responseClassType réponse type
 	 * @return réponse
 	 * @throws UserNotAuthorizedException 
+	 * @throws DataNotFoundException 
 	 */
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
-	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException{
+	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path, params);
-			int c = getCodeInvoquer(invoquer);
+			int c = getCorrelationId(invoquer);
 			try{
 				R response = invoquer.post(getEntity(dataToSend), responseClassType);
 				LOGGER.debug("[API={}][POST][200] Réponse : {}", c, response);
@@ -229,9 +212,10 @@ public abstract class AbstractHTTPClient {
 	 * Appel HTTP GET
 	 * @param path paramètres de l'URL
 	 * @return résultat de l'appel
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	protected boolean callHTTPGet(String path) throws UserNotAuthorizedException{
+	protected boolean callHTTPGet(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPGet(path, null);
 	}
 
@@ -241,13 +225,14 @@ public abstract class AbstractHTTPClient {
 	 * @param params params
 	 * @param path paramètres de l'URL
 	 * @return résultat de l'appel
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	protected boolean callHTTPGet(String path, Map<String, String> params) throws UserNotAuthorizedException{
+	protected boolean callHTTPGet(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
 		boolean resultat = false;
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path, params);
-			int c = getCodeInvoquer(invoquer);
+			int c = getCorrelationId(invoquer);
 			try{
 				Response response = invoquer.get();
 				if(response != null){
@@ -268,7 +253,15 @@ public abstract class AbstractHTTPClient {
 
 
 
-	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Class<R> responseClassType) throws UserNotAuthorizedException{
+	/**
+	 * Appel HTTP GET
+	 * @param path chemin
+	 * @param responseClassType type de la réponse
+	 * @return résultat
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
+	 */
+	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPGetData(path, null, responseClassType);
 	}
 	/**
@@ -277,12 +270,13 @@ public abstract class AbstractHTTPClient {
 	 * @param url racine de l'URL
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType) throws UserNotAuthorizedException{
+	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path, params);
-			int c = getCodeInvoquer(invoquer);
+			int c = getCorrelationId(invoquer);
 			try{
 				R response = invoquer.get(responseClassType);
 				LOGGER.debug("[API={}][GET][200] Réponse : [{}]", c, response);
@@ -311,7 +305,7 @@ public abstract class AbstractHTTPClient {
 	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
 		if(path != null){
 			Builder invoquer = getInvocation(path);
-			int c = getCodeInvoquer(invoquer);
+			int c = getCorrelationId(invoquer);
 			try{
 				R response = invoquer.delete(responseClassType);
 				LOGGER.debug("[API={}][DEL][200] Réponse : [{}]", c, response);
@@ -334,12 +328,13 @@ public abstract class AbstractHTTPClient {
 	 * @param url racine de l'URL
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path, Class<R> ressponseClassType) throws UserNotAuthorizedException{
+	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path, Class<R> ressponseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);
-			int c = getCodeInvoquer(invoquer);
+			int c = getCorrelationId(invoquer);
 			try{
 				@SuppressWarnings("unchecked")
 				List<R> response = invoquer.get(List.class);
@@ -370,16 +365,24 @@ public abstract class AbstractHTTPClient {
 	 * Catch 401 error
 	 * @param c code API
 	 * @param e Exception
-	 * @throws UserNotAuthorizedException
+	 * @throws UserNotAuthorizedException utilisateur non authentifié
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	private void catchWebApplicationException(int c, HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException {
+	private void catchWebApplicationException(int c, HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException, DataNotFoundException {
 	    LOGGER.error("[API={}][{}] Erreur [{}] lors de l'appel ", c, verbe.name(), e.getResponse().getStatus());
 	    if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
 	        throw new UserNotAuthorizedException("Utilisateur non authentifié");
 	    }
+	    else if(Status.INTERNAL_SERVER_ERROR.equals(e.getResponse().getStatusInfo()) || Status.BAD_REQUEST.equals(e.getResponse().getStatusInfo())) {
+	        throw new DataNotFoundException("Erreur lors de l'appel au service");
+	    }
 	}
 
-	private int getCodeInvoquer(Invocation.Builder invoquer){
+	/**
+	 * @param invoquer
+	 * @return correlation ID
+	 */
+	private int getCorrelationId(Invocation.Builder invoquer){
 		return Math.abs(invoquer.toString().hashCode());
 	}
 

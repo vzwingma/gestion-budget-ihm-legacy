@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import com.terrier.finances.gestion.communs.api.security.JwtConfig;
+import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
@@ -41,7 +41,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 		String jwtHeader  = null;
 		try {
 			Response resopnse = callHTTPPost(BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth);
-			jwtHeader = resopnse.getHeaderString(JwtConfig.JWT_AUTH_HEADER);
+			jwtHeader = resopnse.getHeaderString(JwtConfigEnum.JWT_HEADER_AUTH);
 			LOGGER.info("[SEC] Authentification : {}", jwtHeader);
 		} catch (UserNotAuthorizedException e) {
 			LOGGER.warn("Ne peut pas arriver pour cette API");

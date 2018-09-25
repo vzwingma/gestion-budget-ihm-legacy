@@ -28,7 +28,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
-import com.terrier.finances.gestion.communs.api.security.JwtConfig;
+import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
+import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.ServicesConfigEnum;
@@ -126,13 +127,15 @@ public abstract class AbstractHTTPClient {
 			queryParams.entrySet().stream()
 			.forEach(e -> wt=wt.queryParam(e.getKey(), e.getValue()));
 		}
-		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE)
-											.header("Content-type", MediaType.APPLICATION_JSON);
+		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE);
 		int c = getCodeInvoquer(invoquer);
+		// Entêtes
+		invoquer.header("Content-type", MediaType.APPLICATION_JSON);
 		if(getJwtToken() != null){
-			invoquer.header(JwtConfig.JWT_AUTH_HEADER, getJwtToken());
+			invoquer.header(JwtConfigEnum.JWT_HEADER_AUTH, getJwtToken());
 			LOGGER.trace("[API={}][JWT Token={}]", c, getJwtToken());
 		}
+		invoquer.header(ApiConfigEnum.HEADER_CORRELATION_ID, c);
 		LOGGER.info("[API={}] Appel du service [{}]", c, wt.getUri());
 		return invoquer;
 	}

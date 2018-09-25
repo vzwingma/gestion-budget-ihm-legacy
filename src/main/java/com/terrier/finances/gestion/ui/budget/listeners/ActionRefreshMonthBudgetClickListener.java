@@ -21,7 +21,7 @@ import com.vaadin.ui.Button.ClickListener;
  * @author vzwingma
  *
  */
-public class ActionRefreshMonthBudgetClickListener extends AbstractComponentListener implements ClickListener, ConfirmDialog.ConfirmationDialogCallback {
+public class ActionRefreshMonthBudgetClickListener extends AbstractComponentListener implements ClickListener {
 
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 		String warnMoisActif = "";
 		Month moisPrecedent = budgetMensuelCourant.getMois().minus(1);
 		int anneePrecedente = Month.DECEMBER.equals(moisPrecedent) ? budgetMensuelCourant.getAnnee() - 1 : budgetMensuelCourant.getAnnee();
-		
+
 		Boolean budgetPrecedentActif = page.getControleur().getServiceOperations()
 				.isBudgetMensuelActif(BudgetDataUtils.getBudgetId(budgetMensuelCourant.getCompteBancaire(), moisPrecedent, anneePrecedente));
 		if(budgetPrecedentActif){
@@ -54,24 +54,14 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 		}
 
 		// Confirmation
-		ConfirmDialog confirm = new ConfirmDialog("Réinitialisation du budget mensuel courant", 
+		setPopupModale(new ConfirmDialog("Réinitialisation du budget mensuel courant", 
 				"Voulez vous réinitialiser le budget du mois de "+ moisAffiche+" ? " +
-						warnMoisActif, "Oui", "Non", this);
-		confirm.setWidth("400px");
-		confirm.setHeight("150px");
-		setPopupModale(confirm);		
-	}
-
-
-
-	/* (non-Javadoc)
-	 * @see com.terrier.finances.gestion.ui.components.confirm.ConfirmDialog.ConfirmationDialogCallback#response(boolean)
-	 */
-	@Override
-	public void response(boolean ok) {
-		if(ok){
-			page.getControleur().reinitialiserBudgetCourant();
-		}
+						warnMoisActif, "Oui", "Non", 
+						(ok) -> {
+							if(ok){
+								page.getControleur().reinitialiserBudgetCourant();
+							}
+						}));		
 	}
 }
 

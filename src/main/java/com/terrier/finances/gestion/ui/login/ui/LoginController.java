@@ -6,6 +6,7 @@ package com.terrier.finances.gestion.ui.login.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.server.ThemeResource;
@@ -35,7 +36,7 @@ public class LoginController extends AbstractUIController<Login>{
 	 */
 	public LoginController(Login composant) {
 		super(composant);
-		
+
 		initDynamicComponentsOnPage();
 	}
 
@@ -45,9 +46,9 @@ public class LoginController extends AbstractUIController<Login>{
 	public void initDynamicComponentsOnPage() {
 		// Ajout controle
 		getComponent().getButtonConnexion().addClickListener(
-			e -> authenticateUser(
-				getComponent().getTextLogin().getValue(), 
-				getComponent().getPasswordField().getValue()));
+				e -> authenticateUser(
+						getComponent().getTextLogin().getValue(), 
+						getComponent().getPasswordField().getValue()));
 		getComponent().getTextLogin().focus();
 	}
 
@@ -75,18 +76,24 @@ public class LoginController extends AbstractUIController<Login>{
 	 * @param passwordEnClair en clair de l'utilisateur
 	 */
 	public void authenticateUser(String login, String passwordEnClair){
-		String jwtToken = getServiceUtilisateurs().authenticate(login, passwordEnClair);
-		if(jwtToken != null){
-			getUserSession().registerUtilisateur(jwtToken);
-			LOGGER.info("Accès autorisé pour {}", login);
-			// MAJ
-			getUserSession().getMainLayout().removeAllComponents();
-			getUserSession().getMainLayout().addComponent(new BudgetMensuelPage());
+		try {
+			String jwtToken = getServiceUtilisateurs().authenticate(login, passwordEnClair);
+			if(jwtToken != null){
+				getUserSession().registerUtilisateur(jwtToken);
+				LOGGER.info("Accès autorisé pour {}", login);
+				// MAJ
+				getUserSession().getMainLayout().removeAllComponents();
+				getUserSession().getMainLayout().addComponent(new BudgetMensuelPage());
 
-		}
-		else{
+			}
+			else{
+				LOGGER.error("****************** ECHEC AUTH ***********************");
+				Notification.show("Les login et mot de passe sont incorrects", Notification.Type.ERROR_MESSAGE);
+			}
+
+		} catch (DataNotFoundException e) {
 			LOGGER.error("****************** ECHEC AUTH ***********************");
-			Notification.show("Les login et mot de passe sont incorrects", Notification.Type.ERROR_MESSAGE);
+			Notification.show("Impossible de s'authentifier", Notification.Type.ERROR_MESSAGE);
 		}
 	}
 }

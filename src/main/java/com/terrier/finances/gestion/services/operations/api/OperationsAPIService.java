@@ -62,7 +62,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		params.put("actif", "true");
 		try {
 			return callHTTPGet(path, params);
-		} catch (UserNotAuthorizedException e) {
+		} catch (UserNotAuthorizedException | DataNotFoundException e) {
 			return false;
 		}
 	}
@@ -97,7 +97,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		params.put("uptodateto", Long.toString(dateToCompare.getTime()));
 		try {
 			return callHTTPGet(path, params);
-		} catch (UserNotAuthorizedException e) {
+		} catch (UserNotAuthorizedException | DataNotFoundException e) {
 			return false;
 		}
 	}
@@ -105,9 +105,10 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	/**
 	 * Lock/unlock d'un budget
 	 * @param budgetActif
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif) throws UserNotAuthorizedException{
+	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif) throws UserNotAuthorizedException, DataNotFoundException{
 		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudgetMensuel);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", Boolean.toString(budgetActif));
@@ -164,9 +165,10 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	/**
 	 * Mise à jour de la ligne comme dernière opération
 	 * @param ligneId
-	 * @throws UserNotAuthorizedException erreur auth
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId) throws UserNotAuthorizedException{
+	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId) throws UserNotAuthorizedException, DataNotFoundException{
 		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId()).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, ligneId));
 		Response response = callHTTPPost(path, budget);
 		return response.getStatus() == 200;

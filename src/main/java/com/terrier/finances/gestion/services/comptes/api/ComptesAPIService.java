@@ -1,6 +1,5 @@
 package com.terrier.finances.gestion.services.comptes.api;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,24 +26,20 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	/**
 	 * Comptes d'un utilisateur
 	 * @param idUtilisateur
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public List<CompteBancaire> getComptes() {
-		try {
-			return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL, CompteBancaire.class);
-		} catch (UserNotAuthorizedException e) {
-			LOGGER.error("Utilisateur non authorisé");
-			return new ArrayList<>();
-		}
+	public List<CompteBancaire> getComptes() throws DataNotFoundException, UserNotAuthorizedException {
+		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL, CompteBancaire.class);
 	}
 	
 	/**
 	 * Compte d'un utilisateur
-	 * @param idCompte
-	 * @param idUtilisateur
-	 * @throws UserNotAuthorizedException 
+	 * @param idCompte id du compte
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public CompteBancaire getCompte(String idCompte) throws UserNotAuthorizedException{
+	public CompteBancaire getCompte(String idCompte) throws UserNotAuthorizedException, DataNotFoundException{
 		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
 		return callHTTPGetData(path, CompteBancaire.class);
 	}
@@ -68,9 +63,10 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @param idCompte compte de l'utilisateur
 	 * @param idUtilisateur utilisateur
 	 * @return le set des libelles des opérations
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException{
+	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException, DataNotFoundException{
 		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
 		Map<String, String> params = new HashMap<>();
 		params.put("annee", Integer.toString(annee));

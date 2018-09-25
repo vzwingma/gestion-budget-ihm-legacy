@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 import com.terrier.finances.gestion.test.config.AbstractTestServices;
@@ -49,11 +50,12 @@ public class TestParametrageAPIService extends AbstractTestServices {
 
 	}
 	/**
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
 	 * 
 	 */
 	@Test
-	public void testChargerOperations() throws UserNotAuthorizedException{
+	public void testChargerOperations() throws UserNotAuthorizedException, DataNotFoundException{
 		
 		ParametragesAPIService service = spyParamsAPIService();
 		assertNotNull(service);

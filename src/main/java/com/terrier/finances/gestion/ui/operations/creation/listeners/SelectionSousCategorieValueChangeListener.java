@@ -3,6 +3,7 @@
  */
 package com.terrier.finances.gestion.ui.operations.creation.listeners;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -10,10 +11,13 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
 import com.vaadin.event.selection.SingleSelectionEvent;
 import com.vaadin.event.selection.SingleSelectionListener;
+import com.vaadin.ui.Notification;
 
 /**
  * Changement d'une ss catégorie dans le formulaire de création
@@ -54,17 +58,24 @@ public class SelectionSousCategorieValueChangeListener extends AbstractComponent
 			/*
 			 * Sélection d'un virement intercompte
 			 */
-			controleur.getComponent().getComboboxComptes().setVisible(interCompte);
-			if(interCompte && controleur.getComponent().getComboboxComptes().isEmpty()){
-				controleur.getComponent().getComboboxComptes().setItems(
-						getServiceComptes().getComptes()
+			try {
+				List<CompteBancaire> listeComptesTransfert = getServiceComptes().getComptes()
 						.stream()
 						.filter(CompteBancaire::isActif)
 						.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
-						.collect(Collectors.toList()));
+						.collect(Collectors.toList());
+
+				controleur.getComponent().getComboboxComptes().setVisible(interCompte);
+				if(interCompte && controleur.getComponent().getComboboxComptes().isEmpty()){
+					controleur.getComponent().getComboboxComptes().setItems(listeComptesTransfert);
+				}
+				controleur.getComponent().getLayoutCompte().setVisible(interCompte);
+				controleur.getComponent().getLabelCompte().setVisible(interCompte);
+			} catch (DataNotFoundException e) {
+				Notification.show("Impossible de charger la liste des comptes pour le transfert. Veuillez réessayer ultérieurement", Notification.Type.ERROR_MESSAGE);
+			} catch (UserNotAuthorizedException e) {
+				// this.controleur.g
 			}
-			controleur.getComponent().getLayoutCompte().setVisible(interCompte);
-			controleur.getComponent().getLabelCompte().setVisible(interCompte);
 
 			/*
 			 * 	#121 sélection d'une réserve

@@ -19,7 +19,9 @@ public class AppConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger( AppConfig.class );
 	
-	
+	public AppConfig() {
+		// Constructeur pour Spring
+	}
 	/**
 	 * Retourne la valeur string de la variable d'environnement
 	 * @param cle

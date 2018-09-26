@@ -21,7 +21,6 @@ public class ActionDeconnexionClickListener extends AbstractComponentListener im
 	 */
 	private static final long serialVersionUID = -1823872638217135776L;
 
-	private BudgetMensuelPage page;
 	
 	/* (non-Javadoc)
 	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
@@ -29,12 +28,12 @@ public class ActionDeconnexionClickListener extends AbstractComponentListener im
 	@Override
 	public void buttonClick(ClickEvent event) {
 		Button editer = event.getButton();
-		page  = (BudgetMensuelPage)editer.getParent().getParent().getParent().getParent();
+		BudgetMensuelPage page  = (BudgetMensuelPage)editer.getParent().getParent().getParent().getParent();
 
 		// Confirmation
 		setPopupModale(new ConfirmDialog("Déconnexion de l'application", 
 				"Voulez vous vous déconnecter ?", "Oui", "Non", 
-				(ok) -> {
+				ok -> {
 					if(ok){
 						page.getControleur().deconnexion();
 					}

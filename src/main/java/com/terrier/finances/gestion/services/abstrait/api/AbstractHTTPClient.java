@@ -332,7 +332,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path, Class<R> ressponseClassType) throws UserNotAuthorizedException, DataNotFoundException{
+	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);
 			int c = getCorrelationId(invoquer);
@@ -370,7 +370,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	private void catchWebApplicationException(int c, HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException, DataNotFoundException {
-	    LOGGER.error("[API={}][{}] Erreur [{}] lors de l'appel ", c, verbe.name(), e.getResponse().getStatus());
+	    LOGGER.error("[API={}][{}] Erreur [{}] lors de l'appel ", c, verbe, e.getResponse().getStatus());
 	    if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
 	        throw new UserNotAuthorizedException("Utilisateur non authentifié");
 	    }

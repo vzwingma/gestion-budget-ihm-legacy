@@ -24,7 +24,4 @@ public enum AppConfigEnum {
 	public String getDefaultValue() {
 		return defaultValue;
 	}
-	
-	
-	
 }

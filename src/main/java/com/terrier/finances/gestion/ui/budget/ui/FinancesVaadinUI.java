@@ -36,7 +36,7 @@ public class FinancesVaadinUI extends UI
 	private static final Logger LOGGER = LoggerFactory.getLogger(FinancesVaadinUI.class);
 
 
-	@WebServlet(value = {"/ihm/*", "/VAADIN/*"}, asyncSupported = true)
+	@WebServlet(value = {"/*", "/VAADIN/*"}, asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = FinancesVaadinUI.class, widgetset = "com.terrier.finances.gestion.AppWidgetSet")
 	public static class Servlet extends VaadinServlet {
 

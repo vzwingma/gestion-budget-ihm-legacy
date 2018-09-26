@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class TestParametrageAPIService extends AbstractTestServices {
 	@Test
 	public void testChargerOperations() throws UserNotAuthorizedException, DataNotFoundException{
 		
-		ParametragesAPIService service = spyParamsAPIService();
+		ParametragesAPIService service = spy(new ParametragesAPIService());
 		assertNotNull(service);
 		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL), any())).thenReturn(categories);
 		

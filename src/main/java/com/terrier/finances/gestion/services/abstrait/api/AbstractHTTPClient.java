@@ -32,9 +32,10 @@ import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.FacadeServices;
-import com.terrier.finances.gestion.services.ServicesConfigEnum;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
+import com.terrier.finances.gestion.ui.communs.config.AppConfig;
+import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Classe d'un client HTTP
@@ -51,7 +52,7 @@ public abstract class AbstractHTTPClient {
 	protected final String serviceURI;
 
 	public AbstractHTTPClient() {
-		serviceURI = getStringEnvVar(ServicesConfigEnum.SERVICE_CONFIG_URL, "http://localhost:8090/services");
+		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
 	}
 	
 
@@ -386,21 +387,5 @@ public abstract class AbstractHTTPClient {
 		return Math.abs(invoquer.toString().hashCode());
 	}
 
-	/**
-	 * Retourne la valeur string de la variable d'environnement
-	 * @param cle
-	 * @return valeur de la clé
-	 */
-	private String getStringEnvVar(ServicesConfigEnum cle, String defaultVar){
-		String envVar = System.getenv(cle.name());
-		if(envVar != null) {
-			return envVar;
-		}
-		else {
-			if(LOGGER.isWarnEnabled()) {
-				LOGGER.warn("La clé {} n'est pas définie. Utilisation de la valeur par défaut : {} ", cle.name(), defaultVar);
-			}
-			return defaultVar;
-		}
-	}
+
 }

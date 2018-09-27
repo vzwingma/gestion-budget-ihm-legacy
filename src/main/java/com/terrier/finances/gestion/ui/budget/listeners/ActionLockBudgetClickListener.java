@@ -24,27 +24,23 @@ public class ActionLockBudgetClickListener extends AbstractComponentListener imp
 	 */
 	private static final long serialVersionUID = -1823872638217135776L;
 
-	private BudgetMensuelPage page;
-
-	private boolean setBudgetActif = false;
 	/* (non-Javadoc)
 	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
 	 */
 	@Override
 	public void buttonClick(ClickEvent event) {
 		Button editer = event.getButton();
-		page  = (BudgetMensuelPage)editer.getParent().getParent().getParent().getParent().getParent();
+		BudgetMensuelPage page  = (BudgetMensuelPage)editer.getParent().getParent().getParent().getParent().getParent();
 
 		boolean budgetActif = getUserSession().getBudgetCourant().isActif();
 
 		// Confirmation
-		setBudgetActif = !budgetActif;
 		setPopupModale(new ConfirmDialog((budgetActif ? "Clôture" : "Ouverture") + " du budget mensuel", 
 				"Voulez vous "+(budgetActif ? "cloturer" : "réouvrir")+" le budget mensuel ?", "Oui", "Non", 
-				(ok) -> {
+				ok -> {
 					if(ok){
 						try {
-							page.getControleur().lockBudget(setBudgetActif);
+							page.getControleur().lockBudget(!budgetActif);
 						} catch (DataNotFoundException e) {
 							Notification.show("Erreur lors de la cloture du budget. Veuillez réessayer ultérieurement", Notification.Type.ERROR_MESSAGE);
 						}

@@ -30,7 +30,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public List<CompteBancaire> getComptes() throws DataNotFoundException, UserNotAuthorizedException {
-		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL, CompteBancaire.class);
+		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL);
 	}
 	
 	/**

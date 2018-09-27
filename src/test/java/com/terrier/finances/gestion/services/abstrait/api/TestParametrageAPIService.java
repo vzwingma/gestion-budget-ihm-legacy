@@ -3,14 +3,14 @@ package com.terrier.finances.gestion.services.abstrait.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
@@ -28,10 +28,16 @@ import com.terrier.finances.gestion.test.config.AbstractTestServices;
  */
 public class TestParametrageAPIService extends AbstractTestServices {
 
-	private List<AbstractAPIObjectModel> categories  = new ArrayList<>();
-	
-	@BeforeEach
-	public void initData(){
+
+	/**
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
+	 * 
+	 */
+	@Test
+	public void testChargerOperations() throws UserNotAuthorizedException, DataNotFoundException{
+		
+		List<AbstractAPIObjectModel> categories  = new ArrayList<>();
 		CategorieOperation catAlimentation = new CategorieOperation();
 		catAlimentation.setId("8f1614c9-503c-4e7d-8cb5-0c9a9218b84a");
 		catAlimentation.setActif(true);
@@ -47,22 +53,14 @@ public class TestParametrageAPIService extends AbstractTestServices {
 		ssCatCourse.setCategorieParente(null); // La réponse API n'a pas cette liaison (justement)
 		catAlimentation.getListeSSCategories().add(ssCatCourse);
 		categories.add(catAlimentation);
-
-	}
-	/**
-	 * @throws UserNotAuthorizedException  erreur d'authentification
-	 * @throws DataNotFoundException  erreur lors de l'appel
-	 * 
-	 */
-	@Test
-	public void testChargerOperations() throws UserNotAuthorizedException, DataNotFoundException{
 		
-		ParametragesAPIService service = spyParamsAPIService();
+		ParametragesAPIService service = spy(new ParametragesAPIService());
 		assertNotNull(service);
-		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL), any())).thenReturn(categories);
+		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL))).thenReturn(categories);
 		
 		List<CategorieOperation> liste = service.getCategories();
 		assertNotNull(liste);
+		assertTrue(liste.size() > 0);
 		assertEquals("8f1614c9-503c-4e7d-8cb5-0c9a9218b84a", liste.get(0).getId());
 		assertNull(liste.get(0).getCategorieParente());
 		assertEquals("467496e4-9059-4b9b-8773-21f230c8c5c6", liste.get(0).getListeSSCategories().iterator().next().getId());

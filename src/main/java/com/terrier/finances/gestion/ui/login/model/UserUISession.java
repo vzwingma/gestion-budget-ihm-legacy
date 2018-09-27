@@ -80,7 +80,7 @@ public class UserUISession {
 		Page currentPage = Page.getCurrent();
 		VaadinServlet currentServlet = VaadinServlet.getCurrent();
 		if(currentPage != null && currentServlet != null && currentServlet.getServletContext() != null && currentServlet.getServletContext().getContextPath() != null){
-			currentPage.setLocation(currentServlet.getServletContext().getContextPath()+"/ihm");
+			currentPage.setLocation(currentServlet.getServletContext().getContextPath());
 		}
 		else{
 			LOGGER.error("Erreur : Impossible de trouver la page courante. Pb de framework Vaadin");

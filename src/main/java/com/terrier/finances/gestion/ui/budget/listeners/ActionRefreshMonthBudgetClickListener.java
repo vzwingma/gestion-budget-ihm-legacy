@@ -28,7 +28,6 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 	 */
 	private static final long serialVersionUID = -1823872638217135776L;
 
-	private BudgetMensuelPage page;
 
 	/* (non-Javadoc)
 	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
@@ -36,7 +35,7 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 	@Override
 	public void buttonClick(ClickEvent event) {
 
-		page  = (BudgetMensuelPage)event.getButton().getParent().getParent().getParent().getParent().getParent();
+		BudgetMensuelPage page  = (BudgetMensuelPage)event.getButton().getParent().getParent().getParent().getParent().getParent();
 
 
 		BudgetMensuel budgetMensuelCourant = getUserSession().getBudgetCourant();
@@ -57,7 +56,7 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 		setPopupModale(new ConfirmDialog("Réinitialisation du budget mensuel courant", 
 				"Voulez vous réinitialiser le budget du mois de "+ moisAffiche+" ? " +
 						warnMoisActif, "Oui", "Non", 
-						(ok) -> {
+						ok -> {
 							if(ok){
 								page.getControleur().reinitialiserBudgetCourant();
 							}

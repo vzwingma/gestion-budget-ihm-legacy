@@ -71,8 +71,7 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 			// Confirmation
 			setPopupModale(new ConfirmDialog("Suppression de l'opération", 
 					"Voulez-vous supprimer l'opération ?", "Oui", "Non", 
-					
-					(ok) -> {
+					ok -> {
 						if(ok){
 							updateLigne(null);
 						}

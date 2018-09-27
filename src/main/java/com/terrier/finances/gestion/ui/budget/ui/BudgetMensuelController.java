@@ -176,8 +176,6 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			initRangeDebutFinMois(compteCourant.getId());
 			getComponent().getComboBoxComptes().setTextInputAllowed(false);
 
-			// Bouton stat
-			//getComponent().getButtonStatistique().addClickListener(new ChangePageListener(StatistiquesPage.class));
 			// Bouton déconnexion
 			getComponent().getButtonDeconnexion().setCaption("");
 			getComponent().getButtonDeconnexion().addClickListener(new ActionDeconnexionClickListener());
@@ -253,8 +251,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * Force disconnect si auth non authentifié
 	 */
 	private void forceDisconnect() {
-		setPopupModale(new InformationDialog("Session expirée", "L'utilisateur n'est plus authentifié. \n Retour à la page de login", "OK", 
-				() -> deconnexion()));
+		setPopupModale(new InformationDialog("Session expirée", "L'utilisateur n'est plus authentifié. \n Retour à la page de login", "OK", this::deconnexion));
 
 	}
 

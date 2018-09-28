@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -71,11 +74,11 @@ public abstract class AbstractHTTPClient {
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
 		try {
 			// Install the all-trusting trust manager
-			//			SSLContext sslcontext = SSLContext.getInstance("TLS");
-			//			sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
-			//			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+						SSLContext sslcontext = SSLContext.getInstance("TLS");
+						sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
+						HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
-					//	.sslContext(sslcontext)
+					.sslContext(sslcontext)
 					.withConfig(clientConfig)
 					.build().target(serviceURI);
 		}

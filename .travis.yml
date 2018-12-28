@@ -44,17 +44,26 @@ before_deploy:
   - cp ~/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker/ihm.war
   - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-  - docker build -t vzwingmann/gestion_budget_ihm:travis .
+  - echo "Construction de l'image Docker gestion_budget_ihm"; 
+  - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM
   - if [[ $TRAVIS_BRANCH == v* ]]; 
     then 
         VERSION=$(echo $TRAVIS_BRANCH | cut -b 2-); 
         docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION ; 
         docker push vzwingmann/gestion_budget_ihm:$VERSION ; 
         docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
-        docker push vzwingmann/gestion_budget_ihm:latest ; 
+        docker push vzwingmann/gestion_budget_ihm:latest ;
+        
+        echo "Construction de l'image Docker gestion_budget:latest";
+        docker build -t vzwingmann/gestion_budget:latest -f Dockerfile-FULL-latest;
+        docker push vzwingmann/gestion_budget:latest;
     else 
        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ; 
-       docker push vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ; 
+       docker push vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ;
+       
+       echo "Construction de l'image Docker gestion_budget:snapshot";
+       docker build -t vzwingmann/gestion_budget:snapshot -f Dockerfile-FULL-snapshot;
+       docker push vzwingmann/gestion_budget:snapshot;
     fi;   
 
 deploy:

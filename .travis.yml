@@ -28,7 +28,7 @@ install:
 
 script:
   # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
-  - if [[ $TRAVIS_BRANCH == "master" && $TRAVIS_PULL_REQUEST != "false" ]];
+  - if [[ $TRAVIS_BRANCH == "master" ]];
     then 
       echo "ReTag de snapshot"; 
       git tag -d snapshot; 
@@ -55,14 +55,14 @@ before_deploy:
         docker push vzwingmann/gestion_budget_ihm:latest ;
         
         echo "Construction de l'image Docker gestion_budget:latest";
-        docker build -t vzwingmann/gestion_budget:latest -f Dockerfile-FULL-latest;
+        docker build -t vzwingmann/gestion_budget:latest -f Dockerfile-FULL-latest .;
         docker push vzwingmann/gestion_budget:latest;
     else 
        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ; 
        docker push vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ;
        
        echo "Construction de l'image Docker gestion_budget:snapshot";
-       docker build -t vzwingmann/gestion_budget:snapshot -f Dockerfile-FULL-snapshot;
+       docker build -t vzwingmann/gestion_budget:snapshot -f Dockerfile-FULL-snapshot .;
        docker push vzwingmann/gestion_budget:snapshot;
     fi;   
 

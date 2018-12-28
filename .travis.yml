@@ -45,7 +45,7 @@ before_deploy:
   - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
   - echo "Construction de l'image Docker gestion_budget_ihm"; 
-  - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM
+  - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
   - if [[ $TRAVIS_BRANCH == v* ]]; 
     then 
         VERSION=$(echo $TRAVIS_BRANCH | cut -b 2-); 

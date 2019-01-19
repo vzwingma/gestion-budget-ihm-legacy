@@ -46,7 +46,6 @@ before_deploy:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
   - echo "Construction de l'image Docker gestion_budget_ihm"; 
   - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
-  - docker build -t vzwingmann/gestion_budget_ihm:travis-raspberry -f Dockerfile-IHM-raspberry .;
   - if [[ $TRAVIS_BRANCH == v* ]]; 
     then 
         VERSION=$(echo $TRAVIS_BRANCH | cut -b 2-); 
@@ -54,17 +53,9 @@ before_deploy:
         docker push vzwingmann/gestion_budget_ihm:$VERSION ; 
         docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
         docker push vzwingmann/gestion_budget_ihm:latest ;
-        
-        docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:arm-$VERSION ; 
-        docker push vzwingmann/gestion_budget_ihm:arm-$VERSION ; 
-        docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:arm-latest ; 
-        docker push vzwingmann/gestion_budget_ihm:arm-latest ;
     else 
        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ; 
        docker push vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ;
-       
-       docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:arm-$TRAVIS_BRANCH ; 
-       docker push vzwingmann/gestion_budget_ihm-$TRAVIS_BRANCH ; 
     fi;   
 
 deploy:

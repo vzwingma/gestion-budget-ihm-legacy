@@ -55,16 +55,16 @@ before_deploy:
         docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
         docker push vzwingmann/gestion_budget_ihm:latest ;
         
-        docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:raspberry-$VERSION ; 
-        docker push vzwingmann/gestion_budget_ihm-raspberry:$VERSION ; 
-        docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:raspberry-latest ; 
-        docker push vzwingmann/gestion_budget_ihm-raspberry:latest ;
+        docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:arm-$VERSION ; 
+        docker push vzwingmann/gestion_budget_ihm:arm-$VERSION ; 
+        docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:arm-latest ; 
+        docker push vzwingmann/gestion_budget_ihm:arm-latest ;
     else 
        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ; 
        docker push vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ;
        
-       docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:raspberry-$TRAVIS_BRANCH ; 
-       docker push vzwingmann/gestion_budget_ihm-raspberry:raspberry-$TRAVIS_BRANCH ; 
+       docker tag vzwingmann/gestion_budget_ihm:travis-raspberry vzwingmann/gestion_budget_ihm:arm-$TRAVIS_BRANCH ; 
+       docker push vzwingmann/gestion_budget_ihm-$TRAVIS_BRANCH ; 
     fi;   
 
 deploy:

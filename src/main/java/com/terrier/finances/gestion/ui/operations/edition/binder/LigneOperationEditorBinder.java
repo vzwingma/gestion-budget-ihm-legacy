@@ -48,8 +48,7 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 	private ComboBox<TypeOperationEnum> cTypes = new ComboBox<>();
 	
 	private TypeOperationEnum expectedType = TypeOperationEnum.DEPENSE;
-	private String libelle = null;
-	
+
 	
 	/**
 	 * @return binding du libellé

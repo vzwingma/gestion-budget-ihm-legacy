@@ -232,10 +232,10 @@ public class Login extends AbstractUIComponent<LoginController> {
 		versionLayout.addComponent(labelBuildTime);
 
 		// labelVersionServices
-		labelBuildTime = new Label();
-		labelBuildTime.setStyleName("versionLabel");
-		labelBuildTime.setSizeUndefined();
-		labelBuildTime.setValue("Version Services : ");
+		labelVersionService = new Label();
+		labelVersionService.setStyleName("versionLabel");
+		labelVersionService.setSizeUndefined();
+		labelVersionService.setValue("Version Services : ");
 		versionLayout.addComponent(labelVersionService);
 		return versionLayout;
 	}

@@ -15,7 +15,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/vzwingma/gestion-budget-ihm/badge.svg)](https://snyk.io/test/github/vzwingma/gestion-budget-ihm)
 [![Dépendences](https://img.shields.io/librariesio/github/vzwingma/gestion-budget-ihm.png)](https://libraries.io/github/vzwingma/gestion-budget-ihm)
 
-<a href="https://sonarcloud.io/dashboard?id=gestion-budget"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget&metric=coverage" /></a>
-<a href="https://sonarcloud.io/dashboard?id=gestion-budget"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget&metric=sqale_rating" /></a>
-<a href="https://sonarcloud.io/dashboard?id=gestion-budget"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget&metric=reliability_rating" /></a>
-<a href="https://sonarcloud.io/dashboard?id=gestion-budget"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget&metric=security_rating" /></a>
+<a href="https://sonarcloud.io/dashboard?id=gestion-budget-ihm"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget-ihm&metric=coverage" /></a>
+<a href="https://sonarcloud.io/dashboard?id=gestion-budget-ihm"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget-ihm&metric=sqale_rating" /></a>
+<a href="https://sonarcloud.io/dashboard?id=gestion-budget-ihm"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget-ihm&metric=reliability_rating" /></a>
+<a href="https://sonarcloud.io/dashboard?id=gestion-budget-ihm"><img alt="Sonar Build Status" src="https://sonarcloud.io/api/project_badges/measure?project=gestion-budget-ihm&metric=security_rating" /></a>

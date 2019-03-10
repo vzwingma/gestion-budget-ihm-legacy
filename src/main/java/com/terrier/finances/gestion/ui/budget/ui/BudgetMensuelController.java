@@ -411,7 +411,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		try {
 			budgetCourant = chargeDonnees();
 			if(budgetCourant.isNewBudget()){
-				Notification.show("Création du budget mensuel. Le mois précédent est automatiquement clôturé et les opérations prévues sont annulées", Notification.Type.WARNING_MESSAGE);
+				Notification.show("Création du budget mensuel. Le mois précédent est automatiquement clôturé et les opérations prévues sont reportées", Notification.Type.WARNING_MESSAGE);
 				budgetCourant.setNewBudget(false);
 			}
 		} catch (final DataNotFoundException | UserNotAuthorizedException e) {

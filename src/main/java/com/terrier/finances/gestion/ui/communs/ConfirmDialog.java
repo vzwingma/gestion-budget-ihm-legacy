@@ -79,7 +79,6 @@ public final class ConfirmDialog extends Window implements Button.ClickListener 
 		mainLayout.setMargin(true);
 		
 		// top-level component properties
-		setSizeFull();
 		return mainLayout;
 	}
 

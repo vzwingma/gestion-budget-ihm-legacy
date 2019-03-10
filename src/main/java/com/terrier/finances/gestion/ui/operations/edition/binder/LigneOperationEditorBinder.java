@@ -46,8 +46,10 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 	private ComboBox<CategorieOperation> cCategories = new  ComboBox<>();
 	private ComboBox<CategorieOperation> ssCategories = new  ComboBox<>();
 	private ComboBox<TypeOperationEnum> cTypes = new ComboBox<>();
+	
 	private TypeOperationEnum expectedType = TypeOperationEnum.DEPENSE;
 
+	
 	/**
 	 * @return binding du libellé
 	 */
@@ -69,7 +71,7 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 		cTypes.setItems(TypeOperationEnum.values());
 		return this.forField(cTypes)
 				.withValidator(Objects::nonNull, "Le Type de dépense ne peut pas être nul")
-				.withValidator(v -> expectedType.equals(v), "L'opération est une "+expectedType.getId()+". La valeur doit être " + expectedType.getLibelle())
+				.withValidator(v -> expectedType == null || expectedType.equals(v), "L'opération est une "+expectedType.getId()+". La valeur doit être " + expectedType.getLibelle())
 				.bind(LigneOperation::getTypeDepense, LigneOperation::setTypeDepense);
 	}
 
@@ -136,9 +138,13 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 		// Update auto de la catégorie et du type
 		ssCategories.addSelectionListener(event -> {
 			cCategories.setValue(event.getSelectedItem().get().getCategorieParente());
-			if((IdsCategoriesEnum.SALAIRE.getId().equals(this.ssCategories.getSelectedItem().get().getId()) 
-					|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(this.ssCategories.getSelectedItem().get().getId()))){
+			if(IdsCategoriesEnum.SALAIRE.getId().equals(this.ssCategories.getSelectedItem().get().getId()) 
+					|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(this.ssCategories.getSelectedItem().get().getId())
+			){
 				expectedType = TypeOperationEnum.CREDIT;
+			}
+			else if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(this.ssCategories.getSelectedItem().get().getId())) {
+				expectedType = null;
 			}
 			else{
 				expectedType = TypeOperationEnum.DEPENSE;

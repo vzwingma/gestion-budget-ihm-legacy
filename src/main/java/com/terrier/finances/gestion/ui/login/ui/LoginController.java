@@ -64,8 +64,18 @@ public class LoginController extends AbstractUIController<Login>{
 
 		getComponent().getTextLogin().setIcon(new ThemeResource("img/login.png"));
 		getComponent().getPasswordField().setIcon(new ThemeResource("img/passwd.png"));
-		getComponent().getLabelVersion().setValue("Version : " + getServiceParams().getVersion());
+		getComponent().getLabelVersion().setValue("Version IHM : " + getServiceParams().getVersion());
 		getComponent().getLabelBuildTime().setValue("Build : " + getServiceParams().getBuildTime());
+		
+		String versionService = "N/A";
+		try {
+			versionService = getServiceAdmin().getStatut().getVersion();
+		}
+		catch (Exception e) {
+			versionService = "N/A";
+		}
+		getComponent().getLabelVersionServices().setValue("Version Services : " + versionService);
+
 	}
 
 

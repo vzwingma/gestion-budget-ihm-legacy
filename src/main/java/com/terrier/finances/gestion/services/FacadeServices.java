@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.terrier.finances.gestion.services.admin.api.AdminAPIService;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
 import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
@@ -50,6 +51,9 @@ public class FacadeServices {
 	
 	@Autowired
 	private ComptesAPIService serviceComptes;
+	
+	@Autowired
+	private AdminAPIService serviceAdmin;
 
 	@Autowired
 	private UserUISessionsService serviceUserSessions;
@@ -139,4 +143,21 @@ public class FacadeServices {
 		LOGGER.trace("[INIT] ComptesService");
 		this.serviceComptes = serviceComptes;
 	}
+
+	/**
+	 * @return the serviceAdmin
+	 */
+	public AdminAPIService getServiceAdmin() {
+		return serviceAdmin;
+	}
+
+	/**
+	 * @param serviceAdmin the serviceAdmin to set
+	 */
+	public void setServiceAdmin(AdminAPIService serviceAdmin) {
+		LOGGER.trace("[INIT] AdminService");
+		this.serviceAdmin = serviceAdmin;
+	}
+	
+	
 }

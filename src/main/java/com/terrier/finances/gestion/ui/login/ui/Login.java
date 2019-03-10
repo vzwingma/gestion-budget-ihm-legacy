@@ -213,7 +213,7 @@ public class Login extends AbstractUIComponent<LoginController> {
 	private VerticalLayout buildVersionLayout() {
 		// common part: create layout
 		versionLayout = new VerticalLayout();
-		versionLayout.setWidth("150px");
+		versionLayout.setWidth("250px");
 		versionLayout.setHeightUndefined();
 		versionLayout.setMargin(false);
 

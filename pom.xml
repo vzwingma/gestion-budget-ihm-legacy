@@ -166,7 +166,7 @@
 						<directory>src/main/resources/config/dev</directory>
 					</resource>
 					<resource>
-						<directory>src/main/resources/config/openshift</directory>
+						<directory>src/main/resources/config/prod</directory>
 						<excludes>
 							<exclude>*.*</exclude>
 						</excludes>
@@ -193,7 +193,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>openshift</id>
+			<id>prod</id>
 			<build>
 				<resources>
 					<resource>
@@ -203,7 +203,7 @@
 						</excludes>
 					</resource>
 					<resource>
-						<directory>src/main/resources/config/openshift</directory>
+						<directory>src/main/resources/config/prod</directory>
 						<filtering>true</filtering>
 						<excludes>
 							<exclude>*.xml</exclude>

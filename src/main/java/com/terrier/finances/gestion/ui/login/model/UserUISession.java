@@ -43,7 +43,7 @@ public class UserUISession {
 	 * JWT
 	 */
 	private String jwtToken;
-	
+
 	private Claims jwtClaims;
 	/**
 	 * Budget courant
@@ -56,9 +56,9 @@ public class UserUISession {
 	private Layout mainLayout;
 
 	private Window popupModale;
-	
-	
-	
+
+
+
 	/**
 	 * Session Manager
 	 * @param idSession idSessions
@@ -141,8 +141,13 @@ public class UserUISession {
 	public boolean registerUtilisateur(String token){
 		this.jwtToken = token;
 		this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
-		LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
-		return true;
+		if(this.jwtClaims != null) {
+			LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 
@@ -181,7 +186,7 @@ public class UserUISession {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return the idSession
 	 */
@@ -249,6 +254,6 @@ public class UserUISession {
 	public Claims getJwtClaims() {
 		return jwtClaims;
 	}
-	
-	
+
+
 }

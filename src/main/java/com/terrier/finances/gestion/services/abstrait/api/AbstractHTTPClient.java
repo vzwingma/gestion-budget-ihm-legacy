@@ -75,7 +75,7 @@ public abstract class AbstractHTTPClient {
 		try {
 			// Install the all-trusting trust manager
 			SSLContext sslcontext = SSLContext.getInstance("TLS");
-			sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
+			sslcontext.init(null,  null, new java.security.SecureRandom());
 			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
 					.sslContext(sslcontext)

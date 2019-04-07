@@ -48,6 +48,8 @@ public class Login extends AbstractUIComponent<LoginController> {
 	 */
 	private static final long serialVersionUID = -8912123300643969099L;
 
+	private static final String LOGIN_STYLE = "versionLabel";
+	
 	/**
 	 * The constructor should first build the main layout, set the
 	 * composition root and then do any custom initialization.
@@ -219,21 +221,21 @@ public class Login extends AbstractUIComponent<LoginController> {
 
 		// labelVersion
 		labelVersion = new Label();
-		labelVersion.setStyleName("versionLabel");
+		labelVersion.setStyleName(LOGIN_STYLE);
 		labelVersion.setSizeUndefined();
 		labelVersion.setValue("Version IHM : ");
 		versionLayout.addComponent(labelVersion);
 
 		// labelBuildTime
 		labelBuildTime = new Label();
-		labelBuildTime.setStyleName("versionLabel");
+		labelBuildTime.setStyleName(LOGIN_STYLE);
 		labelBuildTime.setSizeUndefined();
 		labelBuildTime.setValue("Build : ");
 		versionLayout.addComponent(labelBuildTime);
 
 		// labelVersionServices
 		labelVersionService = new Label();
-		labelVersionService.setStyleName("versionLabel");
+		labelVersionService.setStyleName(LOGIN_STYLE);
 		labelVersionService.setSizeUndefined();
 		labelVersionService.setValue("Version Services : ");
 		versionLayout.addComponent(labelVersionService);

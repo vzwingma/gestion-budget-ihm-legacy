@@ -74,8 +74,7 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 	public UserUISession getSession(){
 		String idSession = getUIIdSession();
 		// Création d'une nouvelle session si nécessaire
-		sessionsMap.putIfAbsent(idSession, new UserUISession(idSession));
-		UserUISession session = sessionsMap.get(idSession);
+		UserUISession session = sessionsMap.putIfAbsent(idSession, new UserUISession(idSession));
 		session.setLastAccessTime(Instant.now());
 		return session;
 	}

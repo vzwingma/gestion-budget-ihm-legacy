@@ -8,10 +8,8 @@
 | [Services](https://github.com/vzwingma/gestion-budget-services) | [![GitHub version](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-services.svg)](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-services)
 
 ### Statut
-
-<a href='https://travis-ci.org/vzwingma/gestion-budget-ihm/branches'><img src='https://travis-ci.org/vzwingma/gestion-budget-ihm.svg' alt='Build Status' /></a>
-<a href='https://github.com/vzwingma/gestion-budget/issues'><img src='http://githubbadges.herokuapp.com/vzwingma/gestion-budget/issues?style=square' alt='Issues number' /></a>
-
+[![Build Status](https://img.shields.io/travis/com/vzwingma/gestion-budget-ihm.svg)](https://travis-ci.com/vzwingma/gestion-budget-ihm/branches)
+[![GitHub issues](https://img.shields.io/github/issues-raw/vzwingma/gestion-budget-ihm.svg?style=flat-square)](https://github.com/vzwingma/gestion-budget-ihm/issues)
 
 [![Known Vulnerabilities](https://snyk.io/test/github/vzwingma/gestion-budget-ihm/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/vzwingma/gestion-budget-ihm?targetFile=pom.xml)
 [![Dépendences](https://img.shields.io/librariesio/github/vzwingma/gestion-budget-ihm.png)](https://libraries.io/github/vzwingma/gestion-budget-ihm)

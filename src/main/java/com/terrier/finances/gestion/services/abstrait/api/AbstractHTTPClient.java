@@ -57,7 +57,7 @@ public abstract class AbstractHTTPClient {
 	public AbstractHTTPClient() {
 		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
 	}
-	
+
 
 
 	/**
@@ -74,9 +74,9 @@ public abstract class AbstractHTTPClient {
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
 		try {
 			// Install the all-trusting trust manager
-						SSLContext sslcontext = SSLContext.getInstance("TLS");
-						sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
-						HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+			SSLContext sslcontext = SSLContext.getInstance("TLS");
+			sslcontext.init(null,  new TrustManager[] { new ClientHTTPTrustManager() }, new java.security.SecureRandom());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
 					.sslContext(sslcontext)
 					.withConfig(clientConfig)
@@ -373,13 +373,13 @@ public abstract class AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	private void catchWebApplicationException(int c, HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException, DataNotFoundException {
-	    LOGGER.error("[API={}][{}] Erreur [{}] lors de l'appel ", c, verbe, e.getResponse().getStatus());
-	    if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
-	        throw new UserNotAuthorizedException("Utilisateur non authentifié");
-	    }
-	    else if(Status.INTERNAL_SERVER_ERROR.equals(e.getResponse().getStatusInfo()) || Status.BAD_REQUEST.equals(e.getResponse().getStatusInfo())) {
-	        throw new DataNotFoundException("Erreur lors de l'appel au service");
-	    }
+		LOGGER.error("[API={}][{}] Erreur [{}] lors de l'appel ", c, verbe, e.getResponse().getStatus());
+		if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
+			throw new UserNotAuthorizedException("Utilisateur non authentifié");
+		}
+		else if(Status.INTERNAL_SERVER_ERROR.equals(e.getResponse().getStatusInfo()) || Status.BAD_REQUEST.equals(e.getResponse().getStatusInfo())) {
+			throw new DataNotFoundException("Erreur lors de l'appel au service");
+		}
 	}
 
 	/**

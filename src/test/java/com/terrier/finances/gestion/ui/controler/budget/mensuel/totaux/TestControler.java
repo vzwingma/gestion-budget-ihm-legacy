@@ -1,5 +1,7 @@
 package com.terrier.finances.gestion.ui.controler.budget.mensuel.totaux;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
@@ -26,5 +28,6 @@ public class TestControler {
 		LocalDate now = BudgetDateTimeUtils.localDateNow();
 		LOGGER.info("du {} à fin {}", 
 				now.format(GridResumeTotauxController.auDateFormat), now.format(GridResumeTotauxController.finDateFormat));
+		assertNotNull(now);
 	}
 }

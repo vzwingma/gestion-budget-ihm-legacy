@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 

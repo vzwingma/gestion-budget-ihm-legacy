@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,7 +60,7 @@ public class ListAPIObjectModelReader<T extends AbstractAPIObjectModel> implemen
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 					throws IOException {
 
-		String entity = IOUtils.toString(entityStream, "UTF-8");
+		String entity = IOUtils.toString(entityStream, StandardCharsets.UTF_8);
 		
 		for (Class<T> classeAPIObjectModel : classesAPIObjectModel) {
 			List<T> listeObjects = tryToParse(entity, classeAPIObjectModel);

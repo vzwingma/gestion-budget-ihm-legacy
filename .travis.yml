@@ -39,27 +39,28 @@ script:
       echo "Pas de reTag de snapshot"; 
     fi
 
-# Déploiement des releaes sur tag : snapshot ou version
+# Déploiement des releases sur tag : snapshot ou version
+# Si pas de tag : Pas de deploy
 before_deploy:
   - cp ~/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker/ihm.war
   - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
+   # Deploiement sur Docker HUB  
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
   - echo "Construction de l'image Docker gestion_budget_ihm"; 
   - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
+  - VERSION_DOCKER="snapshot";
   - if [[ $TRAVIS_BRANCH == v* ]]; 
     then 
-        VERSION=$(echo $TRAVIS_BRANCH | cut -b 2-); 
-        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION ; 
-        docker push vzwingmann/gestion_budget_ihm:$VERSION ; 
-        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
-        docker push vzwingmann/gestion_budget_ihm:latest ;
-    else 
-       docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ; 
-       docker push vzwingmann/gestion_budget_ihm:$TRAVIS_BRANCH ;
-    fi;   
-
+        VERSION_DOCKER_TAG=$(echo $TRAVIS_BRANCH | cut -b 2-); 
+        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_DOCKER_TAG ; 
+        docker push vzwingmann/gestion_budget_ihm:$VERSION_DOCKER_TAG ; 
+        VERSION_DOCKER="latest";
+    fi;
+  - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_DOCKER ; 
+  - docker push vzwingmann/gestion_budget_ihm:$VERSION_DOCKER ; 
+    
 deploy:
-# Déploiement des releaes sur tag : snapshot ou version 
+   # Déploiement des releaes sur tag : snapshot ou version 
   - provider: releases
     api-key: $GITHUB_API_KEY
     skip_cleanup: true
@@ -68,3 +69,30 @@ deploy:
     on:
       repo: vzwingma/gestion-budget-ihm
       tags: true
+after_deploy:
+  - echo "Déploiement sur MassiveGrid"
+  - ENV="";
+  - NODE_ID=0;
+  - if [[ $TRAVIS_BRANCH == v* ]]; 
+    then 
+        ENV="budget";
+        NODE_ID=26686;
+    else
+        ENV="budget-rec";
+        NODE_ID=26391;
+    fi;
+  # Démarrage 
+  - echo "Démarrage de l'environnement $ENV";
+  - URL_START=$MASSIVEGRID_URL"startenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
+  - echo $URL_START ;
+  - curl $URL_START ;
+  # Redéploiement   
+  - echo "Redéploiement de la version $VERSION_DOCKER sur MassiveGrid : $ENV";
+  - URL_REDEPLOY=$MASSIVEGRID_URL"redeploycontainers?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN&tag=$VERSION_DOCKER&nodeId=$NODE_ID" ;
+  - echo $URL_REDEPLOY ;
+  - curl -X POST $URL_REDEPLOY ;
+  # Arrêt   
+  - echo "Arrêt de l'environnement $ENV" ;
+  - URL_STOP=$MASSIVEGRID_URL"stopenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
+  - echo $URL_STOP ;
+  - curl $URL_STOP ;

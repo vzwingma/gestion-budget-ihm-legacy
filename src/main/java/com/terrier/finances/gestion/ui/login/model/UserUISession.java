@@ -140,12 +140,9 @@ public class UserUISession {
 	 */
 	public boolean registerUtilisateur(String token){
 		this.jwtToken = token;
-		try {
-			this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
+		this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
+		if(this.jwtClaims != null) {
 			LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
-		}
-		catch (SecurityException e) {
-			this.jwtClaims = null;
 		}
 		return this.jwtClaims != null;
 	}

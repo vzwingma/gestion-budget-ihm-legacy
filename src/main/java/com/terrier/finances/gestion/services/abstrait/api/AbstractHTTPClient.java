@@ -81,7 +81,6 @@ public abstract class AbstractHTTPClient {
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
 		// Register des Filter
 		clientConfig.register(csrfProtection);
-
 		try {
 			// Install the all-trusting trust manager
 			SSLContext sslcontext = SSLContext.getInstance("TLS");
@@ -166,10 +165,10 @@ public abstract class AbstractHTTPClient {
 			try{
 				Response res = invoquer.post(getEntity(dataToSend));
 				if(res.getStatus() > 400){
-					LOGGER.error("[POST][{}]", res.getStatus());
+					LOGGER.error("[POST][{}/{}] : {}", res.getStatus(), res.getStatusInfo(), res.getHeaders());
 				}
 				else{
-					LOGGER.debug("[POST][{}]", res.getStatus());
+					LOGGER.debug("[POST][{}/{}] : {}", res.getStatus(), res.getStatusInfo(), res.getHeaders());
 				}
 				return res;
 			}

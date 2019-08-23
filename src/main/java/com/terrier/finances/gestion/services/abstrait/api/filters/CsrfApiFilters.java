@@ -12,12 +12,13 @@ import javax.ws.rs.client.ClientResponseFilter;
 import org.glassfish.jersey.client.filter.CsrfProtectionFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * @author vzwingma
  *
  */
-//Service
+@Service
 public class CsrfApiFilters extends CsrfProtectionFilter implements ClientResponseFilter {
 
 

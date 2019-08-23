@@ -2,6 +2,7 @@ package com.terrier.finances.gestion.services.abstrait.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Calendar;
@@ -46,8 +47,6 @@ public class TestUtilisateursAPIService {
 		String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2endpbmdtYW5uIiwianRpIjoiYWRjNzBhNmEtNzllOS00NzI1LWI3MmUtOTJkMmEyNTZiN2JhIiwiYXV0aG9yaXRpZXMiOlsiRFJPSVRfQ0xPVFVSRV9CVURHRVQiLCJEUk9JVF9SQVpfQlVER0VUIl0sIlVTRVJJRCI6IjU0ODQyNjgzODRiN2ZmMWU1ZjI2YjY5MiIsImlhdCI6MTUzNzUzOTQyMCwiaXNzIjoiQnVkZ2V0LVNlcnZpY2VzIHY3LjAuMC1TTkFQU0hPVCIsImV4cCI6MTUzNzU0MzAyMH0.T4WbIgy8FpN3faJfZtiM8OQNGE8P_uBel63t-hniyA2mDRjbLTYxcuSwGvzG7sF8g8lKY_-y-Ex8Jr2HQ9evRQ";
 
 		assertNotNull(token);
-		assertThrows(SecurityException.class, () -> {
-			JwtConfigEnum.getJWTClaims(token);
-		});
+		assertNull(JwtConfigEnum.getJWTClaims(token));
 	}
 }

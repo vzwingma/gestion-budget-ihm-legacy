@@ -12,6 +12,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 
@@ -28,7 +30,9 @@ public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements M
 	private ObjectMapper mapper;
 	
 	public APIObjectModelReader() {
-		mapper = new ObjectMapper();
+		JsonFactory factory = new JsonFactory();
+		factory.setCharacterEscapes(new JsonpCharacterEscapes());
+		mapper = new ObjectMapper(factory).disableDefaultTyping();
 	}
 	
 	

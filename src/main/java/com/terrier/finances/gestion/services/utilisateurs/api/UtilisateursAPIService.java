@@ -42,9 +42,11 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 		AuthLoginAPIObject auth = new AuthLoginAPIObject(login, motPasseEnClair);
 		String jwtHeader  = null;
 		try {
-			Response resopnse = callHTTPPost(BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth);
-			jwtHeader = resopnse.getHeaderString(JwtConfigEnum.JWT_HEADER_AUTH);
-			LOGGER.info("[SEC] Authentification : {}", jwtHeader);
+			Response response = callHTTPPost(BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth);
+			if(response != null) {
+				jwtHeader = response.getHeaderString(JwtConfigEnum.JWT_HEADER_AUTH);
+				LOGGER.info("[SEC] Authentification : {}", jwtHeader);
+			}
 		} catch (UserNotAuthorizedException e) {
 			LOGGER.warn("Ne peut pas arriver pour cette API");
 		}

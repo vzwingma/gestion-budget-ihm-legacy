@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -27,6 +28,8 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus.Series;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
@@ -51,8 +54,11 @@ public abstract class AbstractHTTPClient {
 	// Tout est en JSON
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
+	private static final String HEADER_CONTENT_TYPE = "Content-type";
+	
 	protected final String serviceURI;
 
+	
 	public AbstractHTTPClient() {
 		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
 	}
@@ -101,6 +107,12 @@ public abstract class AbstractHTTPClient {
 	 * @return invocation prête
 	 */
 	private Invocation.Builder getInvocation(String path, Map<String, String> queryParams){
+		
+		// Correlation ID
+		String corrID = UUID.randomUUID().toString();
+		String apiCorrID = UUID.randomUUID().toString();
+		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"][API="+apiCorrID+"]");
+		
 		WebTarget wt = getClient();
 		if(path != null){
 			wt = wt.path(path);
@@ -111,15 +123,16 @@ public abstract class AbstractHTTPClient {
 			}
 		}
 		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE);
-		int c = getCorrelationId(invoquer);
+		
 		// Entêtes
-		invoquer.header("Content-type", MediaType.APPLICATION_JSON);
+		invoquer.header(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON);
 		if(getJwtToken() != null){
 			invoquer.header(JwtConfigEnum.JWT_HEADER_AUTH, getJwtToken());
-			LOGGER.trace("[API={}][JWT Token={}]", c, getJwtToken());
+			LOGGER.debug("[JWT Token={}]", getJwtToken());
 		}
-		invoquer.header(ApiConfigEnum.HEADER_CORRELATION_ID, c);
-		LOGGER.info("[API={}] Appel du service [{}]", c, wt.getUri());
+		invoquer.header(ApiConfigEnum.HEADER_CORRELATION_ID, corrID);
+		invoquer.header(ApiConfigEnum.HEADER_API_CORRELATION_ID, corrID);
+		LOGGER.info("Appel du service [{}]", wt.getUri());
 		return invoquer;
 	}
 
@@ -146,22 +159,25 @@ public abstract class AbstractHTTPClient {
 	Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path);
-			int c = getCorrelationId(invoquer);
 			try{
 				Response res = invoquer.post(getEntity(dataToSend));
-				if(res.getStatus() > 400){
-					LOGGER.error("[API={}][POST][{}]", c, res.getStatus());
+				Series catStatut = HttpStatus.Series.resolve(res.getStatus());
+				if(catStatut.equals(Series.CLIENT_ERROR) || catStatut.equals(Series.SERVER_ERROR)){
+					LOGGER.error("[API={}][POST][{}/{}]", res.getHeaders().get(ApiConfigEnum.HEADER_API_CORRELATION_ID), res.getStatus(), res.getStatusInfo());
 				}
 				else{
-					LOGGER.debug("[API={}][POST][{}]", c, res.getStatus());
+					LOGGER.debug("[API={}][POST][{}/{}]", res.getHeaders().get(ApiConfigEnum.HEADER_API_CORRELATION_ID),res.getHeaders().get(""), res.getStatus(), res.getStatusInfo());
 				}
 				return res;
 			}
 			catch(WebApplicationException e){
-				catchWebApplicationException(c, HttpMethod.POST, e);
+				catchWebApplicationException(HttpMethod.POST, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
+				LOGGER.error("[API=?][POST] Erreur lors de l'appel", e);
+			}
+			finally {
+				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return null;
@@ -196,17 +212,19 @@ public abstract class AbstractHTTPClient {
 	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path, params);
-			int c = getCorrelationId(invoquer);
 			try{
 				R response = invoquer.post(getEntity(dataToSend), responseClassType);
-				LOGGER.debug("[API={}][POST][200] Réponse : {}", c, response);
+				LOGGER.debug("[POST][200] Réponse : {}", response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				catchWebApplicationException(c, HttpMethod.POST, e);
+				catchWebApplicationException(HttpMethod.POST, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][POST] Erreur lors de l'appel", c, e);
+				LOGGER.error("[POST] Erreur lors de l'appel", e);
+			}
+			finally {
+				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return null;
@@ -235,20 +253,22 @@ public abstract class AbstractHTTPClient {
 		boolean resultat = false;
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path, params);
-			int c = getCorrelationId(invoquer);
 			try{
 				Response response = invoquer.get();
 				if(response != null){
-					LOGGER.debug("[API={}][GET] Réponse : [{}]", c, response.getStatus());
+					LOGGER.debug("[GET] Réponse : [{}]", response.getStatus());
 					resultat = response.getStatus() == 200;
 				}
 			}
 			catch(WebApplicationException e){
-				catchWebApplicationException(c, HttpMethod.GET, e);
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
+				LOGGER.error("[GET] Erreur lors de l'appel", e);
 				resultat = false;
+			}
+			finally {
+				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return resultat;
@@ -279,17 +299,19 @@ public abstract class AbstractHTTPClient {
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path, params);
-			int c = getCorrelationId(invoquer);
 			try{
 				R response = invoquer.get(responseClassType);
-				LOGGER.debug("[API={}][GET][200] Réponse : [{}]", c, response);
+				LOGGER.debug("[GET][200] Réponse : [{}]", response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				catchWebApplicationException(c, HttpMethod.GET, e);
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
+				LOGGER.error("[GET] Erreur lors de l'appel", e);
+			}
+			finally {
+				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return null;
@@ -308,17 +330,19 @@ public abstract class AbstractHTTPClient {
 	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
 		if(path != null){
 			Builder invoquer = getInvocation(path);
-			int c = getCorrelationId(invoquer);
 			try{
 				R response = invoquer.delete(responseClassType);
-				LOGGER.debug("[API={}][DEL][200] Réponse : [{}]", c, response);
+				LOGGER.debug("[DEL][200] Réponse : [{}]", response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				LOGGER.error("[API={}][DEL][{}] Erreur lors de l'appel", c, e.getResponse().getStatus());
+				LOGGER.error("[DEL][{}] Erreur lors de l'appel", e.getResponse().getStatus());
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][DEL] Erreur lors de l'appel",c, e);
+				LOGGER.error("[DEL] Erreur lors de l'appel",e);
+			}
+			finally {
+				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return null;
@@ -337,18 +361,20 @@ public abstract class AbstractHTTPClient {
 	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);
-			int c = getCorrelationId(invoquer);
 			try{
 				@SuppressWarnings("unchecked")
 				List<R> response = invoquer.get(List.class);
-				LOGGER.debug("[API={}][GET][200] Réponse : [{}]", c, response);
+				LOGGER.debug("[GET][200] Réponse : [{}]", response);
 				return response;
 			}
 			catch(WebApplicationException e){
-				catchWebApplicationException(c, HttpMethod.GET, e);
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API={}][GET] Erreur lors de l'appel", c, e);
+				LOGGER.error("[GET] Erreur lors de l'appel", e);
+			}
+			finally {
+				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return new ArrayList<>();
@@ -359,7 +385,7 @@ public abstract class AbstractHTTPClient {
 	 * @param apiObject object API
 	 * @return entity englobant l'API Object
 	 */
-	protected <R extends AbstractAPIObjectModel> Entity<R> getEntity(R apiObject){
+	private <R extends AbstractAPIObjectModel> Entity<R> getEntity(R apiObject){
 		return Entity.entity(apiObject, MediaType.APPLICATION_JSON_TYPE);
 	}
 
@@ -371,8 +397,8 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException utilisateur non authentifié
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	private void catchWebApplicationException(int c, HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException, DataNotFoundException {
-		LOGGER.error("[API={}][{}] Erreur [{}] lors de l'appel ", c, verbe, e.getResponse().getStatus());
+	private void catchWebApplicationException(HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException, DataNotFoundException {
+		LOGGER.error("[{}] Erreur [{}] lors de l'appel ", verbe, e.getResponse().getStatus());
 		if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
 			throw new UserNotAuthorizedException("Utilisateur non authentifié");
 		}
@@ -380,14 +406,4 @@ public abstract class AbstractHTTPClient {
 			throw new DataNotFoundException("Erreur lors de l'appel au service");
 		}
 	}
-
-	/**
-	 * @param invoquer
-	 * @return correlation ID
-	 */
-	private int getCorrelationId(Invocation.Builder invoquer){
-		return Math.abs(invoquer.toString().hashCode());
-	}
-
-
 }

@@ -55,10 +55,10 @@ public abstract class AbstractHTTPClient {
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
 	private static final String HEADER_CONTENT_TYPE = "Content-type";
-	
+
 	protected final String serviceURI;
 
-	
+
 	public AbstractHTTPClient() {
 		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
 	}
@@ -111,11 +111,12 @@ public abstract class AbstractHTTPClient {
 	 * @return invocation prête
 	 */
 	private Invocation.Builder getInvocation(String path, Map<String, String> queryParams){
-		
+
 		// Correlation ID
 		String corrID = UUID.randomUUID().toString();
-		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "[API="+corrID+"]");
-		
+		String apiCorrID = UUID.randomUUID().toString();
+		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"][API="+apiCorrID+"]");
+
 		WebTarget wt = getClient();
 		if(path != null){
 			wt = wt.path(path);
@@ -126,7 +127,7 @@ public abstract class AbstractHTTPClient {
 			}
 		}
 		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE);
-		
+
 		// Entêtes
 		invoquer.header(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON);
 		if(getJwtToken() != null){
@@ -172,11 +173,8 @@ public abstract class AbstractHTTPClient {
 				}
 				return res;
 			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.POST, e);
-			}
 			catch(Exception e){
-				LOGGER.error("[POST] Erreur lors de l'appel", e);
+				catchWebApplicationException(HttpMethod.POST, e);
 			}
 			finally {
 				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
@@ -219,11 +217,8 @@ public abstract class AbstractHTTPClient {
 				LOGGER.debug("[POST][200] Réponse : {}",response);
 				return response;
 			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.POST, e);
-			}
 			catch(Exception e){
-				LOGGER.error("[POST] Erreur lors de l'appel", e);
+				catchWebApplicationException(HttpMethod.POST, e);
 			}
 			finally {
 				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
@@ -262,12 +257,8 @@ public abstract class AbstractHTTPClient {
 					resultat = response.getStatus() == 200;
 				}
 			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.GET, e);
-			}
 			catch(Exception e){
-				LOGGER.error("[GET] Erreur lors de l'appel", e);
-				resultat = false;
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			finally {
 				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
@@ -306,11 +297,8 @@ public abstract class AbstractHTTPClient {
 				LOGGER.debug("[GET][200] Réponse : [{}]", response);
 				return response;
 			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.GET, e);
-			}
 			catch(Exception e){
-				LOGGER.error("[GET] Erreur lors de l'appel", e);
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			finally {
 				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
@@ -329,7 +317,7 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
+	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);
 			try{
@@ -337,11 +325,8 @@ public abstract class AbstractHTTPClient {
 				LOGGER.debug("[DEL][200] Réponse : [{}]", response);
 				return response;
 			}
-			catch(WebApplicationException e){
-				LOGGER.error("[DEL][{}] Erreur lors de l'appel", e.getResponse().getStatus());
-			}
 			catch(Exception e){
-				LOGGER.error("[DEL] Erreur lors de l'appel",e);
+				catchWebApplicationException(HttpMethod.DELETE, e);
 			}
 			finally {
 				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
@@ -367,13 +352,9 @@ public abstract class AbstractHTTPClient {
 				@SuppressWarnings("unchecked")
 				List<R> response = invoquer.get(List.class);
 				LOGGER.debug("[GET][200] Réponse : [{}]", response);
-				return response;
-			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[GET] Erreur lors de l'appel", e);
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			finally {
 				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
@@ -399,13 +380,19 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException utilisateur non authentifié
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	private void catchWebApplicationException(HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException, DataNotFoundException {
-		LOGGER.error("[{}] Erreur [{}] lors de l'appel ", verbe, e.getResponse().getStatus());
-		if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
-			throw new UserNotAuthorizedException("Utilisateur non authentifié");
+	private void catchWebApplicationException(HttpMethod verbe,  Exception ex) throws UserNotAuthorizedException, DataNotFoundException {
+		if(ex instanceof WebApplicationException) {
+			WebApplicationException e = (WebApplicationException)ex;
+			LOGGER.error("[{}] Erreur [{}] lors de l'appel ", verbe, e.getResponse().getStatus());
+			if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
+				throw new UserNotAuthorizedException("Utilisateur non authentifié");
+			}
+			else if(Status.INTERNAL_SERVER_ERROR.equals(e.getResponse().getStatusInfo()) || Status.BAD_REQUEST.equals(e.getResponse().getStatusInfo())) {
+				throw new DataNotFoundException("Erreur lors de l'appel au service");
+			}
 		}
-		else if(Status.INTERNAL_SERVER_ERROR.equals(e.getResponse().getStatusInfo()) || Status.BAD_REQUEST.equals(e.getResponse().getStatusInfo())) {
-			throw new DataNotFoundException("Erreur lors de l'appel au service");
+		else {
+			LOGGER.error("[{}] Erreur lors de l'appel", verbe, ex);
 		}
 	}
 }

@@ -27,8 +27,9 @@ import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus.Series;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
@@ -38,7 +39,6 @@ import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedEx
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
-import com.terrier.finances.gestion.services.abstrait.api.filters.CsrfApiFilters;
 import com.terrier.finances.gestion.ui.communs.config.AppConfig;
 import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
@@ -63,8 +63,6 @@ public abstract class AbstractHTTPClient {
 		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
 	}
 
-	@Autowired
-	private CsrfApiFilters csrfProtection;
 
 
 	/**
@@ -79,8 +77,6 @@ public abstract class AbstractHTTPClient {
 		// Register des converters
 		clientConfig.register(new ListAPIObjectModelReader<AbstractAPIObjectModel>());
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
-		// Register des Filter
-		clientConfig.register(csrfProtection);
 		try {
 			// Install the all-trusting trust manager
 			SSLContext sslcontext = SSLContext.getInstance("TLS");
@@ -114,7 +110,8 @@ public abstract class AbstractHTTPClient {
 		
 		// Correlation ID
 		String corrID = UUID.randomUUID().toString();
-		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "[API="+corrID+"]");
+		String apiCorrID = UUID.randomUUID().toString();
+		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"][API="+apiCorrID+"]");
 		
 		WebTarget wt = getClient();
 		if(path != null){
@@ -134,7 +131,7 @@ public abstract class AbstractHTTPClient {
 			LOGGER.debug("[JWT Token={}]", getJwtToken());
 		}
 		invoquer.header(ApiConfigEnum.HEADER_CORRELATION_ID, corrID);
-		
+		invoquer.header(ApiConfigEnum.HEADER_API_CORRELATION_ID, corrID);
 		LOGGER.info("Appel du service [{}]", wt.getUri());
 		return invoquer;
 	}
@@ -164,11 +161,12 @@ public abstract class AbstractHTTPClient {
 			Invocation.Builder invoquer = getInvocation(path);
 			try{
 				Response res = invoquer.post(getEntity(dataToSend));
-				if(res.getStatus() > 400){
-					LOGGER.error("[POST][{}/{}] : {}", res.getStatus(), res.getStatusInfo(), res.getHeaders());
+				Series catStatut = HttpStatus.Series.resolve(res.getStatus());
+				if(catStatut.equals(Series.CLIENT_ERROR) || catStatut.equals(Series.SERVER_ERROR)){
+					LOGGER.error("[API={}][POST][{}/{}]", res.getHeaders().get(ApiConfigEnum.HEADER_API_CORRELATION_ID), res.getStatus(), res.getStatusInfo());
 				}
 				else{
-					LOGGER.debug("[POST][{}/{}] : {}", res.getStatus(), res.getStatusInfo(), res.getHeaders());
+					LOGGER.debug("[API={}][POST][{}/{}]", res.getHeaders().get(ApiConfigEnum.HEADER_API_CORRELATION_ID),res.getHeaders().get(""), res.getStatus(), res.getStatusInfo());
 				}
 				return res;
 			}
@@ -176,7 +174,7 @@ public abstract class AbstractHTTPClient {
 				catchWebApplicationException(HttpMethod.POST, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[POST] Erreur lors de l'appel", e);
+				LOGGER.error("[API=?][POST] Erreur lors de l'appel", e);
 			}
 			finally {
 				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
@@ -216,7 +214,7 @@ public abstract class AbstractHTTPClient {
 			Invocation.Builder invoquer = getInvocation(path, params);
 			try{
 				R response = invoquer.post(getEntity(dataToSend), responseClassType);
-				LOGGER.debug("[POST][200] Réponse : {}",response);
+				LOGGER.debug("[POST][200] Réponse : {}", response);
 				return response;
 			}
 			catch(WebApplicationException e){

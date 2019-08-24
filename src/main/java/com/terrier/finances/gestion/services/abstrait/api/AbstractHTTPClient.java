@@ -16,7 +16,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -27,8 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatus.Series;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
@@ -55,7 +52,7 @@ public abstract class AbstractHTTPClient {
 	private static final MediaType JSON_MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
 	private static final String HEADER_CONTENT_TYPE = "Content-type";
-	
+
 	protected final String serviceURI;
 
 	@Autowired
@@ -65,7 +62,6 @@ public abstract class AbstractHTTPClient {
 	public AbstractHTTPClient() {
 		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
 	}
-
 
 
 	/**
@@ -158,23 +154,13 @@ public abstract class AbstractHTTPClient {
 	 */
 	protected <Q extends AbstractAPIObjectModel> Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
 		if(path != null){
-			Invocation.Builder invoquer = getInvocation(path);
 			try{
-				Response res = invoquer.post(getEntity(dataToSend));
-				Series catStatut = HttpStatus.Series.resolve(res.getStatus());
-				if(catStatut.equals(Series.CLIENT_ERROR) || catStatut.equals(Series.SERVER_ERROR)){
-					LOGGER.error("[POST][{}/{}]", res.getStatus(), res.getStatusInfo());
-				}
-				else{
-					LOGGER.debug("[POST][{}/{}]", res.getStatus(), res.getStatusInfo());
-				}
-				return res;
-			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.POST, e);
+				Response response = getInvocation(path).post(getEntity(dataToSend));
+				LOGGER.debug("Réponse : {}", response);
+				return response;
 			}
 			catch(Exception e){
-				LOGGER.error("[POST] Erreur lors de l'appel", e);
+				catchWebApplicationException(HttpMethod.POST, e);
 			}
 		}
 		return null;
@@ -208,17 +194,13 @@ public abstract class AbstractHTTPClient {
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
 	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
-			Invocation.Builder invoquer = getInvocation(path, params);
 			try{
-				R response = invoquer.post(getEntity(dataToSend), responseClassType);
+				R response = getInvocation(path, params).post(getEntity(dataToSend), responseClassType);
 				LOGGER.debug("Réponse : {}", response);
 				return response;
 			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.POST, e);
-			}
 			catch(Exception e){
-				LOGGER.error("Erreur lors de l'appel", e);
+				catchWebApplicationException(HttpMethod.POST, e);
 			}
 		}
 		return null;
@@ -246,20 +228,15 @@ public abstract class AbstractHTTPClient {
 	protected boolean callHTTPGet(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
 		boolean resultat = false;
 		if(path != null){
-			Invocation.Builder invoquer = getInvocation(path, params);
 			try{
-				Response response = invoquer.get();
+				Response response = getInvocation(path, params).get();
 				if(response != null){
 					LOGGER.debug("Réponse : [{}]", response.getStatus());
 					resultat = response.getStatus() == 200;
 				}
 			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.GET, e);
-			}
 			catch(Exception e){
-				LOGGER.error("Erreur lors de l'appel", e);
-				resultat = false;
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 		}
 		return resultat;
@@ -289,18 +266,14 @@ public abstract class AbstractHTTPClient {
 	 */
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
-			Builder invoquer = getInvocation(path, params);
 			try{
-				R response = invoquer.get(responseClassType);
+				R response = getInvocation(path, params).get(responseClassType);
 				LOGGER.debug("Réponse : [{}]", response);
 				return response;
 			}
-			catch(WebApplicationException e){
+			catch(Exception e){
 				catchWebApplicationException(HttpMethod.GET, e);
 			}
-			catch(Exception e){
-				LOGGER.error("[GET] Erreur lors de l'appel", e);
-			}
 		}
 		return null;
 	}
@@ -309,25 +282,20 @@ public abstract class AbstractHTTPClient {
 
 
 	/**
-	 * Appel HTTP GET
-	 * @param clientHTTP client HTTP
-	 * @param url racine de l'URL
-	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
+	 * Appel DELETE
+	 * @param path racine de l'URL
+	 * @param responseClassType reponse
 	 * @return résultat de l'appel
 	 */
-	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
+	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
-			Builder invoquer = getInvocation(path);
 			try{
-				R response = invoquer.delete(responseClassType);
-				LOGGER.debug("[DEL][200] Réponse : [{}]", response);
+				R response = getInvocation(path).delete(responseClassType);
+				LOGGER.debug("Réponse : [{}]", response);
 				return response;
 			}
-			catch(WebApplicationException e){
-				LOGGER.error("[DEL][{}] Erreur lors de l'appel", e.getResponse().getStatus());
-			}
 			catch(Exception e){
-				LOGGER.error("[DEL] Erreur lors de l'appel",e);
+				catchWebApplicationException(HttpMethod.DELETE, e);
 			}
 		}
 		return null;
@@ -335,28 +303,21 @@ public abstract class AbstractHTTPClient {
 
 
 	/**
-	 * Appel HTTP GET
-	 * @param clientHTTP client HTTP
-	 * @param url racine de l'URL
-	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
+	 * Appel HTTP GET List
+	 * @param path racine de l'URL
 	 * @return résultat de l'appel
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
-			Builder invoquer = getInvocation(path);
 			try{
 				@SuppressWarnings("unchecked")
-				List<R> response = invoquer.get(List.class);
-				LOGGER.debug("[GET][200] Réponse : [{}]", response);
-				return response;
-			}
-			catch(WebApplicationException e){
-				catchWebApplicationException(HttpMethod.GET, e);
+				List<R> response = getInvocation(path).get(List.class);
+				LOGGER.debug("Réponse : [{}]", response);
 			}
 			catch(Exception e){
-				LOGGER.error("[GET] Erreur lors de l'appel", e);
+				catchWebApplicationException(HttpMethod.GET, e);
 			}
 		}
 		return new ArrayList<>();
@@ -379,13 +340,19 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException utilisateur non authentifié
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	private void catchWebApplicationException(HttpMethod verbe,  WebApplicationException e) throws UserNotAuthorizedException, DataNotFoundException {
-		LOGGER.error("[{}] Erreur [{}] lors de l'appel ", verbe, e.getResponse().getStatus());
-		if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
-			throw new UserNotAuthorizedException("Utilisateur non authentifié");
+	private void catchWebApplicationException(HttpMethod verbe,  Exception ex) throws UserNotAuthorizedException, DataNotFoundException {
+		if(ex instanceof WebApplicationException) {
+			WebApplicationException e = (WebApplicationException)ex;
+			LOGGER.error("[{}] Erreur [{}] lors de l'appel ", verbe, e.getResponse().getStatus());
+			if(e.getResponse().getStatusInfo().equals(Status.UNAUTHORIZED)) {
+				throw new UserNotAuthorizedException("Utilisateur non authentifié");
+			}
+			else if(Status.INTERNAL_SERVER_ERROR.equals(e.getResponse().getStatusInfo()) || Status.BAD_REQUEST.equals(e.getResponse().getStatusInfo())) {
+				throw new DataNotFoundException("Erreur lors de l'appel au service");
+			}
 		}
-		else if(Status.INTERNAL_SERVER_ERROR.equals(e.getResponse().getStatusInfo()) || Status.BAD_REQUEST.equals(e.getResponse().getStatusInfo())) {
-			throw new DataNotFoundException("Erreur lors de l'appel au service");
+		else {
+			LOGGER.error("[{}] Erreur lors de l'appel", verbe, ex);
 		}
 	}
 }

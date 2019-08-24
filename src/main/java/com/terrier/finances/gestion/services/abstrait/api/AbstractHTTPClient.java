@@ -1,5 +1,5 @@
 /**
- * 
+ * Client HTTP
  */
 package com.terrier.finances.gestion.services.abstrait.api;
 
@@ -31,7 +31,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatus.Series;
 
-import com.terrier.finances.gestion.aspects.LogExecutionTime;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
@@ -132,7 +131,7 @@ public abstract class AbstractHTTPClient {
 			LOGGER.debug("[JWT Token={}]", getJwtToken());
 		}
 		invoquer.header(ApiConfigEnum.HEADER_CORRELATION_ID, corrID);
-		invoquer.header(ApiConfigEnum.HEADER_API_CORRELATION_ID, corrID);
+		invoquer.header(ApiConfigEnum.HEADER_API_CORRELATION_ID, apiCorrID);
 		LOGGER.info("Appel du service [{}]", wt.getUri());
 		return invoquer;
 	}
@@ -156,19 +155,17 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	@LogExecutionTime
-	protected <Q extends AbstractAPIObjectModel> 
-	Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
+	protected <Q extends AbstractAPIObjectModel> Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
 		if(path != null){
 			Invocation.Builder invoquer = getInvocation(path);
 			try{
 				Response res = invoquer.post(getEntity(dataToSend));
 				Series catStatut = HttpStatus.Series.resolve(res.getStatus());
 				if(catStatut.equals(Series.CLIENT_ERROR) || catStatut.equals(Series.SERVER_ERROR)){
-					LOGGER.error("[API={}][POST][{}/{}]", res.getHeaders().get(ApiConfigEnum.HEADER_API_CORRELATION_ID), res.getStatus(), res.getStatusInfo());
+					LOGGER.error("[POST][{}/{}]", res.getStatus(), res.getStatusInfo());
 				}
 				else{
-					LOGGER.debug("[API={}][POST][{}/{}]", res.getHeaders().get(ApiConfigEnum.HEADER_API_CORRELATION_ID),res.getHeaders().get(""), res.getStatus(), res.getStatusInfo());
+					LOGGER.debug("[POST][{}/{}]", res.getStatus(), res.getStatusInfo());
 				}
 				return res;
 			}
@@ -176,10 +173,7 @@ public abstract class AbstractHTTPClient {
 				catchWebApplicationException(HttpMethod.POST, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[API=?][POST] Erreur lors de l'appel", e);
-			}
-			finally {
-				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
+				LOGGER.error("[POST] Erreur lors de l'appel", e);
 			}
 		}
 		return null;
@@ -194,7 +188,6 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	@LogExecutionTime
 	protected  <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel>
 	R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPPost(path, null, dataToSend, responseClassType);
@@ -211,7 +204,6 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException 
 	 * @throws DataNotFoundException 
 	 */
-	@LogExecutionTime
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
 	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
@@ -227,9 +219,6 @@ public abstract class AbstractHTTPClient {
 			catch(Exception e){
 				LOGGER.error("[POST] Erreur lors de l'appel", e);
 			}
-			finally {
-				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
-			}
 		}
 		return null;
 	}
@@ -240,7 +229,6 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	@LogExecutionTime
 	protected boolean callHTTPGet(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPGet(path, null);
 	}
@@ -254,7 +242,6 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	@LogExecutionTime
 	protected boolean callHTTPGet(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
 		boolean resultat = false;
 		if(path != null){
@@ -273,9 +260,6 @@ public abstract class AbstractHTTPClient {
 				LOGGER.error("[GET] Erreur lors de l'appel", e);
 				resultat = false;
 			}
-			finally {
-				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
-			}
 		}
 		return resultat;
 	}
@@ -290,7 +274,6 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPGetData(path, null, responseClassType);
 	}
@@ -303,7 +286,6 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path, params);
@@ -318,9 +300,6 @@ public abstract class AbstractHTTPClient {
 			catch(Exception e){
 				LOGGER.error("[GET] Erreur lors de l'appel", e);
 			}
-			finally {
-				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
-			}
 		}
 		return null;
 	}
@@ -335,7 +314,6 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
-	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
 		if(path != null){
 			Builder invoquer = getInvocation(path);
@@ -349,9 +327,6 @@ public abstract class AbstractHTTPClient {
 			}
 			catch(Exception e){
 				LOGGER.error("[DEL] Erreur lors de l'appel",e);
-			}
-			finally {
-				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return null;
@@ -367,7 +342,6 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);
@@ -382,9 +356,6 @@ public abstract class AbstractHTTPClient {
 			}
 			catch(Exception e){
 				LOGGER.error("[GET] Erreur lors de l'appel", e);
-			}
-			finally {
-				org.slf4j.MDC.remove(ApiConfigEnum.HEADER_CORRELATION_ID);
 			}
 		}
 		return new ArrayList<>();

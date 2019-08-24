@@ -31,6 +31,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatus.Series;
 
+import com.terrier.finances.gestion.aspects.LogExecutionTime;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
@@ -155,6 +156,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
+	@LogExecutionTime
 	protected <Q extends AbstractAPIObjectModel> 
 	Response callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
 		if(path != null){
@@ -192,6 +194,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
+	@LogExecutionTime
 	protected  <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel>
 	R callHTTPPost(String path, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPPost(path, null, dataToSend, responseClassType);
@@ -208,6 +211,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException 
 	 * @throws DataNotFoundException 
 	 */
+	@LogExecutionTime
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
 	R callHTTPPost(String path, Map<String, String> params, Q dataToSend, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
@@ -236,6 +240,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
+	@LogExecutionTime
 	protected boolean callHTTPGet(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPGet(path, null);
 	}
@@ -249,6 +254,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
+	@LogExecutionTime
 	protected boolean callHTTPGet(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
 		boolean resultat = false;
 		if(path != null){
@@ -284,6 +290,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
+	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		return callHTTPGetData(path, null, responseClassType);
 	}
@@ -296,6 +303,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
+	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> R callHTTPGetData(String path, Map<String, String> params, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path, params);
@@ -327,6 +335,7 @@ public abstract class AbstractHTTPClient {
 	 * @param urlParams paramètres de l'URL (à part pour ne pas les tracer)
 	 * @return résultat de l'appel
 	 */
+	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> R callHTTPDeleteData(String path, Class<R> responseClassType){
 		if(path != null){
 			Builder invoquer = getInvocation(path);
@@ -358,6 +367,7 @@ public abstract class AbstractHTTPClient {
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
+	@LogExecutionTime
 	protected <R extends AbstractAPIObjectModel> List<R> callHTTPGetListData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
 			Builder invoquer = getInvocation(path);

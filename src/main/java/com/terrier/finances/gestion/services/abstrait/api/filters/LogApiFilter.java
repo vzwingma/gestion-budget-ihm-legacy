@@ -36,7 +36,7 @@ public class LogApiFilter implements ClientResponseFilter, ClientRequestFilter {
 		org.slf4j.MDC.put(ApiConfigEnum.HEADER_API_CORRELATION_ID, "[API="+apiCorrID+"]");
 		requestContext.getHeaders().add(ApiConfigEnum.HEADER_API_CORRELATION_ID, apiCorrID);
 		
-		LOGGER.info("[{} :: {}]", requestContext.getMethod(), requestContext.getUri());
+		LOGGER.info("{} :: {}", requestContext.getMethod(), requestContext.getUri());
 	}
 
 	/**

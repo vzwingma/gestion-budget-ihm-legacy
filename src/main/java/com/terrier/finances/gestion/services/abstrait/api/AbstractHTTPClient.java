@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatus.Series;
@@ -37,6 +38,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedEx
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
+import com.terrier.finances.gestion.services.abstrait.api.filters.LogApiFilter;
 import com.terrier.finances.gestion.ui.communs.config.AppConfig;
 import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
@@ -56,6 +58,9 @@ public abstract class AbstractHTTPClient {
 	
 	protected final String serviceURI;
 
+	@Autowired
+	private LogApiFilter logFilter;
+	
 	
 	public AbstractHTTPClient() {
 		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
@@ -75,6 +80,9 @@ public abstract class AbstractHTTPClient {
 		// Register des converters
 		clientConfig.register(new ListAPIObjectModelReader<AbstractAPIObjectModel>());
 		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
+		// Filter
+		clientConfig.register(logFilter);
+		
 		try {
 			// Install the all-trusting trust manager
 			SSLContext sslcontext = SSLContext.getInstance("TLS");
@@ -105,13 +113,6 @@ public abstract class AbstractHTTPClient {
 	 * @return invocation prête
 	 */
 	private Invocation.Builder getInvocation(String path, Map<String, String> queryParams){
-		
-		// Correlation ID
-		String corrID = UUID.randomUUID().toString();
-		String apiCorrID = UUID.randomUUID().toString();
-		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"]");
-		org.slf4j.MDC.put(ApiConfigEnum.HEADER_API_CORRELATION_ID, "[API="+apiCorrID+"]");
-		
 		WebTarget wt = getClient();
 		if(path != null){
 			wt = wt.path(path);
@@ -122,16 +123,17 @@ public abstract class AbstractHTTPClient {
 			}
 		}
 		Invocation.Builder invoquer = wt.request(JSON_MEDIA_TYPE);
-		
 		// Entêtes
 		invoquer.header(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON);
 		if(getJwtToken() != null){
 			invoquer.header(JwtConfigEnum.JWT_HEADER_AUTH, getJwtToken());
 			LOGGER.debug("[JWT Token={}]", getJwtToken());
 		}
+		
+		// Correlation ID
+		String corrID = UUID.randomUUID().toString();
+		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"]");
 		invoquer.header(ApiConfigEnum.HEADER_CORRELATION_ID, corrID);
-		invoquer.header(ApiConfigEnum.HEADER_API_CORRELATION_ID, apiCorrID);
-		LOGGER.info("Appel du service [{}]", wt.getUri());
 		return invoquer;
 	}
 
@@ -209,14 +211,14 @@ public abstract class AbstractHTTPClient {
 			Invocation.Builder invoquer = getInvocation(path, params);
 			try{
 				R response = invoquer.post(getEntity(dataToSend), responseClassType);
-				LOGGER.debug("[POST][200] Réponse : {}", response);
+				LOGGER.debug("Réponse : {}", response);
 				return response;
 			}
 			catch(WebApplicationException e){
 				catchWebApplicationException(HttpMethod.POST, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[POST] Erreur lors de l'appel", e);
+				LOGGER.error("Erreur lors de l'appel", e);
 			}
 		}
 		return null;
@@ -248,7 +250,7 @@ public abstract class AbstractHTTPClient {
 			try{
 				Response response = invoquer.get();
 				if(response != null){
-					LOGGER.debug("[GET] Réponse : [{}]", response.getStatus());
+					LOGGER.debug("Réponse : [{}]", response.getStatus());
 					resultat = response.getStatus() == 200;
 				}
 			}
@@ -256,7 +258,7 @@ public abstract class AbstractHTTPClient {
 				catchWebApplicationException(HttpMethod.GET, e);
 			}
 			catch(Exception e){
-				LOGGER.error("[GET] Erreur lors de l'appel", e);
+				LOGGER.error("Erreur lors de l'appel", e);
 				resultat = false;
 			}
 		}
@@ -290,7 +292,7 @@ public abstract class AbstractHTTPClient {
 			Builder invoquer = getInvocation(path, params);
 			try{
 				R response = invoquer.get(responseClassType);
-				LOGGER.debug("[GET][200] Réponse : [{}]", response);
+				LOGGER.debug("Réponse : [{}]", response);
 				return response;
 			}
 			catch(WebApplicationException e){

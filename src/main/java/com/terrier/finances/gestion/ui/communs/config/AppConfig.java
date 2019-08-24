@@ -4,8 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * Configuration de l'application
+ * @author vzwingma
+ *
+ */
 @Configuration
 @ComponentScan(basePackages = { 
 		"com.terrier.finances.gestion.services",
@@ -15,13 +21,16 @@ import org.springframework.context.annotation.PropertySource;
 		"com.terrier.finances.gestion.services.utilisateurs.api",
 		"com.terrier.finances.gestion.ui.login.business"})
 @PropertySource(value={"classpath:config.properties"}, ignoreResourceNotFound = true)
+@EnableAspectJAutoProxy
 public class AppConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger( AppConfig.class );
-	
+
 	public AppConfig() {
 		// Constructeur pour Spring
 	}
+
+
 	/**
 	 * Retourne la valeur string de la variable d'environnement
 	 * @param cle

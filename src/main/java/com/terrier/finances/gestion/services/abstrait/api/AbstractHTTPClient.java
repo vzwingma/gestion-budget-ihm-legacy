@@ -3,8 +3,6 @@
  */
 package com.terrier.finances.gestion.services.abstrait.api;
 
-
-
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;

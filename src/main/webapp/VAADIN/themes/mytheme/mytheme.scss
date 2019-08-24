@@ -177,30 +177,30 @@ min-height:0px;
 /* Boutons actions */
 
 .v-button-actions {
+background: transparent;
 background-size: 100% 100%;
 background-repeat: no-repeat;
 color: #fff;
-background: transparent;
 height: 26px;
 width: 26px;
 border: 0px;
 }
 
 .v-button-reinit {
+background: transparent;
 background-size: 100% 100%;
 background-repeat: no-repeat;
 color: #fff;
-background: transparent;
 border: 0px;  
 background-image: url('./img/circle_reinit.png'); 
 }
 
 
 .v-button-logout {
+background: transparent;
 background-size: 100% 100%;
 background-repeat: no-repeat;
 color: #fff;
-background: transparent;
 border: 0px;  
 background-image: url('./img/logout.png'); 
 }
@@ -226,19 +226,19 @@ background-image: url('./img/circle_clock.png');
 }
 
 .v-button-locked {
+background: transparent;
 background-size: 100% 100%;
 background-repeat: no-repeat;
 color: #fff;
-background: transparent;
 border: 0px;  
 background-image: url('./img/locked.png'); 
 }
 
 .v-button-unlocked {
+background: transparent;
 background-size: 100% 100%;
 background-repeat: no-repeat;
 color: #fff;
-background: transparent;
 border: 0px;  
 background-image: url('./img/unlocked.png'); 
 }
@@ -262,5 +262,4 @@ font-size: 20px;
 
 .loginLayout{
 background-color: #ecf0f1;
-}
 }

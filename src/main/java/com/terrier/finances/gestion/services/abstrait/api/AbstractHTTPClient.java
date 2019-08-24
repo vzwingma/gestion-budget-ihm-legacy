@@ -109,7 +109,8 @@ public abstract class AbstractHTTPClient {
 		// Correlation ID
 		String corrID = UUID.randomUUID().toString();
 		String apiCorrID = UUID.randomUUID().toString();
-		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"][API="+apiCorrID+"]");
+		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"]");
+		org.slf4j.MDC.put(ApiConfigEnum.HEADER_API_CORRELATION_ID, "[API="+apiCorrID+"]");
 		
 		WebTarget wt = getClient();
 		if(path != null){

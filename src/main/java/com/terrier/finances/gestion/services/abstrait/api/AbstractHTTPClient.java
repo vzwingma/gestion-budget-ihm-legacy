@@ -315,6 +315,7 @@ public abstract class AbstractHTTPClient {
 				@SuppressWarnings("unchecked")
 				List<R> response = getInvocation(path).get(List.class);
 				LOGGER.debug("Réponse : [{}]", response);
+				return response;
 			}
 			catch(Exception e){
 				catchWebApplicationException(HttpMethod.GET, e);

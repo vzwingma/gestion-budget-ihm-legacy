@@ -44,7 +44,7 @@ public class LogApiFilter implements ClientResponseFilter, ClientRequestFilter {
 	 */
 	@Override
 	public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
-		LOGGER.info("[{} :: {}] : [{}]", requestContext.getMethod(), requestContext.getUri(), responseContext.getStatus());
+		LOGGER.info("Statut HTTP : [{}]", responseContext.getStatus());
 	}
 
 }

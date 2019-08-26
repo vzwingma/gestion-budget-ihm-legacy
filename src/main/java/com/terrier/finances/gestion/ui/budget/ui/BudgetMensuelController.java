@@ -313,6 +313,14 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	public boolean setLigneDepenseAsDerniereOperation(LigneOperation operation) throws DataNotFoundException{
 		try {
 			if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId())){
+				// Suppression de l'ancienne valeur
+				getUserSession().getBudgetCourant().getListeOperations().stream()
+					.filter(o -> o.isDerniereOperation())
+					.forEach(o -> o.setDerniereOperation(false));
+				getUserSession().getBudgetCourant().getListeOperations().stream()
+				.filter(o -> operation.getId().equals(o.getId()))
+				.forEach(o -> o.setDerniereOperation(true));
+				
 				miseAJourVueDonnees();
 				return true;
 			}

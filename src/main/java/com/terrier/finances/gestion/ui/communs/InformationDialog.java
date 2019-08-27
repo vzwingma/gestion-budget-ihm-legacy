@@ -83,7 +83,9 @@ public final class InformationDialog extends Window implements Button.ClickListe
 	}
 
 
-	/** * Event handler for button clicks. * @param event the click event. */
+	/** 
+	 * Event handler for button clicks. 
+	 * @param event the click event. */
 	public void buttonClick(final ClickEvent event) {
 		if (getParent() != null) {
 			FacadeServices.get().getServiceUserSessions().getSession().getPopupModale().close();

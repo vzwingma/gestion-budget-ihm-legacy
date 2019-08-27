@@ -94,10 +94,6 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 		if(UI.getCurrent() != null && UI.getCurrent().getSession() != null && UI.getCurrent().getSession().getCsrfToken() != null){
 			idSession = UI.getCurrent().getSession().getCsrfToken();
 		}
-		else{
-			LOGGER.warn("[TEST] ***** id session de test  ***** ");
-			idSession = "TEST";
-		}
 		return idSession;
 	}
 	
@@ -106,7 +102,7 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 	 * Déconnexion de l'utilisateur
 	 */
 	public void deconnexionUtilisateur(String idSession, boolean redirect){
-		LOGGER.warn("[idUser={}] Déconnexion de l'utilisateur ", idSession);
+		LOGGER.warn("[idSession={}] Déconnexion de l'utilisateur ", idSession);
 		UserUISession session = sessionsMap.get(idSession);
 		getServiceUtilisateurs().deconnexion();
 		if(redirect){

@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<communs.version>8.0.0-SNAPSHOT</communs.version>
+		<communs.version>9.0.0-SNAPSHOT</communs.version>
 		<spring.version>5.1.9.RELEASE</spring.version>
 		<vaadin.version>8.8.6</vaadin.version>
 		<jackson.version>2.10.0.pr1</jackson.version>

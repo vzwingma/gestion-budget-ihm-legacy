@@ -69,7 +69,7 @@ public class LoginController extends AbstractUIController<Login>{
 		
 		String versionService = "N/A";
 		try {
-			versionService = getServiceAdmin().getStatut().getVersion();
+			versionService = getServiceAdmin().getInfo().getApp().getVersion();
 		}
 		catch (Exception e) {
 			versionService = "N/A";

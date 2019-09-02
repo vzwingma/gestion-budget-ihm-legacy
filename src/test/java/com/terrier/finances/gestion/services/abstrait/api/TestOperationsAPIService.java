@@ -1,8 +1,8 @@
 package com.terrier.finances.gestion.services.abstrait.api;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyMapOf;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.time.Month;

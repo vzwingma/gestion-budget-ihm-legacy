@@ -28,6 +28,7 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
+import com.terrier.finances.gestion.services.admin.model.Info;
 
 /**
  * @author vzwingma
@@ -185,5 +186,21 @@ public class TestAPIReader {
 		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next());
 		assertEquals(1, boRead.getTotalParSSCategories().size());
 		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next());
+	}
+	
+	@Test
+	public void testConvertInfo() throws IOException {
+		
+		String jsonInfo = "{" + 
+				"    \"app\": {" + 
+				"        \"description\": \"Services de l'application de Gestion de Budget\"," + 
+				"        \"name\": \"API de services de budget\"," + 
+				"        \"version\": \"7.3.1-SNAPSHOT\"" + 
+				"    }" + 
+				"}";
+		InputStream entityStream = new ByteArrayInputStream(jsonInfo.getBytes(StandardCharsets.UTF_8));
+		APIObjectModelReader<Info> reader = new APIObjectModelReader<>();
+		Info boRead = reader.readFrom(Info.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
+		assertEquals("7.3.1-SNAPSHOT", boRead.getApp().getVersion());
 	}
 }

@@ -19,6 +19,15 @@ public class Info extends AbstractAPIObjectModel {
 	
 	private App app;
 	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("AppInfo [name=").append(app.getName()).append("version=").append(app.getVersion()).append(", name=").append(app.getName()).append(", description=")
+				.append(app.getDescription()).append("]");
+		return builder.toString();
+	}
+	
+	
 	/**
 	 * App Info
 	 * @author vzwingma
@@ -68,8 +77,6 @@ public class Info extends AbstractAPIObjectModel {
 		public void setDescription(String description) {
 			this.description = description;
 		}
-		
-		
 	}
 
 

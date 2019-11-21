@@ -340,7 +340,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		if(idCompte != null){
 			// Bouton Mois précédent limité au mois du
 			// Premier budget du compte de cet utilisateur
-			IntervallesCompteAPIObject datePremierDernierBudgets = getServiceComptes().getIntervallesBudgets(idCompte);
+			IntervallesCompteAPIObject datePremierDernierBudgets = getServiceOperations().getIntervallesBudgets(idCompte);
 			getComponent().getMois().setRangeStart(datePremierDernierBudgets.getLocalDatePremierBudget());
 			getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
 		}

@@ -8,7 +8,6 @@ import java.util.Set;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
@@ -47,19 +46,6 @@ public class ComptesAPIService extends AbstractHTTPClient {
 
 	
 	/**
-	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur
-	 * @param utilisateur utilisateur
-	 * @param compte id du compte
-	 * @return la date du premier budget décrit pour cet utilisateur
-	 * @throws UserNotAuthorizedException 
-	 */
-	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, compte);
-		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
-	}
-	
-	
-	/**
 	 * Retourne l'ensemble des libelles des opérations pour un compte
 	 * @param idCompte compte de l'utilisateur
 	 * @param idUtilisateur utilisateur
@@ -68,7 +54,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
+		String path = BudgetApiUrlEnum.COMPTES_OPERATIONS_LIBELLES_FULL.replace(BudgetApiUrlEnum.PARAM_ID_COMPTE, idCompte);
 		Map<String, String> params = new HashMap<>();
 		params.put("annee", Integer.toString(annee));
 		LibellesOperationsAPIObject libelles = callHTTPGetData(path, params, LibellesOperationsAPIObject.class);

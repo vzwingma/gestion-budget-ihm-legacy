@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
@@ -173,6 +174,18 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId()).replace(BudgetApiUrlEnum.PARAM_ID_OPERATION, ligneId));
 		Response response = callHTTPPost(path, budget);
 		return response.getStatus() == 200;
+	}
+	
+	/**
+	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur
+	 * @param utilisateur utilisateur
+	 * @param compte id du compte
+	 * @return la date du premier budget décrit pour cet utilisateur
+	 * @throws UserNotAuthorizedException 
+	 */
+	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws UserNotAuthorizedException, DataNotFoundException{
+		String path = BudgetApiUrlEnum.BUDGET_COMPTE_INTERVALLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, compte);
+		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
 	}
 	
 	/**

@@ -30,12 +30,14 @@ import org.springframework.http.HttpMethod;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
+import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.filters.LogApiFilter;
+import com.terrier.finances.gestion.services.admin.model.Info;
 import com.terrier.finances.gestion.ui.communs.config.AppConfig;
 import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
@@ -150,7 +152,13 @@ public abstract class AbstractHTTPClient {
 		return getInvocation(path, null);
 	}
 
-
+	/**
+	 * Statut du Services 
+	 * @throws DataNotFoundException  erreur lors de l'appel
+	 */
+	public Info getInfo() throws DataNotFoundException, UserNotAuthorizedException {
+		return callHTTPGetData(BudgetApiUrlEnum.ACTUATORS_INFO_FULL, Info.class);
+	}
 	/**
 	 * Appel POST vers les API Services
 	 * @param path chemin

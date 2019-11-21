@@ -131,7 +131,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 */
 	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation operation, CompteBancaire compteCrediteur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException, UserNotAuthorizedException{
 		BudgetMensuel budgetUpdated = null;
-		String url = BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.PARAM_ID_OPERATION, operation.getId()).replace("{idCompte}", compteCrediteur.getId());
+		String url = BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, operation.getId()).replace("{idCompte}", compteCrediteur.getId());
 		budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
@@ -150,7 +150,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException, UserNotAuthorizedException{
 	
 		BudgetMensuel budgetUpdated = null;
-		String url = BudgetApiUrlEnum.BUDGET_OPERATION_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.PARAM_ID_OPERATION, operation.getId());
+		String url = BudgetApiUrlEnum.BUDGET_OPERATION_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, operation.getId());
 		if(operation.getEtat() != null)
 		{
 			budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
@@ -171,7 +171,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId()).replace(BudgetApiUrlEnum.PARAM_ID_OPERATION, ligneId));
+		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId()).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, ligneId));
 		Response response = callHTTPPost(path, budget);
 		return response.getStatus() == 200;
 	}

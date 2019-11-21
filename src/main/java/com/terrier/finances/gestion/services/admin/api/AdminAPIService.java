@@ -7,6 +7,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 import com.terrier.finances.gestion.services.admin.model.Info;
+import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Service API vers {@link AdminService}
@@ -24,4 +25,11 @@ public class AdminAPIService extends AbstractHTTPClient {
 	public Info getInfo() throws DataNotFoundException, UserNotAuthorizedException {
 		return callHTTPGetData(BudgetApiUrlEnum.ACTUATORS_INFO_FULL, Info.class);
 	}
+
+	@Override
+	public AppConfigEnum getConfigServiceURI() {
+		return AppConfigEnum.APP_CONFIG_URL_UTILISATEURS;
+	}
+	
+	
 }

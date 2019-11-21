@@ -60,9 +60,10 @@ public abstract class AbstractHTTPClient {
 	
 	
 	public AbstractHTTPClient() {
-		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
+		serviceURI = AppConfig.getStringEnvVar(getConfigServiceURI());
 	}
 
+	public abstract AppConfigEnum getConfigServiceURI();
 
 	/**
 	 * Créé un client HTTP 

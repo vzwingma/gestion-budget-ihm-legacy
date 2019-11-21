@@ -14,6 +14,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Service API vers {@link ComptesService}
@@ -72,5 +73,10 @@ public class ComptesAPIService extends AbstractHTTPClient {
 		params.put("annee", Integer.toString(annee));
 		LibellesOperationsAPIObject libelles = callHTTPGetData(path, params, LibellesOperationsAPIObject.class);
 		return libelles.getLibellesOperations();
+	}
+
+	@Override
+	public AppConfigEnum getConfigServiceURI() {
+		return AppConfigEnum.APP_CONFIG_URL_COMPTES;
 	}
 }

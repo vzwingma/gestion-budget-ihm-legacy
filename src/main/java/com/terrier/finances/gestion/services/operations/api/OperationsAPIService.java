@@ -21,6 +21,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
+import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * API  vers le domaine Budget
@@ -184,5 +185,11 @@ public class OperationsAPIService extends AbstractHTTPClient {
 				.stream()
 				.forEach(op -> op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getIdSsCategorie(), parametrageAPIServices.getCategories())));
 		}
+	}
+
+
+	@Override
+	public AppConfigEnum getConfigServiceURI() {
+		return AppConfigEnum.APP_CONFIG_URL_OPERATIONS;
 	}
 }

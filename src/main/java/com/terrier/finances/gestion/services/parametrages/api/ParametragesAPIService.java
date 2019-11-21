@@ -12,6 +12,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Service API vers {@link ParametrageControlleur}
@@ -106,5 +107,12 @@ public class ParametragesAPIService extends AbstractHTTPClient {
 	@Value("${budget.ui.refresh.period:1}")
 	public void setUiRefreshPeriod(String uiRefreshPeriod) {
 		this.uiRefreshPeriod = uiRefreshPeriod;
+	}
+
+
+
+	@Override
+	public AppConfigEnum getConfigServiceURI() {
+		return AppConfigEnum.APP_CONFIG_URL_PARAMS;
 	}
 }

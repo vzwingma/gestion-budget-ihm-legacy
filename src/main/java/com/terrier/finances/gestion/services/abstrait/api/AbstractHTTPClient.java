@@ -101,7 +101,15 @@ public abstract class AbstractHTTPClient {
 	 * @return JWT Token de l'utilisateur
 	 */
 	private String getJwtToken(){
-		return FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
+		String jwtToken = FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
+		if(jwtToken != null) {
+			return jwtToken;
+		}
+		else{
+			LOGGER.warn("Utilisation d'un Mock JWTToken");
+			LOGGER.warn("TODO");
+			return "Bearer : eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2endpbmdtYW5uIiwianRpIjoidnp3aW5nbWFubiIsIlVTRVJJRCI6IjU0ODQyNjgzODRiN2ZmMWU1ZjI2YjY5MiIsImlhdCI6MTU2ODU0MDMwNCwiZXhwIjoxNjY4NTQzOTA0fQ.uOI3MMQZWnD_a2QJcefFBCmoW7Wg0DzsIOaO267Me70AEHTT2YKpaJgCpQp06XKvu42BGacE-vvuDOVt7fD-sw";
+		}
 	}
 	/**
 	 * Invvocation

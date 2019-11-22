@@ -67,9 +67,14 @@ public class LoginController extends AbstractUIController<Login>{
 		getComponent().getLabelVersion().setValue("Version IHM : " + getServiceParams().getVersion());
 		getComponent().getLabelBuildTime().setValue("Build : " + getServiceParams().getBuildTime());
 		
-		String versionService = "N/A";
+		String versionService;
 		try {
-			versionService = getServiceAdmin().getInfo().getApp().getVersion();
+			StringBuilder versions = new StringBuilder();
+			versions.append("Comptes      : ").append(getServiceComptes().getInfo().getApp().getVersion()).append("\n");
+			versions.append("Opérations   : ").append(getServiceOperations().getInfo().getApp().getVersion()).append("\n");
+			versions.append("Paramètres   : ").append(getServiceParams().getInfo().getApp().getVersion()).append("\n");
+			versions.append("Utilisateurs : ").append(getServiceUtilisateurs().getInfo().getApp().getVersion()).append("\n");
+			versionService = versions.toString();
 		}
 		catch (Exception e) {
 			versionService = "N/A";

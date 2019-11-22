@@ -8,12 +8,12 @@ import java.util.Set;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Service API vers {@link ComptesService}
@@ -46,19 +46,6 @@ public class ComptesAPIService extends AbstractHTTPClient {
 
 	
 	/**
-	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur
-	 * @param utilisateur utilisateur
-	 * @param compte id du compte
-	 * @return la date du premier budget décrit pour cet utilisateur
-	 * @throws UserNotAuthorizedException 
-	 */
-	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.COMPTES_INTERVALLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, compte);
-		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
-	}
-	
-	
-	/**
 	 * Retourne l'ensemble des libelles des opérations pour un compte
 	 * @param idCompte compte de l'utilisateur
 	 * @param idUtilisateur utilisateur
@@ -72,5 +59,10 @@ public class ComptesAPIService extends AbstractHTTPClient {
 		params.put("annee", Integer.toString(annee));
 		LibellesOperationsAPIObject libelles = callHTTPGetData(path, params, LibellesOperationsAPIObject.class);
 		return libelles.getLibellesOperations();
+	}
+
+	@Override
+	public AppConfigEnum getConfigServiceURI() {
+		return AppConfigEnum.APP_CONFIG_URL_COMPTES;
 	}
 }

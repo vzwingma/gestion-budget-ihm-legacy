@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
@@ -21,6 +22,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
+import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * API  vers le domaine Budget
@@ -175,6 +177,18 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	}
 	
 	/**
+	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur
+	 * @param utilisateur utilisateur
+	 * @param compte id du compte
+	 * @return la date du premier budget décrit pour cet utilisateur
+	 * @throws UserNotAuthorizedException 
+	 */
+	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws UserNotAuthorizedException, DataNotFoundException{
+		String path = BudgetApiUrlEnum.BUDGET_COMPTE_INTERVALLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, compte);
+		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
+	}
+	
+	/**
 	 * Réinjection des catégories dans les opérations du budget
 	 * @param budget
 	 */
@@ -184,5 +198,11 @@ public class OperationsAPIService extends AbstractHTTPClient {
 				.stream()
 				.forEach(op -> op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getIdSsCategorie(), parametrageAPIServices.getCategories())));
 		}
+	}
+
+
+	@Override
+	public AppConfigEnum getConfigServiceURI() {
+		return AppConfigEnum.APP_CONFIG_URL_OPERATIONS;
 	}
 }

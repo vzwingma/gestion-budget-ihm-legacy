@@ -30,12 +30,14 @@ import org.springframework.http.HttpMethod;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
+import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.filters.LogApiFilter;
+import com.terrier.finances.gestion.services.admin.model.Info;
 import com.terrier.finances.gestion.ui.communs.config.AppConfig;
 import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
@@ -60,9 +62,10 @@ public abstract class AbstractHTTPClient {
 	
 	
 	public AbstractHTTPClient() {
-		serviceURI = AppConfig.getStringEnvVar(AppConfigEnum.APP_CONFIG_URL_SERVICE);
+		serviceURI = AppConfig.getStringEnvVar(getConfigServiceURI());
 	}
 
+	public abstract AppConfigEnum getConfigServiceURI();
 
 	/**
 	 * Créé un client HTTP 
@@ -100,7 +103,15 @@ public abstract class AbstractHTTPClient {
 	 * @return JWT Token de l'utilisateur
 	 */
 	private String getJwtToken(){
-		return FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
+		String jwtToken = FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
+		if(jwtToken != null) {
+			return jwtToken;
+		}
+		else{
+			LOGGER.warn("Utilisation d'un Mock JWTToken");
+			LOGGER.warn("TODO");
+			return "Bearer : eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2endpbmdtYW5uIiwianRpIjoidnp3aW5nbWFubiIsIlVTRVJJRCI6IjU0ODQyNjgzODRiN2ZmMWU1ZjI2YjY5MiIsImlhdCI6MTU2ODU0MDMwNCwiZXhwIjoxNjY4NTQzOTA0fQ.uOI3MMQZWnD_a2QJcefFBCmoW7Wg0DzsIOaO267Me70AEHTT2YKpaJgCpQp06XKvu42BGacE-vvuDOVt7fD-sw";
+		}
 	}
 	/**
 	 * Invvocation
@@ -141,7 +152,13 @@ public abstract class AbstractHTTPClient {
 		return getInvocation(path, null);
 	}
 
-
+	/**
+	 * Statut du Services 
+	 * @throws DataNotFoundException  erreur lors de l'appel
+	 */
+	public Info getInfo() throws DataNotFoundException, UserNotAuthorizedException {
+		return callHTTPGetData(BudgetApiUrlEnum.ACTUATORS_INFO_FULL, Info.class);
+	}
 	/**
 	 * Appel POST vers les API Services
 	 * @param path chemin

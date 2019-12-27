@@ -1,13 +1,13 @@
 package com.terrier.finances.gestion.services.abstrait.api;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyMapOf;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.time.Month;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
@@ -33,7 +33,7 @@ public class TestOperationsAPIService extends AbstractTestServices {
 
 		BudgetMensuel budgetResponse = new BudgetMensuel();
 		budgetResponse.setId("TEST");
-		when(service.callHTTPGetData(eq(BudgetApiUrlEnum.BUDGET_QUERY_FULL), anyMapOf(String.class, String.class), eq(BudgetMensuel.class))).thenReturn(budgetResponse);
+		when(service.callHTTPGetData(eq(BudgetApiUrlEnum.BUDGET_QUERY_FULL), ArgumentMatchers.anyMap(), eq(BudgetMensuel.class))).thenReturn(budgetResponse);
 
 		BudgetMensuel budget = service.chargerBudgetMensuel("test", Month.JANUARY, 2018);
 		assertNotNull(budget);

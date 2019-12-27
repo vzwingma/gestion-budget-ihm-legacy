@@ -127,8 +127,7 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 				.flatMap(Set::stream)
 				// Sauf transfert intercompte et réservice
 				.filter(c -> 
-						!IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(c.getId()) 
-						&&	! IdsCategoriesEnum.RESERVE.getId().equals(c.getId()))
+						!IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(c.getId()))
 				.sorted((c1, c2) -> c1.getLibelle().compareTo(c2.getLibelle()))
 				.collect(Collectors.toSet());
 		ssCategories.setItems(sousCategories);

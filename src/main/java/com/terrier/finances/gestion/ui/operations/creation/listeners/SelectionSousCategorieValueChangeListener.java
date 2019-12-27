@@ -49,12 +49,9 @@ public class SelectionSousCategorieValueChangeListener extends AbstractComponent
 		if(catSelected.isPresent()){
 			CategorieOperation ssCategorie = catSelected.get();	
 			boolean interCompte = false;
-			boolean reserve = false;
 			if(ssCategorie != null){
 				interCompte = IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(ssCategorie.getId());
-				reserve = IdsCategoriesEnum.RESERVE.getId().equals(ssCategorie.getId());
 			}	
-
 			/*
 			 * Sélection d'un virement intercompte
 			 */
@@ -77,11 +74,8 @@ public class SelectionSousCategorieValueChangeListener extends AbstractComponent
 				// this.controleur.g
 			}
 
-			/*
-			 * 	#121 sélection d'une réserve
-			 */
-			controleur.getComponent().getComboboxEtat().setVisible(!reserve);
-			controleur.getComponent().getLabelEtat().setVisible(!reserve);
+			controleur.getComponent().getComboboxEtat().setVisible(true);
+			controleur.getComponent().getLabelEtat().setVisible(true);
 
 			/**
 			 * Préparation du type de dépense

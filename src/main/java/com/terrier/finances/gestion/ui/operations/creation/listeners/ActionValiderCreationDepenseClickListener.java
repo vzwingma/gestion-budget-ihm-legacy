@@ -12,7 +12,6 @@ import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
-import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
@@ -65,10 +64,6 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 				etat,
 				form.getCheckBoxPeriodique().getValue());
 
-		// #121 : Opération de réserve: toujours validée
-		if(IdsCategoriesEnum.RESERVE.getId().equals(newOperation.getIdSsCategorie())){
-			newOperation.setEtat(EtatOperationEnum.REALISEE);
-		}
 		LOGGER.debug("[IHM]  >  {}", newOperation);
 		boolean resultat = getControleur(CreerDepenseController.class).validateAndCreate(newOperation, form.getComboboxComptes().getSelectedItem());
 

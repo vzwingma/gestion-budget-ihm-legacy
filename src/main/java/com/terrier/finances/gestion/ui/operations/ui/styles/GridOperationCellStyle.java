@@ -4,7 +4,6 @@
 package com.terrier.finances.gestion.ui.operations.ui.styles;
 
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.vaadin.ui.StyleGenerator;
 
 /**
@@ -21,13 +20,7 @@ public class GridOperationCellStyle implements StyleGenerator<LigneOperation> {
 	public String apply(LigneOperation depense) {
 
 		// Style de la ligne
-		StringBuilder style = new StringBuilder("v-grid-row-");
-		//  Sauf pour les dépenses réalisées, et celle réserve
-
-		if(!IdsCategoriesEnum.RESERVE.getId().equals(depense.getIdSsCategorie())){
-			style.append(depense.getEtat().getId());
-		}
-
+		StringBuilder style = new StringBuilder("v-grid-row-").append(depense.getEtat().getId());
 		// Style de la dernière opération
 		if(depense.isDerniereOperation()){
 			style.append(" last-depense");

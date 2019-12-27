@@ -110,7 +110,7 @@ public class TestAPIReader {
 		bo.setSoldeNow(1000D);
 		Calendar c = Calendar.getInstance();
 		bo.setDateMiseAJour(c);
-		bo.setResultatMoisPrecedent(0D, 100D);
+		bo.setResultatMoisPrecedent(0D);
 		
 		CategorieOperation cat = new CategorieOperation();
 		cat.setCategorie(true);
@@ -141,9 +141,8 @@ public class TestAPIReader {
 		assertEquals(boRead.getClass().getName(), BudgetMensuel.class.getName());
 
 		assertEquals(bo.getId(), boRead.getId());
-		assertEquals(bo.getMarge(), boRead.getMarge());
-		assertEquals(bo.getSoldeReelFin(), boRead.getSoldeReelFin(), 1);
-		assertEquals(bo.getSoldeReelNow(), boRead.getSoldeReelNow(), 1);
+		assertEquals(bo.getSoldeFin(), boRead.getSoldeFin(), 1);
+		assertEquals(bo.getSoldeNow(), boRead.getSoldeNow(), 1);
 		
 		assertEquals(1, boRead.getTotalParCategories().size());
 		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next());

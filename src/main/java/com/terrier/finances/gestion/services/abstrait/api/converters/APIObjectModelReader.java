@@ -32,7 +32,7 @@ public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements M
 	public APIObjectModelReader() {
 		JsonFactory factory = new JsonFactory();
 		factory.setCharacterEscapes(new JsonpCharacterEscapes());
-		mapper = new ObjectMapper(factory).disableDefaultTyping();
+		mapper = new ObjectMapper(factory).deactivateDefaultTyping();
 	}
 	
 	

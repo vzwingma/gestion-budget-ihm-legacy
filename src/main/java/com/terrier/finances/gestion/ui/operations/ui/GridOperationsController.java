@@ -44,6 +44,11 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 		getComponent().setSizeFull();
 		getComponent().setColumnReorderingAllowed(false);
 		getComponent().setResponsive(true);
+	
+		// Not editable	if closed
+
+		getComponent().getEditor().setEnabled(getUserSession().getBudgetCourant().isActif());
+		
 	}
 
 	/**
@@ -65,7 +70,6 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 
 	/**
 	 * Mise à jour de la vue suite aux données
-	 * @param refreshAllTable : flag s'il faut tout effacer avant l'affichage
 	 * @param budgetIsActif budget actif ?
 	 * @param listeOperations liste des dépenses à utiliser
 	 */

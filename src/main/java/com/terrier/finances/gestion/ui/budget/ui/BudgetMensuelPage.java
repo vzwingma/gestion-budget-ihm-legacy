@@ -364,7 +364,7 @@ public class BudgetMensuelPage extends AbstractUIComponent<BudgetMensuelControll
 		// tableTotalResume
 		tableTotalResume = new GridResumeTotaux();
 		tableTotalResume.setSizeFull();
-		tableTotalResume.setHeight("100px");
+		tableTotalResume.setHeight("59px");
 		verticalLayoutResume.addComponent(tableTotalResume);
 		
 		return verticalLayoutResume;

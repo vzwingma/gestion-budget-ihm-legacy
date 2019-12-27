@@ -4,6 +4,7 @@ import java.time.Month;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.core.Response;
 
@@ -14,6 +15,7 @@ import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
@@ -136,7 +138,21 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
 	}
-	
+	/**
+	 * Retourne l'ensemble des libelles des opérations pour un compte
+	 * @param idCompte compte de l'utilisateur
+	 * @param idUtilisateur utilisateur
+	 * @return le set des libelles des opérations
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
+	 */
+	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException, DataNotFoundException{
+		String path = BudgetApiUrlEnum.BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
+		Map<String, String> params = new HashMap<>();
+		params.put("annee", Integer.toString(annee));
+		return callHTTPGetData(path, params, LibellesOperationsAPIObject.class).getLibellesOperations();
+	}
+
 	
 	/**
 	 * Mise à jour de la ligne de dépense du budget

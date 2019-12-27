@@ -44,11 +44,6 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 		getComponent().setSizeFull();
 		getComponent().setColumnReorderingAllowed(false);
 		getComponent().setResponsive(true);
-	
-		// Not editable	if closed
-
-		getComponent().getEditor().setEnabled(getUserSession().getBudgetCourant().isActif());
-		
 	}
 
 	/**
@@ -80,6 +75,10 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 		// Mise à jour des colonnes suivant l'activité du budget
 		getComponent().getColumn(EntetesGridOperationsEnum.AUTEUR).setHidden(budgetIsActif);
 		getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
+		
+		// Not editable	if closed
+
+		getComponent().getEditor().setEnabled(budgetIsActif);
 	}
 
 

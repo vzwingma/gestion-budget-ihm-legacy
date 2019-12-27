@@ -56,7 +56,7 @@ public class GridResumeTotauxController extends AbstractUIController<GridResumeT
 		
 		// Injection des données
 		List<TotalBudgetMensuel> totauxBudget = new ArrayList<>();
-		totauxBudget.add(new TotalBudgetMensuel("Solde prévu", budget.getSoldeNow(), budget.getSoldeFin()));
+		totauxBudget.add(new TotalBudgetMensuel("Solde", budget.getSoldeNow(), budget.getSoldeFin()));
 		// Maj des colonnes
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(auDateFormat));
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(finDateFormat));

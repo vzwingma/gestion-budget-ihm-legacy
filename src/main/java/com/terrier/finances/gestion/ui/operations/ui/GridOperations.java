@@ -190,9 +190,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 			.setResizable(false);
 		c11.setRenderer(new TextRenderer(""));
 		c11.setStyleGenerator(new GridOperationCellStyle());
-		// Not editable		
 
-		getEditor().setEnabled(true);
 		
 		/**
 		 * Context Menu

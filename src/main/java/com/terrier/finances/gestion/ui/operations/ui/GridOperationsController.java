@@ -65,7 +65,6 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 
 	/**
 	 * Mise à jour de la vue suite aux données
-	 * @param refreshAllTable : flag s'il faut tout effacer avant l'affichage
 	 * @param budgetIsActif budget actif ?
 	 * @param listeOperations liste des dépenses à utiliser
 	 */
@@ -76,6 +75,10 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 		// Mise à jour des colonnes suivant l'activité du budget
 		getComponent().getColumn(EntetesGridOperationsEnum.AUTEUR).setHidden(budgetIsActif);
 		getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
+		
+		// Not editable	if closed
+
+		getComponent().getEditor().setEnabled(budgetIsActif);
 	}
 
 

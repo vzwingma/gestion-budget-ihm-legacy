@@ -76,7 +76,7 @@ after_deploy:
   - if [[ $TRAVIS_BRANCH == v* ]]; 
     then 
         ENV="budget";
-        NODE_ID=26686;
+        NODE_ID=41461;
     else
         ENV="budget-rec";
         NODE_ID=26391;
@@ -87,7 +87,7 @@ after_deploy:
   - echo $URL_START ;
   - curl $URL_START ;
   # Redéploiement   
-  - echo "Redéploiement de la version $VERSION_DOCKER sur MassiveGrid : $ENV";
+  - echo "Redéploiement de l'IHM $VERSION_DOCKER sur MassiveGrid $ENV";
   - URL_REDEPLOY=$MASSIVEGRID_URL"redeploycontainers?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN&tag=$VERSION_DOCKER&nodeId=$NODE_ID" ;
   - echo $URL_REDEPLOY ;
   - curl -X POST $URL_REDEPLOY ;

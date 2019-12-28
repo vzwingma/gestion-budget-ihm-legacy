@@ -7,9 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 
 /**
@@ -67,22 +70,25 @@ public class LoginController extends AbstractUIController<Login>{
 		getComponent().getLabelVersion().setValue("Version IHM : " + getServiceParams().getVersion());
 		getComponent().getLabelBuildTime().setValue("Build : " + getServiceParams().getBuildTime());
 		
-		String versionService;
-		try {
-			StringBuilder versions = new StringBuilder();
-			versions.append("Comptes      : ").append(getServiceComptes().getInfo().getApp().getVersion()).append("<br>");
-			versions.append("Opérations   : ").append(getServiceOperations().getInfo().getApp().getVersion()).append("<br>");
-			versions.append("Paramètres   : ").append(getServiceParams().getInfo().getApp().getVersion()).append("<br>");
-			versions.append("Utilisateurs : ").append(getServiceUtilisateurs().getInfo().getApp().getVersion()).append("<br>");
-			versionService = versions.toString();
-		}
-		catch (Exception e) {
-			versionService = "N/A";
-		}
-		getComponent().getLabelVersionServices().setValue("Version Services : " + versionService);
-
+		addVersion(getComponent().getLabelVersionComptes(), getServiceComptes());
+		addVersion(getComponent().getLabelVersionOperations(), getServiceOperations());
+		addVersion(getComponent().getLabelVersionParametres(), getServiceParams());
+		addVersion(getComponent().getLabelVersionUtilisateurs(), getServiceUtilisateurs());
 	}
 
+	/**
+	 * @param label label à completer
+	 * @param apiService service
+	 */
+	private void addVersion(Label label, AbstractHTTPClient apiService) {
+		String version = "N/A";
+		try {
+			version = apiService.getInfo().getApp().getVersion();
+		} catch (DataNotFoundException | UserNotAuthorizedException e) {
+			version = "N/A";
+		}
+		label.setValue(label.getValue() + ":" + version);
+	}
 
 
 	/**

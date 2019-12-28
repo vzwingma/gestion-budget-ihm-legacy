@@ -35,7 +35,6 @@ public class GridResumeTotaux extends AbstractUIGridComponent<GridResumeTotauxCo
 		 * Total resume
 		 */
 		addColumn(TotalBudgetMensuel::getTypeTotal)
-		.setCaption(EntetesGridResumeOperationsEnum.CATEGORIE.getLibelle())
 		.setId(EntetesGridResumeOperationsEnum.CATEGORIE.getId())
 		.setSortable(false)
 		.setResizable(false)

@@ -84,7 +84,7 @@ public class LoginController extends AbstractUIController<Login>{
 		String version = "N/A";
 		try {
 			version = apiService.getInfo().getApp().getVersion();
-		} catch (DataNotFoundException | UserNotAuthorizedException e) {
+		} catch (Exception e) {
 			version = "N/A";
 		}
 		label.setValue(label.getValue() + ":" + version);

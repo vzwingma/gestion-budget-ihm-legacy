@@ -77,8 +77,9 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 		getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
 		
 		// Not editable	if closed
-
-		getComponent().getEditor().setEnabled(budgetIsActif);
+		if(!getComponent().getEditor().isOpen()) {
+			getComponent().getEditor().setEnabled(budgetIsActif);
+		}
 	}
 
 

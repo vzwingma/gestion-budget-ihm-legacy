@@ -29,7 +29,7 @@ public class TestUtilisateursAPIService {
 				.setIssuedAt(new Date(c))
 				.setIssuer("Budget-Services v1")
 				.setExpiration(new Date(c + JwtConfigEnum.JWT_EXPIRATION_S * 1000))  // in milliseconds
-				.signWith(SignatureAlgorithm.HS512, JwtConfigEnum.JWT_SECRET_KEY.getBytes())
+				.signWith(SignatureAlgorithm.HS512, JwtConfigEnum.getJwtSecretKey().getBytes())
 				.compact();
 
 		assertNotNull(token);

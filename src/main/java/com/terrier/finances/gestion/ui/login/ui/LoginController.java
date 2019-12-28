@@ -70,10 +70,10 @@ public class LoginController extends AbstractUIController<Login>{
 		String versionService;
 		try {
 			StringBuilder versions = new StringBuilder();
-			versions.append("Comptes      : ").append(getServiceComptes().getInfo().getApp().getVersion()).append("\n");
-			versions.append("Opérations   : ").append(getServiceOperations().getInfo().getApp().getVersion()).append("\n");
-			versions.append("Paramètres   : ").append(getServiceParams().getInfo().getApp().getVersion()).append("\n");
-			versions.append("Utilisateurs : ").append(getServiceUtilisateurs().getInfo().getApp().getVersion()).append("\n");
+			versions.append("Comptes      : ").append(getServiceComptes().getInfo().getApp().getVersion()).append("<br>");
+			versions.append("Opérations   : ").append(getServiceOperations().getInfo().getApp().getVersion()).append("<br>");
+			versions.append("Paramètres   : ").append(getServiceParams().getInfo().getApp().getVersion()).append("<br>");
+			versions.append("Utilisateurs : ").append(getServiceUtilisateurs().getInfo().getApp().getVersion()).append("<br>");
 			versionService = versions.toString();
 		}
 		catch (Exception e) {

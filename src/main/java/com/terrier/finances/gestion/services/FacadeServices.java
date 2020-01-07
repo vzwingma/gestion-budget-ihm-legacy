@@ -158,6 +158,4 @@ public class FacadeServices {
 		LOGGER.trace("[INIT] AdminService");
 		this.serviceAdmin = serviceAdmin;
 	}
-	
-	
 }

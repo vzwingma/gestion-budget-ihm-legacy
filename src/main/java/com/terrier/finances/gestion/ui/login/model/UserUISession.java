@@ -23,6 +23,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.security.SignatureException;
 
 /**
  * Session Utilisateur dans l'application, coté IHM
@@ -140,9 +141,15 @@ public class UserUISession {
 	 */
 	public boolean registerUtilisateur(String token){
 		this.jwtToken = token;
-		this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
-		if(this.jwtClaims != null) {
-			LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
+		try {
+			this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
+			if(this.jwtClaims != null) {
+				LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
+			}
+		}
+		catch (SignatureException e) {
+			LOGGER.warn("[{}] Le token est mal signé [{}]", idSession, token);
+			this.jwtClaims = null;
 		}
 		return this.jwtClaims != null;
 	}

@@ -126,7 +126,7 @@ public abstract class AbstractHTTPClient {
 		invoquer.header(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON);
 		if(getJwtToken() != null){
 			invoquer.header(JwtConfigEnum.JWT_HEADER_AUTH, getJwtToken());
-			LOGGER.debug("[JWT Token={}]", getJwtToken());
+			LOGGER.trace("[JWT Token={}]", getJwtToken());
 		}
 		
 		// Correlation ID

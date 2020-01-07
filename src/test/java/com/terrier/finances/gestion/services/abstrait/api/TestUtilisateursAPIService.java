@@ -13,7 +13,7 @@ import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 public class TestUtilisateursAPIService {
 
@@ -29,7 +29,7 @@ public class TestUtilisateursAPIService {
 				.setIssuedAt(new Date(c))
 				.setIssuer("Budget-Services v1")
 				.setExpiration(new Date(c + JwtConfigEnum.JWT_EXPIRATION_S * 1000))  // in milliseconds
-				.signWith(SignatureAlgorithm.HS512, JwtConfigEnum.getJwtSecretKey().getBytes())
+				.signWith(Keys.hmacShaKeyFor(JwtConfigEnum.getJwtSecretKey().getBytes()))
 				.compact();
 
 		assertNotNull(token);

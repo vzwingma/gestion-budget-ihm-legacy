@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
@@ -18,7 +19,6 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
-import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Service API vers {@link UtilisateursService}
@@ -101,7 +101,7 @@ public class UtilisateursAPIService extends AbstractHTTPClient {
 
 
 	@Override
-	public AppConfigEnum getConfigServiceURI() {
-		return AppConfigEnum.APP_CONFIG_URL_UTILISATEURS;
+	public ApiUrlConfigEnum getConfigServiceURI() {
+		return ApiUrlConfigEnum.APP_CONFIG_URL_UTILISATEURS;
 	}
 }

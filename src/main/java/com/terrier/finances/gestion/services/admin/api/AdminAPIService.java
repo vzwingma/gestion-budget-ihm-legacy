@@ -2,8 +2,8 @@ package com.terrier.finances.gestion.services.admin.api;
 
 import org.springframework.stereotype.Controller;
 
+import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
-import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Service API vers {@link AdminService}
@@ -16,8 +16,8 @@ public class AdminAPIService extends AbstractHTTPClient {
 
 
 	@Override
-	public AppConfigEnum getConfigServiceURI() {
-		return AppConfigEnum.APP_CONFIG_URL_UTILISATEURS;
+	public ApiUrlConfigEnum getConfigServiceURI() {
+		return ApiUrlConfigEnum.APP_CONFIG_URL_UTILISATEURS;
 	}
 	
 	

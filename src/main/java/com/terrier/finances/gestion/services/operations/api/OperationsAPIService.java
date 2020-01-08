@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
@@ -24,7 +25,6 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
-import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * API  vers le domaine Budget
@@ -218,7 +218,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 
 
 	@Override
-	public AppConfigEnum getConfigServiceURI() {
-		return AppConfigEnum.APP_CONFIG_URL_OPERATIONS;
+	public ApiUrlConfigEnum getConfigServiceURI() {
+		return ApiUrlConfigEnum.APP_CONFIG_URL_OPERATIONS;
 	}
 }

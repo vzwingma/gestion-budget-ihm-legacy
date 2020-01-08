@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
+import com.terrier.finances.gestion.communs.api.security.ApiHeaderIdEnum;
 
 /**
  * Logger des API
@@ -33,8 +33,8 @@ public class LogApiFilter implements ClientResponseFilter, ClientRequestFilter {
 	@Override
 	public void filter(ClientRequestContext requestContext) throws IOException {
 		String apiCorrID = UUID.randomUUID().toString();
-		org.slf4j.MDC.put(ApiConfigEnum.HEADER_API_CORRELATION_ID, "[API="+apiCorrID+"]");
-		requestContext.getHeaders().add(ApiConfigEnum.HEADER_API_CORRELATION_ID, apiCorrID);
+		org.slf4j.MDC.put(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID, "[API="+apiCorrID+"]");
+		requestContext.getHeaders().add(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID, apiCorrID);
 		
 		LOGGER.info("{} :: {}", requestContext.getMethod(), requestContext.getUri());
 	}

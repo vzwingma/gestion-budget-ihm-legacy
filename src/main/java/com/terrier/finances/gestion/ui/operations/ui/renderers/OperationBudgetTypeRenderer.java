@@ -1,6 +1,7 @@
 package com.terrier.finances.gestion.ui.operations.ui.renderers;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.vaadin.ui.renderers.TextRenderer;
@@ -28,7 +29,7 @@ public class OperationBudgetTypeRenderer extends TextRenderer {
             // Valeur
         } else if(value instanceof Double){
         	StringBuilder valeur = new StringBuilder();
-			Double truncatedDouble=BigDecimal.valueOf((Double)value).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			Double truncatedDouble=BigDecimal.valueOf((Double)value).setScale(2, RoundingMode.HALF_UP).doubleValue();
 			valeur.append(truncatedDouble);
 			valeur.append(" €");
             return Json.create(valeur.toString());

@@ -28,8 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
-import com.terrier.finances.gestion.communs.api.security.ApiConfigEnum;
+import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
+import com.terrier.finances.gestion.communs.api.security.ApiHeaderIdEnum;
 import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
+import com.terrier.finances.gestion.communs.utils.config.EnvVarConfigUtils;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
@@ -38,8 +40,6 @@ import com.terrier.finances.gestion.services.abstrait.api.converters.APIObjectMo
 import com.terrier.finances.gestion.services.abstrait.api.converters.ListAPIObjectModelReader;
 import com.terrier.finances.gestion.services.abstrait.api.filters.LogApiFilter;
 import com.terrier.finances.gestion.services.admin.model.Info;
-import com.terrier.finances.gestion.ui.communs.config.AppConfig;
-import com.terrier.finances.gestion.ui.communs.config.AppConfigEnum;
 
 /**
  * Classe d'un client HTTP
@@ -62,10 +62,10 @@ public abstract class AbstractHTTPClient {
 	
 	
 	public AbstractHTTPClient() {
-		serviceURI = AppConfig.getStringEnvVar(getConfigServiceURI());
+		serviceURI = EnvVarConfigUtils.getStringEnvVar(getConfigServiceURI());
 	}
 
-	public abstract AppConfigEnum getConfigServiceURI();
+	public abstract ApiUrlConfigEnum getConfigServiceURI();
 
 	/**
 	 * Créé un client HTTP 
@@ -84,7 +84,7 @@ public abstract class AbstractHTTPClient {
 		
 		try {
 			// Install the all-trusting trust manager
-			SSLContext sslcontext = SSLContext.getInstance("TLS");
+			SSLContext sslcontext = SSLContext.getInstance("TLSv1.2");
 			sslcontext.init(null,  null, new java.security.SecureRandom());
 			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
 			return ClientBuilder.newBuilder()
@@ -131,8 +131,8 @@ public abstract class AbstractHTTPClient {
 		
 		// Correlation ID
 		String corrID = UUID.randomUUID().toString();
-		org.slf4j.MDC.put(ApiConfigEnum.HEADER_CORRELATION_ID, "["+ApiConfigEnum.LOG_CORRELATION_ID+"="+corrID+"]");
-		invoquer.header(ApiConfigEnum.HEADER_CORRELATION_ID, corrID);
+		org.slf4j.MDC.put(ApiHeaderIdEnum.HEADER_CORRELATION_ID, "["+ApiHeaderIdEnum.LOG_CORRELATION_ID+"="+corrID+"]");
+		invoquer.header(ApiHeaderIdEnum.HEADER_CORRELATION_ID, corrID);
 		return invoquer;
 	}
 

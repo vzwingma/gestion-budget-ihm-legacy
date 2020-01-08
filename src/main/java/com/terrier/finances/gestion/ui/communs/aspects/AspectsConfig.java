@@ -25,7 +25,7 @@ public class AspectsConfig {
 	}
 	
 	@AfterReturning("execution(* com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient+.*(..))")
-	public void clearAPICorrIdLogger() throws Throwable {
+	public void clearAPICorrIdLogger() {
 		org.slf4j.MDC.remove(ApiHeaderIdEnum.HEADER_CORRELATION_ID);
 		org.slf4j.MDC.remove(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID);
 	}

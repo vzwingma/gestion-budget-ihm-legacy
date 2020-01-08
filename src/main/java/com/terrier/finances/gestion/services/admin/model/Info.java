@@ -3,6 +3,8 @@
  */
 package com.terrier.finances.gestion.services.admin.model;
 
+import java.io.Serializable;
+
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 
 /**
@@ -33,10 +35,10 @@ public class Info extends AbstractAPIObjectModel {
 	 * @author vzwingma
 	 *
 	 */
-	public class App {
+	public class App implements Serializable {
 		
-		
-		public App() {}
+		// UID
+		private static final long serialVersionUID = -3934171045494468262L;
 		
 		private String version;
 		private String name;

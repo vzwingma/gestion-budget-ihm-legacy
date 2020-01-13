@@ -63,7 +63,7 @@ deploy:
    # Déploiement des releaes sur tag : snapshot ou version 
   - provider: releases
     token: $GITHUB_API_KEY
-    cleanup: false
+    skip_cleanup: true
     overwrite: true
     file: /home/travis/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war
     on:

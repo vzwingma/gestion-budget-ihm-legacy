@@ -11,88 +11,116 @@ git:
 notifications:
   slack: 
     secure: "vsOHo4Chai7jU0W7VBZvJLowJhGBSaIlz6ioXqIMRYa2cdXudgwq23i2EDQ65hAj8gJLrMwMc5il105qV8WdExaaomwM1fmm4onmDXKFGTVsemG+X9rul2Y0ii2VklvmKw7jBdEKbJwE3/zmtYV7+rcI1FDP4/jNQklvkMODBK8vPrvLGapSl8K9Gfuhnf5RIJimHLPPK1584YlF7WXjq47Dce420bG6VdACrQ2OJiDcubei1MM+ov6sTaAin4jc1URrPegXjEKt4ckQK+HderVwy6SZMWoPXDG3uSC0p+7YTlOnFeMIA0TJku7ueCtEkjg14k+vJJTjGLXE41MB0h37n9PBWeWUwxF4xRbKtWmynMXbABPoEjwFJrnVoY8cr6AWcFeguat/y3iTRMaYI7LxiWhAyMyPJ0QoJfQNqN/ZkvExOae96Eb7Oy9UzSJ5gPefuNlcmqBM69cabgZH2PHVig88HFHyTKBul1vXXiSTcnPavjQq3eY2NR8pTqye7LJggc3rAEhmmai7AXjEajaBoUWRib1jIHDNMNYsQxbs2I4Onwgu4XCLEZdrzXTWFPmDr0wdpO2mm5z1uNdqqQUrFbdvWAUvKUVuQzhAuF+3DQuPuP7r2mGTn0Macb/KJ6rrqNpx+A3iHbQ7uvhwv0QJJh7jxLPz+dR83FxmtWQ="
-before_install:
-# Version tagguée > Application de la version sur Maven
-  - if [[ $TRAVIS_BRANCH == v* ]]; 
-    then 
-        VERSION=$(echo $TRAVIS_BRANCH | cut -b 2-); 
-    else 
-        VERSION=`mvn -q -N org.codehaus.mojo:exec-maven-plugin:exec  -Dexec.executable='echo' -Dexec.args='${project.version}'` ; 
-        VERSION=$(echo $VERSION | sed -r 's/(-SNAPSHOT)+//gi')-SNAPSHOT; 
-    fi; 
-    echo "Application de la version $VERSION"; 
-    mvn versions:set -DnewVersion=$VERSION; 
-    mvn versions:commit;
-install: 
-  - mvn clean install sonar:sonar -B -P prod -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=$SONAR_ORG -Dsonar.projectKey=gestion-budget-ihm
 
-script:
-  # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
-  - if [[ $TRAVIS_BRANCH == "master" ]];
-    then 
-      echo "ReTag de snapshot"; 
-      git tag -d snapshot; 
-      git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm :refs/tags/snapshot; 
-      git tag snapshot; 
-      git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm --tags; 
-    else 
-      echo "Pas de reTag de snapshot"; 
-    fi
 
-# Déploiement des releases sur tag : snapshot ou version
-# Si pas de tag : Pas de deploy
-before_deploy:
-  - cp ~/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker/ihm.war
-  - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
-   # Deploiement sur Docker HUB  
-  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-  - echo "Construction de l'image Docker gestion_budget_ihm"; 
-  - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
-  - VERSION_DOCKER="snapshot";
-  - if [[ $TRAVIS_BRANCH == v* ]]; 
-    then 
-        VERSION_DOCKER_TAG=$(echo $TRAVIS_BRANCH | cut -b 2-); 
-        docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_DOCKER_TAG ; 
-        docker push vzwingmann/gestion_budget_ihm:$VERSION_DOCKER_TAG ; 
-        VERSION_DOCKER="latest";
-    fi;
-  - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_DOCKER ; 
-  - docker push vzwingmann/gestion_budget_ihm:$VERSION_DOCKER ; 
-    
-deploy:
-   # Déploiement des releaes sur tag : snapshot ou version 
-  - provider: releases
-    token: $GITHUB_API_KEY
-    skip_cleanup: true
-    overwrite: true
-    file: /home/travis/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war
-    on:
-      repo: vzwingma/gestion-budget-ihm
-      tags: true
-after_deploy:
-  - echo "Déploiement sur MassiveGrid"
-  - ENV="";
-  - NODE_ID=0;
-  - if [[ $TRAVIS_BRANCH == v* ]]; 
-    then 
-        ENV="budget";
-        NODE_ID=41461;
-    else
-        ENV="budget-rec";
-        NODE_ID=26391;
-    fi;
-  # Démarrage 
-  - echo "Démarrage de l'environnement $ENV";
-  - URL_START=$MASSIVEGRID_URL"startenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
-  - echo $URL_START ;
-  - curl $URL_START ;
-  # Redéploiement   
-  - echo "Redéploiement de l'IHM $VERSION_DOCKER sur MassiveGrid $ENV";
-  - URL_REDEPLOY=$MASSIVEGRID_URL"redeploycontainers?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN&tag=$VERSION_DOCKER&nodeId=$NODE_ID" ;
-  - echo $URL_REDEPLOY ;
-  - curl -X POST $URL_REDEPLOY ;
-  # Arrêt   
-  - echo "Arrêt de l'environnement $ENV" ;
-  - URL_STOP=$MASSIVEGRID_URL"stopenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
-  - echo $URL_STOP ;
-  - curl $URL_STOP ;
+jobs:
+  include:
+    - stage: Build and Publish to GitHub
+      name: Build et publication sur GitHub
+      before_install:
+      # Version tagguée > Application de la version sur Maven
+        - if [[ $TRAVIS_BRANCH == v* ]]; 
+          then 
+              VERSION=$(echo $TRAVIS_BRANCH | cut -b 2-); 
+          else 
+              VERSION=`mvn -q -N org.codehaus.mojo:exec-maven-plugin:exec  -Dexec.executable='echo' -Dexec.args='${project.version}'` ; 
+              VERSION=$(echo $VERSION | sed -r 's/(-SNAPSHOT)+//gi')-SNAPSHOT; 
+          fi; 
+          echo "Application de la version $VERSION"; 
+          mvn versions:set -DnewVersion=$VERSION; 
+          mvn versions:commit;
+      install: 
+        - mvn clean install sonar:sonar -B -P prod -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=$SONAR_ORG -Dsonar.projectKey=gestion-budget-ihm
+
+      script:
+      # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
+        - if [[ $TRAVIS_BRANCH == "master" ]];
+          then 
+            echo "ReTag de snapshot"; 
+            git tag -d snapshot; 
+            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm :refs/tags/snapshot; 
+            git tag snapshot; 
+            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm --tags; 
+          else 
+            echo "Pas de reTag de snapshot"; 
+          fi
+
+      deploy:
+      # Déploiement des releaes sur tag : snapshot ou version 
+        - provider: releases
+          token: $GITHUB_API_KEY
+          skip_cleanup: true
+          overwrite: true
+          file: /home/travis/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war
+          on:
+            repo: vzwingma/gestion-budget-ihm
+            tags: true
+
+     ############################
+     #   PUBLISH SUR DOCKER
+     ############################
+    - stage: "Publish to DockerHUB"
+      name: "Publication vers DockerHub"
+      # Deploiement sur Docker HUB 
+      if: (branch = snapshot OR (tag =~ ^v))
+      install: skip      
+      script:
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+            
+        - if [[ $TRAVIS_BRANCH == v* ]]; 
+          then 
+              VERSION_RELEASE=$TRAVIS_BRANCH;
+          else
+              VERSION_RELEASE="snapshot";
+          fi;
+            
+        - echo "Construction de l'image Docker gestion_budget_ihm"; 
+        - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
+        - wget -q https://github.com/vzwingma/gestion-budget-ihm/releases/download/$VERSION_RELEASE/ihm.war;
+        - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
+
+        - if [[ $TRAVIS_BRANCH == v* ]]; 
+          then 
+              docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
+              docker push vzwingmann/gestion_budget_ihm:latest ; 
+          fi;
+        - VERSION_RELEASE=$(echo $TRAVIS_BRANCH | cut -b 2-);
+        - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
+        - docker push vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
+      name: "Publish IHM"
+
+
+     ############################
+     #   DEPLOY MASSIVEGRID
+     ############################
+    - stage: "Deploy to MassiveGrid"
+      name: "Déploiement sur MassiveGrid"
+      if: (branch = snapshot OR (tag =~ ^v))
+      install: skip
+      script:
+        - echo "Démarrage sur MassiveGrid";
+        - ENV="";
+        - NODE_ID=0;
+        - if [[ $TRAVIS_BRANCH == v* ]]; 
+          then 
+              ENV="budget";
+              NODE_ID=41461;
+          else
+              ENV="budget-rec";
+              NODE_ID=26391;
+          fi;
+        # Démarrage 
+        - echo "Démarrage de l'environnement $ENV";
+        - URL_START=$MASSIVEGRID_URL"startenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
+        - echo $URL_START ;
+        - curl $URL_START ;
+        # Redéploiement   
+        - echo "Redéploiement de l'IHM $VERSION_DOCKER sur MassiveGrid $ENV";
+        - URL_REDEPLOY=$MASSIVEGRID_URL"redeploycontainers?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN&tag=$VERSION_DOCKER&nodeId=$NODE_ID" ;
+        - echo $URL_REDEPLOY ;
+        - curl -X POST $URL_REDEPLOY ;
+        # Arrêt   
+        - echo "Arrêt de l'environnement $ENV" ;
+        - URL_STOP=$MASSIVEGRID_URL"stopenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
+        - echo $URL_STOP ;
+        - curl $URL_STOP ;

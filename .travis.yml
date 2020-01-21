@@ -1,5 +1,5 @@
-sudo: required
 language: java
+os: linux
 services:
   - docker
 cache:
@@ -62,7 +62,7 @@ before_deploy:
 deploy:
    # Déploiement des releaes sur tag : snapshot ou version 
   - provider: releases
-    api-key: $GITHUB_API_KEY
+    token: $GITHUB_API_KEY
     skip_cleanup: true
     overwrite: true
     file: /home/travis/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war

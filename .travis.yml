@@ -95,7 +95,7 @@ jobs:
      ############################
     - stage: "Deploy to MassiveGrid"
       name: "Déploiement sur MassiveGrid"
-      if: (branch = snapshot OR (tag =~ ^v))
+      if: ((branch = snapshot OR (tag =~ ^v)) AND DEPLOY_TO_MASSIVEGRID = true)
       install: skip
       script:
         - echo "Démarrage sur MassiveGrid";

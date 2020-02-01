@@ -33,7 +33,11 @@ public class TestOperationsAPIService extends AbstractTestServices {
 
 		BudgetMensuel budgetResponse = new BudgetMensuel();
 		budgetResponse.setId("TEST");
-		when(service.callHTTPGetData(eq(BudgetApiUrlEnum.BUDGET_QUERY_FULL), ArgumentMatchers.anyMap(), eq(BudgetMensuel.class))).thenReturn(budgetResponse);
+		when(service.callHTTPGetData(
+				eq(BudgetApiUrlEnum.BUDGET_QUERY_FULL), 
+				ArgumentMatchers.anyMap())
+				.block())
+			.thenReturn(budgetResponse);
 
 		BudgetMensuel budget = service.chargerBudgetMensuel("test", Month.JANUARY, 2018);
 		assertNotNull(budget);

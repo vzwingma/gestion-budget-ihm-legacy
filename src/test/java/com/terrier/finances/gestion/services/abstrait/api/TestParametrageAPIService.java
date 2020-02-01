@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
@@ -37,7 +36,7 @@ public class TestParametrageAPIService extends AbstractTestServices {
 	@Test
 	public void testChargerOperations() throws UserNotAuthorizedException, DataNotFoundException{
 		
-		List<AbstractAPIObjectModel> categories  = new ArrayList<>();
+		List<CategorieOperation> categories  = new ArrayList<>();
 		CategorieOperation catAlimentation = new CategorieOperation();
 		catAlimentation.setId("8f1614c9-503c-4e7d-8cb5-0c9a9218b84a");
 		catAlimentation.setActif(true);
@@ -56,7 +55,7 @@ public class TestParametrageAPIService extends AbstractTestServices {
 		
 		ParametragesAPIService service = spy(new ParametragesAPIService());
 		assertNotNull(service);
-		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL))).thenReturn(categories);
+		when(service.callHTTPGetListData(eq(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL)).block()).thenReturn(categories);
 		
 		List<CategorieOperation> liste = service.getCategories();
 		assertNotNull(liste);

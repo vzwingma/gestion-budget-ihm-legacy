@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.services.admin.api.AdminAPIService;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
+import com.terrier.finances.gestion.services.operations.api.BudgetsCompteAPIService;
+import com.terrier.finances.gestion.services.operations.api.LibellesOperationsAPIService;
 import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateursAPIService;
@@ -51,6 +53,13 @@ public class FacadeServices {
 	
 	@Autowired
 	private ComptesAPIService serviceComptes;
+	
+	@Autowired
+	private BudgetsCompteAPIService budgetsComptes;
+	
+	@Autowired
+	private LibellesOperationsAPIService libellesOperations;
+	
 	
 	@Autowired
 	private AdminAPIService serviceAdmin;
@@ -158,4 +167,25 @@ public class FacadeServices {
 		LOGGER.trace("[INIT] AdminService");
 		this.serviceAdmin = serviceAdmin;
 	}
+
+	public BudgetsCompteAPIService getServiceBudgetsCompte() {
+		return budgetsComptes;
+	}
+
+	public void setBudgetsComptes(BudgetsCompteAPIService budgetsComptes) {
+		LOGGER.trace("[INIT] Budgets Compte");
+		this.budgetsComptes = budgetsComptes;
+	}
+
+	public LibellesOperationsAPIService getServiceLibellesOperations() {
+		return libellesOperations;
+	}
+
+	public void setLibellesOperations(LibellesOperationsAPIService libellesOperations) {
+		LOGGER.trace("[INIT] Libellés Opérations");
+		this.libellesOperations = libellesOperations;
+	}
+	
+	
+
 }

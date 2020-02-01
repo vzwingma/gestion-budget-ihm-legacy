@@ -4,19 +4,15 @@ import java.time.Month;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
-import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.reactive.function.client.ClientResponse;
 
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
@@ -32,7 +28,7 @@ import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPISer
  *
  */
 @Controller
-public class OperationsAPIService extends AbstractHTTPClient {
+public class OperationsAPIService extends AbstractHTTPClient<BudgetMensuel> {
 
 	@Autowired
 	ParametragesAPIService parametrageAPIServices;
@@ -50,7 +46,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		params.put("idCompte", idCompte);
 		params.put("mois", Integer.toString(mois.getValue()));
 		params.put("annee", Integer.toString(annee));
-		BudgetMensuel budget = callHTTPGetData(BudgetApiUrlEnum.BUDGET_QUERY_FULL, params, BudgetMensuel.class);
+		BudgetMensuel budget = callHTTPGetData(BudgetApiUrlEnum.BUDGET_QUERY_FULL, params).block();
 		completeCategoriesOnOperation(budget);
 		return budget;
 	}
@@ -84,7 +80,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 */
 	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException, UserNotAuthorizedException {
 		String path = BudgetApiUrlEnum.BUDGET_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId());
-		BudgetMensuel budgetInit = callHTTPDeleteData(path, BudgetMensuel.class);
+		BudgetMensuel budgetInit = callHTTPDeleteData(path).block();
 		completeCategoriesOnOperation(budgetInit);
 		return budgetInit;
 	}
@@ -116,7 +112,7 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		String path = BudgetApiUrlEnum.BUDGET_ETAT_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudgetMensuel);
 		Map<String, String> params = new HashMap<>();
 		params.put("actif", Boolean.toString(budgetActif));
-		BudgetMensuel budget = callHTTPPost(path, params, null, BudgetMensuel.class);
+		BudgetMensuel budget = callHTTPPost(path, params).block();
 		completeCategoriesOnOperation(budget);
 		return budget;
 	}
@@ -134,23 +130,9 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation operation, CompteBancaire compteCrediteur) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException, UserNotAuthorizedException{
 		BudgetMensuel budgetUpdated = null;
 		String url = BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, operation.getId()).replace("{idCompte}", compteCrediteur.getId());
-		budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
+		budgetUpdated =  callHTTPPost(url, operation).block();
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
-	}
-	/**
-	 * Retourne l'ensemble des libelles des opérations pour un compte
-	 * @param idCompte compte de l'utilisateur
-	 * @param idUtilisateur utilisateur
-	 * @return le set des libelles des opérations
-	 * @throws UserNotAuthorizedException  erreur d'authentification
-	 * @throws DataNotFoundException  erreur lors de l'appel
-	 */
-	public Set<String> getLibellesOperationsForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
-		Map<String, String> params = new HashMap<>();
-		params.put("annee", Integer.toString(annee));
-		return callHTTPGetData(path, params, LibellesOperationsAPIObject.class).getLibellesOperations();
 	}
 
 	
@@ -169,10 +151,10 @@ public class OperationsAPIService extends AbstractHTTPClient {
 		String url = BudgetApiUrlEnum.BUDGET_OPERATION_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, idBudget).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, operation.getId());
 		if(operation.getEtat() != null)
 		{
-			budgetUpdated =  callHTTPPost(url, operation, BudgetMensuel.class);
+			budgetUpdated =  callHTTPPost(url, operation).block();
 		}
 		else {
-			budgetUpdated =  callHTTPDeleteData(url, BudgetMensuel.class);
+			budgetUpdated =  callHTTPDeleteData(url).block();
 		}
 		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
@@ -188,21 +170,10 @@ public class OperationsAPIService extends AbstractHTTPClient {
 	 */
 	public boolean setLigneDepenseAsDerniereOperation(BudgetMensuel budget, String ligneId) throws UserNotAuthorizedException, DataNotFoundException{
 		String path = (BudgetApiUrlEnum.BUDGET_OPERATION_DERNIERE_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_BUDGET, budget.getId()).replace(BudgetApiUrlEnum.URL_PARAM_ID_OPERATION, ligneId));
-		Response response = callHTTPPost(path, budget);
-		return response.getStatus() == 200;
+		ClientResponse response = callHTTPPostResponse(path, budget);
+		return response.statusCode().is2xxSuccessful();
 	}
 	
-	/**
-	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur
-	 * @param utilisateur utilisateur
-	 * @param compte id du compte
-	 * @return la date du premier budget décrit pour cet utilisateur
-	 * @throws UserNotAuthorizedException 
-	 */
-	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.BUDGET_COMPTE_INTERVALLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, compte);
-		return callHTTPGetData(path, IntervallesCompteAPIObject.class);
-	}
 	
 	/**
 	 * Réinjection des catégories dans les opérations du budget

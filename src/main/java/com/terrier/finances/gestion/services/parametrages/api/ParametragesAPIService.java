@@ -20,7 +20,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class ParametragesAPIService extends AbstractHTTPClient {
+public class ParametragesAPIService extends AbstractHTTPClient<CategorieOperation> {
 
 	private String uiRefreshPeriod;
 	private String version;
@@ -37,7 +37,7 @@ public class ParametragesAPIService extends AbstractHTTPClient {
 	public List<CategorieOperation> getCategories() {
 		if(listeCategories == null){
 			try {
-				List<CategorieOperation> resultatCategories = callHTTPGetListData(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL);
+				List<CategorieOperation> resultatCategories = callHTTPGetListData(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL).block();
 				// Recalcul des liens sur les catégories parentes
 				if(resultatCategories != null){
 					resultatCategories

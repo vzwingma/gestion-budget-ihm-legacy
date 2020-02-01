@@ -17,7 +17,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class ComptesAPIService extends AbstractHTTPClient {
+public class ComptesAPIService extends AbstractHTTPClient<CompteBancaire> {
 	
 	/**
 	 * Comptes d'un utilisateur
@@ -26,7 +26,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public List<CompteBancaire> getComptes() throws DataNotFoundException, UserNotAuthorizedException {
-		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL);
+		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL).block();
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 */
 	public CompteBancaire getCompte(String idCompte) throws UserNotAuthorizedException, DataNotFoundException{
 		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
-		return callHTTPGetData(path, CompteBancaire.class);
+		return callHTTPGetData(path).block();
 	}
 
 	

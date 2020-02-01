@@ -5,12 +5,9 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonpCharacterEscapes;
@@ -43,7 +40,7 @@ public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements M
 
 	
 	private boolean isAbstractAPIObjectModel(Class<?> clazz, MediaType mediaType){
-		boolean read = MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && AbstractAPIObjectModel.class.isAssignableFrom(clazz);
+		boolean read = MediaType.APPLICATION_JSON.equals(mediaType) && AbstractAPIObjectModel.class.isAssignableFrom(clazz);
 		LOGGER.trace("isReadable : {}#{} -> {}", clazz, mediaType, read);
 		return read;
 	}

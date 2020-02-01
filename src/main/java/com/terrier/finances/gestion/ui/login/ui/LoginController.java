@@ -79,7 +79,7 @@ public class LoginController extends AbstractUIController<Login>{
 	 * @param label label à completer
 	 * @param apiService service
 	 */
-	private void addVersion(Label label, AbstractHTTPClient apiService) {
+	private void addVersion(Label label, @SuppressWarnings("rawtypes") AbstractHTTPClient apiService) {
 		String version = "N/A";
 		try {
 			version = apiService.getInfo().getApp().getVersion();

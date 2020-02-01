@@ -6,6 +6,8 @@ package com.terrier.finances.gestion.ui.communs.abstrait;
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.admin.api.AdminAPIService;
 import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
+import com.terrier.finances.gestion.services.operations.api.BudgetsCompteAPIService;
+import com.terrier.finances.gestion.services.operations.api.LibellesOperationsAPIService;
 import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateursAPIService;
@@ -42,6 +44,21 @@ public interface IUIControllerService  {
 	 */
 	public default OperationsAPIService getServiceOperations(){
 		return FacadeServices.get().getServiceOperations();
+	}
+	
+	/**
+	 * @return service métier budget comptes
+	 */
+	public default BudgetsCompteAPIService getServiceBudgetsCompte(){
+		return FacadeServices.get().getServiceBudgetsCompte();
+	}
+	
+	
+	/**
+	 * @return service métier dépense
+	 */
+	public default LibellesOperationsAPIService getServiceLibellesOperations(){
+		return FacadeServices.get().getServiceLibellesOperations();
 	}
 	
 	/**

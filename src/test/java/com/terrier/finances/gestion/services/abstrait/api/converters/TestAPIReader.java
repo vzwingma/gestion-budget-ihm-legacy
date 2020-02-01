@@ -16,9 +16,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.ws.rs.core.MediaType;
-
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

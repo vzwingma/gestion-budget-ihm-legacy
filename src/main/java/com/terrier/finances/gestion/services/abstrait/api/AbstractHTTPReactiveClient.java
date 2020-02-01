@@ -8,15 +8,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ClientHttpConnector;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,8 +31,11 @@ import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedEx
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.filters.LogApiFilter;
 
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 /**
  * Classe d'un client HTTP
@@ -66,20 +68,22 @@ public abstract class AbstractHTTPReactiveClient{
 	 */
 	private WebClient getClient() {
 
-
 		//		// Register des converters
 		//		clientConfig.register(new ListAPIObjectModelReader<AbstractAPIObjectModel>());
 		//		clientConfig.register(new APIObjectModelReader<AbstractAPIObjectModel>());
-		//		// Filter
-		//		clientConfig.register(logFilter);
 
 		try {
-			// Install the all-trusting trust manager
-			SSLContext sslcontext = SSLContext.getInstance("TLSv1.2");
-			sslcontext.init(null,  null, new java.security.SecureRandom());
-			HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+			// Install the all-trusting trust manager		
+			SslContext sslContext = SslContextBuilder
+					.forClient()
+//					.trustManager(InsecureTrustManagerFactory.INSTANCE)
+					.build();
+				HttpClient httpClient = HttpClient.create()
+					.secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+				ClientHttpConnector sslConnector = new ReactorClientHttpConnector(httpClient);
+			
 			return WebClient.builder()
-					//.sslContext(sslcontext)
+					.clientConnector(sslConnector)
 					.filter(logFilter)
 					.baseUrl(serviceURI)
 					.build();
@@ -105,7 +109,6 @@ public abstract class AbstractHTTPReactiveClient{
 	 * @return Config
 	 */
 	private RequestBodySpec getInvocation(HttpMethod method, String path, Map<String, String> queryParams){
-
 
 		RequestBodySpec spec = getClient()
 				.method(method)

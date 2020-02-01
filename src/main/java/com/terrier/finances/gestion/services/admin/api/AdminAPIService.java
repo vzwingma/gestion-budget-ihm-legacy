@@ -3,7 +3,7 @@ package com.terrier.finances.gestion.services.admin.api;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
 /**
  * Service API vers {@link AdminService}
@@ -11,7 +11,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class AdminAPIService extends AbstractHTTPClient {
+public class AdminAPIService extends AbstractAPIClient {
 	
 
 

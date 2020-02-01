@@ -9,7 +9,7 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
 /**
  * Service API vers {@link ComptesService}
@@ -17,7 +17,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class ComptesAPIService extends AbstractHTTPClient<CompteBancaire> {
+public class ComptesAPIService extends AbstractAPIClient<CompteBancaire> {
 	
 	/**
 	 * Comptes d'un utilisateur

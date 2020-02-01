@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.server.ThemeResource;
@@ -79,7 +79,7 @@ public class LoginController extends AbstractUIController<Login>{
 	 * @param label label à completer
 	 * @param apiService service
 	 */
-	private void addVersion(Label label, @SuppressWarnings("rawtypes") AbstractHTTPClient apiService) {
+	private void addVersion(Label label, @SuppressWarnings("rawtypes") AbstractAPIClient apiService) {
 		String version = "N/A";
 		try {
 			version = apiService.getInfo().getApp().getVersion();

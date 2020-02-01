@@ -19,7 +19,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundExcep
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
 
 /**
@@ -28,7 +28,7 @@ import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPISer
  *
  */
 @Controller
-public class OperationsAPIService extends AbstractHTTPClient<BudgetMensuel> {
+public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> {
 
 	@Autowired
 	ParametragesAPIService parametrageAPIServices;

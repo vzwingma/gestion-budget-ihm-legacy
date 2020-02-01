@@ -7,7 +7,7 @@ import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteA
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
 /**
  * API  vers le domaine Budget
@@ -15,7 +15,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class BudgetsCompteAPIService extends AbstractHTTPClient<IntervallesCompteAPIObject> {
+public class BudgetsCompteAPIService extends AbstractAPIClient<IntervallesCompteAPIObject> {
 	
 	/**
 	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur

@@ -12,7 +12,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
 /**
  * Service API vers {@link ParametrageControlleur}
@@ -20,7 +20,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class ParametragesAPIService extends AbstractHTTPClient<CategorieOperation> {
+public class ParametragesAPIService extends AbstractAPIClient<CategorieOperation> {
 
 	private String uiRefreshPeriod;
 	private String version;

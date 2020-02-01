@@ -17,7 +17,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
 /**
  * Service API vers {@link UtilisateursService}
@@ -25,7 +25,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class UtilisateursAPIService extends AbstractHTTPClient<UtilisateurPrefsAPIObject> {
+public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAPIObject> {
 	/**
 	 * Logger
 	 */

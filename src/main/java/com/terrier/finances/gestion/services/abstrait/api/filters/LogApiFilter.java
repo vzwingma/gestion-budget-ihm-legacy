@@ -9,6 +9,9 @@ import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
 
 import com.terrier.finances.gestion.communs.api.security.ApiHeaderIdEnum;
 
@@ -20,20 +23,11 @@ import reactor.core.publisher.Mono;
  *
  */
 @Service
-public class LogApiFilter implements ExchangeFilterFunction {
+public class LogApiFilter implements ExchangeFilterFunction, WebFilter {
 
 	
 
 	public static final Logger LOGGER = LoggerFactory.getLogger( LogApiFilter.class );
-	
-
-	/**
-	 * Log de la réponse
-	 */
-//	@Override
-//	public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
-//		LOGGER.info("Statut HTTP : [{}]", responseContext.getStatus());
-//	}
 
 	/**
 	 * Log de la requête
@@ -46,6 +40,16 @@ public class LogApiFilter implements ExchangeFilterFunction {
 		
 		LOGGER.info("{} :: {}", requestContext.method(), requestContext.url());
 		return next.exchange(requestContext);
+	}
+
+
+	/**
+	 * Log de la réponse
+	 */
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+		LOGGER.info("Statut HTTP : [{}]", exchange.getResponse().getStatusCode());
+		return chain.filter(exchange);
 	}
 
 }

@@ -11,7 +11,7 @@ import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperati
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
 /**
  * API  vers le domaine Budget
@@ -19,7 +19,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class LibellesOperationsAPIService extends AbstractHTTPClient<LibellesOperationsAPIObject> {
+public class LibellesOperationsAPIService extends AbstractAPIClient<LibellesOperationsAPIObject> {
 
 
 	/**

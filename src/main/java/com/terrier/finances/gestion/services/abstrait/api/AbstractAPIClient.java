@@ -24,10 +24,10 @@ import reactor.core.publisher.Mono;
  * @author vzwingma
  *
  */
-public abstract class AbstractHTTPClient<R extends AbstractAPIObjectModel> extends AbstractHTTPReactiveClient{
+public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extends AbstractHTTPReactiveClient{
 
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractHTTPClient.class );
+	protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractAPIClient.class );
 
 	private Class<R> responseClassType;
 	/**

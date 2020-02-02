@@ -5,6 +5,7 @@ package com.terrier.finances.gestion.services.abstrait.api;
 
 import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,12 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.reactive.ClientHttpConnector;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
+import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
@@ -31,11 +31,8 @@ import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedEx
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.abstrait.api.filters.LogApiFilter;
 
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 
 /**
  * Classe d'un client HTTP
@@ -66,7 +63,7 @@ public abstract class AbstractHTTPReactiveClient{
 	 * @return client HTTP
 	 * @throws NoSuchAlgorithmException 
 	 */
-	private WebClient getClient() {
+	protected WebClient getClient() {
 
 		//		// Register des converters
 		//		clientConfig.register(new ListAPIObjectModelReader<AbstractAPIObjectModel>());
@@ -74,16 +71,17 @@ public abstract class AbstractHTTPReactiveClient{
 
 		try {
 			// Install the all-trusting trust manager		
+			/**
 			SslContext sslContext = SslContextBuilder
 					.forClient()
-//					.trustManager(InsecureTrustManagerFactory.INSTANCE)
+					.trustManager(InsecureTrustManagerFactory.INSTANCE)
 					.build();
 				HttpClient httpClient = HttpClient.create()
 					.secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 				ClientHttpConnector sslConnector = new ReactorClientHttpConnector(httpClient);
-			
+			 **/			
 			return WebClient.builder()
-					.clientConnector(sslConnector)
+					//					.clientConnector(sslConnector)
 					.filter(logFilter)
 					.baseUrl(serviceURI)
 					.build();
@@ -110,6 +108,11 @@ public abstract class AbstractHTTPReactiveClient{
 	 */
 	private RequestBodySpec getInvocation(HttpMethod method, String path, Map<String, String> queryParams){
 
+		queryParams = queryParams != null ? queryParams : new HashMap<String, String>();
+
+		// Correlation ID
+		String corrID = UUID.randomUUID().toString();
+
 		RequestBodySpec spec = getClient()
 				.method(method)
 				// URI & Params
@@ -117,16 +120,18 @@ public abstract class AbstractHTTPReactiveClient{
 				// Tout est en JSON
 				.accept(MediaType.APPLICATION_JSON)	   
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.header(ApiHeaderIdEnum.HEADER_CORRELATION_ID, corrID)
 				.acceptCharset(Charset.forName("UTF-8"));
+
+		org.slf4j.MDC.put(ApiHeaderIdEnum.HEADER_CORRELATION_ID, "["+ApiHeaderIdEnum.LOG_CORRELATION_ID+"="+corrID+"]");
 
 		if(getJwtToken() != null){
 			spec = spec.header(JwtConfigEnum.JWT_HEADER_AUTH, getJwtToken());
 			LOGGER.trace("[JWT Token={}]", getJwtToken());
 		}
-		// Correlation ID
-		String corrID = UUID.randomUUID().toString();
-		org.slf4j.MDC.put(ApiHeaderIdEnum.HEADER_CORRELATION_ID, "["+ApiHeaderIdEnum.LOG_CORRELATION_ID+"="+corrID+"]");
-		spec = spec.header(ApiHeaderIdEnum.HEADER_CORRELATION_ID, corrID);
+		// API Correlation ID
+		String apiCorrID = UUID.randomUUID().toString();
+		spec = spec.header(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID, apiCorrID);		
 		return spec;
 	}
 
@@ -161,11 +166,17 @@ public abstract class AbstractHTTPReactiveClient{
 	protected <R extends AbstractAPIObjectModel> 
 	ClientResponse callAPIandReturnResponse(HttpMethod method, String path, Map<String, String> params, R apiBodyObject) throws UserNotAuthorizedException, DataNotFoundException{
 		if(path != null){
-			ClientResponse response = getInvocation(method, path, params)
-					.bodyValue(BodyInserters.fromValue(apiBodyObject))
-					.exchange()
-					.block();
-			LOGGER.debug("Réponse : [{}]", response);
+			RequestBodySpec spec = getInvocation(method, path, params);
+			Mono<ClientResponse> monoResponse;
+			if(apiBodyObject != null) {
+				LOGGER.info("BodyInserters : {}", BodyInserters.fromValue(apiBodyObject));
+				monoResponse = spec.bodyValue(BodyInserters.fromValue(apiBodyObject)).exchange();
+			}
+			else {
+				monoResponse = spec.exchange();
+			}
+			ClientResponse response = monoResponse.block();
+			LOGGER.debug("Réponse : [{}]", response.statusCode());
 			return response;
 		}
 		return null;
@@ -193,8 +204,8 @@ public abstract class AbstractHTTPReactiveClient{
 	 * @throws DataNotFoundException
 	 */
 	protected <Q extends AbstractAPIObjectModel, R extends AbstractAPIObjectModel> 
-		Flux<R> callAPIandReturnFlux(HttpMethod method, String path, Map<String, String> params, Q apiBodyObject, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
-		
+	Flux<R> callAPIandReturnFlux(HttpMethod method, String path, Map<String, String> params, Q apiBodyObject, Class<R> responseClassType) throws UserNotAuthorizedException, DataNotFoundException{
+
 		Flux<R> response = callAPIandReturnResponse(method, path, params, apiBodyObject).bodyToFlux(responseClassType);
 		LOGGER.debug("Réponse : [{}]", response);
 		return response;

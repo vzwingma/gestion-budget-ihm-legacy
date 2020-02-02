@@ -139,6 +139,7 @@ public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements H
 	private T tryToParse(DataBuffer entity, Class<?> classeAPIObjectModel){
 
 		try{
+			@SuppressWarnings("unchecked")
 			T objectFromData = (T)mapper.readValue(entity.asInputStream(), classeAPIObjectModel);
 			LOGGER.trace("TryToParse in {} -> {} ", classeAPIObjectModel, objectFromData != null);
 			if(objectFromData != null) {

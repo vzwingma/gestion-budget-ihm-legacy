@@ -1,7 +1,5 @@
 package com.terrier.finances.gestion.services.abstrait.api.filters;
 
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,10 +32,8 @@ public class LogApiFilter implements ExchangeFilterFunction, WebFilter {
 	 */
 	@Override
 	public Mono<ClientResponse> filter(ClientRequest requestContext, ExchangeFunction next) {
-		String apiCorrID = UUID.randomUUID().toString();
+		String apiCorrID = requestContext.headers().getFirst(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID);
 		org.slf4j.MDC.put(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID, "[API="+apiCorrID+"]");
-		requestContext.headers().add(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID, apiCorrID);
-		
 		LOGGER.info("{} :: {}", requestContext.method(), requestContext.url());
 		return next.exchange(requestContext);
 	}
@@ -48,6 +44,7 @@ public class LogApiFilter implements ExchangeFilterFunction, WebFilter {
 	 */
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+		// TODO : Activer le webfilter
 		LOGGER.info("Statut HTTP : [{}]", exchange.getResponse().getStatusCode());
 		return chain.filter(exchange);
 	}

@@ -63,6 +63,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 
 	/**
 	 * Appel POST vers les API Services
+	 * @param <Q> classe du contenu de la requête 
 	 * @param path chemin
 	 * @param dataToSend body à envoyer
 	 * @param responseClassType réponse type
@@ -84,13 +85,13 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws UserNotAuthorizedException utilisateur non authorisé
 	 * @throws DataNotFoundException  donnée introuvable
 	 */
-	protected <Q extends AbstractAPIObjectModel> 
-	Mono<R> callHTTPPost(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
+	protected Mono<R> callHTTPPost(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
 
 		return callAPIandReturnMono(HttpMethod.POST, path, params, null, responseClassType);
 	}
 	/**
 	 * Appel POST vers les API Services
+	 * @param <Q> classe de l'enquete 
 	 * @param path chemin
 	 * @param params paramètres
 	 * @param dataToSend body à envoyer

@@ -19,13 +19,6 @@ import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
-import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
-import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
-import com.terrier.finances.gestion.communs.operations.model.api.LibellesOperationsAPIObject;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
-import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,21 +30,7 @@ import reactor.core.publisher.Mono;
  */
 public class APIObjectModelReader<T extends AbstractAPIObjectModel> implements HttpMessageReader<T> {
 
-
-
 	private static final Logger LOGGER = LoggerFactory.getLogger( APIObjectModelReader.class );
-
-	// Classe des objets Budget, gérés
-	@SuppressWarnings("unchecked")
-	private Class<T>[] classesAPIObjectModel = new Class[]{ 
-			AuthLoginAPIObject.class,
-			CategorieOperation.class, 
-			CompteBancaire.class, 
-			BudgetMensuel.class,
-			IntervallesCompteAPIObject.class, 
-			LibellesOperationsAPIObject.class,
-			LigneOperation.class
-	};
 
 	private ObjectMapper mapper;
 

@@ -19,7 +19,7 @@
 	<logger name="org.springframework" level="INFO" />	
 	<logger name="org.quartz" level="INFO" />
 	<logger name="io.netty" level="INFO" />
-
+	<logger name="reactor.netty" level="INFO" />
 
 	<!-- Budget -->
 	<logger name="com.terrier.finances" level="DEBUG" additivity="false">

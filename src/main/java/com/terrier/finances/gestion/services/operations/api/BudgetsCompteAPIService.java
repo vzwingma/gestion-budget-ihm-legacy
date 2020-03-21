@@ -17,6 +17,11 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 @Controller
 public class BudgetsCompteAPIService extends AbstractAPIClient<IntervallesCompteAPIObject> {
 	
+	
+	public BudgetsCompteAPIService() {
+		super(IntervallesCompteAPIObject.class);
+	}
+	
 	/**
 	 * Charge l'intervalle des budgets pour ce compte pour cet utilisateur
 	 * @param utilisateur utilisateur

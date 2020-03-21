@@ -30,6 +30,11 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(UtilisateursAPIService.class);
+	
+	
+	public UtilisateursAPIService() {
+		super(UtilisateurPrefsAPIObject.class);
+	}
 	/**
 	 * Validation login/mdp
 	 * @param login login

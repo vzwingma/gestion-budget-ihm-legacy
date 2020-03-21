@@ -24,7 +24,7 @@ public class AspectsConfig {
 		LOGGER.info("[INIT] Configuration des aspects");
 	}
 	
-	@AfterReturning("execution(* com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPReactiveClient+.*(..))")
+	@AfterReturning("execution(* com.terrier.finances.gestion.communs.api.AbstractHTTPReactiveClient+.*(..))")
 	public void clearAPICorrIdLogger() {
 		org.slf4j.MDC.remove(ApiHeaderIdEnum.HEADER_CORRELATION_ID);
 		org.slf4j.MDC.remove(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID);

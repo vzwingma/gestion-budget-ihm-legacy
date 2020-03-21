@@ -19,6 +19,10 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 @Controller
 public class ComptesAPIService extends AbstractAPIClient<CompteBancaire> {
 	
+	
+	public ComptesAPIService() {
+		super(CompteBancaire.class);
+	}
 	/**
 	 * Comptes d'un utilisateur
 	 * @param idUtilisateur

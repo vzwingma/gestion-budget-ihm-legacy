@@ -21,6 +21,9 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 @Controller
 public class LibellesOperationsAPIService extends AbstractAPIClient<LibellesOperationsAPIObject> {
 
+	public LibellesOperationsAPIService() {
+		super(LibellesOperationsAPIObject.class);
+	}
 
 	/**
 	 * Retourne l'ensemble des libelles des opérations pour un compte

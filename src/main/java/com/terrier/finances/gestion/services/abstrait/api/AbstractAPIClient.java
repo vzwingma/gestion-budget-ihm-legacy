@@ -12,9 +12,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
+import com.terrier.finances.gestion.communs.api.AbstractHTTPReactiveClient;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
+import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.services.admin.model.Info;
 
 import reactor.core.publisher.Mono;
@@ -26,9 +28,16 @@ import reactor.core.publisher.Mono;
  */
 public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extends AbstractHTTPReactiveClient{
 
-
 	protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractAPIClient.class );
 
+	/**
+	 * 
+	 * @param responseClassType
+	 */
+	public AbstractAPIClient(Class<R> responseClassType) {
+		this.responseClassType = responseClassType;
+	}
+	
 	private Class<R> responseClassType;
 	/**
 	 * Statut du Services 
@@ -47,8 +56,8 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	protected <Q extends AbstractAPIObjectModel> ClientResponse 
-		callHTTPPostResponse(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
-		
+	callHTTPPostResponse(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
+
 		return callAPIandReturnResponse(HttpMethod.POST, path, null, dataToSend);
 	}
 
@@ -63,7 +72,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	protected  <Q extends AbstractAPIObjectModel>
 	Mono<R> callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException{
-		
+
 		return callAPIandReturnMono(HttpMethod.POST, path, null, dataToSend, responseClassType);
 	}
 
@@ -76,8 +85,8 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws DataNotFoundException  donnée introuvable
 	 */
 	protected <Q extends AbstractAPIObjectModel> 
-		Mono<R> callHTTPPost(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
-		
+	Mono<R> callHTTPPost(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
+
 		return callAPIandReturnMono(HttpMethod.POST, path, params, null, responseClassType);
 	}
 	/**
@@ -91,7 +100,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	protected <Q extends AbstractAPIObjectModel> 
 	Mono<R> callHTTPPost(String path, Map<String, String> params, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException{
-		
+
 		return callAPIandReturnMono(HttpMethod.POST, path, params, dataToSend, responseClassType);
 	}
 
@@ -116,10 +125,10 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	protected Mono<R> callHTTPGetData(String path) throws UserNotAuthorizedException, DataNotFoundException{
-	
+
 		return callAPIandReturnMono(HttpMethod.GET, path, null, null, responseClassType);
 	}
-	
+
 
 	/**
 	 * @param <R> classe de la réponse
@@ -130,7 +139,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	protected Mono<List<R>> callHTTPGetListData(String path) throws UserNotAuthorizedException, DataNotFoundException{
-	
+
 		return callAPIandReturnFlux(HttpMethod.GET, path, null, null, responseClassType).collectList();
 	}
 	/**
@@ -155,5 +164,15 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	protected Mono<R> callHTTPDeleteData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 		return callAPIandReturnMono(HttpMethod.DELETE, path, null, null, responseClassType);
+	}
+	
+
+	/**
+	 * 
+	 * @return JWT Token de l'utilisateur
+	 */
+	@Override
+	public String getJwtToken() {
+		return FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
 	}
 }

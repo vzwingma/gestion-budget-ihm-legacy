@@ -29,6 +29,9 @@ public class ParametragesAPIService extends AbstractAPIClient<CategorieOperation
 	
 	private List<CategorieOperation> listeCategories = null;
 	
+	public ParametragesAPIService() {
+		super(CategorieOperation.class);
+	}
 
 	/**
 	 * @return liste des catégories

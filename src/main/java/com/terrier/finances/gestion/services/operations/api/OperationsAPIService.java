@@ -33,6 +33,12 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> {
 	@Autowired
 	ParametragesAPIService parametrageAPIServices;
 	
+	
+	public OperationsAPIService() {
+		super(BudgetMensuel.class);
+	}
+	
+	
 	/**
 	 * Chargement du budget du mois courant
 	 * @param compte compte 

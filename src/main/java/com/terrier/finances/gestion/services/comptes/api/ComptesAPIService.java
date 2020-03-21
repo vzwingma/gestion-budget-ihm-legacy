@@ -9,7 +9,7 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
 /**
  * Service API vers {@link ComptesService}
@@ -17,8 +17,12 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractHTTPClient;
  *
  */
 @Controller
-public class ComptesAPIService extends AbstractHTTPClient {
+public class ComptesAPIService extends AbstractAPIClient<CompteBancaire> {
 	
+	
+	public ComptesAPIService() {
+		super(CompteBancaire.class);
+	}
 	/**
 	 * Comptes d'un utilisateur
 	 * @param idUtilisateur
@@ -26,7 +30,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public List<CompteBancaire> getComptes() throws DataNotFoundException, UserNotAuthorizedException {
-		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL);
+		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL).block();
 	}
 	
 	/**
@@ -37,7 +41,7 @@ public class ComptesAPIService extends AbstractHTTPClient {
 	 */
 	public CompteBancaire getCompte(String idCompte) throws UserNotAuthorizedException, DataNotFoundException{
 		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
-		return callHTTPGetData(path, CompteBancaire.class);
+		return callHTTPGetData(path).block();
 	}
 
 	

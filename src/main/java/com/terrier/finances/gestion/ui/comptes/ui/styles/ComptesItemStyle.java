@@ -22,7 +22,7 @@ public class ComptesItemStyle implements StyleGenerator<CompteBancaire> {
 	 */
 	@Override
 	public String apply(CompteBancaire compteBancaire) {
-		if(!compteBancaire.isActif()){
+		if(Boolean.FALSE.equals(compteBancaire.isActif())){
 			return "barre";
 		}
 		return null;

@@ -16,9 +16,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.ws.rs.core.MediaType;
-
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ResolvableType;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ReactiveHttpInputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +35,8 @@ import com.terrier.finances.gestion.communs.utilisateur.model.Utilisateur;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
 import com.terrier.finances.gestion.services.admin.model.Info;
 
+import reactor.core.publisher.Flux;
+
 /**
  * @author vzwingma
  *
@@ -39,34 +46,38 @@ public class TestAPIReader {
 	@Test
 	public void testConverterAPIObject() throws HttpMessageNotWritableException, IOException{
 		APIObjectModelReader<AuthLoginAPIObject> reader = new APIObjectModelReader<>();
-		
+
 		assertFalse(AuthLoginAPIObject.class.isAssignableFrom(AbstractAPIObjectModel.class));
 		assertTrue(AbstractAPIObjectModel.class.isAssignableFrom(AuthLoginAPIObject.class));
-		assertTrue(reader.isReadable(AuthLoginAPIObject.class, null, null, MediaType.APPLICATION_JSON_TYPE));
+		assertTrue(reader.canRead(ResolvableType.forClass(AuthLoginAPIObject.class), MediaType.APPLICATION_JSON));
 
-		assertFalse(reader.isReadable(AuthLoginAPIObject.class, null, null, MediaType.APPLICATION_XML_TYPE));
+		assertFalse(reader.canRead(ResolvableType.forClass(AuthLoginAPIObject.class), MediaType.APPLICATION_XML));
 
-		assertFalse(reader.isReadable(List.class, null, null, MediaType.APPLICATION_JSON_TYPE));
+		assertFalse(reader.canRead(ResolvableType.forClass(List.class), MediaType.APPLICATION_JSON));
 
-		InputStream entityStream = new ByteArrayInputStream("{\"login\":\"Test\",\"motDePasse\":\"Test\"}".getBytes(StandardCharsets.UTF_8));
-		AuthLoginAPIObject obj = reader.readFrom(AuthLoginAPIObject.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
+		String json = "{\"login\":\"Test\",\"motDePasse\":\"Test\"}";
+		InputStream data = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+		AuthLoginAPIObject obj = reader.readMono(ResolvableType.forClass(AuthLoginAPIObject.class), 
+											getReactiveHttpInputMessage(data, json.length()), 
+											null).block();
+
 		assertEquals(obj.getClass().getName(), AuthLoginAPIObject.class.getName());
 		assertEquals("Test", obj.getLogin());
-		
-		assertTrue(reader.isReadable(CompteBancaire.class, null, null, MediaType.APPLICATION_JSON_TYPE));
+
+		assertTrue(reader.canRead(ResolvableType.forClass(CompteBancaire.class), MediaType.APPLICATION_JSON));
 
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testReaderListAPIObjects() throws HttpMessageNotWritableException, IOException{
 		@SuppressWarnings("rawtypes")
-		ListAPIObjectModelReader reader = new ListAPIObjectModelReader();
-		
-		assertFalse(reader.isReadable(AuthLoginAPIObject.class, null, null, MediaType.APPLICATION_JSON_TYPE));
-		assertTrue(reader.isReadable(List.class, null, null, MediaType.APPLICATION_JSON_TYPE));
-		assertFalse(reader.isReadable(List.class, null, null, MediaType.APPLICATION_XML_TYPE));
-		
+		APIObjectModelReader reader = new APIObjectModelReader();
+
+		assertTrue(reader.canRead(ResolvableType.forClass(CompteBancaire.class), MediaType.APPLICATION_JSON));
+		assertFalse(reader.canRead(ResolvableType.forClass(List.class), MediaType.APPLICATION_XML));
+
 		List<CompteBancaire> listeComptes = new ArrayList<>();
 		CompteBancaire c1 = new CompteBancaire();
 		c1.setActif(true);
@@ -82,14 +93,15 @@ public class TestAPIReader {
 		listeComptes.add(c2);
 		String jsonComptes = new ObjectMapper().writeValueAsString(listeComptes);
 		InputStream entityStream = new ByteArrayInputStream(jsonComptes.getBytes(StandardCharsets.UTF_8));
-		
-		List<CompteBancaire> obj = reader.readFrom(ArrayList.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
-		assertEquals("c1", obj.get(0).getId());
-	}
-	
-	
 
-	
+		Flux<CompteBancaire> obj = reader.read(
+					ResolvableType.forClass(CompteBancaire.class), getReactiveHttpInputMessage(entityStream, jsonComptes.length()), null);
+		assertEquals("c1", obj.blockFirst().getId());
+	}
+
+
+
+
 	@Test
 	public void testConvertBudget() throws Exception {
 
@@ -111,46 +123,48 @@ public class TestAPIReader {
 		Calendar c = Calendar.getInstance();
 		bo.setDateMiseAJour(c);
 		bo.setResultatMoisPrecedent(0D);
-		
+
 		CategorieOperation cat = new CategorieOperation();
 		cat.setCategorie(true);
 		cat.setId("IdTest");
 		cat.setLibelle("LibelleTest");
 		bo.getTotalParCategories().put(cat.getId(), new Double[]{ 100D, 200D});
-		
+
 		CategorieOperation ssCat = new CategorieOperation();
 		ssCat.setCategorie(false);
 		ssCat.setId("IdTest");
 		ssCat.setLibelle("LibelleTest");
 		bo.getTotalParSSCategories().put(ssCat.getId(), new Double[]{ 100D, 200D});
 
-		
+
 		Utilisateur user = new Utilisateur();
 		user.setId("userTest");
 		user.setLibelle("userTest");
 		user.setLogin("userTest");
-		
+
 		APIObjectModelReader<BudgetMensuel> reader = new APIObjectModelReader<>();
-		assertTrue(reader.isReadable(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE));
-		
+		assertTrue(reader.canRead(ResolvableType.forClass(BudgetMensuel.class), MediaType.APPLICATION_JSON));
+
 
 		String jsonComptes = new ObjectMapper().writeValueAsString(bo);
 		InputStream entityStream = new ByteArrayInputStream(jsonComptes.getBytes(StandardCharsets.UTF_8));
-		
-		BudgetMensuel boRead = reader.readFrom(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
+
+		BudgetMensuel boRead = reader.readMono(ResolvableType.forClass(BudgetMensuel.class), 
+				getReactiveHttpInputMessage(entityStream, jsonComptes.length()),
+				null).block();
 		assertEquals(boRead.getClass().getName(), BudgetMensuel.class.getName());
 
 		assertEquals(bo.getId(), boRead.getId());
 		assertEquals(bo.getSoldeFin(), boRead.getSoldeFin(), 1);
 		assertEquals(bo.getSoldeNow(), boRead.getSoldeNow(), 1);
-		
+
 		assertEquals(1, boRead.getTotalParCategories().size());
 		assertEquals("IdTest", boRead.getTotalParCategories().keySet().iterator().next());
 		assertEquals(1, boRead.getTotalParSSCategories().size());
 		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next());
 	}
-	
-	
+
+
 	@Test
 	public void testConvertMap() throws IOException{
 		// Budget
@@ -158,27 +172,29 @@ public class TestAPIReader {
 		bo.setId("BUDGETTEST");
 		bo.setSoldeFin(0D);
 		bo.setSoldeNow(1000D);
-		
+
 		CategorieOperation cat = new CategorieOperation();
 		cat.setCategorie(true);
 		cat.setId("IdTest");
 		cat.setLibelle("LibelleTest");
 		bo.getTotalParCategories().put(cat.getId(), new Double[]{ 100D, 200D});
-		
+
 		CategorieOperation ssCat = new CategorieOperation();
 		ssCat.setCategorie(false);
 		ssCat.setId("IdTest");
 		ssCat.setLibelle("LibelleTest");
 		bo.getTotalParSSCategories().put(ssCat.getId(), new Double[]{ 100D, 200D});
-		
+
 		APIObjectModelReader<BudgetMensuel> reader = new APIObjectModelReader<>();
-		assertTrue(reader.isReadable(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE));
+		assertTrue(reader.canRead(ResolvableType.forClass(BudgetMensuel.class), MediaType.APPLICATION_JSON));
 
 		String jsonComptes = new ObjectMapper().writeValueAsString(bo);
 		InputStream entityStream = new ByteArrayInputStream(jsonComptes.getBytes(StandardCharsets.UTF_8));
-		
-		
-		BudgetMensuel boRead = reader.readFrom(BudgetMensuel.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
+
+
+		BudgetMensuel boRead = reader.readMono(ResolvableType.forClass(BudgetMensuel.class), 
+				getReactiveHttpInputMessage(entityStream, jsonComptes.length()),
+						null).block();
 		assertEquals(boRead.getClass().getName(), BudgetMensuel.class.getName());
 
 		assertEquals(1, boRead.getTotalParCategories().size());
@@ -186,10 +202,10 @@ public class TestAPIReader {
 		assertEquals(1, boRead.getTotalParSSCategories().size());
 		assertEquals("IdTest", boRead.getTotalParSSCategories().keySet().iterator().next());
 	}
-	
+
 	@Test
 	public void testConvertInfo() throws IOException {
-		
+
 		String jsonInfo = "{" + 
 				"    \"app\": {" + 
 				"        \"description\": \"Services de l'application de Gestion de Budget\"," + 
@@ -199,7 +215,24 @@ public class TestAPIReader {
 				"}";
 		InputStream entityStream = new ByteArrayInputStream(jsonInfo.getBytes(StandardCharsets.UTF_8));
 		APIObjectModelReader<Info> reader = new APIObjectModelReader<>();
-		Info boRead = reader.readFrom(Info.class, null, null, MediaType.APPLICATION_JSON_TYPE, null, entityStream);
+		Info boRead = reader.readMono(ResolvableType.forClass(Info.class), getReactiveHttpInputMessage(entityStream, jsonInfo.length()), null).block();
 		assertEquals("7.3.1-SNAPSHOT", boRead.getApp().getVersion());
+	}
+
+
+	private ReactiveHttpInputMessage getReactiveHttpInputMessage(final InputStream data, int size) {
+		return new ReactiveHttpInputMessage() {
+
+			@Override
+			public HttpHeaders getHeaders() { return null; }
+
+			@Override
+			public Flux<DataBuffer> getBody() {
+				return DataBufferUtils.readInputStream(
+						() -> data, 
+						new DefaultDataBufferFactory(), 
+						size);
+			}
+		};
 	}
 }

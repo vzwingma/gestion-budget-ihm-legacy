@@ -142,7 +142,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		// Description
 		try {
 			getComponent().getTextFieldDescription().setItems(
-				getServiceOperations().getLibellesOperationsForAutocomplete(
+				getServiceLibellesOperations().getForAutocomplete(
 					getUserSession().getBudgetCourant().getCompteBancaire().getId(),
 					getUserSession().getBudgetCourant().getAnnee()));
 		} catch (Exception e) {

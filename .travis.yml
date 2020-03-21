@@ -84,7 +84,6 @@ jobs:
               docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
               docker push vzwingmann/gestion_budget_ihm:latest ; 
           fi;
-        - VERSION_RELEASE=$(echo $TRAVIS_BRANCH | cut -b 2-);
         - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
         - docker push vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
       name: "Publish IHM"

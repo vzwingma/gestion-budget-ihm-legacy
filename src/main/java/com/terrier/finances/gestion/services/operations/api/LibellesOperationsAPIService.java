@@ -34,10 +34,13 @@ public class LibellesOperationsAPIService extends AbstractAPIClient<LibellesOper
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public Set<String> getForAutocomplete(String idCompte, int annee) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
-		Map<String, String> params = new HashMap<>();
-		params.put("annee", Integer.toString(annee));
-		return callHTTPGetData(path, params).block().getLibellesOperations();
+
+		Map<String, String> pathParams = new HashMap<>();
+		pathParams.put(BudgetApiUrlEnum.PARAM_ID_COMPTE, idCompte);
+
+		Map<String, String> queryParams = new HashMap<>();
+		queryParams.put("annee", Integer.toString(annee));
+		return callHTTPGetData(BudgetApiUrlEnum.BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL, pathParams, queryParams).block().getLibellesOperations();
 	}
 
 	@Override

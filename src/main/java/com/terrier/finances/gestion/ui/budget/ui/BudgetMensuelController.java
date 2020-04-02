@@ -388,7 +388,6 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 						compte.getId(),
 						Month.of(dateMoisSelectionne.getMonthValue()), 
 						dateMoisSelectionne.getYear());
-
 				// Maj du budget
 				getUserSession().updateBudgetInSession(budget);
 				LOGGER.debug("[BUDGET] Changement de mois ou de compte : Refresh total des tableaux");

@@ -1,5 +1,8 @@
 package com.terrier.finances.gestion.services.operations.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
@@ -30,8 +33,10 @@ public class BudgetsCompteAPIService extends AbstractAPIClient<IntervallesCompte
 	 * @throws UserNotAuthorizedException 
 	 */
 	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.BUDGET_COMPTE_INTERVALLES_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, compte);
-		return callHTTPGetData(path).block();
+		
+		Map<String, String> pathParams = new HashMap<>();
+		pathParams.put(BudgetApiUrlEnum.PARAM_ID_COMPTE, compte);
+		return callHTTPGetData(BudgetApiUrlEnum.BUDGET_COMPTE_INTERVALLES_FULL, pathParams, null).block();
 	}
 
 

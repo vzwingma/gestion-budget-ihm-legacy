@@ -1,6 +1,8 @@
 package com.terrier.finances.gestion.services.comptes.api;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 
@@ -40,8 +42,10 @@ public class ComptesAPIService extends AbstractAPIClient<CompteBancaire> {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public CompteBancaire getCompte(String idCompte) throws UserNotAuthorizedException, DataNotFoundException{
-		String path = BudgetApiUrlEnum.COMPTES_ID_FULL.replace(BudgetApiUrlEnum.URL_PARAM_ID_COMPTE, idCompte);
-		return callHTTPGetData(path).block();
+		Map<String, String> pathParams = new HashMap<>();
+		pathParams.put(BudgetApiUrlEnum.PARAM_ID_COMPTE, idCompte);
+
+		return callHTTPGetData(BudgetApiUrlEnum.COMPTES_ID_FULL, pathParams, null).block();
 	}
 
 	

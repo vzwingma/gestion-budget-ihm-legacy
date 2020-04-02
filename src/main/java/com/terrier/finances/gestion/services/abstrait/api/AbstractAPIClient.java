@@ -43,9 +43,11 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * Statut du Services 
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public Info getInfo() throws DataNotFoundException, UserNotAuthorizedException {
-		return callAPIandReturnMono(HttpMethod.GET, BudgetApiUrlEnum.ACTUATORS_INFO_FULL, null, null, Info.class).block();
+	public Mono<Info> getInfo() throws DataNotFoundException, UserNotAuthorizedException {
+		return (Mono<Info>)callAPIandReturnMono(HttpMethod.GET, BudgetApiUrlEnum.ACTUATORS_INFO_FULL, null, null, null, Info.class);
 	}
+	
+	
 	/**
 	 * Appel POST vers les API Services
 	 * @param <Q> Classe des données à envoyer
@@ -58,7 +60,22 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	protected <Q extends AbstractAPIObjectModel> ClientResponse 
 	callHTTPPostResponse(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
 
-		return callAPIandReturnResponse(HttpMethod.POST, path, null, dataToSend);
+		return callAPIandReturnResponse(HttpMethod.POST, path, null, null, dataToSend);
+	}
+	/**
+	 * Appel POST vers les API Services
+	 * @param <Q> Classe des données à envoyer
+	 * @param path chemin
+	 * @param pathParams paramètres d'URL
+	 * @param dataToSend body à envoyer
+	 * @return réponse
+	 * @throws UserNotAuthorizedException  erreur d'authentification
+	 * @throws DataNotFoundException  erreur lors de l'appel
+	 */
+	protected <Q extends AbstractAPIObjectModel> ClientResponse 
+	callHTTPPostResponse(String path, Map<String, String> pathParams, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException {
+
+		return callAPIandReturnResponse(HttpMethod.POST, path, pathParams, null, dataToSend);
 	}
 
 	/**
@@ -74,21 +91,10 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	protected  <Q extends AbstractAPIObjectModel>
 	Mono<R> callHTTPPost(String path, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException{
 
-		return callAPIandReturnMono(HttpMethod.POST, path, null, dataToSend, responseClassType);
+		return callAPIandReturnMono(HttpMethod.POST, path, null, null, dataToSend, responseClassType);
 	}
 
-	/**
-	 * Appel POST vers les API Services
-	 * @param path chemin
-	 * @param params paramètres
-	 * @return réponse body
-	 * @throws UserNotAuthorizedException utilisateur non authorisé
-	 * @throws DataNotFoundException  donnée introuvable
-	 */
-	protected Mono<R> callHTTPPost(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
-
-		return callAPIandReturnMono(HttpMethod.POST, path, params, null, responseClassType);
-	}
+	
 	/**
 	 * Appel POST vers les API Services
 	 * @param <Q> classe de l'enquete 
@@ -100,9 +106,9 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws DataNotFoundException  donnée introuvable
 	 */
 	protected <Q extends AbstractAPIObjectModel> 
-	Mono<R> callHTTPPost(String path, Map<String, String> params, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException{
+	Mono<R> callHTTPPost(String path,  Map<String, String> pathParams, Map<String, String> queryParams, Q dataToSend) throws UserNotAuthorizedException, DataNotFoundException{
 
-		return callAPIandReturnMono(HttpMethod.POST, path, params, dataToSend, responseClassType);
+		return callAPIandReturnMono(HttpMethod.POST, path, pathParams, queryParams, dataToSend, responseClassType);
 	}
 
 	/**
@@ -113,8 +119,8 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	protected boolean callHTTPGet(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
-		return callAPIandReturnResponse(HttpMethod.GET, path, params, null).statusCode().is2xxSuccessful();
+	protected boolean callHTTPGet(String path, Map<String, String> pathParams, Map<String, String> queryParams) throws UserNotAuthorizedException, DataNotFoundException{
+		return callAPIandReturnResponse(HttpMethod.GET, path, pathParams, queryParams, null).statusCode().is2xxSuccessful();
 	}
 
 	/**
@@ -127,7 +133,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	protected Mono<R> callHTTPGetData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 
-		return callAPIandReturnMono(HttpMethod.GET, path, null, null, responseClassType);
+		return callAPIandReturnMono(HttpMethod.GET, path, null, null, null, responseClassType);
 	}
 
 
@@ -141,7 +147,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	protected Mono<List<R>> callHTTPGetListData(String path) throws UserNotAuthorizedException, DataNotFoundException{
 
-		return callAPIandReturnFlux(HttpMethod.GET, path, null, null, responseClassType).collectList();
+		return callAPIandReturnFlux(HttpMethod.GET, path, null, null, null, responseClassType).collectList();
 	}
 	/**
 	 * @param <R> classe de la réponse
@@ -152,8 +158,8 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	protected Mono<R> callHTTPGetData(String path, Map<String, String> params) throws UserNotAuthorizedException, DataNotFoundException{
-		return callAPIandReturnMono(HttpMethod.GET, path, params, null, responseClassType);
+	protected Mono<R> callHTTPGetData(String path, Map<String, String> pathParams,  Map<String, String> queryParams) throws UserNotAuthorizedException, DataNotFoundException{
+		return callAPIandReturnMono(HttpMethod.GET, path, pathParams, queryParams, null, responseClassType);
 	}
 
 
@@ -163,8 +169,8 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @param path racine de l'URL
 	 * @return résultat de l'appel
 	 */
-	protected Mono<R> callHTTPDeleteData(String path) throws UserNotAuthorizedException, DataNotFoundException{
-		return callAPIandReturnMono(HttpMethod.DELETE, path, null, null, responseClassType);
+	protected Mono<R> callHTTPDeleteData(String path, Map<String, String> pathParams) throws UserNotAuthorizedException, DataNotFoundException{
+		return callAPIandReturnMono(HttpMethod.DELETE, path, pathParams, null, null, responseClassType);
 	}
 	
 

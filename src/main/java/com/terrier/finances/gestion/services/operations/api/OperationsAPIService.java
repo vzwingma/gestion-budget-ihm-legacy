@@ -211,7 +211,8 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> {
 		if(budget != null && budget.getListeOperations() != null && !budget.getListeOperations().isEmpty()){
 			budget.getListeOperations()
 				.stream()
-				.forEach(op -> op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getIdSsCategorie(), parametrageAPIServices.getCategories())));
+				.forEach(op -> op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getIdSsCategorie(), 
+						parametrageAPIServices.getCategories())));
 		}
 	}
 

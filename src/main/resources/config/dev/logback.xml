@@ -3,14 +3,12 @@
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} %-5level %logger{36}:%L - %msg%n</pattern>
+			<pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %mdc{X-Correlation-ID} %mdc{X-API-Correlation-ID} %msg%n</pattern>
 		</encoder>
 	</appender>
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 		<file>C://Users//vzwingma//Documents//projets//perso//ihm.log</file>
 		<append>false</append>
-		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
-			by default -->
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} %-5level %logger{36}:%L - %mdc{X-Correlation-ID} %mdc{X-API-Correlation-ID} %msg%n</pattern>
 		</encoder>

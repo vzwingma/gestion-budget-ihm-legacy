@@ -37,7 +37,9 @@ public class FinancesVaadinUI extends UI
 
 
 	@WebServlet(value = {"/*", "/VAADIN/*"}, asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = FinancesVaadinUI.class, widgetset = "com.terrier.finances.gestion.AppWidgetSet")
+	@VaadinServletConfiguration(productionMode = true, 
+								ui = FinancesVaadinUI.class, 
+								widgetset = "com.terrier.finances.gestion.AppWidgetSet")
 	public static class Servlet extends VaadinServlet {
 
 		/**

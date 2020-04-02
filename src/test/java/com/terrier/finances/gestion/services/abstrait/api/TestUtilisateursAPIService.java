@@ -28,7 +28,7 @@ public class TestUtilisateursAPIService {
 				.claim(JwtConfigEnum.JWT_CLAIM_HEADER_USERID, "5484268384b7ff1e5f26b692")
 				.setIssuedAt(new Date(c))
 				.setIssuer("Budget-Services v1")
-				.setExpiration(new Date(c + JwtConfigEnum.JWT_EXPIRATION_S * 1000))  // in milliseconds
+				.setExpiration(new Date(c + 10000))  // in milliseconds
 				.signWith(Keys.hmacShaKeyFor(JwtConfigEnum.getJwtSecretKey().getBytes()))
 				.compact();
 

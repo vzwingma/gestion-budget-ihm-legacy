@@ -1,7 +1,6 @@
 package com.terrier.finances.gestion.ui.login.business;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -13,7 +12,6 @@ import javax.annotation.PreDestroy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.terrier.finances.gestion.ui.communs.abstrait.IUIControllerService;
@@ -26,7 +24,7 @@ import com.vaadin.ui.UI;
  *
  */
 @Service
-public class UserUISessionsService implements Runnable, IUIControllerService {
+public class UserUISessionsService implements IUIControllerService {
 	/**
 	 * Logger
 	 */
@@ -37,18 +35,6 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 
 	private ScheduledThreadPoolExecutor pool;
 
-	private int sessionValidity = 10; 
-
-	@Value("${budget.ui.session.validity.period:10}")
-	public void setUiValiditySessionPeriod(String sessionValidity){
-		try{
-			this.sessionValidity = Integer.parseInt(sessionValidity);
-			LOGGER.info("Suivi des sessions utilisateurs. Durée de validité d'une session : {} minutes", sessionValidity);
-		}
-		catch(Exception e){
-			LOGGER.warn("Suivi des sessions utilisateurs. Durée de validité par défaut d'une session : {} minutes", sessionValidity);
-		}
-	}
 
 	/**
 	 * Démarrage du controle des sessions
@@ -56,10 +42,24 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 	@PostConstruct
 	public void startSessionsControl(){
 		pool = new ScheduledThreadPoolExecutor(1);
-		pool.scheduleAtFixedRate(this, 0, 1, TimeUnit.MINUTES);
+		pool.scheduleAtFixedRate(() -> {
+			List<String> idsInvalide = sessionsMap.values()
+					.parallelStream()
+					.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Date de validité : {} :  Valide : {}", 
+							session.getId(), 
+							session.isActive(), 
+							session.getLastAccessTime(), 
+							session.getValiditeSession(),
+							!session.getLastAccessTime().isBefore(session.getValiditeSession())))
+					.filter(session -> session.getLastAccessTime().isBefore(session.getValiditeSession()))
+					.map(UserUISession::getId)
+					.collect(Collectors.toList());
+
+			idsInvalide.parallelStream().forEach(key -> deconnexionUtilisateur(key, false));
+		}, 0, 1, TimeUnit.MINUTES);
 	}
 
-	
+
 	/**
 	 * Arrêt du controle des sessions
 	 */
@@ -96,15 +96,16 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 		}
 		return idSession;
 	}
-	
-	
+
+
 	/**
 	 * Déconnexion de l'utilisateur
 	 */
 	public void deconnexionUtilisateur(String idSession, boolean redirect){
 		LOGGER.warn("[idSession={}] Déconnexion de l'utilisateur ", idSession);
-		UserUISession session = sessionsMap.get(idSession);
 		getServiceUtilisateurs().deconnexion();
+		
+		UserUISession session = sessionsMap.get(idSession);
 		if(redirect){
 			session.deconnexionAndRedirect();
 		}
@@ -112,7 +113,7 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 			session.deconnexion();
 		}
 		sessionsMap.remove(idSession);
-		
+
 	}
 
 
@@ -123,19 +124,4 @@ public class UserUISessionsService implements Runnable, IUIControllerService {
 		return sessionsMap.values().stream().filter(UserUISession::isActive).count();
 	}
 
-
-	/**
-	 * Vérification des sessions
-	 */
-	@Override
-	public void run() {
-		final Instant validiteSession  = Instant.now().minus(sessionValidity, ChronoUnit.MINUTES);
-		List<String> idsInvalide = sessionsMap.values()
-			.parallelStream()
-//			.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Valide : {}", session.getId(), session.isActive(), session.getLastAccessTime(), !session.getLastAccessTime().isBefore(validiteSession)))
-			.filter(session -> session.getLastAccessTime().isBefore(validiteSession))
-			.map(UserUISession::getId)
-			.collect(Collectors.toList());
-		idsInvalide.parallelStream().forEach(key -> deconnexionUtilisateur(key, false));
-	}
 }

@@ -163,7 +163,9 @@ public class UserUISession {
 		this.lastAccessTime = lastAccessTime;
 	}
 
-
+	public Instant getValiditeSession() {
+		return this.jwtClaims.getExpiration().toInstant();
+	}
 	/**
 	 * @return the lastAccessTime
 	 */

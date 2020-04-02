@@ -7,12 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
+import com.terrier.finances.gestion.services.admin.model.Info;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Controleur du login
@@ -68,7 +72,7 @@ public class LoginController extends AbstractUIController<Login>{
 		getComponent().getPasswordField().setIcon(new ThemeResource("img/passwd.png"));
 		getComponent().getLabelVersion().setValue("Version IHM : " + getServiceParams().getVersion());
 		getComponent().getLabelBuildTime().setValue("Build : " + getServiceParams().getBuildTime());
-		
+
 		addVersion(getComponent().getLabelVersionComptes(), getServiceComptes());
 		addVersion(getComponent().getLabelVersionOperations(), getServiceOperations());
 		addVersion(getComponent().getLabelVersionParametres(), getServiceParams());
@@ -79,14 +83,18 @@ public class LoginController extends AbstractUIController<Login>{
 	 * @param label label à completer
 	 * @param apiService service
 	 */
+	@SuppressWarnings("unchecked")
 	private void addVersion(Label label, @SuppressWarnings("rawtypes") AbstractAPIClient apiService) {
 		String version = "N/A";
+		Mono<Info> mono;
 		try {
-			version = apiService.getInfo().getApp().getVersion();
-		} catch (Exception e) {
-			version = "N/A";
+			mono = apiService.getInfo();
+			mono.subscribe(c -> label.setValue(label.getValue() + ":" +  c.getApp().getVersion()));
+		} catch (DataNotFoundException | UserNotAuthorizedException e) {
+			LOGGER.error("Erreur sur la réception des versions");
+			label.setValue(label.getValue() + ":" + version);
 		}
-		label.setValue(label.getValue() + ":" + version);
+		
 	}
 
 

@@ -260,7 +260,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * Déconnexion de l'utilisateur
 	 */
 	public void deconnexion(){
-		getServiceUserSessions().deconnexionUtilisateur(getUserSession().getId(), true);
+		getServiceUserSessions().deconnexionUtilisateur(getUserSession().getId());
 	}
 
 

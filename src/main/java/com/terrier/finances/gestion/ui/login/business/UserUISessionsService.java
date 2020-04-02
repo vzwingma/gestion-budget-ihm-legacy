@@ -45,17 +45,17 @@ public class UserUISessionsService implements IUIControllerService {
 		pool.scheduleAtFixedRate(() -> {
 			List<String> idsInvalide = sessionsMap.values()
 					.parallelStream()
-					.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Date de validité : {} :  Valide : {}", 
+				/*	.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Date de validité : {} :  Valide : {}", 
 							session.getId(), 
 							session.isActive(), 
 							session.getLastAccessTime(), 
 							session.getValiditeSession(),
-							!session.getLastAccessTime().isBefore(session.getValiditeSession())))
-					.filter(session -> session.getLastAccessTime().isBefore(session.getValiditeSession()))
+							!session.getLastAccessTime().isBefore(session.getValiditeSession()))) */
+					.filter(session -> !session.getLastAccessTime().isBefore(session.getValiditeSession()))
 					.map(UserUISession::getId)
 					.collect(Collectors.toList());
 
-			idsInvalide.parallelStream().forEach(key -> deconnexionUtilisateur(key, false));
+			idsInvalide.parallelStream().forEach(key -> deconnexionUtilisateur(key));
 		}, 0, 1, TimeUnit.MINUTES);
 	}
 
@@ -101,19 +101,12 @@ public class UserUISessionsService implements IUIControllerService {
 	/**
 	 * Déconnexion de l'utilisateur
 	 */
-	public void deconnexionUtilisateur(String idSession, boolean redirect){
+	public void deconnexionUtilisateur(String idSession){
 		LOGGER.warn("[idSession={}] Déconnexion de l'utilisateur ", idSession);
-		getServiceUtilisateurs().deconnexion();
-		
-		UserUISession session = sessionsMap.get(idSession);
-		if(redirect){
-			session.deconnexionAndRedirect();
-		}
-		else{
-			session.deconnexion();
-		}
-		sessionsMap.remove(idSession);
 
+		UserUISession session = sessionsMap.get(idSession);
+		session.deconnexionAndRedirect();
+		sessionsMap.remove(idSession);
 	}
 
 

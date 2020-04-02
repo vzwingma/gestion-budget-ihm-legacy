@@ -91,7 +91,7 @@ public class UserUISession {
 	/**
 	 * Auto déconnexion, sans redirection
 	 */
-	public void deconnexion(){
+	private void deconnexion(){
 		// Purge
 		this.jwtClaims = null;
 		this.jwtToken = null;

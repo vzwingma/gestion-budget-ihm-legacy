@@ -35,6 +35,8 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 	public UtilisateursAPIService() {
 		super(UtilisateurPrefsAPIObject.class);
 	}
+
+	
 	/**
 	 * Validation login/mdp
 	 * @param login login
@@ -103,8 +105,8 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 		}
 		return null;
 	}
-
-
+	
+	
 	@Override
 	public ApiUrlConfigEnum getConfigServiceURI() {
 		return ApiUrlConfigEnum.APP_CONFIG_URL_UTILISATEURS;

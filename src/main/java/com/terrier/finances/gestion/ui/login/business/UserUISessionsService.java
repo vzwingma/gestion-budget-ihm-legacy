@@ -103,8 +103,7 @@ public class UserUISessionsService implements IUIControllerService {
 	 */
 	public void deconnexionUtilisateur(String idSession, boolean redirect){
 		LOGGER.warn("[idSession={}] Déconnexion de l'utilisateur ", idSession);
-		getServiceUtilisateurs().deconnexion();
-		
+
 		UserUISession session = sessionsMap.get(idSession);
 		if(redirect){
 			session.deconnexionAndRedirect();

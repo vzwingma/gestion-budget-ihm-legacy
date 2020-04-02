@@ -67,6 +67,7 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 	 * @param idUtilisateur
 	 * @throws UserNotAuthorizedException 
 	 */
+	@Deprecated
 	public boolean deconnexion() {
 		try {
 			return callHTTPPostResponse(BudgetApiUrlEnum.USERS_DISCONNECT_FULL, null).statusCode().is2xxSuccessful();

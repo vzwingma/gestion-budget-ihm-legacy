@@ -12,7 +12,8 @@ import com.terrier.finances.gestion.services.admin.model.Info;
  *
  */
 @Controller
-public class AdminAPIService extends AbstractAPIClient<Info> {
+public class AdminAPIService extends AbstractAPIClient<Info> implements IAdminAPIService {
+	
 	public AdminAPIService() {
 		super(Info.class);
 	}

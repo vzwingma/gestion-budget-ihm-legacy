@@ -4,14 +4,14 @@
 package com.terrier.finances.gestion.ui.communs.abstrait;
 
 import com.terrier.finances.gestion.services.FacadeServices;
-import com.terrier.finances.gestion.services.admin.api.AdminAPIService;
-import com.terrier.finances.gestion.services.comptes.api.ComptesAPIService;
-import com.terrier.finances.gestion.services.operations.api.BudgetsCompteAPIService;
-import com.terrier.finances.gestion.services.operations.api.LibellesOperationsAPIService;
-import com.terrier.finances.gestion.services.operations.api.OperationsAPIService;
-import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
-import com.terrier.finances.gestion.services.utilisateurs.api.UtilisateursAPIService;
-import com.terrier.finances.gestion.ui.login.business.UserUISessionsService;
+import com.terrier.finances.gestion.services.admin.api.IAdminAPIService;
+import com.terrier.finances.gestion.services.comptes.api.IComptesAPIService;
+import com.terrier.finances.gestion.services.operations.api.IBudgetsCompteAPIService;
+import com.terrier.finances.gestion.services.operations.api.ILibellesOperationsAPIService;
+import com.terrier.finances.gestion.services.operations.api.IOperationsAPIService;
+import com.terrier.finances.gestion.services.parametrages.api.IParametragesAPIService;
+import com.terrier.finances.gestion.services.utilisateurs.api.IUtilisateursAPIService;
+import com.terrier.finances.gestion.ui.login.business.IUserUISessionsService;
 import com.terrier.finances.gestion.ui.login.model.UserUISession;
 import com.vaadin.ui.Window;
 
@@ -42,14 +42,14 @@ public interface IUIControllerService  {
 	/**
 	 * @return service métier dépense
 	 */
-	public default OperationsAPIService getServiceOperations(){
+	public default IOperationsAPIService getServiceOperations(){
 		return FacadeServices.get().getServiceOperations();
 	}
 	
 	/**
 	 * @return service métier budget comptes
 	 */
-	public default BudgetsCompteAPIService getServiceBudgetsCompte(){
+	public default IBudgetsCompteAPIService getServiceBudgetsCompte(){
 		return FacadeServices.get().getServiceBudgetsCompte();
 	}
 	
@@ -57,41 +57,41 @@ public interface IUIControllerService  {
 	/**
 	 * @return service métier dépense
 	 */
-	public default LibellesOperationsAPIService getServiceLibellesOperations(){
+	public default ILibellesOperationsAPIService getServiceLibellesOperations(){
 		return FacadeServices.get().getServiceLibellesOperations();
 	}
 	
 	/**
 	 * @return service paramétrage
 	 */
-	public default ParametragesAPIService getServiceParams(){
+	public default IParametragesAPIService getServiceParams(){
 		return FacadeServices.get().getServiceParams();
 	}
 	/**
 	 * @return service User
 	 */
-	default UserUISessionsService getServiceUserSessions(){
+	default IUserUISessionsService getServiceUserSessions(){
 		return FacadeServices.get().getServiceUserSessions();
 	}
 
 	/**
 	 * @return service Utilisateurs
 	 */
-	public default UtilisateursAPIService getServiceUtilisateurs(){
+	public default IUtilisateursAPIService getServiceUtilisateurs(){
 		return FacadeServices.get().getServiceUtilisateurs();
 	}
 	
 	/**
 	 * @return service Comptes
 	 */
-	public default ComptesAPIService getServiceComptes(){
+	public default IComptesAPIService getServiceComptes(){
 		return FacadeServices.get().getServiceComptes();
 	}
 	
 	/**
 	 * @return service Admin
 	 */
-	public default AdminAPIService getServiceAdmin(){
+	public default IAdminAPIService getServiceAdmin(){
 		return FacadeServices.get().getServiceAdmin();
 	}
 }

@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
  * @author vzwingma
  *
  */
-public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extends AbstractHTTPReactiveClient{
+public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extends AbstractHTTPReactiveClient implements IAPIClient{
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractAPIClient.class );
 
@@ -36,6 +36,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	public AbstractAPIClient(Class<R> responseClassType) {
 		this.responseClassType = responseClassType;
+		setCorrelationId(FacadeServices.get().getInitCorrId());
 	}
 	
 	private Class<R> responseClassType;
@@ -180,6 +181,6 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	@Override
 	public String getJwtToken() {
-		return FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
+		return FacadeServices.get().getServiceUserSessions().getSession().getJwtToken();
 	}
 }

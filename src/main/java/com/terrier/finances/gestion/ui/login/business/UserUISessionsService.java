@@ -28,7 +28,7 @@ import com.vaadin.ui.UI;
  *
  */
 @Service
-public class UserUISessionsService implements IUIControllerService {
+public class UserUISessionsService implements IUIControllerService, IUserUISessionsService {
 	/**
 	 * Logger
 	 */

@@ -19,19 +19,23 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 
+
 /**
- * Service API vers {@link UtilisateursService}
+ * Implémentation du service API Utilisateurs
  * @author vzwingma
  *
  */
 @Controller
-public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAPIObject> {
+public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAPIObject> implements IUtilisateursAPIService {
 	/**
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(UtilisateursAPIService.class);
 	
 	
+	/**
+	 * 
+	 */
 	public UtilisateursAPIService() {
 		super(UtilisateurPrefsAPIObject.class);
 	}
@@ -94,8 +98,8 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 
 
 	/**
-	 * Déconnexion d'un utilisateur
-	 * @param idUtilisateur
+	 * Retourne les préférences de l'utilisateur
+	 * @return retourne les préférences utilisateurs
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */

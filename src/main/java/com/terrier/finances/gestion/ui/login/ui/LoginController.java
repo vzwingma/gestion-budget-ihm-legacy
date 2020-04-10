@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
+import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
 import com.terrier.finances.gestion.services.admin.model.Info;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
@@ -83,8 +83,7 @@ public class LoginController extends AbstractUIController<Login>{
 	 * @param label label à completer
 	 * @param apiService service
 	 */
-	@SuppressWarnings("unchecked")
-	private void addVersion(Label label, @SuppressWarnings("rawtypes") AbstractAPIClient apiService) {
+	private void addVersion(Label label, IAPIClient apiService) {
 		String version = "N/A";
 		Mono<Info> mono;
 		try {

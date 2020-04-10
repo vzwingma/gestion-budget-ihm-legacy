@@ -18,7 +18,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
  *
  */
 @Controller
-public class BudgetsCompteAPIService extends AbstractAPIClient<IntervallesCompteAPIObject> {
+public class BudgetsCompteAPIService extends AbstractAPIClient<IntervallesCompteAPIObject> implements IBudgetsCompteAPIService {
 	
 	
 	public BudgetsCompteAPIService() {

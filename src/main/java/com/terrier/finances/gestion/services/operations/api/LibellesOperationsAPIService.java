@@ -19,7 +19,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
  *
  */
 @Controller
-public class LibellesOperationsAPIService extends AbstractAPIClient<LibellesOperationsAPIObject> {
+public class LibellesOperationsAPIService extends AbstractAPIClient<LibellesOperationsAPIObject> implements ILibellesOperationsAPIService{
 
 	public LibellesOperationsAPIService() {
 		super(LibellesOperationsAPIObject.class);

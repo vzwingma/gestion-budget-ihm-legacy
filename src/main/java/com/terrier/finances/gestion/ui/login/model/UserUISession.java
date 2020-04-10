@@ -12,10 +12,6 @@ import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.server.WrappedSession;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
@@ -65,33 +61,17 @@ public class UserUISession {
 	 * @param idSession idSessions
 	 */
 	public UserUISession(String idSession){
-		LOGGER.trace("[INIT][{}] Session UI ", idSession);
+		LOGGER.trace("[INIT][idSession={}] Session UI ", idSession);
 		this.idSession = idSession;
 		this.lastAccessTime = Instant.now();
 	}
 
 
-	/**
-	 * Déconnexion de l'utilisateur manuellement
-	 */
-	public void deconnexionAndRedirect(){
-		// Déconnexion métier et invalidation Session Vaadin
-		deconnexion();
-		//Redirect the user to the login/default Page
-		Page currentPage = Page.getCurrent();
-		VaadinServlet currentServlet = VaadinServlet.getCurrent();
-		if(currentPage != null && currentServlet != null && currentServlet.getServletContext() != null && currentServlet.getServletContext().getContextPath() != null){
-			currentPage.setLocation(currentServlet.getServletContext().getContextPath());
-		}
-		else{
-			LOGGER.error("Erreur : Impossible de trouver la page courante. Pb de framework Vaadin");
-		}
-	}
 
 	/**
 	 * Auto déconnexion, sans redirection
 	 */
-	private void deconnexion(){
+	public void clearValues(){
 		// Purge
 		this.jwtClaims = null;
 		this.jwtToken = null;
@@ -102,15 +82,6 @@ public class UserUISession {
 		getMainLayout().removeAllComponents();
 		// Suppression de tous les controleurs
 		this.mapControleurs.clear();
-
-		// Invalidate Sessions
-		VaadinSession vSession = VaadinSession.getCurrent();
-		if(vSession != null){
-			vSession.close();
-			WrappedSession httpSession = vSession.getSession();
-			//Invalidate HttpSession
-			httpSession.invalidate();
-		}
 	}
 
 
@@ -120,7 +91,7 @@ public class UserUISession {
 	 */
 	public <C extends AbstractUIController<? extends AbstractComponent>> void registerUIControler(C controleur) {
 		if(mapControleurs.get(controleur.getClass()) == null){
-			LOGGER.info("[{}] Enregistrement du controleur : {}", this.idSession, controleur.getClass().getSimpleName());
+			LOGGER.debug("[idSession={}] Enregistrement du controleur : {}", this.idSession, controleur.getClass().getSimpleName());
 			mapControleurs.put(controleur.getClass(), controleur);
 		}
 
@@ -144,11 +115,11 @@ public class UserUISession {
 		try {
 			this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
 			if(this.jwtClaims != null) {
-				LOGGER.info("[{}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
+				LOGGER.info("[idSession={}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
 			}
 		}
 		catch (SignatureException e) {
-			LOGGER.warn("[{}] Le token est mal signé [{}]", idSession, token);
+			LOGGER.warn("[idSession={}] Le token est mal signé [{}]", idSession, token);
 			this.jwtClaims = null;
 		}
 		return this.jwtClaims != null;
@@ -260,6 +231,4 @@ public class UserUISession {
 	public Claims getJwtClaims() {
 		return jwtClaims;
 	}
-
-
 }

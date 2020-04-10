@@ -5,7 +5,7 @@ package com.terrier.finances.gestion.ui.budget.listeners;
 
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
-import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
+import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractActionUtilisateurListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -15,7 +15,7 @@ import com.vaadin.ui.Button.ClickListener;
  * @author vzwingma
  *
  */
-public class ActionDeconnexionClickListener extends AbstractComponentListener implements ClickListener {
+public class ActionDeconnexionClickListener extends AbstractActionUtilisateurListener implements ClickListener {
 	/**
 	 * 
 	 */
@@ -26,7 +26,7 @@ public class ActionDeconnexionClickListener extends AbstractComponentListener im
 	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
 	 */
 	@Override
-	public void buttonClick(ClickEvent event) {
+	public void boutonClick(ClickEvent event) {
 		Button editer = event.getButton();
 		BudgetMensuelPage page  = (BudgetMensuelPage)editer.getParent().getParent().getParent().getParent();
 

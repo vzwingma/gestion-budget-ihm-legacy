@@ -17,7 +17,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
-import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
+import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractActionUtilisateurListener;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -31,7 +31,7 @@ import com.vaadin.ui.Notification.Type;
  * @author vzwingma
  *
  */
-public class ActionsOperationClickListener extends AbstractComponentListener implements Button.ClickListener {
+public class ActionsOperationClickListener extends AbstractActionUtilisateurListener implements Button.ClickListener {
 
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class ActionsOperationClickListener extends AbstractComponentListener imp
 	private ActionsOperation actions;
 
 	@Override
-	public void buttonClick(ClickEvent event) {
+	public void boutonClick(ClickEvent event) {
 		EtatOperationEnum etat = EtatOperationEnum.PREVUE;
 		actions = event.getButton().findAncestor(ActionsOperation.class);
 		if(event.getButton().getId().equals("buttonReel")){

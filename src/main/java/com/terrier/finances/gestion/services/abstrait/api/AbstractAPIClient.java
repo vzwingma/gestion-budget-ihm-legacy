@@ -36,7 +36,6 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 */
 	public AbstractAPIClient(Class<R> responseClassType) {
 		this.responseClassType = responseClassType;
-		setCorrelationId(FacadeServices.get().getInitCorrId());
 	}
 	
 	private Class<R> responseClassType;
@@ -175,6 +174,21 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	}
 	
 
+	/**
+	 * 
+	 * @return CorrId suite à action de l'utilisateur
+	 * ou InitCorrId pour le démarrage
+	 */
+	public String getCorrId() {
+		if(FacadeServices.get().getServiceUserSessions().getSession() != null && FacadeServices.get().getServiceUserSessions().getSession().getActionUserCorrId() != null) {
+			return FacadeServices.get().getServiceUserSessions().getSession().getActionUserCorrId();			
+		}
+		else {
+			return FacadeServices.get().getInitCorrId();
+		}
+		
+	}
+	
 	/**
 	 * 
 	 * @return JWT Token de l'utilisateur

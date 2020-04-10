@@ -13,7 +13,7 @@ import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperation
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
-import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
+import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractActionUtilisateurListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseForm;
 import com.vaadin.ui.Button.ClickEvent;
@@ -24,7 +24,7 @@ import com.vaadin.ui.Button.ClickListener;
  * @author vzwingma
  *
  */
-public class ActionValiderCreationDepenseClickListener extends AbstractComponentListener implements ClickListener {
+public class ActionValiderCreationDepenseClickListener extends AbstractActionUtilisateurListener implements ClickListener {
 
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
 	 */
 	@Override
-	public void buttonClick(ClickEvent event) {
+	public void boutonClick(ClickEvent event) {
 		CreerDepenseForm form = (CreerDepenseForm)event.getButton().getParent().getParent().getParent().getParent();
 
 		LOGGER.debug("Validation du formulaire de création");

@@ -13,10 +13,11 @@ import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperatio
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
+import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractActionUtilisateurListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
 import com.vaadin.event.selection.SingleSelectionEvent;
 import com.vaadin.event.selection.SingleSelectionListener;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification;
 
 /**
@@ -25,7 +26,7 @@ import com.vaadin.ui.Notification;
  * @author vzwingma
  *
  */
-public class SelectionSousCategorieValueChangeListener extends AbstractComponentListener implements SingleSelectionListener<CategorieOperation>{
+public class SelectionSousCategorieValueChangeListener extends AbstractActionUtilisateurListener implements SingleSelectionListener<CategorieOperation>{
 
 	// Controleur
 	private CreerDepenseController controleur;
@@ -88,5 +89,10 @@ public class SelectionSousCategorieValueChangeListener extends AbstractComponent
 				controleur.getComponent().getComboboxType().setSelectedItem(typeAttendu);
 			}
 		}
+	}
+
+	@Override
+	public void boutonClick(ClickEvent event) {
+		// Rien ici
 	}
 }

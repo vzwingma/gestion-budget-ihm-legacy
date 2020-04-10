@@ -36,6 +36,8 @@ public class UserUISession {
 	private String idSession;
 
 	private Instant lastAccessTime;
+	
+	private String actionUserCorrId = null;
 	/*
 	 * JWT
 	 */
@@ -231,4 +233,18 @@ public class UserUISession {
 	public Claims getJwtClaims() {
 		return jwtClaims;
 	}
+
+
+
+	public String getActionUserCorrId() {
+		return actionUserCorrId;
+	}
+
+
+
+	public void setActionUserCorrId(String actionUserCorrId) {
+		this.actionUserCorrId = actionUserCorrId;
+	}
+	
+	
 }

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.terrier.finances.gestion.communs.api.security.ApiHeaderIdEnum;
+import com.terrier.finances.gestion.communs.utils.config.CorrelationsIdUtils;
 
 /**
  * Configuration des aspects
@@ -26,9 +26,6 @@ public class AspectsConfig {
 	
 	@AfterReturning("execution(* com.terrier.finances.gestion.communs.api.AbstractHTTPReactiveClient+.*(..))")
 	public void clearAPICorrIdLogger() {
-		org.slf4j.MDC.remove(ApiHeaderIdEnum.HEADER_CORRELATION_ID);
-		org.slf4j.MDC.remove(ApiHeaderIdEnum.HEADER_API_CORRELATION_ID);
+		CorrelationsIdUtils.clearApiIdOnMDC();
 	}
-
-
 }

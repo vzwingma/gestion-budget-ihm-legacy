@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terrier.finances.gestion.communs.utils.config.CorrelationsIdUtils;
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.terrier.finances.gestion.ui.login.ui.Login;
 import com.vaadin.annotations.Theme;
@@ -50,7 +51,8 @@ public class FinancesVaadinUI extends UI
 
 	@Override
 	protected void init(VaadinRequest request) {
-		LOGGER.debug("[INIT] FinancesVaadinUI - IdSession : {}", this.getSession().getCsrfToken());
+		CorrelationsIdUtils.putCorrIdOnMDC(FacadeServices.get().getInitCorrId());
+		LOGGER.debug("FinancesVaadinUI - IdSession : {}", this.getSession().getCsrfToken());
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(false);
 		layout.setSizeFull();
@@ -62,7 +64,7 @@ public class FinancesVaadinUI extends UI
 		// Refresh
 		int pollInterval = Integer.parseInt(FacadeServices.get().getServiceParams().getUiRefreshPeriod());
 		UI.getCurrent().setPollInterval(pollInterval);
-		LOGGER.debug("[INIT] FinancesVaadinUI - PoolInterval de {} ms", pollInterval);
+		LOGGER.debug("FinancesVaadinUI - PoolInterval de {} ms", pollInterval);
 
 		if(!FacadeServices.get().getServiceUserSessions().getSession().isActive()){
 			// Page de login au démarrage si non authentifié

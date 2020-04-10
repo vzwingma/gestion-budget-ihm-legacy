@@ -52,7 +52,7 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 			ClientResponse response = callHTTPPostResponse(BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth);
 			if(response != null) {
 				jwtHeader = response.headers().header(JwtConfigEnum.JWT_HEADER_AUTH).stream().findFirst().orElse(null);
-				LOGGER.info("Authentification : {}", jwtHeader);
+				LOGGER.debug("Authentification : {}", jwtHeader);
 			}
 		} catch (UserNotAuthorizedException e) {
 			LOGGER.warn("Ne peut pas arriver pour cette API");

@@ -31,7 +31,7 @@ import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPISer
 public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> {
 
 	@Autowired
-	ParametragesAPIService parametrageAPIServices;
+	private ParametragesAPIService parametrageAPIServices;
 	
 	
 	public OperationsAPIService() {

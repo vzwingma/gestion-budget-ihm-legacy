@@ -270,7 +270,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public void lockBudget(boolean setBudgetActif) throws DataNotFoundException{
-		LOGGER.info("[IHM] {} du budget mensuel", setBudgetActif ? "Ouverture" : "Clôture");
+		LOGGER.info("{} du budget mensuel", setBudgetActif ? "Ouverture" : "Clôture");
 		try {
 			BudgetMensuel lock = getServiceOperations().setBudgetActif(getUserSession().getBudgetCourant().getId(), setBudgetActif);
 			// Si l'opération s'est bien passée, on répercute la modif
@@ -295,7 +295,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			// Ack pour forcer le "refreshAllTable"
 			miseAJourVueDonnees();
 		} catch (BudgetNotFoundException | DataNotFoundException | CompteClosedException | UserNotAuthorizedException e) {
-			LOGGER.error("[BUDGET] Erreur lors de la réinitialisation du compte", e);
+			LOGGER.error("Erreur lors de la réinitialisation du compte", e);
 			Notification.show("Impossible de réinitialiser le mois courant "+
 					getUserSession().getBudgetCourant().getMois()+"/"+ getUserSession().getBudgetCourant().getAnnee()
 					+" du compte "+ getUserSession().getBudgetCourant().getCompteBancaire().getLibelle(), 
@@ -344,7 +344,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			getComponent().getMois().setRangeStart(datePremierDernierBudgets.getLocalDatePremierBudget());
 			getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
 		}
-		LOGGER.debug("[IHM] > Affichage limité à > [{}/{}]", getComponent().getMois().getRangeStart(), getComponent().getMois().getRangeEnd());
+		LOGGER.debug("> Affichage limité à > [{}/{}]", getComponent().getMois().getRangeStart(), getComponent().getMois().getRangeEnd());
 
 	}
 	/**
@@ -365,7 +365,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				getComponent().getMois().setRangeEnd(dateRangeBudget);
 			}
 		}
-		LOGGER.debug("[IHM] < Affichage fin limité à [{}/{}] <", getComponent().getMois().getRangeStart(), getComponent().getMois().getRangeEnd());
+		LOGGER.debug("< Affichage fin limité à [{}/{}] <", getComponent().getMois().getRangeStart(), getComponent().getMois().getRangeEnd());
 
 	}
 
@@ -373,11 +373,11 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * @see com.terrier.finances.gestion.ui.controler.AbstractUIController#chargeDonnees()
 	 */
 	private BudgetMensuel chargeDonnees() throws DataNotFoundException, UserNotAuthorizedException {
-		LOGGER.debug("[BUDGET] Chargement du budget pour le tableau de suivi des dépenses");
+		LOGGER.debug("Chargement du budget pour le tableau de suivi des dépenses");
 
 		CompteBancaire compte = getComponent().getComboBoxComptes().getValue();
 		LocalDate dateMoisSelectionne = getComponent().getMois().getValue();
-		LOGGER.debug("[BUDGET] Gestion du Compte : {} du mois {}/{}",compte, dateMoisSelectionne.getMonth(), dateMoisSelectionne.getYear());
+		LOGGER.debug("Gestion du Compte : {} du mois {}/{}",compte, dateMoisSelectionne.getMonth(), dateMoisSelectionne.getYear());
 		if(getUserSession().getBudgetCourant() == null 
 				|| !getUserSession().getBudgetCourant().getCompteBancaire().getId().equals(compte.getId()) 
 				|| !getUserSession().getBudgetCourant().getMois().equals(dateMoisSelectionne.getMonth())
@@ -390,7 +390,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 						dateMoisSelectionne.getYear());
 				// Maj du budget
 				getUserSession().updateBudgetInSession(budget);
-				LOGGER.debug("[BUDGET] Changement de mois ou de compte : Refresh total des tableaux");
+				LOGGER.debug("Changement de mois ou de compte : Refresh total des tableaux");
 				return budget;
 
 			} catch (BudgetNotFoundException e) {
@@ -403,7 +403,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			}
 		}
 		else{
-			LOGGER.debug("[BUDGET] Pas de changement de mois ou de compte : Renvoi du budget mensuel courant");
+			LOGGER.debug("Pas de changement de mois ou de compte : Renvoi du budget mensuel courant");
 			return getUserSession().getBudgetCourant();
 		}
 	}
@@ -422,12 +422,12 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				budgetCourant.setNewBudget(false);
 			}
 		} catch (final DataNotFoundException | UserNotAuthorizedException e) {
-			LOGGER.warn("[BUDGET] Budget non trouvé.");
+			LOGGER.warn("Budget non trouvé.");
 			Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
 			return;
 		}
-		LOGGER.info("[IHM] >> Mise à jour des vues >> {}", budgetCourant.isActif());		
-		LOGGER.debug("[IHM] Affichage des données dans le tableau de suivi des dépenses");
+		LOGGER.info(">> Mise à jour des vues >> {}", budgetCourant.isActif());		
+		LOGGER.debug("Affichage des données dans le tableau de suivi des dépenses");
 		List<LigneOperation> listeOperations = new ArrayList<>();
 		budgetCourant.getListeOperations().stream().forEach(listeOperations::add);		
 		/**
@@ -454,14 +454,14 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		/** 
 		 * Affichage par catégorie
 		 */
-		LOGGER.debug("[IHM] Total par categorie");
+		LOGGER.debug("Total par categorie");
 		treeResumeControleur.miseAJourVueDonnees(budgetCourant);
 		/**
 		 * Affichage du résumé
 		 */
 		gridResumeTotauxControleur.miseAJourVueDonnees(budgetCourant);
 
-		LOGGER.debug("[IHM] << Mise à jour des vues <<");
+		LOGGER.debug("<< Mise à jour des vues <<");
 	}
 
 }

@@ -45,7 +45,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 	public void buttonClick(ClickEvent event) {
 		CreerDepenseForm form = (CreerDepenseForm)event.getButton().getParent().getParent().getParent().getParent();
 
-		LOGGER.debug("[IHM] Validation du formulaire de création");
+		LOGGER.debug("Validation du formulaire de création");
 		Optional<TypeOperationEnum> typeSelected = form.getComboboxType().getSelectedItem();
 		TypeOperationEnum type = typeSelected.isPresent() ? typeSelected.get() : TypeOperationEnum.DEPENSE;
 
@@ -64,7 +64,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractComponent
 				etat,
 				form.getCheckBoxPeriodique().getValue());
 
-		LOGGER.debug("[IHM]  >  {}", newOperation);
+		LOGGER.debug(" >  {}", newOperation);
 		boolean resultat = getControleur(CreerDepenseController.class).validateAndCreate(newOperation, form.getComboboxComptes().getSelectedItem());
 
 		if(resultat){

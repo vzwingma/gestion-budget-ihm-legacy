@@ -169,7 +169,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @param path racine de l'URL
 	 * @return résultat de l'appel
 	 */
-	protected Mono<R> callHTTPDeleteData(String path, Map<String, String> pathParams) throws UserNotAuthorizedException, DataNotFoundException{
+	protected Mono<R> callHTTPDeleteData(String path, Map<String, String> pathParams) throws DataNotFoundException{
 		return callAPIandReturnMono(HttpMethod.DELETE, path, pathParams, null, null, responseClassType);
 	}
 	

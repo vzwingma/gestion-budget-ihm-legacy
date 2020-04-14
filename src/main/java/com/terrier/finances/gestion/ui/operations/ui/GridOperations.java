@@ -162,7 +162,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c8.setEditorBinding(binderLD.bindPeriodique());
 
 		@SuppressWarnings("rawtypes")
-		Column c9 = addColumn(ActionsOperation::new, new ActionsOperationRenderer());
+		Column c9 = addColumn(ActionsOperation::new);
 		c9.setId(EntetesGridOperationsEnum.ACTIONS.name())
 			.setCaption(EntetesGridOperationsEnum.ACTIONS.getLibelle())
 			.setWidth(TAILLE_COLONNE_ACTIONS)

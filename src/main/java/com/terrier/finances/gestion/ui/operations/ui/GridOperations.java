@@ -10,6 +10,7 @@ import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperatio
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
+import com.terrier.finances.gestion.ui.operations.actions.ui.renderers.ActionsOperationRenderer;
 import com.terrier.finances.gestion.ui.operations.edition.binder.LigneOperationEditorBinder;
 import com.terrier.finances.gestion.ui.operations.edition.listeners.GridOperationsEditorListener;
 import com.terrier.finances.gestion.ui.operations.edition.listeners.GridOperationsRightClickListener;
@@ -161,7 +162,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		c8.setEditorBinding(binderLD.bindPeriodique());
 
 		@SuppressWarnings("rawtypes")
-		Column c9 = addColumn(ActionsOperation::new);
+		Column c9 = addColumn(ActionsOperation::new, new ActionsOperationRenderer());
 		c9.setId(EntetesGridOperationsEnum.ACTIONS.name())
 			.setCaption(EntetesGridOperationsEnum.ACTIONS.getLibelle())
 			.setWidth(TAILLE_COLONNE_ACTIONS)

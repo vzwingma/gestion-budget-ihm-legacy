@@ -2,8 +2,6 @@ package com.terrier.finances.gestion.services.parametrages.api;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
@@ -53,7 +51,6 @@ public interface IParametragesAPIService extends IAPIClient  {
 	 * période de rafraichissement des IHM
 	 * @param uiRefreshPeriod
 	 */
-	@Value("${budget.ui.refresh.period:1}")
 	public void setUiRefreshPeriod(String uiRefreshPeriod);
 
 }

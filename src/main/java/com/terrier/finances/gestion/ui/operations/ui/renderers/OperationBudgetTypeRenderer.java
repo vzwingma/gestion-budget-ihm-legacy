@@ -36,7 +36,7 @@ public class OperationBudgetTypeRenderer extends TextRenderer {
         }
 		// Périodique
         else if(value instanceof Boolean){
-            return Json.create((Boolean) value ? "oui" : "non");
+            return Json.create(Boolean.TRUE.equals(value) ? "oui" : "non");
         }
 		// TypeDepenseEnum
         else if(value instanceof TypeOperationEnum){

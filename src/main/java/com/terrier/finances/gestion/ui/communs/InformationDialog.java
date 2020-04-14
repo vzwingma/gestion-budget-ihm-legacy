@@ -1,5 +1,7 @@
 package com.terrier.finances.gestion.ui.communs;
 
+import java.util.Objects;
+
 import com.terrier.finances.gestion.services.FacadeServices;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -99,4 +101,27 @@ public final class InformationDialog extends Window implements Button.ClickListe
 		/** * The user action */
 		void response();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(mainLayout, okButton);
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InformationDialog other = (InformationDialog) obj;
+		return Objects.equals(mainLayout, other.mainLayout) && Objects.equals(okButton, other.okButton);
+	}
+	
 }

@@ -44,7 +44,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public Mono<Info> getInfo() throws DataNotFoundException, UserNotAuthorizedException {
-		return (Mono<Info>)callAPIandReturnMono(HttpMethod.GET, BudgetApiUrlEnum.ACTUATORS_INFO_FULL, null, null, null, Info.class);
+		return callAPIandReturnMono(HttpMethod.GET, BudgetApiUrlEnum.ACTUATORS_INFO_FULL, null, null, null, Info.class);
 	}
 	
 	

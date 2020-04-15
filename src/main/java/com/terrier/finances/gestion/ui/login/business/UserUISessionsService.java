@@ -120,9 +120,10 @@ public class UserUISessionsService implements IUIControllerService, IUserUISessi
 		}
 		session.clearValues();
 		//Redirect the user to the login/default Page
-		Page currentPage = Page.getCurrent();
+		Page currentPage = session.getMainLayout().getUI().getPage();
 		VaadinServlet currentServlet = VaadinServlet.getCurrent();
 		if(currentPage != null && currentServlet != null && currentServlet.getServletContext() != null && currentServlet.getServletContext().getContextPath() != null){
+			LOGGER.debug("Redirection vers {}", currentServlet.getServletContext().getContextPath());
 			currentPage.setLocation(currentServlet.getServletContext().getContextPath());
 		}
 		else{

@@ -99,7 +99,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 				if(!getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour().getTime())){
 					LOGGER.info("[REFRESH][idSession={}] Le budget a été mis à jour en base de données.  Mise à jour de l'IHM", idSession);
-					miseAJourVueDonnees();
+					miseAJourVueDonnees(true);
 				}
 				else{
 					LOGGER.debug("[REFRESH][idSession={}] Le budget est à jour par rapport à la base de données. ", idSession);
@@ -376,13 +376,14 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	/* (non-Javadoc)
 	 * @see com.terrier.finances.gestion.ui.controler.AbstractUIController#chargeDonnees()
 	 */
-	private BudgetMensuel chargeDonnees() throws DataNotFoundException, UserNotAuthorizedException {
+	private BudgetMensuel chargeDonnees(boolean forceReload) throws DataNotFoundException, UserNotAuthorizedException {
 		LOGGER.debug("Chargement du budget pour le tableau de suivi des dépenses");
 
 		CompteBancaire compte = getComponent().getComboBoxComptes().getValue();
 		LocalDate dateMoisSelectionne = getComponent().getMois().getValue();
 		LOGGER.debug("Gestion du Compte : {} du mois {}/{}",compte, dateMoisSelectionne.getMonth(), dateMoisSelectionne.getYear());
-		if(getUserSession().getBudgetCourant() == null 
+		if(getUserSession().getBudgetCourant() == null
+				|| forceReload
 				|| !getUserSession().getBudgetCourant().getCompteBancaire().getId().equals(compte.getId()) 
 				|| !getUserSession().getBudgetCourant().getMois().equals(dateMoisSelectionne.getMonth())
 				|| getUserSession().getBudgetCourant().getAnnee() != dateMoisSelectionne.getYear()){
@@ -394,7 +395,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 						dateMoisSelectionne.getYear());
 				// Maj du budget
 				getUserSession().updateBudgetInSession(budget);
-				LOGGER.debug("Changement de mois ou de compte : Refresh total des tableaux");
+				LOGGER.debug("Rechargement du budget en BDD : Refresh total des tableaux");
 				return budget;
 
 			} catch (BudgetNotFoundException e) {
@@ -418,9 +419,17 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 */
 	@Override
 	public void miseAJourVueDonnees() {
+		miseAJourVueDonnees(false);
+	}
+	
+	/**
+	 * Mise à jour de la vue en forçant le refresh
+	 * @param forceRefresh force refresh en BDD
+	 */
+	private void miseAJourVueDonnees(boolean forceRefresh) {
 		BudgetMensuel budgetCourant = null;
 		try {
-			budgetCourant = chargeDonnees();
+			budgetCourant = chargeDonnees(forceRefresh);
 			if(budgetCourant.isNewBudget()){
 				Notification.show("Création du budget mensuel. Le mois précédent est automatiquement clôturé et les opérations prévues sont reportées", Notification.Type.WARNING_MESSAGE);
 				budgetCourant.setNewBudget(false);

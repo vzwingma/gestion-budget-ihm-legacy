@@ -1,5 +1,6 @@
 package com.terrier.finances.gestion.ui.operations.creation.ui;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
@@ -604,4 +605,57 @@ public class CreerDepenseForm extends AbstractUIComponent<CreerDepenseController
 		getTextFieldDescription().setSelectedItem(t);
 		return Optional.of(t);
 	}
+
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(buttonValider, buttonValiderContinuer, checkBoxPeriodique,
+				comboBoxCategorie, comboBoxEtat, comboBoxSsCategorie, comboBoxType, comboboxComptes, gridLayout,
+				horizontalLayout2, horizontalLayout3, horizontalLayout4, horizontalLayout5, horizontalLayout6,
+				horizontalLayout7, horizontalLayout8, label1, label2, label3, label4, label5, labelEtat, labelPeriode,
+				mainLayout, textFieldDescription, textFieldValeur);
+		return result;
+	}
+
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CreerDepenseForm other = (CreerDepenseForm) obj;
+		return Objects.equals(buttonValider, other.buttonValider)
+				&& Objects.equals(buttonValiderContinuer, other.buttonValiderContinuer)
+				&& Objects.equals(checkBoxPeriodique, other.checkBoxPeriodique)
+				&& Objects.equals(comboBoxCategorie, other.comboBoxCategorie)
+				&& Objects.equals(comboBoxEtat, other.comboBoxEtat)
+				&& Objects.equals(comboBoxSsCategorie, other.comboBoxSsCategorie)
+				&& Objects.equals(comboBoxType, other.comboBoxType)
+				&& Objects.equals(comboboxComptes, other.comboboxComptes)
+				&& Objects.equals(gridLayout, other.gridLayout)
+				&& Objects.equals(horizontalLayout2, other.horizontalLayout2)
+				&& Objects.equals(horizontalLayout3, other.horizontalLayout3)
+				&& Objects.equals(horizontalLayout4, other.horizontalLayout4)
+				&& Objects.equals(horizontalLayout5, other.horizontalLayout5)
+				&& Objects.equals(horizontalLayout6, other.horizontalLayout6)
+				&& Objects.equals(horizontalLayout7, other.horizontalLayout7)
+				&& Objects.equals(horizontalLayout8, other.horizontalLayout8) && Objects.equals(label1, other.label1)
+				&& Objects.equals(label2, other.label2) && Objects.equals(label3, other.label3)
+				&& Objects.equals(label4, other.label4) && Objects.equals(label5, other.label5)
+				&& Objects.equals(labelEtat, other.labelEtat) && Objects.equals(labelPeriode, other.labelPeriode)
+				&& Objects.equals(mainLayout, other.mainLayout)
+				&& Objects.equals(textFieldDescription, other.textFieldDescription)
+				&& Objects.equals(textFieldValeur, other.textFieldValeur);
+	}
+	
+	
 }

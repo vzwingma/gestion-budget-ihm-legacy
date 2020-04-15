@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
  * @author vzwingma
  *
  */
-public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extends AbstractHTTPReactiveClient{
+public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extends AbstractHTTPReactiveClient implements IAPIClient{
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractAPIClient.class );
 
@@ -44,7 +44,7 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public Mono<Info> getInfo() throws DataNotFoundException, UserNotAuthorizedException {
-		return (Mono<Info>)callAPIandReturnMono(HttpMethod.GET, BudgetApiUrlEnum.ACTUATORS_INFO_FULL, null, null, null, Info.class);
+		return callAPIandReturnMono(HttpMethod.GET, BudgetApiUrlEnum.ACTUATORS_INFO_FULL, null, null, null, Info.class);
 	}
 	
 	
@@ -169,17 +169,32 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @param path racine de l'URL
 	 * @return résultat de l'appel
 	 */
-	protected Mono<R> callHTTPDeleteData(String path, Map<String, String> pathParams) throws UserNotAuthorizedException, DataNotFoundException{
+	protected Mono<R> callHTTPDeleteData(String path, Map<String, String> pathParams) throws DataNotFoundException{
 		return callAPIandReturnMono(HttpMethod.DELETE, path, pathParams, null, null, responseClassType);
 	}
 	
 
 	/**
 	 * 
+	 * @return CorrId suite à action de l'utilisateur
+	 * ou InitCorrId pour le démarrage
+	 */
+	public String getCorrId() {
+		if(FacadeServices.get().getServiceUserSessions().getSession() != null && FacadeServices.get().getServiceUserSessions().getSession().getActionUserCorrId() != null) {
+			return FacadeServices.get().getServiceUserSessions().getSession().getActionUserCorrId();			
+		}
+		else {
+			return FacadeServices.get().getInitCorrId();
+		}
+		
+	}
+	
+	/**
+	 * 
 	 * @return JWT Token de l'utilisateur
 	 */
 	@Override
 	public String getJwtToken() {
-		return FacadeServices.get().getServiceUserSessions().getUserSession().getJwtToken();
+		return FacadeServices.get().getServiceUserSessions().getSession().getJwtToken();
 	}
 }

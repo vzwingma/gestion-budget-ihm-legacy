@@ -57,12 +57,12 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 			try{
 				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getIdSsCategorie())
 						&& compteTransfert.isPresent()){
-					LOGGER.info("[IHM] Ajout d'un nouveau transfert intercompte");
+					LOGGER.info("Ajout d'un nouveau transfert intercompte");
 					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get()));
 					Notification.show("Le transfert inter-compte a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}
 				else{
-					LOGGER.info("[IHM] Ajout d'une nouvelle dépense");
+					LOGGER.info("Ajout d'une nouvelle dépense");
 					getUserSession().updateBudgetInSession(getServiceOperations().majLigneOperation(budget.getId(), newOperation));
 					Notification.show("l'opération a bien été créée", Notification.Type.TRAY_NOTIFICATION);
 				}

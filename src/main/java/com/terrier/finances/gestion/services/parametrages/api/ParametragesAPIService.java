@@ -20,7 +20,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
  *
  */
 @Controller
-public class ParametragesAPIService extends AbstractAPIClient<CategorieOperation> {
+public class ParametragesAPIService extends AbstractAPIClient<CategorieOperation> implements IParametragesAPIService {
 
 	private String uiRefreshPeriod;
 	private String version;

@@ -12,7 +12,7 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.ConfirmDialog;
-import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
+import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractActionUtilisateurListener;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
@@ -21,7 +21,7 @@ import com.vaadin.ui.Button.ClickListener;
  * @author vzwingma
  *
  */
-public class ActionRefreshMonthBudgetClickListener extends AbstractComponentListener implements ClickListener {
+public class ActionRefreshMonthBudgetClickListener extends AbstractActionUtilisateurListener implements ClickListener {
 
 	/**
 	 * 
@@ -33,7 +33,7 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractComponentList
 	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
 	 */
 	@Override
-	public void buttonClick(ClickEvent event) {
+	public void boutonClick(ClickEvent event) {
 
 		BudgetMensuelPage page  = (BudgetMensuelPage)event.getButton().getParent().getParent().getParent().getParent().getParent();
 

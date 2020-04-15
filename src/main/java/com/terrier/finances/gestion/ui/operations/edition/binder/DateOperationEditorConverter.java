@@ -1,7 +1,6 @@
 package com.terrier.finances.gestion.ui.operations.edition.binder;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
@@ -20,9 +19,6 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	//
 	private static final long serialVersionUID = -3920598435421890807L;
 
-	// Format des dates
-	private SimpleDateFormat sfd = new SimpleDateFormat(BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN);
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -32,7 +28,7 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	@Override
 	public Result<Date> convertToModel(String value, ValueContext context) {
 		try {
-			return Result.ok(sfd.parse(value));
+			return Result.ok(BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.parse(value));
 		} catch (ParseException e) {
 			return Result.error("Erreur : La date " + value + " n'est pas au format " + BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN);
 		}
@@ -46,7 +42,7 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	 */
 	@Override
 	public String convertToPresentation(Date value, ValueContext context) {
-		return sfd.format(value);
+		return BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.format(value);
 	}
 
 }

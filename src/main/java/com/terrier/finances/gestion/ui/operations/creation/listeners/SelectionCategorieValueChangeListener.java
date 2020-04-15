@@ -9,17 +9,18 @@ import java.util.stream.Collectors;
 
 import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
-import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractComponentListener;
+import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractActionUtilisateurListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
 import com.vaadin.event.selection.SingleSelectionEvent;
 import com.vaadin.event.selection.SingleSelectionListener;
+import com.vaadin.ui.Button.ClickEvent;
 
 /**
  * Changement d'une catégorie dans le formulaire de création
  * @author vzwingma
  *
  */
-public class SelectionCategorieValueChangeListener extends AbstractComponentListener implements SingleSelectionListener<CategorieOperation>{
+public class SelectionCategorieValueChangeListener extends AbstractActionUtilisateurListener implements SingleSelectionListener<CategorieOperation>{
 
 	// Controleur
 	private CreerDepenseController controleur;
@@ -78,5 +79,10 @@ public class SelectionCategorieValueChangeListener extends AbstractComponentList
 				controleur.getComponent().getComboBoxSsCategorie().setEnabled(false);
 			}
 		}
+	}
+
+	@Override
+	public void boutonClick(ClickEvent event) {
+		// Rien ici
 	}
 }

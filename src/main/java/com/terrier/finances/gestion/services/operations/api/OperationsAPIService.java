@@ -20,7 +20,7 @@ import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
-import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPIService;
+import com.terrier.finances.gestion.services.parametrages.api.IParametragesAPIService;
 
 /**
  * API  vers le domaine Budget
@@ -28,10 +28,10 @@ import com.terrier.finances.gestion.services.parametrages.api.ParametragesAPISer
  *
  */
 @Controller
-public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> {
+public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> implements IOperationsAPIService {
 
 	@Autowired
-	ParametragesAPIService parametrageAPIServices;
+	private IParametragesAPIService parametrageAPIServices;
 	
 	
 	public OperationsAPIService() {
@@ -109,7 +109,7 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> {
 		Map<String, String> queryParams = new HashMap<>();
 		queryParams.put("uptodateto", Long.toString(dateToCompare.getTime()));
 		try {
-			return callHTTPGet(BudgetApiUrlEnum.BUDGET_ETAT_FULL, pathParams, queryParams);
+			return callHTTPGet(BudgetApiUrlEnum.BUDGET_UP_TO_DATE_FULL, pathParams, queryParams);
 		} catch (UserNotAuthorizedException | DataNotFoundException e) {
 			return false;
 		}

@@ -19,7 +19,7 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
  *
  */
 @Controller
-public class ComptesAPIService extends AbstractAPIClient<CompteBancaire> {
+public class ComptesAPIService extends AbstractAPIClient<CompteBancaire> implements IComptesAPIService {
 	
 	
 	public ComptesAPIService() {

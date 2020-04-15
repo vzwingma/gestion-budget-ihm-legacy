@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
+import com.terrier.finances.gestion.communs.utils.config.CorrelationsIdUtils;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
@@ -85,27 +87,29 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 */
 	@Override
 	public void poll(UIEvents.PollEvent event) {
-
+		CorrelationsIdUtils.putCorrIdOnMDC(UUID.randomUUID().toString());
 		String idSession = getUserSession().getId();
 		long nbSessions = getServiceUserSessions().getNombreSessionsActives();
 		if(nbSessions > 1){
 			BudgetMensuel budgetCourant = getUserSession().getBudgetCourant();
+			LOGGER.debug("Budget : {}", budgetCourant.toString());
 			if(idSession != null &&  budgetCourant != null){
-				LOGGER.debug("[REFRESH][{}] Dernière mise à jour reçue pour le budget {} : {}", idSession, 
-						budgetCourant.getId(), budgetCourant.getDateMiseAJour() != null ? budgetCourant.getDateMiseAJour() : "null");
+				LOGGER.debug("[REFRESH][idSession={}] Dernière mise à jour reçue pour le budget {} : {}", idSession, 
+						budgetCourant.getId(), budgetCourant.getDateMiseAJour() != null ? BudgetDateTimeUtils.getLibelleDateFromMillis(budgetCourant.getDateMiseAJour().getTimeInMillis()) : "null");
 
 				if(!getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour().getTime())){
-					LOGGER.info("[REFRESH][{}] Le budget a été mis à jour en base de données.  Mise à jour de l'IHM", idSession);
+					LOGGER.info("[REFRESH][idSession={}] Le budget a été mis à jour en base de données.  Mise à jour de l'IHM", idSession);
 					miseAJourVueDonnees();
 				}
 				else{
-					LOGGER.debug("[REFRESH][{}] Le budget est à jour par rapport à la base de données. ", idSession);
+					LOGGER.debug("[REFRESH][idSession={}] Le budget est à jour par rapport à la base de données. ", idSession);
 				}
 			}
 		}
 		else{
 			LOGGER.trace("{} session active. Pas de refresh automatique en cours", nbSessions);
 		}
+		CorrelationsIdUtils.putCorrIdOnMDC(UUID.randomUUID().toString());
 	}
 
 	/**

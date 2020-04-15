@@ -91,7 +91,7 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 	public LocalDateTime getLastAccessTime() throws UserNotAuthorizedException, DataNotFoundException{
 		UtilisateurPrefsAPIObject prefs = callHTTPGetData(BudgetApiUrlEnum.USERS_ACCESS_DATE_FULL).block();
 		if(prefs != null){
-			return BudgetDateTimeUtils.getLocalDateTimeFromLong(prefs.getLastAccessTime());
+			return BudgetDateTimeUtils.getLocalDateTimeFromSecond(prefs.getLastAccessTime());
 		}
 		return null;
 	}

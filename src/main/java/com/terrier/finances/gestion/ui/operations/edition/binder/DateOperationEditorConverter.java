@@ -28,7 +28,7 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	@Override
 	public Result<Date> convertToModel(String value, ValueContext context) {
 		try {
-			return Result.ok(BudgetDateTimeUtils.DATE_DAY_HOUR_FORMATTER.parse(value));
+			return Result.ok(BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.parse(value));
 		} catch (ParseException e) {
 			return Result.error("Erreur : La date " + value + " n'est pas au format " + BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN);
 		}
@@ -42,7 +42,7 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	 */
 	@Override
 	public String convertToPresentation(Date value, ValueContext context) {
-		return BudgetDateTimeUtils.DATE_DAY_HOUR_FORMATTER.format(value);
+		return BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.format(value);
 	}
 
 }

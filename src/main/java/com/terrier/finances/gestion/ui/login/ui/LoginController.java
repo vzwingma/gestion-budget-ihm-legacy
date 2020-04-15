@@ -12,6 +12,7 @@ import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
 import com.terrier.finances.gestion.services.admin.model.Info;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
+import com.terrier.finances.gestion.ui.login.listeners.ActionConnexionClickListener;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -51,10 +52,7 @@ public class LoginController extends AbstractUIController<Login>{
 	 */
 	public void initDynamicComponentsOnPage() {
 		// Ajout controle
-		getComponent().getButtonConnexion().addClickListener(
-				e -> authenticateUser(
-						getComponent().getTextLogin().getValue(), 
-						getComponent().getPasswordField().getValue()));
+		getComponent().getButtonConnexion().addClickListener(new ActionConnexionClickListener(this));
 		getComponent().getTextLogin().focus();
 	}
 

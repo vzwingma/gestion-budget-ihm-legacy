@@ -109,7 +109,7 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		Map<String, String> queryParams = new HashMap<>();
 		queryParams.put("uptodateto", Long.toString(dateToCompare.getTime()));
 		try {
-			return callHTTPGet(BudgetApiUrlEnum.BUDGET_ETAT_FULL, pathParams, queryParams);
+			return callHTTPGet(BudgetApiUrlEnum.BUDGET_UP_TO_DATE_FULL, pathParams, queryParams);
 		} catch (UserNotAuthorizedException | DataNotFoundException e) {
 			return false;
 		}

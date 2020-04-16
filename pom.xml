@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.vzwingma.finances.budget</groupId>
 	<artifactId>ihm</artifactId>
-	<version>11.2.0-SNAPSHOT</version>
+	<version>11.2.0</version>
 	<packaging>war</packaging>
 	<name>[Budget] IHM</name>
 	<description>IHM de l'application</description>
@@ -13,9 +13,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>11</maven.compiler.target>
 		
-		<communs.version>11.4.1-RC3</communs.version>
+		<communs.version>11.4.1</communs.version>
 		<spring.version>5.2.5.RELEASE</spring.version>
-		<vaadin.version>8.10.2</vaadin.version>
+		<vaadin.version>8.10.3</vaadin.version>
 		
 		<maven.build.timestamp.format>dd/MM/yyyy HH:mm</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
@@ -430,7 +430,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.6.0-M1</version>
+			<version>5.6.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

@@ -7,7 +7,7 @@
 	<artifactId>ihm</artifactId>
 	<version>11.2.0</version>
 	<packaging>war</packaging>
-	<name>[Budget] IHM</name>
+	<name>[Budget] IHM Legacy</name>
 	<description>IHM de l'application</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,17 +19,17 @@
 		
 		<maven.build.timestamp.format>dd/MM/yyyy HH:mm</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
-		<sonar.projectKey>gestion-budget-ihm</sonar.projectKey>
+		<sonar.projectKey>gestion-budget-ihm-legacy</sonar.projectKey>
 	</properties>
 
 	<issueManagement>
-		<url>https://github.com/vzwingma/gestion-budget-ihm/issues</url>
+		<url>https://github.com/vzwingma/gestion-budget-ihm-legacy/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 	<scm>
-		<url>https://github.com/vzwingma/gestion-budget-ihm/tree/webapp</url>
-		<connection>scm:git:git://github.com/vzwingma/gestion-budget-ihm.git</connection>
-		<developerConnection>scm:git:git@github.com:vzwingma/gestion-budget-ihm.git</developerConnection>
+		<url>https://github.com/vzwingma/gestion-budget-ihm-legacy/tree/webapp</url>
+		<connection>scm:git:git://github.com/vzwingma/gestion-budget-ihm-legacy.git</connection>
+		<developerConnection>scm:git:git@github.com:vzwingma/gestion-budget-ihm-legacy.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 	<developers>

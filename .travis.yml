@@ -34,7 +34,7 @@ jobs:
           mvn versions:set -DnewVersion=$VERSION; 
           mvn versions:commit;
       install: 
-        - mvn clean install sonar:sonar -B -P prod -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=$SONAR_ORG -Dsonar.projectKey=gestion-budget-ihm;
+        - mvn clean install sonar:sonar -B -P prod -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=$SONAR_ORG -Dsonar.projectKey=gestion-budget-ihm-legacy;
 
       script:
       # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
@@ -42,9 +42,9 @@ jobs:
           then 
             echo "ReTag de snapshot"; 
             git tag -d snapshot; 
-            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm :refs/tags/snapshot; 
+            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm-legacy :refs/tags/snapshot; 
             git tag snapshot; 
-            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm --tags; 
+            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm-legacy --tags; 
           else 
             echo "Pas de reTag de snapshot"; 
           fi
@@ -55,9 +55,9 @@ jobs:
           token: $GITHUB_API_KEY
           skip_cleanup: true
           overwrite: true
-          file: /home/travis/build/vzwingma/gestion-budget-ihm/target/webapps/ihm.war
+          file: /home/travis/build/vzwingma/gestion-budget-ihm-legacy/target/webapps/ihm.war
           on:
-            repo: vzwingma/gestion-budget-ihm
+            repo: vzwingma/gestion-budget-ihm-legacy
             tags: true
 
      ############################
@@ -79,8 +79,8 @@ jobs:
           fi;
             
         - echo "Construction de l'image Docker gestion_budget_ihm"; 
-        - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
-        - wget -q https://github.com/vzwingma/gestion-budget-ihm/releases/download/$VERSION_RELEASE/ihm.war;
+        - cd ~/build/vzwingma/gestion-budget-ihm-legacy/src/main/external-ressources/docker
+        - wget -q https://github.com/vzwingma/gestion-budget-ihm-legacy/releases/download/$VERSION_RELEASE/ihm.war;
         - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
 
         - if [[ $TRAVIS_BRANCH == v* ]]; 
@@ -90,40 +90,4 @@ jobs:
           fi;
         - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
         - docker push vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
-      name: "Publish IHM"
-
-
-     ############################
-     #   DEPLOY MASSIVEGRID
-     ############################
-    - stage: "Deploy to MassiveGrid"
-      name: "Déploiement sur MassiveGrid"
-      if: ((branch = snapshot OR (tag =~ ^v)) AND $DEPLOY_TO_MASSIVEGRID = true)
-      install: skip
-      script:
-        - echo "Démarrage sur MassiveGrid";
-        - ENV="";
-        - NODE_ID=0;
-        - if [[ $TRAVIS_BRANCH == v* ]]; 
-          then 
-              ENV="budget";
-              NODE_ID=41461;
-          else
-              ENV="budget-rec";
-              NODE_ID=26391;
-          fi;
-        # Démarrage 
-        - echo "Démarrage de l'environnement $ENV";
-        - URL_START=$MASSIVEGRID_URL"startenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
-        - echo $URL_START ;
-        - curl $URL_START ;
-        # Redéploiement   
-        - echo "Redéploiement de l'IHM $VERSION_DOCKER sur MassiveGrid $ENV";
-        - URL_REDEPLOY=$MASSIVEGRID_URL"redeploycontainers?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN&tag=$VERSION_DOCKER&nodeId=$NODE_ID" ;
-        - echo $URL_REDEPLOY ;
-        - curl -X POST $URL_REDEPLOY ;
-        # Arrêt   
-        - echo "Arrêt de l'environnement $ENV" ;
-        - URL_STOP=$MASSIVEGRID_URL"stopenv?envName=$ENV&session=$MASSIVEGRID_USER_TOKEN" ;
-        - echo $URL_STOP ;
-        - curl $URL_STOP ;
+      name: "Publish IHM Legacy"

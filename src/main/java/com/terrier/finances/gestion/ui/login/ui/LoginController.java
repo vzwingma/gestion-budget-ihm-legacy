@@ -53,7 +53,7 @@ public class LoginController extends AbstractUIController<Login>{
 	public void initDynamicComponentsOnPage() {
 		// Ajout controle
 		getComponent().getButtonConnexion().addClickListener(new ActionConnexionClickListener(this));
-		getComponent().getTextLogin().focus();
+		getComponent().getPasswordField().focus();
 	}
 
 
@@ -66,7 +66,6 @@ public class LoginController extends AbstractUIController<Login>{
 
 		LOGGER.info("Démarrage de l'application [{}][{}]", getServiceParams().getVersion(), getServiceParams().getBuildTime());
 
-		getComponent().getTextLogin().setIcon(new ThemeResource("img/login.png"));
 		getComponent().getPasswordField().setIcon(new ThemeResource("img/passwd.png"));
 		getComponent().getLabelVersion().setValue("Version IHM : " + getServiceParams().getVersion());
 		getComponent().getLabelBuildTime().setValue("Build : " + getServiceParams().getBuildTime());
@@ -91,34 +90,29 @@ public class LoginController extends AbstractUIController<Login>{
 			LOGGER.error("Erreur sur la réception des versions");
 			label.setValue(label.getValue() + ":" + version);
 		}
-		
+
 	}
 
 
 	/**
 	 * Méthode d'authenticiation de l'utilisateur
 	 * @param login de l'utilisateur
-	 * @param passwordEnClair en clair de l'utilisateur
+	 * @param accessTokenEnClair en clair de l'utilisateur
 	 */
-	public void authenticateUser(String login, String passwordEnClair){
-		try {
-			String jwtToken = getServiceUtilisateurs().authenticate(login, passwordEnClair);
-			if(jwtToken != null){
-				getUserSession().registerUtilisateur(jwtToken);
-				LOGGER.info("Accès autorisé pour {}", login);
-				// MAJ
-				getUserSession().getMainLayout().removeAllComponents();
-				getUserSession().getMainLayout().addComponent(new BudgetMensuelPage());
+	public void authenticateUser(String accessToken){
 
-			}
-			else{
-				LOGGER.error("****************** ECHEC AUTH ***********************");
-				Notification.show("Les login et mot de passe sont incorrects", Notification.Type.ERROR_MESSAGE);
-			}
+		if(accessToken != null){
+			getUserSession().registerUtilisateur(accessToken);
+			LOGGER.info("Accès autorisé pour {}", accessToken);
+			// MAJ
+			getUserSession().getMainLayout().removeAllComponents();
+			getUserSession().getMainLayout().addComponent(new BudgetMensuelPage());
 
-		} catch (DataNotFoundException e) {
-			LOGGER.error("****************** ECHEC AUTH ***********************");
-			Notification.show("Impossible de s'authentifier", Notification.Type.ERROR_MESSAGE);
 		}
+		else{
+			LOGGER.error("****************** ECHEC AUTH ***********************");
+			Notification.show("Les login et mot de passe sont incorrects", Notification.Type.ERROR_MESSAGE);
+		}
+
 	}
 }

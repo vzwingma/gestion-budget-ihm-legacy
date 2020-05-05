@@ -3,7 +3,7 @@
  */
 package com.terrier.finances.gestion.ui.operations.ui.styles;
 
-import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 
 /**
  * Style des colonnes Actions du tableau des opérations

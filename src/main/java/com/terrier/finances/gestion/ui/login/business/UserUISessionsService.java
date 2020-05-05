@@ -1,14 +1,7 @@
 package com.terrier.finances.gestion.ui.login.business;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,41 +29,6 @@ public class UserUISessionsService implements IUIControllerService, IUserUISessi
 
 	// Gestionnaire des composants UI
 	private ConcurrentHashMap<String, UserUISession> sessionsMap = new ConcurrentHashMap<>();
-
-	private ScheduledThreadPoolExecutor pool;
-
-
-	/**
-	 * Démarrage du controle des sessions
-	 */
-	@PostConstruct
-	public void startSessionsControl(){
-		pool = new ScheduledThreadPoolExecutor(1);
-		pool.scheduleAtFixedRate(() -> {
-			List<String> idsInvalide = sessionsMap.values()
-					.parallelStream()
-				/*	.peek(session -> LOGGER.debug(" > {} : active : {}. Dernière activité : {}. Date de validité : {} :  Valide : {}", 
-							session.getId(), 
-							session.isActive(), 
-							session.getLastAccessTime(), 
-							session.getValiditeSession(),
-							!session.getLastAccessTime().isBefore(session.getValiditeSession()))) */
-					.filter(session -> !session.getLastAccessTime().isBefore(session.getValiditeSession()))
-					.map(UserUISession::getId)
-					.collect(Collectors.toList());
-
-			idsInvalide.parallelStream().forEach(key -> deconnexionUtilisateur(key));
-		}, 0, 1, TimeUnit.MINUTES);
-	}
-
-
-	/**
-	 * Arrêt du controle des sessions
-	 */
-	@PreDestroy
-	public void stopSessionsControl(){
-		this.pool.shutdown();
-	}
 
 	/**
 	 * @return la session utilisateur

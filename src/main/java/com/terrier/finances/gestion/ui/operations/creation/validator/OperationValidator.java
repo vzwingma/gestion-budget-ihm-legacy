@@ -3,7 +3,7 @@
  */
 package com.terrier.finances.gestion.ui.operations.creation.validator;
 
-import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.vaadin.data.ValidationResult;
@@ -28,10 +28,10 @@ public class OperationValidator implements Validator<LigneOperation> {
 
 		// Not Null
 		if(operation.getSsCategorie() == null
-				|| operation.getValeurAbsStringFromDouble() == null
+				|| operation.getValeur() == null
 				|| operation.getLibelle() == null
 				|| operation.getEtat() == null
-				|| operation.getTypeDepense() == null){
+				|| operation.getTypeOperation() == null){
 			return ValidationResult.error("Un des éléments requis est nul");
 		}
 
@@ -44,12 +44,12 @@ public class OperationValidator implements Validator<LigneOperation> {
 		// Catégorie crédit
 		if((IdsCategoriesEnum.SALAIRE.getId().equals(operation.getSsCategorie().getId()) 
 				|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(operation.getSsCategorie().getId()))){
-			if(TypeOperationEnum.DEPENSE.equals(operation.getTypeDepense())){
+			if(TypeOperationEnum.DEPENSE.equals(operation.getTypeOperation())){
 				return ValidationResult.error("L'opération est un crédit. Le type doit être CREDIT");
 			}
 			// Sinon c'est correct
 		}
-		else if(TypeOperationEnum.CREDIT.equals(operation.getTypeDepense())){
+		else if(TypeOperationEnum.CREDIT.equals(operation.getTypeOperation())){
 			return ValidationResult.error("L'opération est un débit. Le type doit être DEBIT (-)");
 		}
 		return ValidationResult.ok();

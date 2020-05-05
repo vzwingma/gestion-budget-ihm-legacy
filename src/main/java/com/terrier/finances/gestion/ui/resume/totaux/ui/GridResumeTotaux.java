@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.resume.totaux.ui;
 
-import com.terrier.finances.gestion.communs.budget.model.TotalBudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.v12.TotauxCategorie;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.operations.ui.renderers.OperationBudgetTypeRenderer;
@@ -11,7 +11,7 @@ import com.terrier.finances.gestion.ui.resume.totaux.ui.styles.GridTotalCellStyl
  * @author vzwingma
  *
  */
-public class GridResumeTotaux extends AbstractUIGridComponent<GridResumeTotauxController, TotalBudgetMensuel> {
+public class GridResumeTotaux extends AbstractUIGridComponent<GridResumeTotauxController, TotauxCategorie> {
 
 	/**
 	 * 
@@ -34,13 +34,13 @@ public class GridResumeTotaux extends AbstractUIGridComponent<GridResumeTotauxCo
 		/**
 		 * Total resume
 		 */
-		addColumn(TotalBudgetMensuel::getTypeTotal)
+		addColumn(TotauxCategorie::getLibelleCategorie)
 		.setId(EntetesGridResumeOperationsEnum.CATEGORIE.getId())
 		.setSortable(false)
 		.setResizable(false)
 		.setHidable(false);
 
-		addColumn(TotalBudgetMensuel::getTotalADate)
+		addColumn(TotauxCategorie::getTotalAtMaintenant)
 		.setId(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId())
 		.setSortable(false)
 		.setResizable(false)
@@ -48,7 +48,7 @@ public class GridResumeTotaux extends AbstractUIGridComponent<GridResumeTotauxCo
 		.setStyleGenerator(new GridTotalCellStyle(EntetesGridResumeOperationsEnum.VALEUR_NOW))
 		.setRenderer(new OperationBudgetTypeRenderer());
 
-		addColumn(TotalBudgetMensuel::getTotalFinMois)
+		addColumn(TotauxCategorie::getTotalAtFinMoisCourant)
 		.setId(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId())
 		.setSortable(false)
 		.setResizable(false)

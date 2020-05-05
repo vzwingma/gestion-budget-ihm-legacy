@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
+import com.terrier.finances.gestion.communs.parametrages.model.v12.CategorieOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
@@ -60,7 +60,7 @@ public class SelectionSousCategorieValueChangeListener extends AbstractActionUti
 				List<CompteBancaire> listeComptesTransfert = getServiceComptes().getComptes()
 						.stream()
 						.filter(CompteBancaire::isActif)
-						.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getCompteBancaire().getId()))
+						.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getIdCompteBancaire()))
 						.collect(Collectors.toList());
 
 				controleur.getComponent().getComboboxComptes().setVisible(interCompte);

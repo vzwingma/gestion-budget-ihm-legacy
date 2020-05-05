@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.budget.model.TotalBudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.v12.TotauxCategorie;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
@@ -55,8 +55,13 @@ public class GridResumeTotauxController extends AbstractUIController<GridResumeT
 		LocalDate dateDerniereOperation = BudgetDataUtils.getMaxDateListeOperations(budget.getListeOperations());
 		
 		// Injection des données
-		List<TotalBudgetMensuel> totauxBudget = new ArrayList<>();
-		totauxBudget.add(new TotalBudgetMensuel("Solde", budget.getSoldeNow(), budget.getSoldeFin()));
+		List<TotauxCategorie> totauxBudget = new ArrayList<>();
+		
+		TotauxCategorie totauxSolde = new TotauxCategorie();
+		totauxSolde.setLibelleCategorie("Solde");
+		totauxSolde.ajouterATotalAtMaintenant(budget.getSoldes().getSoldeAtMaintenant());
+		totauxSolde.ajouterATotalAtFinMoisCourant(budget.getSoldes().getSoldeAtFinMoisCourant());
+		totauxBudget.add(totauxSolde);
 		// Maj des colonnes
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle()+ dateDerniereOperation.format(auDateFormat));
 		getComponent().getColumn(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId()).setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle()+ dateDerniereOperation.format(finDateFormat));

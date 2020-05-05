@@ -2,14 +2,12 @@ package com.terrier.finances.gestion.ui.login.model;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
-import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.ui.AbstractComponent;
@@ -18,8 +16,6 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.security.SignatureException;
 
 /**
  * Session Utilisateur dans l'application, coté IHM
@@ -41,9 +37,7 @@ public class UserUISession {
 	/*
 	 * JWT
 	 */
-	private String jwtToken;
-
-	private Claims jwtClaims;
+	private String accessToken;
 	/**
 	 * Budget courant
 	 */
@@ -75,8 +69,6 @@ public class UserUISession {
 	 */
 	public void clearValues(){
 		// Purge
-		this.jwtClaims = null;
-		this.jwtToken = null;
 		this.lastAccessTime = null;
 		this.budgetMensuelCourant = null;
 		this.idSession = null;
@@ -113,18 +105,9 @@ public class UserUISession {
 	 * @param idUtilisateur USER
 	 */
 	public boolean registerUtilisateur(String token){
-		this.jwtToken = token;
-		try {
-			this.jwtClaims = JwtConfigEnum.getJWTClaims(token);
-			if(this.jwtClaims != null) {
-				LOGGER.info("[idSession={}] Enregistrement de l'utilisateur : {}", idSession, this.jwtClaims.get(JwtConfigEnum.JWT_CLAIM_HEADER_USERID));
-			}
-		}
-		catch (SignatureException e) {
-			LOGGER.warn("[idSession={}] Le token est mal signé [{}]", idSession, token);
-			this.jwtClaims = null;
-		}
-		return this.jwtClaims != null;
+		this.accessToken = token;
+		LOGGER.info("[idSession={}] Enregistrement de l'utilisateur : {}", idSession, this.accessToken);
+		return this.accessToken != null;
 	}
 
 
@@ -136,9 +119,6 @@ public class UserUISession {
 		this.lastAccessTime = lastAccessTime;
 	}
 
-	public Instant getValiditeSession() {
-		return this.jwtClaims.getExpiration().toInstant();
-	}
 	/**
 	 * @return the lastAccessTime
 	 */
@@ -151,7 +131,7 @@ public class UserUISession {
 	 * @return session active
 	 */
 	public boolean isActive(){
-		return this.jwtToken != null && this.budgetMensuelCourant != null;
+		return this.accessToken != null && this.budgetMensuelCourant != null;
 	}
 
 
@@ -160,10 +140,7 @@ public class UserUISession {
 	 * @return le résultat
 	 */
 	public boolean isEnabled(UtilisateurDroitsEnum cleDroit){
-		if(getJwtClaims() != null){
-			return getJwtClaims().get(JwtConfigEnum.JWT_CLAIM_HEADER_AUTORITIES, List.class).contains(cleDroit.name());
-		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -223,17 +200,8 @@ public class UserUISession {
 	 * @return the jwtToken
 	 */
 	public String getAccessToken() {
-		return jwtToken;
+		return this.accessToken;
 	}
-
-
-	/**
-	 * @return the jwtClaims
-	 */
-	public Claims getJwtClaims() {
-		return jwtClaims;
-	}
-
 
 
 	public String getActionUserCorrId() {

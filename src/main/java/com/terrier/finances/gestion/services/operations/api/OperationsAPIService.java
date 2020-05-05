@@ -1,11 +1,10 @@
 package com.terrier.finances.gestion.services.operations.api;
 
+import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
@@ -14,13 +13,12 @@ import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
-import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
-import com.terrier.finances.gestion.services.parametrages.api.IParametragesAPIService;
 
 /**
  * API  vers le domaine Budget
@@ -30,9 +28,6 @@ import com.terrier.finances.gestion.services.parametrages.api.IParametragesAPISe
 @Controller
 public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> implements IOperationsAPIService {
 
-	@Autowired
-	private IParametragesAPIService parametrageAPIServices;
-	
 	
 	public OperationsAPIService() {
 		super(BudgetMensuel.class);
@@ -103,11 +98,11 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 	 * @param idBudget identifiant du budget
 	 * @return la date de mise à jour du  budget
 	 */
-	public boolean isBudgetUpToDate(String idBudget, Date dateToCompare) {
+	public boolean isBudgetUpToDate(String idBudget, LocalDateTime dateToCompare) {
 		Map<String, String> pathParams = new HashMap<>();
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_BUDGET, idBudget);
 		Map<String, String> queryParams = new HashMap<>();
-		queryParams.put("uptodateto", Long.toString(dateToCompare.getTime()));
+		queryParams.put("uptodateto", BudgetDateTimeUtils.getMillisecondsFromLocalDateTime(dateToCompare).toString());
 		try {
 			return callHTTPGet(BudgetApiUrlEnum.BUDGET_UP_TO_DATE_FULL, pathParams, queryParams);
 		} catch (UserNotAuthorizedException | DataNotFoundException e) {
@@ -180,7 +175,7 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		else {
 			budgetUpdated =  callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_OPERATION_FULL, pathParams).block();
 		}
-		completeCategoriesOnOperation(budgetUpdated);
+	//	completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
 	}
 	
@@ -207,12 +202,13 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 	 * Réinjection des catégories dans les opérations du budget
 	 * @param budget
 	 */
+	@Deprecated
 	private void completeCategoriesOnOperation(BudgetMensuel budget){
 		if(budget != null && budget.getListeOperations() != null && !budget.getListeOperations().isEmpty()){
-			budget.getListeOperations()
-				.stream()
-				.forEach(op -> op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getIdSsCategorie(), 
-						parametrageAPIServices.getCategories())));
+//			budget.getListeOperations()
+//				.stream()
+//				.forEach(op -> {op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getSsCategorie().getId(), 
+//						parametrageAPIServices.getCategories())));
 		}
 	}
 

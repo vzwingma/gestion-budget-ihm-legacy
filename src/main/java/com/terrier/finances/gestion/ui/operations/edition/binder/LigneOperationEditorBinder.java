@@ -3,7 +3,6 @@
  */
 package com.terrier.finances.gestion.ui.operations.edition.binder;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -33,14 +32,14 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 	private static final long serialVersionUID = -8849882826136832053L;
 
 	
-	private List<CategorieOperation> setCategories ;
+	private static List<CategorieOperation> setCategories ;
 
 	/**
 	 * Constructeur
 	 * @param serviceParam
 	 */
 	public LigneOperationEditorBinder(List<CategorieOperation> setCategories){
-		this.setCategories = setCategories;
+		LigneOperationEditorBinder.setCategories = setCategories;
 	}
 
 
@@ -86,10 +85,8 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 				.withConverter(BudgetDataUtils::getValueFromString, String::valueOf)
 				.withValidator(Objects::nonNull, "La valeur ne doit pas être nulle ou incorrecte")
                 .withValidator(v -> (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v))), "La valeur est incorrecte")
-				.bind(LigneOperation::getValeur, LigneOperation::setValeur);
+				.bind(LigneOperation::getValeur, LigneOperation::setValeurFromSaisie);
 	}
-
-
 	/**
 	 * @return binding périodique
 	 */
@@ -114,14 +111,32 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 	 */
 	public Binding<LigneOperation, Categorie> bindCategories(){
 		cCategories.setEnabled(false);
-		return this.forField(cCategories).withValidator(Objects::nonNull, "La catégorie est obligatoire").bind(LigneOperation::getCategorie, LigneOperation::setCategorie);
+		return this.forField(cCategories)
+				.withConverter(LigneOperationEditorBinder::categorieReferentielToCategorie, LigneOperationEditorBinder::categorieToCategorieReferentiel)
+				.withValidator(Objects::nonNull, "La catégorie est obligatoire")
+				.bind(LigneOperation::getCategorie, LigneOperation::setCategorie);
 	}
+	
+	
+	private static Categorie categorieReferentielToCategorie(CategorieOperation categorieReferentiel) {
+		Categorie categorieInOperation = new LigneOperation().new Categorie();
+		if(categorieReferentiel != null) {
+			categorieInOperation.setId(categorieReferentiel.getId());
+			categorieInOperation.setLibelle(categorieReferentiel.getLibelle());
+		}
+		return categorieInOperation;
+	}
+	
+	private static CategorieOperation categorieToCategorieReferentiel(Categorie categorieOperation) {
+		return BudgetDataUtils.getCategorieById(categorieOperation.getId(), setCategories);
+	}
+	
+	
+	
 	/**
 	 * @return binding périodique
 	 */
-	public Binding<LigneOperation, CategorieOperation> bindSSCategories(){
-
-
+	public Binding<LigneOperation, Categorie> bindSSCategories(){
 		// Liste des sous catégories 
 		Set<CategorieOperation> sousCategories = setCategories.stream()
 				.map(CategorieOperation::getListeSSCategories)
@@ -153,6 +168,7 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 			
 		});
 		return this.forField(ssCategories)
+				.withConverter(LigneOperationEditorBinder::categorieReferentielToCategorie, LigneOperationEditorBinder::categorieToCategorieReferentiel)
 				.withValidator(Objects::nonNull, "La sous catégorie est obligatoire")
 				.bind(LigneOperation::getSsCategorie, LigneOperation::setSsCategorie);
 	}

@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
+import com.terrier.finances.gestion.communs.parametrages.model.v12.CategorieOperation;
 
 public class TestSelectionCategorieValueChangeListener {
 

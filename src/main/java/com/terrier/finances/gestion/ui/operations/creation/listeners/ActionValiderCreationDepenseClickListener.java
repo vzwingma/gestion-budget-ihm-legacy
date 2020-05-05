@@ -12,6 +12,7 @@ import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.v12.CategorieOperation;
+import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelController;
 import com.terrier.finances.gestion.ui.communs.abstrait.listeners.AbstractActionUtilisateurListener;
 import com.terrier.finances.gestion.ui.operations.creation.ui.CreerDepenseController;
@@ -60,7 +61,7 @@ public class ActionValiderCreationDepenseClickListener extends AbstractActionUti
 				categorieSelected.isPresent() ? categorieSelected.get() : null, 
 				descriptionSelected.isPresent() ? descriptionSelected.get() : null, 
 				type,
-				form.getTextFieldValeur().getValue(),
+				BudgetDataUtils.getValueFromString(form.getTextFieldValeur().getValue()),
 				etat,
 				form.getCheckBoxPeriodique().getValue());
 

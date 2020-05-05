@@ -29,7 +29,7 @@ public class TestValidator {
 		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
 		operation.setTypeOperation(TypeOperationEnum.DEPENSE);
-		operation.setValeurFromSaisie("-123.13");
+		operation.setValeurFromSaisie(-123.13D);
 		// Ligne OK
 		ValidationResult r = validator.apply(operation, null);
 		assertEquals(ValidationResult.ok().isError(), r.isError());
@@ -47,7 +47,7 @@ public class TestValidator {
 		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
 		operation.setTypeOperation(TypeOperationEnum.DEPENSE);
-		operation.setValeurFromSaisie("NaN");
+		operation.setValeurFromSaisie(0D);
 		// Ligne OK
 		ValidationResult r = validator.apply(operation, null);
 		assertEquals(ValidationResult.error("").isError(), r.isError());
@@ -67,7 +67,7 @@ public class TestValidator {
 		operation.getSsCategorie().setId(IdsCategoriesEnum.SALAIRE.toString());
 		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");		
-		operation.setValeurFromSaisie("-123");
+		operation.setValeurFromSaisie(-123D);
 		operation.setTypeOperation(TypeOperationEnum.DEPENSE);
 		assertEquals(ValidationResult.error("").isError(), validator.apply(operation, null).isError());
 	}
@@ -82,7 +82,7 @@ public class TestValidator {
 		operation.getSsCategorie().setId("26a4b966-ffff-ffff-8611-a5ba4b518ef5");
 		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");	
-		operation.setValeurFromSaisie("123");
+		operation.setValeurFromSaisie(123D);
 		operation.setTypeOperation(TypeOperationEnum.CREDIT);
 		assertEquals(ValidationResult.error("").isError(), validator.apply(operation, null).isError());
 	}

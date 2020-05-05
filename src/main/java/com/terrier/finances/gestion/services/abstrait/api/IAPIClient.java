@@ -18,11 +18,4 @@ public interface IAPIClient {
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
 	public Mono<Info> getInfo() throws DataNotFoundException, UserNotAuthorizedException;
-	
-	
-	/**
-	 * 
-	 * @return JWT Token de l'utilisateur
-	 */
-	public String getJwtToken();
 }

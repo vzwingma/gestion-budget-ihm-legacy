@@ -222,7 +222,7 @@ public class UserUISession {
 	/**
 	 * @return the jwtToken
 	 */
-	public String getJwtToken() {
+	public String getAccessToken() {
 		return jwtToken;
 	}
 

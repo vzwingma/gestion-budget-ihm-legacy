@@ -73,7 +73,7 @@ public class GridOperationsController extends AbstractUIController<GridOperation
 		getComponent().setItems(listeOperations);
 
 		// Mise à jour des colonnes suivant l'activité du budget
-		getComponent().getColumn(EntetesGridOperationsEnum.AUTEUR).setHidden(budgetIsActif);
+//		getComponent().getColumn(EntetesGridOperationsEnum.AUTEUR).setHidden(budgetIsActif);
 		getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(!budgetIsActif);
 		
 		// Not editable	if closed

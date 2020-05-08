@@ -346,7 +346,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			// Premier budget du compte de cet utilisateur
 			IntervallesCompteAPIObject datePremierDernierBudgets = getServiceBudgetsCompte().getIntervallesBudgets(idCompte);
 			getComponent().getMois().setRangeStart(datePremierDernierBudgets.getLocalDatePremierBudget());
-			getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
+			getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget().plusMonths(1));
 		}
 		LOGGER.debug("> Affichage limité à > [{}/{}]", getComponent().getMois().getRangeStart(), getComponent().getMois().getRangeEnd());
 

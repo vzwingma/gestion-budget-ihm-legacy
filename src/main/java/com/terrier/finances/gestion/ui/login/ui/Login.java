@@ -159,7 +159,7 @@ public class Login extends AbstractUIComponent<LoginController> {
 		label1.setHeight("-1px");
 		label1.setValue("  Authentification");
 		authlLayout.addComponent(label1);
-		authlLayout.setComponentAlignment(label1, new Alignment(48));
+		authlLayout.setComponentAlignment(label1, Alignment.MIDDLE_LEFT);
 
 		// verticalLayout_1
 		verticalLayout1 = buildVerticalLayout1();

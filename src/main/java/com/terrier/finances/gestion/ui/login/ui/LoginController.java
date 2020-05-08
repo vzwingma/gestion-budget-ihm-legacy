@@ -76,16 +76,23 @@ public class LoginController extends AbstractUIController<Login>{
 		addVersion(getComponent().getLabelVersionUtilisateurs(), getServiceUtilisateurs());
 	}
 
+	
+	String version = "N/A";
 	/**
 	 * @param label label à completer
 	 * @param apiService service
 	 */
 	private void addVersion(Label label, IAPIClient apiService) {
-		String version = "N/A";
+		
 		Mono<Info> mono;
 		try {
 			mono = apiService.getInfo();
-			mono.subscribe(c -> label.setValue(label.getValue() + ":" +  c.getApp().getVersion()));
+			mono.subscribe(c -> {
+				if(c.getApp() != null && c.getApp().getVersion() != null) {
+					version = c.getApp().getVersion();	
+				}
+				label.setValue(label.getValue() + ":" +  version);
+			});
 		} catch (DataNotFoundException | UserNotAuthorizedException e) {
 			LOGGER.error("Erreur sur la réception des versions");
 			label.setValue(label.getValue() + ":" + version);

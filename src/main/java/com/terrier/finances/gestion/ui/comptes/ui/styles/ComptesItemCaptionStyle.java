@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.comptes.ui.styles;
 
-import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
 import com.vaadin.ui.ItemCaptionGenerator;
 
 /**

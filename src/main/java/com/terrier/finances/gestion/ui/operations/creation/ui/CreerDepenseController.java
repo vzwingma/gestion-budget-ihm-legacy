@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
-import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
+import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
@@ -55,7 +55,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 			// Si oui création
 			BudgetMensuel budget = getUserSession().getBudgetCourant();
 			try{
-				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getIdSsCategorie())
+				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getSsCategorie().getId())
 						&& compteTransfert.isPresent()){
 					LOGGER.info("Ajout d'un nouveau transfert intercompte");
 					getUserSession().updateBudgetInSession(getServiceOperations().ajoutLigneTransfertIntercompte(budget.getId(), newOperation, compteTransfert.get()));
@@ -143,7 +143,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		try {
 			getComponent().getTextFieldDescription().setItems(
 				getServiceLibellesOperations().getForAutocomplete(
-					getUserSession().getBudgetCourant().getCompteBancaire().getId(),
+					getUserSession().getBudgetCourant().getIdCompteBancaire(),
 					getUserSession().getBudgetCourant().getAnnee()));
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de l'accès à l'autocompletion des libellés");

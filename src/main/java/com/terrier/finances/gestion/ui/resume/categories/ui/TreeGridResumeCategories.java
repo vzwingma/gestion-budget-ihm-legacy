@@ -1,6 +1,6 @@
 package com.terrier.finances.gestion.ui.resume.categories.ui;
 
-import com.terrier.finances.gestion.communs.budget.model.ResumeTotalCategories;
+import com.terrier.finances.gestion.communs.budget.model.v12.TotauxCategorie;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUITreeGridComponent;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.operations.ui.renderers.OperationBudgetTypeRenderer;
@@ -12,7 +12,7 @@ import com.vaadin.shared.MouseEventDetails.MouseButton;
  * @author vzwingma
  *
  */
-public class TreeGridResumeCategories extends AbstractUITreeGridComponent<TreeGridResumeCategoriesController, ResumeTotalCategories> {
+public class TreeGridResumeCategories extends AbstractUITreeGridComponent<TreeGridResumeCategoriesController, TotauxCategorie> {
 
 	/**
 	 * 
@@ -31,18 +31,18 @@ public class TreeGridResumeCategories extends AbstractUITreeGridComponent<TreeGr
 	@Override
 	public void paramComponentsOnTreeGrid() {
 		
-		addColumn(ResumeTotalCategories::getTypeTotal)
+		addColumn(TotauxCategorie::getLibelleCategorie)
 		.setId(EntetesGridResumeOperationsEnum.CATEGORIE.getId())
 		.setCaption(EntetesGridResumeOperationsEnum.CATEGORIE.getLibelle());
 		
-		addColumn(ResumeTotalCategories::getTotalADate)
+		addColumn(TotauxCategorie::getTotalAtMaintenant)
 		.setId(EntetesGridResumeOperationsEnum.VALEUR_NOW.getId())
 		.setCaption(EntetesGridResumeOperationsEnum.VALEUR_NOW.getLibelle())
 		.setWidth(TAILLE_COLONNE_VALEUR)
 		.setRenderer(new OperationBudgetTypeRenderer())
 		.setStyleGenerator(new TreeGridResumeValeurCellStyle(EntetesGridResumeOperationsEnum.VALEUR_NOW));
 		
-		addColumn(ResumeTotalCategories::getTotalFinMois)
+		addColumn(TotauxCategorie::getTotalAtFinMoisCourant)
 		.setId(EntetesGridResumeOperationsEnum.VALEUR_FIN.getId())
 		.setCaption(EntetesGridResumeOperationsEnum.VALEUR_FIN.getLibelle())
 		.setWidth(TAILLE_COLONNE_VALEUR)

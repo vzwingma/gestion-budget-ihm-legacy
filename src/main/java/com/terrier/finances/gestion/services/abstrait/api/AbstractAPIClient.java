@@ -188,13 +188,11 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 		}
 		
 	}
-	
-	/**
-	 * 
-	 * @return JWT Token de l'utilisateur
-	 */
+
+
 	@Override
-	public String getJwtToken() {
-		return FacadeServices.get().getServiceUserSessions().getSession().getJwtToken();
+	public String getAccessToken() {
+		return FacadeServices.get().getServiceUserSessions().getSession().getAccessToken();
 	}
+
 }

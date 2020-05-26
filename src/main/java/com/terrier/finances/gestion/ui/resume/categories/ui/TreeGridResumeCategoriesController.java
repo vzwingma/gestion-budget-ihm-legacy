@@ -10,9 +10,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.budget.model.ResumeTotalCategories;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
+import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
+import com.terrier.finances.gestion.communs.budget.model.v12.TotauxCategorie;
+import com.terrier.finances.gestion.communs.parametrages.model.v12.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
@@ -65,33 +65,33 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 
 
 		// Données des résumés
-		List<ResumeTotalCategories> listeResumeTotaux = new ArrayList<>();
+		List<TotauxCategorie> listeResumeTotaux = new ArrayList<>();
 
 		// Tri des catégories
 		for (CategorieOperation categorie : getServiceParams().getCategories()) {
 
-			if(categorie != null && budget.getTotalParCategories().get(categorie.getId()) != null){
+			if(categorie != null && budget.getTotauxParCategories().get(categorie.getId()) != null){
 
-				ResumeTotalCategories totalCat = new ResumeTotalCategories(categorie.getLibelle(), budget.getTotalParCategories().get(categorie.getId())[0], budget.getTotalParCategories().get(categorie.getId())[1]);
+				TotauxCategorie totalCat = budget.getTotauxParCategories().get(categorie.getId());
 				listeResumeTotaux.add(totalCat);
-				for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
-					if(budget.getTotalParSSCategories().get(ssCategorie.getId()) == null){
-						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 0D,0D));
-					}
-					else{
-						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 
-								budget.getTotalParSSCategories().get(ssCategorie.getId())[0], 
-								budget.getTotalParSSCategories().get(ssCategorie.getId())[1]));
-					}
-				}
+//				for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
+//					if(budget.getTotauxParSSCategories().get(ssCategorie.getId()) == null){
+//						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 0D,0D));
+//					}
+//					else{
+//						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 
+//								budget.getTotalParSSCategories().get(ssCategorie.getId())[0], 
+//								budget.getTotalParSSCategories().get(ssCategorie.getId())[1]));
+//					}
+//				}
 			}
 			else{
 				LOGGER.trace("Attention : Catégorie vide");
 			}
 		}
-		listeResumeTotaux.sort((r1, r2) -> r1.getTypeTotal().compareTo(r2.getTypeTotal()));
+		listeResumeTotaux.sort((r1, r2) -> r1.getTotalAtFinMoisCourant().compareTo(r2.getTotalAtFinMoisCourant()));
 
-		getComponent().setItems(listeResumeTotaux, ResumeTotalCategories::getSousCategories);
+		//getComponent().setItems(listeResumeTotaux, ResumeTotalCategories::getSousCategories);
 		this.gridCollapsed = true;
 		collapseExpendTreeGrid();
 	}

@@ -3,15 +3,10 @@ package com.terrier.finances.gestion.services.utilisateurs.api;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.reactive.function.client.ClientResponse;
 
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
-import com.terrier.finances.gestion.communs.api.security.JwtConfigEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
-import com.terrier.finances.gestion.communs.utilisateur.model.api.AuthLoginAPIObject;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
@@ -27,58 +22,13 @@ import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
  */
 @Controller
 public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAPIObject> implements IUtilisateursAPIService {
-	/**
-	 * Logger
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UtilisateursAPIService.class);
-	
+
 	
 	/**
 	 * 
 	 */
 	public UtilisateursAPIService() {
 		super(UtilisateurPrefsAPIObject.class);
-	}
-
-	
-	/**
-	 * Validation login/mdp
-	 * @param login login
-	 * @param motPasseEnClair mdp
-	 * @return si valide
-	 * @throws DataNotFoundException  erreur lors de l'appel
-	 */
-	public String authenticate(String login, String motPasseEnClair) throws DataNotFoundException{
-
-		AuthLoginAPIObject auth = new AuthLoginAPIObject(login, motPasseEnClair);
-		String jwtHeader  = null;
-		try {
-			ClientResponse response = callHTTPPostResponse(BudgetApiUrlEnum.USERS_AUTHENTICATE_FULL, auth);
-			if(response != null) {
-				jwtHeader = response.headers().header(JwtConfigEnum.JWT_HEADER_AUTH).stream().findFirst().orElse(null);
-				LOGGER.debug("Authentification : {}", jwtHeader);
-			}
-		} catch (UserNotAuthorizedException e) {
-			LOGGER.warn("Ne peut pas arriver pour cette API");
-		}
-
-		return jwtHeader;
-	}
-
-
-	/**
-	 * Déconnexion d'un utilisateur
-	 * @param idUtilisateur
-	 * @throws UserNotAuthorizedException 
-	 */
-	@Deprecated
-	public boolean deconnexion() {
-		try {
-			return callHTTPPostResponse(BudgetApiUrlEnum.USERS_DISCONNECT_FULL, null).statusCode().is2xxSuccessful();
-		} catch (UserNotAuthorizedException | DataNotFoundException e) {
-			LOGGER.trace("Ne peut pas arriver pour cette API");
-			return false;
-		}
 	}
 
 

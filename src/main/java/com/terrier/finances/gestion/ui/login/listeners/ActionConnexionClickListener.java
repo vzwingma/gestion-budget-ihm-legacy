@@ -28,9 +28,7 @@ public class ActionConnexionClickListener extends AbstractActionUtilisateurListe
 	 */
 	@Override
 	public void boutonClick(ClickEvent event) {
-		this.controler.authenticateUser(
-				this.controler.getComponent().getTextLogin().getValue(), 
-				this.controler.getComponent().getPasswordField().getValue());
+		this.controler.authenticateUser(this.controler.getComponent().getPasswordField().getValue());
 	}
 
 }

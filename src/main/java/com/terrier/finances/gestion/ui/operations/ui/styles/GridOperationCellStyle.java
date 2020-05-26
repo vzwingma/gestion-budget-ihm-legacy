@@ -3,7 +3,7 @@
  */
 package com.terrier.finances.gestion.ui.operations.ui.styles;
 
-import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.vaadin.ui.StyleGenerator;
 
 /**
@@ -22,7 +22,7 @@ public class GridOperationCellStyle implements StyleGenerator<LigneOperation> {
 		// Style de la ligne
 		StringBuilder style = new StringBuilder("v-grid-row-").append(depense.getEtat().getId());
 		// Style de la dernière opération
-		if(depense.isDerniereOperation()){
+		if(depense.isTagDerniereOperation()){
 			style.append(" last-depense");
 		}
 		return style.toString();

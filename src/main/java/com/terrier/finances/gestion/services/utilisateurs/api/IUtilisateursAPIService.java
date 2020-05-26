@@ -16,16 +16,6 @@ import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
 public interface IUtilisateursAPIService extends IAPIClient{
 
 	
-	
-	/**
-	 * Validation login/mdp
-	 * @param login login
-	 * @param motPasseEnClair mdp
-	 * @return si valide
-	 * @throws DataNotFoundException  erreur lors de l'appel
-	 */
-	public String authenticate(String login, String motPasseEnClair) throws DataNotFoundException;
-
 	/**
 	 * Déconnexion d'un utilisateur
 	 * @param idUtilisateur

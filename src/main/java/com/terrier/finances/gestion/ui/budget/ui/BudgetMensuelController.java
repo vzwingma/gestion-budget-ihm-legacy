@@ -13,10 +13,10 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.terrier.finances.gestion.communs.budget.model.BudgetMensuel;
-import com.terrier.finances.gestion.communs.comptes.model.CompteBancaire;
+import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
+import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
-import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.communs.utils.config.CorrelationsIdUtils;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
@@ -95,9 +95,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			LOGGER.debug("Budget : {}", budgetCourant.toString());
 			if(idSession != null &&  budgetCourant != null){
 				LOGGER.debug("[REFRESH][idSession={}] Dernière mise à jour reçue pour le budget {} : {}", idSession, 
-						budgetCourant.getId(), budgetCourant.getDateMiseAJour() != null ? BudgetDateTimeUtils.getLibelleDateFromMillis(budgetCourant.getDateMiseAJour().getTimeInMillis()) : "null");
+						budgetCourant.getId(), budgetCourant.getDateMiseAJour() != null ? BudgetDateTimeUtils.getLibelleDate(budgetCourant.getDateMiseAJour()) : "null");
 
-				if(!getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour().getTime())){
+				if(!getServiceOperations().isBudgetUpToDate(budgetCourant.getId(), budgetCourant.getDateMiseAJour())){
 					LOGGER.info("[REFRESH][idSession={}] Le budget a été mis à jour en base de données.  Mise à jour de l'IHM", idSession);
 					miseAJourVueDonnees(true);
 				}
@@ -302,7 +302,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			LOGGER.error("Erreur lors de la réinitialisation du compte", e);
 			Notification.show("Impossible de réinitialiser le mois courant "+
 					getUserSession().getBudgetCourant().getMois()+"/"+ getUserSession().getBudgetCourant().getAnnee()
-					+" du compte "+ getUserSession().getBudgetCourant().getCompteBancaire().getLibelle(), 
+					+" du compte "+ getUserSession().getBudgetCourant().getIdCompteBancaire(), 
 					Notification.Type.ERROR_MESSAGE);
 		}
 	}
@@ -319,11 +319,11 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId())){
 				// Suppression de l'ancienne valeur
 				getUserSession().getBudgetCourant().getListeOperations().stream()
-					.filter(o -> o.isDerniereOperation())
-					.forEach(o -> o.setDerniereOperation(false));
+					.filter(o -> o.isTagDerniereOperation())
+					.forEach(o -> o.setTagDerniereOperation(false));
 				getUserSession().getBudgetCourant().getListeOperations().stream()
 				.filter(o -> operation.getId().equals(o.getId()))
-				.forEach(o -> o.setDerniereOperation(true));
+				.forEach(o -> o.setTagDerniereOperation(true));
 				
 				miseAJourVueDonnees();
 				return true;
@@ -346,7 +346,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 			// Premier budget du compte de cet utilisateur
 			IntervallesCompteAPIObject datePremierDernierBudgets = getServiceBudgetsCompte().getIntervallesBudgets(idCompte);
 			getComponent().getMois().setRangeStart(datePremierDernierBudgets.getLocalDatePremierBudget());
-			getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget());
+			getComponent().getMois().setRangeEnd(datePremierDernierBudgets.getLocalDateDernierBudget().plusMonths(1));
 		}
 		LOGGER.debug("> Affichage limité à > [{}/{}]", getComponent().getMois().getRangeStart(), getComponent().getMois().getRangeEnd());
 
@@ -384,7 +384,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		LOGGER.debug("Gestion du Compte : {} du mois {}/{}",compte, dateMoisSelectionne.getMonth(), dateMoisSelectionne.getYear());
 		if(getUserSession().getBudgetCourant() == null
 				|| forceReload
-				|| !getUserSession().getBudgetCourant().getCompteBancaire().getId().equals(compte.getId()) 
+				|| !getUserSession().getBudgetCourant().getIdCompteBancaire().equals(compte.getId()) 
 				|| !getUserSession().getBudgetCourant().getMois().equals(dateMoisSelectionne.getMonth())
 				|| getUserSession().getBudgetCourant().getAnnee() != dateMoisSelectionne.getYear()){
 			try {
@@ -451,15 +451,15 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		if(!budgetCourant.isActif()){
 			getComponent().getButtonCreate().setVisible(false);
 			getComponent().getButtonRefreshMonth().setVisible(false);
-			getComponent().getButtonLock().setVisible(budgetCourant.getCompteBancaire().isActif());
+			getComponent().getButtonLock().setVisible(true);
 			getComponent().getButtonLock().setDescription("Réouvrir le budget mensuel");
 			getComponent().getButtonLock().setStyleName("locked");
 		}
 		// Boutons actions sur Budget actif :
 		else{
-			getComponent().getButtonCreate().setVisible(budgetCourant.getCompteBancaire().isActif());
-			getComponent().getButtonRefreshMonth().setVisible(budgetCourant.getCompteBancaire().isActif());
-			getComponent().getButtonLock().setVisible(budgetCourant.getCompteBancaire().isActif());
+			getComponent().getButtonCreate().setVisible(true);
+			getComponent().getButtonRefreshMonth().setVisible(true);
+			getComponent().getButtonLock().setVisible(true);
 			getComponent().getButtonLock().setDescription("Finaliser le budget mensuel");
 			getComponent().getButtonLock().setStyleName("unlocked");
 		}

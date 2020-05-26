@@ -1,12 +1,12 @@
 package com.terrier.finances.gestion.ui.operations.ui;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
-import com.terrier.finances.gestion.communs.operations.model.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
-import com.terrier.finances.gestion.communs.parametrages.model.CategorieOperation;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation.Categorie;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIGridComponent;
 import com.terrier.finances.gestion.ui.operations.actions.ui.ActionsOperation;
@@ -20,7 +20,7 @@ import com.terrier.finances.gestion.ui.operations.ui.styles.GridOperationCellAct
 import com.terrier.finances.gestion.ui.operations.ui.styles.GridOperationCellStyle;
 import com.terrier.finances.gestion.ui.operations.ui.styles.GridOperationCellValeurStyle;
 import com.vaadin.contextmenu.GridContextMenu;
-import com.vaadin.ui.renderers.DateRenderer;
+import com.vaadin.ui.renderers.LocalDateTimeRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
 
 /**
@@ -41,7 +41,6 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 	public static final int TAILLE_COLONNE_TYPE_MENSUEL = 100;
 	public static final int TAILLE_COLONNE_VALEUR = 100;
 	
-	private final SimpleDateFormat dateFormatMaj = new SimpleDateFormat(BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN, Locale.FRENCH);
 	private final SimpleDateFormat dateFormatOperations = new SimpleDateFormat(BudgetDateTimeUtils.DATE_DAY_PATTERN, Locale.FRENCH);
 
 	/**
@@ -49,7 +48,6 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 	 */
 	public GridOperations(){
 		
-		dateFormatMaj.setTimeZone(BudgetDateTimeUtils.getTzParis());
 		dateFormatOperations.setTimeZone(BudgetDateTimeUtils.getTzParis());
 		// Start controleur
 		startControleur();
@@ -87,17 +85,17 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		/**
 		 * Columns
 		 */		
-		Column<LigneOperation, Date> c = addColumn(LigneOperation::getDateOperation);
+		Column<LigneOperation, LocalDateTime> c = addColumn(LigneOperation::getDateOperation);
 		c.setId(EntetesGridOperationsEnum.DATE_OPERATION.name())
 			.setCaption(EntetesGridOperationsEnum.DATE_OPERATION.getLibelle())
 			.setWidth(TAILLE_COLONNE_DATE)
 			.setHidable(true)
 			.setResizable(false);
-		c.setRenderer(new DateRenderer(dateFormatMaj));
+		c.setRenderer(new LocalDateTimeRenderer(BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN));
 		c.setStyleGenerator(new GridOperationCellStyle());
 		// Pas éditable
 
-		Column<LigneOperation, CategorieOperation> c2 = addColumn(LigneOperation::getCategorie);
+		Column<LigneOperation, Categorie> c2 = addColumn(LigneOperation::getCategorie);
 		c2.setId(EntetesGridOperationsEnum.CATEGORIE.name())
 			.setCaption(EntetesGridOperationsEnum.CATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)
@@ -108,7 +106,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Pas éditable
 		c2.setEditorBinding(binderLD.bindCategories());
 		
-		Column<LigneOperation, CategorieOperation> c3 = addColumn(LigneOperation::getSsCategorie);
+		Column<LigneOperation, Categorie> c3 = addColumn(LigneOperation::getSsCategorie);
 		c3.setId(EntetesGridOperationsEnum.SSCATEGORIE.name())
 			.setCaption(EntetesGridOperationsEnum.SSCATEGORIE.getLibelle())
 			.setWidth(TAILLE_COLONNE_CATEGORIE)
@@ -128,7 +126,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 		// Binding Edition
 		c5.setEditorBinding(binderLD.bindLibelle());
 			
-		Column<LigneOperation, TypeOperationEnum> c6 = addColumn(LigneOperation::getTypeDepense);
+		Column<LigneOperation, TypeOperationEnum> c6 = addColumn(LigneOperation::getTypeOperation);
 		c6.setId(EntetesGridOperationsEnum.TYPE.name())
 			.setCaption(EntetesGridOperationsEnum.TYPE.getLibelle())
 			.setWidth(TAILLE_COLONNE_TYPE_MENSUEL)
@@ -169,27 +167,27 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 			.setHidable(true)
 			.setResizable(false);
 		c9.setStyleGenerator(new GridOperationCellActionsStyle());
-		
-		Column<LigneOperation, Date> c10 = addColumn(LigneOperation::getDateMaj);
-		c10.setId(EntetesGridOperationsEnum.DATE_MAJ.name())
-			.setCaption(EntetesGridOperationsEnum.DATE_MAJ.getLibelle())
-			.setWidth(TAILLE_COLONNE_DATE + 10D)
-			.setHidable(true)
-			.setResizable(false);
-		c10.setStyleGenerator(new GridOperationCellStyle());
-		c10.setRenderer(new DateRenderer(dateFormatMaj));
-		c10.setEditorBinding(binderLD.bindDate());
-		// Not editable
-		
-		Column<LigneOperation, String> c11 = addColumn(LigneOperation::getAuteur);
-		c11.setId(EntetesGridOperationsEnum.AUTEUR.name())
-			.setCaption(EntetesGridOperationsEnum.AUTEUR.getLibelle())
-			.setWidth(TAILLE_COLONNE_AUTEUR)
-			.setHidden(true)
-			.setHidable(true)
-			.setResizable(false);
-		c11.setRenderer(new TextRenderer(""));
-		c11.setStyleGenerator(new GridOperationCellStyle());
+//		
+//		Column<LigneOperation, Date> c10 = addColumn(LigneOperation::getDateMaj);
+//		c10.setId(EntetesGridOperationsEnum.DATE_MAJ.name())
+//			.setCaption(EntetesGridOperationsEnum.DATE_MAJ.getLibelle())
+//			.setWidth(TAILLE_COLONNE_DATE + 10D)
+//			.setHidable(true)
+//			.setResizable(false);
+//		c10.setStyleGenerator(new GridOperationCellStyle());
+//		c10.setRenderer(new DateRenderer(dateFormatMaj));
+//		c10.setEditorBinding(binderLD.bindDate());
+//		// Not editable
+//		
+//		Column<LigneOperation, String> c11 = addColumn(LigneOperation::getAuteur);
+//		c11.setId(EntetesGridOperationsEnum.AUTEUR.name())
+//			.setCaption(EntetesGridOperationsEnum.AUTEUR.getLibelle())
+//			.setWidth(TAILLE_COLONNE_AUTEUR)
+//			.setHidden(true)
+//			.setHidable(true)
+//			.setResizable(false);
+//		c11.setRenderer(new TextRenderer(""));
+//		c11.setStyleGenerator(new GridOperationCellStyle());
 
 		
 		/**

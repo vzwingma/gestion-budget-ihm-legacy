@@ -1,7 +1,9 @@
 package com.terrier.finances.gestion.ui.operations.edition.binder;
 
 import java.text.ParseException;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.vaadin.data.Converter;
@@ -14,7 +16,7 @@ import com.vaadin.data.ValueContext;
  * @author vzwingma
  *
  */
-public class DateOperationEditorConverter implements Converter<String, Date> {
+public class DateOperationEditorConverter implements Converter<String, LocalDateTime> {
 
 	//
 	private static final long serialVersionUID = -3920598435421890807L;
@@ -26,9 +28,12 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	 * com.vaadin.data.ValueContext)
 	 */
 	@Override
-	public Result<Date> convertToModel(String value, ValueContext context) {
+	public Result<LocalDateTime> convertToModel(String value, ValueContext context) {
 		try {
-			return Result.ok(BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.parse(value));
+			LocalDateTime ldt = Instant.ofEpochMilli( BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.parse(value).getTime() )
+                    .atZone( ZoneId.systemDefault() )
+                    .toLocalDateTime();
+			return Result.ok(ldt);
 		} catch (ParseException e) {
 			return Result.error("Erreur : La date " + value + " n'est pas au format " + BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN);
 		}
@@ -41,8 +46,8 @@ public class DateOperationEditorConverter implements Converter<String, Date> {
 	 * com.vaadin.data.ValueContext)
 	 */
 	@Override
-	public String convertToPresentation(Date value, ValueContext context) {
-		return BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.format(value);
+	public String convertToPresentation(LocalDateTime value, ValueContext context) {
+		return BudgetDateTimeUtils.getLibelleDate(value);
 	}
 
 }

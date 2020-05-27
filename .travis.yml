@@ -78,16 +78,17 @@ jobs:
               VERSION_RELEASE="snapshot";
           fi;
             
-        - echo "Construction de l'image Docker gestion_budget_ihm"; 
+        - echo "Construction de l'image Docker gestion_budget_ihm_legacy"; 
         - cd ~/build/vzwingma/gestion-budget-ihm-legacy/src/main/external-ressources/docker
         - wget -q https://github.com/vzwingma/gestion-budget-ihm-legacy/releases/download/$VERSION_RELEASE/ihm.war;
-        - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
+        - docker build -t vzwingmann/gestion_budget_ihm_legacy:travis -f Dockerfile-IHM .;
 
         - if [[ $TRAVIS_BRANCH == v* ]]; 
           then 
-              docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
-              docker push vzwingmann/gestion_budget_ihm:latest ; 
+              docker tag vzwingmann/gestion_budget_ihm_legacy:travis vzwingmann/gestion_budget_ihm_legacy:latest ; 
+              docker push vzwingmann/gestion_budget_ihm_legacy:latest ; 
+              VERSION_RELEASE=$(echo $TRAVIS_BRANCH | cut -b 2-);
           fi;
-        - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
-        - docker push vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
+        - docker tag vzwingmann/gestion_budget_ihm_legacy:travis vzwingmann/gestion_budget_ihm_legacy:$VERSION_RELEASE ; 
+        - docker push vzwingmann/gestion_budget_ihm_legacy:$VERSION_RELEASE ; 
       name: "Publish IHM Legacy"

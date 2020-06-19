@@ -53,12 +53,12 @@ public class ActionValiderCreationDepenseClickListener extends AbstractActionUti
 		Optional<EtatOperationEnum> etatSelected = form.getComboboxEtat().getSelectedItem();
 		EtatOperationEnum etat = etatSelected.isPresent() ? etatSelected.get() : EtatOperationEnum.PREVUE;
 		
-		Optional<CategorieOperation> categorieSelected = form.getComboBoxSsCategorie().getSelectedItem();
+		Optional<CategorieOperation> ssCategorieSelected = form.getComboBoxSsCategorie().getSelectedItem();
 		Optional<String> descriptionSelected = form.getTextFieldDescription().getSelectedItem();
 
 
 		LigneOperation newOperation = new LigneOperation(
-				categorieSelected.isPresent() ? categorieSelected.get() : null, 
+				ssCategorieSelected.isPresent() ? ssCategorieSelected.get() : null, 
 				descriptionSelected.isPresent() ? descriptionSelected.get() : null, 
 				type,
 				BudgetDataUtils.getValueFromString(form.getTextFieldValeur().getValue()),

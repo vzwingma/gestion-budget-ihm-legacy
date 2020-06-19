@@ -3,8 +3,11 @@
  */
 package com.terrier.finances.gestion.ui.operations.creation.validator;
 
-import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
@@ -22,7 +25,6 @@ public class OperationValidator implements Validator<LigneOperation> {
 	 */
 	private static final long serialVersionUID = 7063946665726387722L;
 
-
 	@Override
 	public ValidationResult apply(LigneOperation operation, ValueContext context) {
 
@@ -39,13 +41,11 @@ public class OperationValidator implements Validator<LigneOperation> {
 		if(Double.isInfinite(operation.getValeur()) || Double.isNaN(operation.getValeur())){
 			return ValidationResult.error("La valeur est incorrecte");
 		}
-
-
 		// Catégorie crédit
 		if((IdsCategoriesEnum.SALAIRE.getId().equals(operation.getSsCategorie().getId()) 
 				|| IdsCategoriesEnum.REMBOURSEMENT.getId().equals(operation.getSsCategorie().getId()))){
 			if(TypeOperationEnum.DEPENSE.equals(operation.getTypeOperation())){
-				return ValidationResult.error("L'opération est un crédit. Le type doit être CREDIT");
+				return ValidationResult.error("L'opération est un crédit. Le type doit être CREDIT (+)");
 			}
 			// Sinon c'est correct
 		}

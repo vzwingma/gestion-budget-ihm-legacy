@@ -4,8 +4,6 @@
 package com.terrier.finances.gestion.ui.resume.categories.ui;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +15,8 @@ import com.terrier.finances.gestion.communs.utils.data.BudgetDataUtils;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.operations.model.enums.EntetesGridResumeOperationsEnum;
 import com.terrier.finances.gestion.ui.resume.totaux.ui.GridResumeTotauxController;
+import com.vaadin.data.TreeData;
+import com.vaadin.data.provider.TreeDataProvider;
 
 /**
  * Controleur du tableau des résumés
@@ -65,33 +65,36 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 
 
 		// Données des résumés
-		List<TotauxCategorie> listeResumeTotaux = new ArrayList<>();
-
+		@SuppressWarnings("unchecked")
+		TreeDataProvider<TotauxCategorie> dataProvider = (TreeDataProvider<TotauxCategorie>) getComponent().getDataProvider();
+		TreeData<TotauxCategorie> treeData = dataProvider.getTreeData();
+		
 		// Tri des catégories
 		for (CategorieOperation categorie : getServiceParams().getCategories()) {
-
 			if(categorie != null && budget.getTotauxParCategories().get(categorie.getId()) != null){
 
+				// Ajout de la catégorie en parent
 				TotauxCategorie totalCat = budget.getTotauxParCategories().get(categorie.getId());
-				listeResumeTotaux.add(totalCat);
-//				for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
-//					if(budget.getTotauxParSSCategories().get(ssCategorie.getId()) == null){
-//						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 0D,0D));
-//					}
-//					else{
-//						totalCat.getSousCategories().add(new ResumeTotalCategories(ssCategorie.getLibelle(), 
-//								budget.getTotalParSSCategories().get(ssCategorie.getId())[0], 
-//								budget.getTotalParSSCategories().get(ssCategorie.getId())[1]));
-//					}
-//				}
+				treeData.addItem(null, totalCat);
+				
+				for (CategorieOperation ssCategorie : categorie.getListeSSCategories()) {
+					
+					TotauxCategorie totalSsCat = budget.getTotauxParSSCategories().get(ssCategorie.getId());
+					if(totalSsCat == null){
+						TotauxCategorie voidTotaux = new TotauxCategorie();
+						voidTotaux.setLibelleCategorie(ssCategorie.getLibelle());
+						treeData.addItem(totalCat, voidTotaux);
+					}
+					else{
+						treeData.addItem(totalCat, totalSsCat);
+					}
+				}
 			}
 			else{
 				LOGGER.trace("Attention : Catégorie vide");
 			}
 		}
-		listeResumeTotaux.sort((r1, r2) -> r1.getTotalAtFinMoisCourant().compareTo(r2.getTotalAtFinMoisCourant()));
-
-		//getComponent().setItems(listeResumeTotaux, ResumeTotalCategories::getSousCategories);
+		dataProvider.refreshAll();
 		this.gridCollapsed = true;
 		collapseExpendTreeGrid();
 	}

@@ -16,7 +16,7 @@ import com.terrier.finances.gestion.ui.resume.totaux.ui.GridResumeTotauxControll
  * @author vzwingma
  *
  */
-public class TestControler {
+class TestControler {
 
 
 	/**
@@ -24,7 +24,7 @@ public class TestControler {
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestControler.class);
 	@Test
-	public void testAffichageDate(){
+	void testAffichageDate(){
 		LocalDate now = BudgetDateTimeUtils.localDateNow();
 		LOGGER.info("du {} à fin {}", 
 				now.format(GridResumeTotauxController.auDateFormat), now.format(GridResumeTotauxController.finDateFormat));

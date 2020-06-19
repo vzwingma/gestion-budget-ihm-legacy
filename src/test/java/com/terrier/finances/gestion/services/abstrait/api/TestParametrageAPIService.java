@@ -19,7 +19,7 @@ import com.terrier.finances.gestion.test.config.AbstractTestServices;
  * @author vzwingma
  *
  */
-public class TestParametrageAPIService extends AbstractTestServices {
+class TestParametrageAPIService extends AbstractTestServices {
 
 
 	/**
@@ -28,7 +28,7 @@ public class TestParametrageAPIService extends AbstractTestServices {
 	 * 
 	 */
 	@Test
-	public void testChargerOperations() throws UserNotAuthorizedException, DataNotFoundException{
+	void testChargerOperations() throws UserNotAuthorizedException, DataNotFoundException{
 		
 		List<CategorieOperation> categories  = new ArrayList<>();
 		CategorieOperation catAlimentation = new CategorieOperation();

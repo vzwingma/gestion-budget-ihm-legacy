@@ -85,7 +85,7 @@ public class LigneOperationEditorBinder extends Binder<LigneOperation> {
 				.withConverter(BudgetDataUtils::getValueFromString, String::valueOf)
 				.withValidator(Objects::nonNull, "La valeur ne doit pas être nulle ou incorrecte")
                 .withValidator(v -> (!Double.isInfinite(Double.valueOf(v)) && !Double.isNaN(Double.valueOf(v))), "La valeur est incorrecte")
-				.bind(LigneOperation::getValeur, LigneOperation::setValeurFromSaisie);
+				.bind(LigneOperation::getValeurToSaisie, LigneOperation::setValeurFromSaisie);
 	}
 	/**
 	 * @return binding périodique

@@ -7,6 +7,8 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -442,7 +444,8 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		LOGGER.info(">> Mise à jour des vues >> {}", budgetCourant.isActif());		
 		LOGGER.debug("Affichage des données dans le tableau de suivi des dépenses");
 		List<LigneOperation> listeOperations = new ArrayList<>();
-		budgetCourant.getListeOperations().stream().forEach(listeOperations::add);		
+		budgetCourant.getListeOperations().stream().forEach(listeOperations::add);
+		Collections.sort(listeOperations);
 		/**
 		 * Affichage des lignes dans le tableau
 		 **/

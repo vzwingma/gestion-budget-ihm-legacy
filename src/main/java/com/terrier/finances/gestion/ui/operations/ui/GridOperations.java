@@ -179,15 +179,15 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 //		c10.setEditorBinding(binderLD.bindDate());
 //		// Not editable
 //		
-//		Column<LigneOperation, String> c11 = addColumn(LigneOperation::getAuteur);
-//		c11.setId(EntetesGridOperationsEnum.AUTEUR.name())
-//			.setCaption(EntetesGridOperationsEnum.AUTEUR.getLibelle())
-//			.setWidth(TAILLE_COLONNE_AUTEUR)
-//			.setHidden(true)
-//			.setHidable(true)
-//			.setResizable(false);
-//		c11.setRenderer(new TextRenderer(""));
-//		c11.setStyleGenerator(new GridOperationCellStyle());
+		Column<LigneOperation, String> c11 = addColumn(LigneOperation::getAuteur);
+		c11.setId(EntetesGridOperationsEnum.AUTEUR.name())
+			.setCaption(EntetesGridOperationsEnum.AUTEUR.getLibelle())
+			.setWidth(TAILLE_COLONNE_AUTEUR)
+			.setHidden(true)
+			.setHidable(true)
+			.setResizable(false);
+		c11.setRenderer(new TextRenderer(""));
+		c11.setStyleGenerator(new GridOperationCellStyle());
 
 		
 		/**

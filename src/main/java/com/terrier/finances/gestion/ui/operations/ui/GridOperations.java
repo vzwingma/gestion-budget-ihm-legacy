@@ -33,7 +33,7 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 	//
 	private static final long serialVersionUID = -7187184070043964584L;
 
-	public static final int TAILLE_COLONNE_DATE = 95;
+	public static final int TAILLE_COLONNE_DATE = 105;
 	public static final int TAILLE_COLONNE_CATEGORIE = 150;
 	public static final int TAILLE_COLONNE_AUTEUR = 100;
 	public static final int TAILLE_COLONNE_DATE_EDITEE = 150;
@@ -167,18 +167,17 @@ public class GridOperations extends AbstractUIGridComponent<GridOperationsContro
 			.setHidable(true)
 			.setResizable(false);
 		c9.setStyleGenerator(new GridOperationCellActionsStyle());
-//		
-//		Column<LigneOperation, Date> c10 = addColumn(LigneOperation::getDateMaj);
-//		c10.setId(EntetesGridOperationsEnum.DATE_MAJ.name())
-//			.setCaption(EntetesGridOperationsEnum.DATE_MAJ.getLibelle())
-//			.setWidth(TAILLE_COLONNE_DATE + 10D)
-//			.setHidable(true)
-//			.setResizable(false);
-//		c10.setStyleGenerator(new GridOperationCellStyle());
-//		c10.setRenderer(new DateRenderer(dateFormatMaj));
-//		c10.setEditorBinding(binderLD.bindDate());
-//		// Not editable
-//		
+		
+		Column<LigneOperation, LocalDateTime> c10 = addColumn(LigneOperation::getDateMaj);
+		c10.setId(EntetesGridOperationsEnum.DATE_MAJ.name())
+			.setCaption(EntetesGridOperationsEnum.DATE_MAJ.getLibelle())
+			.setWidth(TAILLE_COLONNE_DATE)
+			.setHidable(true)
+			.setResizable(false);
+		c10.setStyleGenerator(new GridOperationCellStyle());
+		c10.setRenderer(new LocalDateTimeRenderer(BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN));
+		// Not editable
+		
 		Column<LigneOperation, String> c11 = addColumn(LigneOperation::getAuteur);
 		c11.setId(EntetesGridOperationsEnum.AUTEUR.name())
 			.setCaption(EntetesGridOperationsEnum.AUTEUR.getLibelle())

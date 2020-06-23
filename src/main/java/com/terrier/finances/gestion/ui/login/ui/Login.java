@@ -174,7 +174,7 @@ public class Login extends AbstractUIComponent<LoginController> {
 		// common part: create layout
 		verticalLayout1 = new VerticalLayout();
 		verticalLayout1.setWidthUndefined();
-		verticalLayout1.setHeight("200px");
+		verticalLayout1.setHeight("120px");
 		verticalLayout1.setMargin(false);
 
 		// passwordField

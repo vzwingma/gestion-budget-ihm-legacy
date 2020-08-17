@@ -68,7 +68,7 @@ public class TreeGridResumeCategoriesController extends AbstractUIController<Tre
 		@SuppressWarnings("unchecked")
 		TreeDataProvider<TotauxCategorie> dataProvider = (TreeDataProvider<TotauxCategorie>) getComponent().getDataProvider();
 		TreeData<TotauxCategorie> treeData = dataProvider.getTreeData();
-		
+		treeData.clear();
 		// Tri des catégories
 		for (CategorieOperation categorie : getServiceParams().getCategories()) {
 			if(categorie != null && budget.getTotauxParCategories().get(categorie.getId()) != null){

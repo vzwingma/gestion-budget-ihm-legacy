@@ -1,12 +1,19 @@
 package com.terrier.finances.gestion.ui.login.business;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
+import com.terrier.finances.gestion.services.utilisateurs.api.IUtilisateursAPIService;
 import com.terrier.finances.gestion.ui.communs.abstrait.IUIControllerService;
 import com.terrier.finances.gestion.ui.login.model.UserUISession;
 import com.vaadin.server.Page;
@@ -30,6 +37,9 @@ public class UserUISessionsService implements IUIControllerService, IUserUISessi
 	// Gestionnaire des composants UI
 	private ConcurrentHashMap<String, UserUISession> sessionsMap = new ConcurrentHashMap<>();
 
+	@Autowired
+	private IUtilisateursAPIService usersService;
+	
 	/**
 	 * @return la session utilisateur
 	 */
@@ -44,10 +54,11 @@ public class UserUISessionsService implements IUIControllerService, IUserUISessi
 			session = new UserUISession(idSession);
 			sessionsMap.put(idSession, session);			
 		}
-		session.setLastAccessTime(Instant.now());
 		return session;
 	}
 
+	
+	
 	/**
 	 * @return l'id de session Vaadin
 	 */
@@ -59,6 +70,29 @@ public class UserUISessionsService implements IUIControllerService, IUserUISessi
 		return idSession;
 	}
 
+
+	/**
+	 * Enregistrement de la session
+	 * @param session
+	 */
+	public void enregistrementUtilisateur() {
+		try {
+			LocalDateTime lastDateTime = usersService.getLastAccessTime();
+			getUserSession().setLastAccessTime(lastDateTime.atZone(ZoneId.of("Europe/Paris")).toInstant());
+		} catch (UserNotAuthorizedException | DataNotFoundException e) {
+			getUserSession().setLastAccessTime(Instant.now());
+		}
+		UtilisateurPrefsAPIObject prefs;
+		try {
+			prefs = usersService.getPreferenceDroits();
+			getUserSession().setDroits(prefs.getDroits());
+			getUserSession().setPreferences(prefs.getPreferences());			
+		} catch (UserNotAuthorizedException | DataNotFoundException e) {
+			LOGGER.error("Erreur lors du chargement des droits de l'utilisateur", e);
+		}
+
+
+	}
 
 	/**
 	 * Déconnexion de l'utilisateur

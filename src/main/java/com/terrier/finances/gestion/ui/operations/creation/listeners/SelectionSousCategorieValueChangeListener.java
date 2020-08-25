@@ -60,7 +60,7 @@ public class SelectionSousCategorieValueChangeListener extends AbstractActionUti
 				List<CompteBancaire> listeComptesTransfert = getServiceComptes().getComptes()
 						.stream()
 						.filter(CompteBancaire::isActif)
-						.filter(c -> !c.getId().equals(getUserSession().getBudgetCourant().getIdCompteBancaire()))
+						.filter(c -> !c.getId().equals(getUserSession().getBudgetMensuelCourant().getIdCompteBancaire()))
 						.collect(Collectors.toList());
 
 				controleur.getComponent().getComboboxComptes().setVisible(interCompte);

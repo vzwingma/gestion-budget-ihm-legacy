@@ -53,7 +53,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		ValidationResult resultatValidation = new OperationValidator().apply(newOperation, null);
 		if(!resultatValidation.isError()){
 			// Si oui création
-			BudgetMensuel budget = getUserSession().getBudgetCourant();
+			BudgetMensuel budget = getUserSession().getBudgetMensuelCourant();
 			try{
 				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getSsCategorie().getId())
 						&& compteTransfert.isPresent()){
@@ -125,7 +125,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		// #50 : Gestion du style par préférence utilisateur
 		Object etatNlleDepense = null;
 		try {
-			etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur().get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+			etatNlleDepense = getServiceUtilisateurs().getPreferenceDroits().getPreferences().getOrDefault(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE, EtatOperationEnum.PREVUE.getId());
 		} catch (UserNotAuthorizedException | DataNotFoundException e1) {
 			LOGGER.warn("Impossible de trouver les préférences utilisateurs");
 		}
@@ -143,8 +143,8 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		try {
 			getComponent().getTextFieldDescription().setItems(
 				getServiceLibellesOperations().getForAutocomplete(
-					getUserSession().getBudgetCourant().getIdCompteBancaire(),
-					getUserSession().getBudgetCourant().getAnnee()));
+					getUserSession().getBudgetMensuelCourant().getIdCompteBancaire(),
+					getUserSession().getBudgetMensuelCourant().getAnnee()));
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de l'accès à l'autocompletion des libellés");
 		}

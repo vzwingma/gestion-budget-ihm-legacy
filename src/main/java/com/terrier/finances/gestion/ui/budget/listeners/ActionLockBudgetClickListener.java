@@ -32,7 +32,7 @@ public class ActionLockBudgetClickListener extends AbstractActionUtilisateurList
 		Button editer = event.getButton();
 		BudgetMensuelPage page  = (BudgetMensuelPage)editer.getParent().getParent().getParent().getParent().getParent();
 
-		boolean budgetActif = getUserSession().getBudgetCourant().isActif();
+		boolean budgetActif = getUserSession().getBudgetMensuelCourant().isActif();
 
 		// Confirmation
 		setPopupModale(new ConfirmDialog((budgetActif ? "Clôture" : "Ouverture") + " du budget mensuel", 

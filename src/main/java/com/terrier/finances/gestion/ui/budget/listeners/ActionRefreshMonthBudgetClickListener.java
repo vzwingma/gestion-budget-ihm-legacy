@@ -38,7 +38,7 @@ public class ActionRefreshMonthBudgetClickListener extends AbstractActionUtilisa
 		BudgetMensuelPage page  = (BudgetMensuelPage)event.getButton().getParent().getParent().getParent().getParent().getParent();
 
 
-		BudgetMensuel budgetMensuelCourant = getUserSession().getBudgetCourant();
+		BudgetMensuel budgetMensuelCourant = getUserSession().getBudgetMensuelCourant();
 		String moisAffiche = BudgetDateTimeUtils.localDateFirstDayOfMonth(budgetMensuelCourant.getMois()).format(DateTimeFormatter.ofPattern("MMMM YYYY", Locale.FRENCH));
 
 		/** Alerte **/

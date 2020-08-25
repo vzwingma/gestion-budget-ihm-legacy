@@ -104,7 +104,7 @@ public class ActionsOperationClickListener extends AbstractActionUtilisateurList
 		actions.getControleur().miseAJourEtatLigne(etat);
 
 		// Recalcul du budget
-		BudgetMensuel budget = getUserSession().getBudgetCourant();
+		BudgetMensuel budget = getUserSession().getBudgetMensuelCourant();
 		
 		LigneOperation operationModifiee = actions.getControleur().getOperation();
 		operationModifiee.setEtat(etat);

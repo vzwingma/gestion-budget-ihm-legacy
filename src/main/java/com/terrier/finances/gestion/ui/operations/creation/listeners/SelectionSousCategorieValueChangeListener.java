@@ -87,6 +87,8 @@ public class SelectionSousCategorieValueChangeListener extends AbstractActionUti
 					typeAttendu = TypeOperationEnum.CREDIT;
 				}
 				controleur.getComponent().getComboboxType().setSelectedItem(typeAttendu);
+				
+				controleur.getComponent().getComboBoxCategorie().setSelectedItem(ssCategorie.getCategorieParente());
 			}
 		}
 	}

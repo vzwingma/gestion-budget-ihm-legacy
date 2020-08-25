@@ -41,6 +41,15 @@ public class SelectionCategorieValueChangeListener extends AbstractActionUtilisa
 	@Override
 	public void selectionChange(SingleSelectionEvent<CategorieOperation> event) {
 		
+		// Save de la ss catégorie sélectionnée pour la réactiver si la cat est la bonne
+		CategorieOperation ssCatPreviousSelected = null;
+		Optional<CategorieOperation> optSsCatPreviousSelected = controleur.getComponent().getComboBoxSsCategorie().getSelectedItem();
+		if(optSsCatPreviousSelected.isPresent()) {
+			ssCatPreviousSelected = optSsCatPreviousSelected.get();
+		}
+		
+		
+		// Update du formulaire
 		controleur.getComponent().getComboBoxSsCategorie().clear();
 		controleur.getComponent().getComboBoxSsCategorie().setSelectedItem(null);
 		
@@ -48,6 +57,7 @@ public class SelectionCategorieValueChangeListener extends AbstractActionUtilisa
 		controleur.getComponent().getLayoutCompte().setVisible(false);
 		controleur.getComponent().getLabelCompte().setVisible(false);
 		
+		// Sélection de la catégorie
 		Optional<CategorieOperation> categories = event.getSelectedItem();
 		if(categories.isPresent()){
 			CategorieOperation categorie = categories.get();
@@ -65,6 +75,9 @@ public class SelectionCategorieValueChangeListener extends AbstractActionUtilisa
 				// #51 : S'il n'y a qu'un seul élément : sélection automatique de celui ci
 				if(streamSSCategories.size() == 1){
 					controleur.getComponent().getComboBoxSsCategorie().setSelectedItem(streamSSCategories.get(0));
+				}
+				else if(streamSSCategories.contains(ssCatPreviousSelected)) {
+					controleur.getComponent().getComboBoxSsCategorie().setSelectedItem(ssCatPreviousSelected);
 				}
 				else{
 					controleur.getComponent().getComboBoxSsCategorie().setSelectedItem(null);

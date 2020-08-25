@@ -582,7 +582,6 @@ public class CreerDepenseForm extends AbstractUIComponent<CreerDepenseController
 		getComboBoxCategorie().addSelectionListener(new SelectionCategorieValueChangeListener(getControleur()));
 		
 		getComboBoxSsCategorie().setEmptySelectionAllowed(false);
-		getComboBoxSsCategorie().setTextInputAllowed(false);
 		getComboBoxSsCategorie().addSelectionListener(new SelectionSousCategorieValueChangeListener(getControleur()));
 
 		getComboboxComptes().setItemCaptionGenerator(new ComptesItemCaptionStyle());

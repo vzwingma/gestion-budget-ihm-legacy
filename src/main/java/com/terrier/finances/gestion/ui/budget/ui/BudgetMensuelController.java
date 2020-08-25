@@ -89,10 +89,10 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	@Override
 	public void poll(UIEvents.PollEvent event) {
 		CorrelationsIdUtils.putCorrIdOnMDC(UUID.randomUUID().toString());
-		String idSession = getUserSession().getId();
+		String idSession = getUserSession().getIdSession();
 		long nbSessions = getServiceUserSessions().getNombreSessionsActives();
 		if(nbSessions > 1){
-			BudgetMensuel budgetCourant = getUserSession().getBudgetCourant();
+			BudgetMensuel budgetCourant = getUserSession().getBudgetMensuelCourant();
 			LOGGER.debug("Budget : {}", budgetCourant.toString());
 			if(idSession != null &&  budgetCourant != null){
 				LOGGER.debug("[REFRESH][idSession={}] Dernière mise à jour reçue pour le budget {} : {}", idSession, 
@@ -265,7 +265,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 * Déconnexion de l'utilisateur
 	 */
 	public void deconnexion(){
-		getServiceUserSessions().deconnexionUtilisateur(getUserSession().getId());
+		getServiceUserSessions().deconnexionUtilisateur(getUserSession().getIdSession());
 	}
 
 
@@ -277,7 +277,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	public void lockBudget(boolean setBudgetActif) throws DataNotFoundException{
 		LOGGER.info("{} du budget mensuel", setBudgetActif ? "Ouverture" : "Clôture");
 		try {
-			BudgetMensuel lock = getServiceOperations().setBudgetActif(getUserSession().getBudgetCourant().getId(), setBudgetActif);
+			BudgetMensuel lock = getServiceOperations().setBudgetActif(getUserSession().getBudgetMensuelCourant().getId(), setBudgetActif);
 			// Si l'opération s'est bien passée, on répercute la modif
 			if(lock != null){
 				getUserSession().updateBudgetInSession(lock);	
@@ -296,14 +296,14 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		LOGGER.info("Réinitialisation du budget mensuel courant");
 		try {
 			getUserSession().updateBudgetInSession(getServiceOperations().reinitialiserBudgetMensuel(
-					getUserSession().getBudgetCourant()));
+					getUserSession().getBudgetMensuelCourant()));
 			// Ack pour forcer le "refreshAllTable"
 			miseAJourVueDonnees();
 		} catch (BudgetNotFoundException | DataNotFoundException | CompteClosedException | UserNotAuthorizedException e) {
 			LOGGER.error("Erreur lors de la réinitialisation du compte", e);
 			Notification.show("Impossible de réinitialiser le mois courant "+
-					getUserSession().getBudgetCourant().getMois()+"/"+ getUserSession().getBudgetCourant().getAnnee()
-					+" du compte "+ getUserSession().getBudgetCourant().getIdCompteBancaire(), 
+					getUserSession().getBudgetMensuelCourant().getMois()+"/"+ getUserSession().getBudgetMensuelCourant().getAnnee()
+					+" du compte "+ getUserSession().getBudgetMensuelCourant().getIdCompteBancaire(), 
 					Notification.Type.ERROR_MESSAGE);
 		}
 	}
@@ -317,12 +317,12 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	 */
 	public boolean setLigneDepenseAsDerniereOperation(LigneOperation operation) throws DataNotFoundException{
 		try {
-			if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetCourant(), operation.getId())){
+			if(getServiceOperations().setLigneDepenseAsDerniereOperation(getUserSession().getBudgetMensuelCourant(), operation.getId())){
 				// Suppression de l'ancienne valeur
-				getUserSession().getBudgetCourant().getListeOperations().stream()
+				getUserSession().getBudgetMensuelCourant().getListeOperations().stream()
 					.filter(o -> o.isTagDerniereOperation())
 					.forEach(o -> o.setTagDerniereOperation(false));
-				getUserSession().getBudgetCourant().getListeOperations().stream()
+				getUserSession().getBudgetMensuelCourant().getListeOperations().stream()
 				.filter(o -> operation.getId().equals(o.getId()))
 				.forEach(o -> o.setTagDerniereOperation(true));
 				
@@ -382,12 +382,13 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 		CompteBancaire compte = getComponent().getComboBoxComptes().getValue();
 		LocalDate dateMoisSelectionne = getComponent().getMois().getValue();
+		BudgetMensuel budgetMensuelCourant = getUserSession().getBudgetMensuelCourant();
 		LOGGER.debug("Gestion du Compte : {} du mois {}/{}",compte, dateMoisSelectionne.getMonth(), dateMoisSelectionne.getYear());
-		if(getUserSession().getBudgetCourant() == null
+		if(budgetMensuelCourant == null
 				|| forceReload
-				|| !getUserSession().getBudgetCourant().getIdCompteBancaire().equals(compte.getId()) 
-				|| !getUserSession().getBudgetCourant().getMois().equals(dateMoisSelectionne.getMonth())
-				|| getUserSession().getBudgetCourant().getAnnee() != dateMoisSelectionne.getYear()){
+				|| !budgetMensuelCourant.getIdCompteBancaire().equals(compte.getId()) 
+				|| !budgetMensuelCourant.getMois().equals(dateMoisSelectionne.getMonth())
+				|| budgetMensuelCourant.getAnnee() != dateMoisSelectionne.getYear()){
 			try {
 				// Budget
 				BudgetMensuel budget = getServiceOperations().chargerBudgetMensuel(
@@ -410,7 +411,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		}
 		else{
 			LOGGER.debug("Pas de changement de mois ou de compte : Renvoi du budget mensuel courant");
-			return getUserSession().getBudgetCourant();
+			return getUserSession().getBudgetMensuelCourant();
 		}
 	}
 

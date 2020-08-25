@@ -1,5 +1,7 @@
 package com.terrier.finances.gestion.ui.operations.creation.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -7,10 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
-import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
+import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
+import com.terrier.finances.gestion.communs.parametrages.model.v12.CategorieOperation;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
@@ -53,7 +56,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		ValidationResult resultatValidation = new OperationValidator().apply(newOperation, null);
 		if(!resultatValidation.isError()){
 			// Si oui création
-			BudgetMensuel budget = getUserSession().getBudgetCourant();
+			BudgetMensuel budget = getUserSession().getBudgetMensuelCourant();
 			try{
 				if(IdsCategoriesEnum.TRANSFERT_INTERCOMPTE.getId().equals(newOperation.getSsCategorie().getId())
 						&& compteTransfert.isPresent()){
@@ -93,15 +96,30 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		// Catégories
 		getComponent().getComboBoxCategorie().clear();
 		getComponent().getComboBoxCategorie().setSelectedItem(null);
-		getComponent().getComboBoxCategorie().setItems(getServiceParams().getCategories().stream().sorted((c1, c2) -> c1.getLibelle().compareTo(c2.getLibelle())));
+		getComponent().getComboBoxCategorie().setItems(
+				getServiceParams().getCategories()
+					.stream()
+					.sorted((c1, c2) -> c1.getLibelle().compareTo(c2.getLibelle())));
 		getComponent().getComboBoxCategorie().setEnabled(true);
 
 
 		// Sélection d'une sous catégorie
 		getComponent().getComboBoxSsCategorie().clear();
 		getComponent().getComboBoxSsCategorie().setSelectedItem(null);
-		getComponent().getComboBoxSsCategorie().setEnabled(false);
+		getComponent().getComboBoxSsCategorie().setEnabled(true);
+		getComponent().getComboBoxSsCategorie().setTextInputAllowed(true);
 
+		List<CategorieOperation> ssCats = new ArrayList<>();
+		getServiceParams().getCategories()
+		.stream()
+		.sorted((c1, c2) -> c1.getLibelle().compareTo(c2.getLibelle()))
+		.forEach(c -> {
+			c.getListeSSCategories()
+			.stream()
+			.sorted((ssc1, ssc2) -> ssc1.getLibelle().compareTo(ssc2.getLibelle()))
+			.forEach(ssc -> ssCats.add(ssc));
+		});
+		getComponent().getComboBoxSsCategorie().setItems(ssCats);
 
 		// Comptes pour virement intercomptes
 		getComponent().getComboboxComptes().setTextInputAllowed(false);
@@ -125,7 +143,7 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		// #50 : Gestion du style par préférence utilisateur
 		Object etatNlleDepense = null;
 		try {
-			etatNlleDepense = getServiceUtilisateurs().getPreferencesUtilisateur().get(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE);
+			etatNlleDepense = getServiceUtilisateurs().getPreferenceDroits().getPreferences().getOrDefault(UtilisateurPrefsEnum.PREFS_STATUT_NLLE_DEPENSE, EtatOperationEnum.PREVUE.getId());
 		} catch (UserNotAuthorizedException | DataNotFoundException e1) {
 			LOGGER.warn("Impossible de trouver les préférences utilisateurs");
 		}
@@ -143,8 +161,8 @@ public class CreerDepenseController extends AbstractUIController<CreerDepenseFor
 		try {
 			getComponent().getTextFieldDescription().setItems(
 				getServiceLibellesOperations().getForAutocomplete(
-					getUserSession().getBudgetCourant().getIdCompteBancaire(),
-					getUserSession().getBudgetCourant().getAnnee()));
+					getUserSession().getBudgetMensuelCourant().getIdCompteBancaire(),
+					getUserSession().getBudgetMensuelCourant().getAnnee()));
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de l'accès à l'autocompletion des libellés");
 		}

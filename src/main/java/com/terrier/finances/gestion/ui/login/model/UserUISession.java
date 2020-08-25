@@ -9,12 +9,16 @@ import org.slf4j.LoggerFactory;
 
 import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
+import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
+
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -23,6 +27,7 @@ import com.vaadin.ui.Window;
  * @author vzwingma
  *
  */
+@Getter @Setter
 public class UserUISession {
 	/**
 	 * Logger
@@ -31,7 +36,12 @@ public class UserUISession {
 
 	private String idSession;
 
+	// Configuration Session
 	private Instant lastAccessTime;
+	
+	private Map<UtilisateurDroitsEnum, Boolean> droits;
+	
+	private Map<UtilisateurPrefsEnum, String> preferences;
 	
 	private String actionUserCorrId = null;
 	/*
@@ -43,8 +53,7 @@ public class UserUISession {
 	 */
 	private BudgetMensuel budgetMensuelCourant;
 
-	@SuppressWarnings("rawtypes")
-	private Map<Class, AbstractUIController<? extends AbstractComponent>> mapControleurs = new HashMap<>();
+	private Map<Class<?>, AbstractUIController<? extends AbstractComponent>> mapControleurs = new HashMap<>();
 	// Page principale
 	private Layout mainLayout;
 
@@ -101,31 +110,21 @@ public class UserUISession {
 	}
 
 	/**
+	 * @param budgetMensuelCourant the budgetMensuelCourant to set
+	 */
+	public void updateBudgetInSession(BudgetMensuel budgetMensuelCourant) {
+		this.budgetMensuelCourant = budgetMensuelCourant;
+	}
+	
+	/**
 	 * Enregistrement de l'utilisateur
 	 * @param idUtilisateur USER
 	 */
-	public boolean registerUtilisateur(String token){
+	public boolean setAccessToken(String token){
 		this.accessToken = token;
 		LOGGER.info("[idSession={}] Enregistrement de l'utilisateur : {}", idSession, this.accessToken);
 		return this.accessToken != null;
 	}
-
-
-
-	/**
-	 * @param lastAccessTime the lastAccessTime to set
-	 */
-	public void setLastAccessTime(Instant lastAccessTime) {
-		this.lastAccessTime = lastAccessTime;
-	}
-
-	/**
-	 * @return the lastAccessTime
-	 */
-	public Instant getLastAccessTime() {
-		return lastAccessTime;
-	}
-
 
 	/**
 	 * @return session active
@@ -140,52 +139,9 @@ public class UserUISession {
 	 * @return le résultat
 	 */
 	public boolean isEnabled(UtilisateurDroitsEnum cleDroit){
-		return true;
+		return getDroits().getOrDefault(cleDroit, Boolean.FALSE);
 	}
 
-	/**
-	 * @return the idSession
-	 */
-	public String getId() {
-		return idSession;
-	}
-
-	/**
-	 * @return the budgetMensuelCourant
-	 */
-	public BudgetMensuel getBudgetCourant() {
-		return budgetMensuelCourant;
-	}
-
-	/**
-	 * @param budgetMensuelCourant the budgetMensuelCourant to set
-	 */
-	public void updateBudgetInSession(BudgetMensuel budgetMensuelCourant) {
-		this.budgetMensuelCourant = budgetMensuelCourant;
-	}
-
-
-
-	/**
-	 * @return le mainLayout
-	 */
-	public Layout getMainLayout() {
-		return mainLayout;
-	}
-
-	/**
-	 * @param mainLayout to set
-	 */
-	public void setMainLayout(Layout mainLayout) {
-		this.mainLayout = mainLayout;
-	}
-
-	/**
-	 * @return the popupModale
-	 */
-	public Window getPopupModale() {
-		return popupModale;
-	}
 
 	/**
 	 * @param popupModale the popupModale to set
@@ -194,25 +150,4 @@ public class UserUISession {
 		UI.getCurrent().addWindow(popupModale);
 		this.popupModale = popupModale;
 	}
-
-
-	/**
-	 * @return the jwtToken
-	 */
-	public String getAccessToken() {
-		return this.accessToken;
-	}
-
-
-	public String getActionUserCorrId() {
-		return actionUserCorrId;
-	}
-
-
-
-	public void setActionUserCorrId(String actionUserCorrId) {
-		this.actionUserCorrId = actionUserCorrId;
-	}
-	
-	
 }

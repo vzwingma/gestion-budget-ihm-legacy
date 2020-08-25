@@ -1,9 +1,7 @@
 package com.terrier.finances.gestion.ui.operations.edition.binder;
 
 import java.text.ParseException;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.vaadin.data.Converter;
@@ -30,10 +28,7 @@ public class DateOperationEditorConverter implements Converter<String, LocalDate
 	@Override
 	public Result<LocalDateTime> convertToModel(String value, ValueContext context) {
 		try {
-			LocalDateTime ldt = Instant.ofEpochMilli( BudgetDateTimeUtils.DATE_DAY_HOUR_S_FORMATTER.parse(value).getTime() )
-                    .atZone( ZoneId.systemDefault() )
-                    .toLocalDateTime();
-			return Result.ok(ldt);
+			return Result.ok(BudgetDateTimeUtils.getLocalDateTimeFromDHS(value));
 		} catch (ParseException e) {
 			return Result.error("Erreur : La date " + value + " n'est pas au format " + BudgetDateTimeUtils.DATE_DAY_HOUR_PATTERN);
 		}

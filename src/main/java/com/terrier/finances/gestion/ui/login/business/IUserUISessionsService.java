@@ -16,7 +16,7 @@ public interface IUserUISessionsService {
 	 */
 	public UserUISession getSession();
 
-
+	public void enregistrementUtilisateur();
 
 	/**
 	 * Déconnexion de l'utilisateur

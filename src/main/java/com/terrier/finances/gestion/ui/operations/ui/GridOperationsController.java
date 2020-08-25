@@ -57,8 +57,6 @@ public class GridOperationsController extends AbstractUIController<GridOperation
         // Réalignement de la colonne en mode édition
         getComponent().getColumn(EntetesGridOperationsEnum.PERIODIQUE).setWidth(editableMode ? GridOperations.TAILLE_COLONNE_TYPE_MENSUEL + 15 : GridOperations.TAILLE_COLONNE_TYPE_MENSUEL);
         getComponent().getColumn(EntetesGridOperationsEnum.ACTIONS).setHidden(editableMode);
-//        getComponent().getColumn(EntetesGridOperationsEnum.DATE_MAJ).setHidden(editableMode);
-        
         //
 		this.budgetControleur.getComponent().getButtonCreate().setVisible(!editableMode);
 	}

@@ -1,12 +1,10 @@
 package com.terrier.finances.gestion.services.utilisateurs.api;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
-import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.communs.utilisateur.model.api.UtilisateurPrefsAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
@@ -53,10 +51,10 @@ public class UtilisateursAPIService extends AbstractAPIClient<UtilisateurPrefsAP
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public Map<UtilisateurPrefsEnum, String> getPreferencesUtilisateur() throws UserNotAuthorizedException, DataNotFoundException{
+	public UtilisateurPrefsAPIObject getPreferenceDroits() throws UserNotAuthorizedException, DataNotFoundException{
 		UtilisateurPrefsAPIObject prefs = callHTTPGetData(BudgetApiUrlEnum.USERS_PREFS_FULL).block();
 		if(prefs != null){
-			return prefs.getPreferences();
+			return prefs;
 		}
 		return null;
 	}

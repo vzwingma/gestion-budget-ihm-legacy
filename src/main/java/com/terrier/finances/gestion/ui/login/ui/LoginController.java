@@ -109,17 +109,18 @@ public class LoginController extends AbstractUIController<Login>{
 	public void authenticateUser(String accessToken){
 
 		if(accessToken != null){
-			getUserSession().registerUtilisateur(accessToken);
+			getUserSession().setAccessToken(accessToken);
 			LOGGER.info("Accès autorisé pour {}", accessToken);
+			getServiceUserSessions().enregistrementUtilisateur();
 			// MAJ
 			getUserSession().getMainLayout().removeAllComponents();
 			getUserSession().getMainLayout().addComponent(new BudgetMensuelPage());
-
 		}
 		else{
 			LOGGER.error("****************** ECHEC AUTH ***********************");
 			Notification.show("Les login et mot de passe sont incorrects", Notification.Type.ERROR_MESSAGE);
 		}
-
 	}
+	
+
 }

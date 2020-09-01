@@ -48,7 +48,6 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		params.put("mois", Integer.toString(mois.getValue()));
 		params.put("annee", Integer.toString(annee));
 		BudgetMensuel budget = callHTTPGetData(BudgetApiUrlEnum.BUDGET_QUERY_FULL, null, params).block();
-		completeCategoriesOnOperation(budget);
 		if(budget == null) {
 			throw new BudgetNotFoundException("Impossible de trouver le budget du compte ["+idCompte+"]");
 		}
@@ -88,7 +87,6 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		Map<String, String> pathParams = new HashMap<>();
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_BUDGET, budget.getId());
 		BudgetMensuel budgetInit = callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_ID_FULL, pathParams).block();
-		completeCategoriesOnOperation(budgetInit);
 		return budgetInit;
 	}
 	
@@ -124,7 +122,6 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		Map<String, String> queryParams = new HashMap<>();
 		queryParams.put("actif", Boolean.toString(budgetActif));
 		BudgetMensuel budget = callHTTPPost(BudgetApiUrlEnum.BUDGET_ETAT_FULL, pathParams, queryParams, null).block();
-		completeCategoriesOnOperation(budget);
 		return budget;
 	}
 	
@@ -146,7 +143,6 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_COMPTE, compteCrediteur.getId());
 		
 		budgetUpdated =  callHTTPPost(BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL, pathParams, null, operation).block();
-		completeCategoriesOnOperation(budgetUpdated);
 		return budgetUpdated;
 	}
 
@@ -197,21 +193,6 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		return response.statusCode().is2xxSuccessful();
 	}
 	
-	
-	/**
-	 * Réinjection des catégories dans les opérations du budget
-	 * @param budget
-	 */
-	@Deprecated
-	private void completeCategoriesOnOperation(BudgetMensuel budget){
-		if(budget != null && budget.getListeOperations() != null && !budget.getListeOperations().isEmpty()){
-//			budget.getListeOperations()
-//				.stream()
-//				.forEach(op -> {op.setSsCategorie(BudgetDataUtils.getCategorieById(op.getSsCategorie().getId(), 
-//						parametrageAPIServices.getCategories())));
-		}
-	}
-
 
 	@Override
 	public ApiUrlConfigEnum getConfigServiceURI() {

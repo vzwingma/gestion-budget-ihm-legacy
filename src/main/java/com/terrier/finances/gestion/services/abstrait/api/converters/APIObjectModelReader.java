@@ -14,12 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpInputMessage;
 import org.springframework.http.codec.HttpMessageReader;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
+import com.google.web.bindery.requestfactory.gwt.rebind.model.RequestMethod.CollectionType;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 
+import elemental.json.JsonFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

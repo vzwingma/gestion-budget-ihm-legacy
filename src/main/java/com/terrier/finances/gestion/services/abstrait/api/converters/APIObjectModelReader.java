@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ResolvableType;
@@ -16,10 +18,8 @@ import org.springframework.http.codec.HttpMessageReader;
 
 import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.web.bindery.requestfactory.gwt.rebind.model.RequestMethod.CollectionType;
 import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 
-import elemental.json.JsonFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

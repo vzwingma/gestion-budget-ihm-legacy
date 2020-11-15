@@ -1,14 +1,13 @@
 package com.terrier.finances.gestion.ui.operations.creation.validator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
-
 import com.terrier.finances.gestion.communs.operations.model.enums.EtatOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.enums.TypeOperationEnum;
 import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.parametrages.model.enums.IdsCategoriesEnum;
 import com.vaadin.data.ValidationResult;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestValidator {
 
@@ -43,11 +42,11 @@ public class TestValidator {
 
 		// Ligne nulle
 		operation.setCategorie(operation.new Categorie());
-		operation.setSsCategorie(operation.new Categorie());
+		operation.setSsCategorie(null);
 		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");
 		operation.setTypeOperation(TypeOperationEnum.DEPENSE);
-		operation.setValeurFromSaisie(0D);
+		operation.setValeurFromSaisie(10D);
 		// Ligne OK
 		ValidationResult r = validator.apply(operation, null);
 		assertEquals(ValidationResult.error("").isError(), r.isError());
@@ -64,7 +63,7 @@ public class TestValidator {
 		LigneOperation operation = new LigneOperation();
 		operation.setCategorie(operation.new Categorie());
 		operation.setSsCategorie(operation.new Categorie());
-		operation.getSsCategorie().setId(IdsCategoriesEnum.SALAIRE.toString());
+		operation.getSsCategorie().setId(IdsCategoriesEnum.SALAIRE.getId());
 		operation.setEtat(EtatOperationEnum.PREVUE);
 		operation.setLibelle("TEST LIBELLE");		
 		operation.setValeurFromSaisie(-123D);

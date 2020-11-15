@@ -1,19 +1,5 @@
 package com.terrier.finances.gestion.ui.budget.ui;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
-import java.time.temporal.ChronoField;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
@@ -41,6 +27,19 @@ import com.vaadin.event.UIEvents;
 import com.vaadin.shared.ui.datefield.DateResolution;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.temporal.ChronoField;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Controleur du budget mensuel
@@ -66,7 +65,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 	/**
 	 * Constructure du Controleur du composant
-	 * @param composant
+	 * @param composant composant associé au controleur
 	 */
 	public BudgetMensuelController(BudgetMensuelPage composant) {
 		super(composant);
@@ -84,7 +83,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 	/**
 	 * Pool de l'IHM pour vérifier la mise à jour vis à vis de la BDD
-	 * @param event
+	 * @param event event de polling
 	 */
 	@Override
 	public void poll(UIEvents.PollEvent event) {
@@ -115,7 +114,6 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 	/**
 	 * Init du suivi
-	 * @param gridOperationsControleur tableau de suivi
 	 * @throws UserNotAuthorizedException  erreur d'authentification
 	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
@@ -337,7 +335,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 
 	/**
 	 * Mise à jour du range fin
-	 * @param dateFin
+	 * @param idCompte compte bancaire
 	 * @throws UserNotAuthorizedException erreur d'authentification
 	 * @throws DataNotFoundException  erreur d'accès
 	 */
@@ -445,7 +443,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		LOGGER.debug("Affichage des données dans le tableau de suivi des dépenses");
 		List<LigneOperation> listeOperations = new ArrayList<>();
 		budgetCourant.getListeOperations().stream().forEach(listeOperations::add);
-		Collections.sort(listeOperations);
+		Collections.sort(listeOperations, (op1, op2) -> { return op2.getId().compareTo(op1.getId()); });
 		/**
 		 * Affichage des lignes dans le tableau
 		 **/

@@ -421,7 +421,36 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 	public void miseAJourVueDonnees() {
 		miseAJourVueDonnees(false);
 	}
-	
+
+	/**
+	 * Comparator des opérations
+	 * @param listeOperationsToOrder
+	 * @return liste ordonnées
+	 */
+	public static List<LigneOperation> orderOperationsToView(List<LigneOperation> listeOperationsToOrder){
+		List<LigneOperation> listeOperations = new ArrayList<>();
+		listeOperationsToOrder.stream().forEach(listeOperations::add);
+		Collections.sort(listeOperations, (op1, op2) -> {
+			int compareDate = 0;
+			// 1er tri sur la date opération
+			if(op2.getDateOperation() != null && op1.getDateOperation() != null){
+				compareDate = op2.getDateOperation().compareTo(op1.getDateOperation());
+			}
+			else if(op1.getDateOperation() != null){
+				return 1;
+			}
+			else if(op2.getDateOperation() != null){
+				return -1;
+			}
+			// 2ème tri Id
+			if(compareDate == 0){
+				return op1.getId().compareTo(op2.getId());
+			}
+			return compareDate;
+		});
+		return listeOperations;
+	}
+
 	/**
 	 * Mise à jour de la vue en forçant le refresh
 	 * @param forceRefresh force refresh en BDD
@@ -441,9 +470,7 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 		}
 		LOGGER.info(">> Mise à jour des vues >> {}", budgetCourant.isActif());		
 		LOGGER.debug("Affichage des données dans le tableau de suivi des dépenses");
-		List<LigneOperation> listeOperations = new ArrayList<>();
-		budgetCourant.getListeOperations().stream().forEach(listeOperations::add);
-		Collections.sort(listeOperations, (op1, op2) -> { return op2.getId().compareTo(op1.getId()); });
+		List<LigneOperation> listeOperations = orderOperationsToView(budgetCourant.getListeOperations());
 		/**
 		 * Affichage des lignes dans le tableau
 		 **/

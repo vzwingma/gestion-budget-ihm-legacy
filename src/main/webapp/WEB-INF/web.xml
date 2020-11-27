@@ -8,6 +8,7 @@
 		<param-name>productionMode</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	<absolute-ordering />
 	<!-- Loads the Spring web application context using the config file defined 
 		above. -->
 	<listener>

@@ -1,10 +1,10 @@
 package com.terrier.finances.gestion.services.admin.api;
 
+import com.terrier.finances.gestion.communs.api.model.Info;
+import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 import org.springframework.stereotype.Controller;
 
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
-import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
-import com.terrier.finances.gestion.services.admin.model.Info;
 
 /**
  * Service API vers {@link AdminService}

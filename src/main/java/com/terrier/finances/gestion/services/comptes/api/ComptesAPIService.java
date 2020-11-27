@@ -1,17 +1,16 @@
 package com.terrier.finances.gestion.services.comptes.api;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Controller;
-
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
 import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
+import org.springframework.stereotype.Controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -28,11 +27,8 @@ public class ComptesAPIService extends AbstractAPIClient<CompteBancaire> impleme
 	}
 	/**
 	 * Comptes d'un utilisateur
-	 * @param idUtilisateur
-	 * @throws UserNotAuthorizedException  erreur d'authentification
-	 * @throws DataNotFoundException  erreur lors de l'appel
 	 */
-	public List<CompteBancaire> getComptes() throws DataNotFoundException, UserNotAuthorizedException {
+	public List<CompteBancaire> getComptes()  {
 		return callHTTPGetListData(BudgetApiUrlEnum.COMPTES_LIST_FULL).block();
 	}
 	

@@ -1,9 +1,6 @@
 package com.terrier.finances.gestion.services.abstrait.api;
 
-import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
-import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
-import com.terrier.finances.gestion.services.admin.model.Info;
-
+import com.terrier.finances.gestion.communs.api.model.Info;
 import reactor.core.publisher.Mono;
 
 
@@ -14,8 +11,7 @@ import reactor.core.publisher.Mono;
  */
 public interface IAPIClient {
 	/**
-	 * Statut du Services 
-	 * @throws DataNotFoundException  erreur lors de l'appel
+	 * Statut du Services
 	 */
-	public Mono<Info> getInfo() throws DataNotFoundException, UserNotAuthorizedException;
+	public Mono<Info> getInfo();
 }

@@ -443,6 +443,9 @@ public class BudgetMensuelController extends AbstractUIController<BudgetMensuelP
 				return -1;
 			}
 			// 2ème tri Id
+			if(op2.getDateMaj() != null && op1.getDateMaj() != null){
+				compareDate = op2.getDateMaj().compareTo(op1.getDateMaj());
+			}
 			if(compareDate == 0){
 				return op1.getId().compareTo(op2.getId());
 			}

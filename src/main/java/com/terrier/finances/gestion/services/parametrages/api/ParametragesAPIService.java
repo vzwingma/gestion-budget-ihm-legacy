@@ -1,18 +1,16 @@
 package com.terrier.finances.gestion.services.parametrages.api;
 
-import java.text.ParseException;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
 import com.terrier.finances.gestion.communs.parametrages.model.v12.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
-import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+
+import java.text.ParseException;
+import java.util.List;
 
 /**
  * Service API vers {@link ParametrageControlleur}
@@ -39,21 +37,16 @@ public class ParametragesAPIService extends AbstractAPIClient<CategorieOperation
 	 */
 	public List<CategorieOperation> getCategories() {
 		if(listeCategories == null){
-			try {
-				List<CategorieOperation> resultatCategories = callHTTPGetListData(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL).block();
-				// Recalcul des liens sur les catégories parentes
-				if(resultatCategories != null){
-					resultatCategories
-						.parallelStream()
-						.forEach(c -> 
-							c.getListeSSCategories()
-								.parallelStream()
-								.forEach(ssc -> ssc.setCategorieParente(c)));
-					this.listeCategories = resultatCategories;
-				}
-			}
-			catch (UserNotAuthorizedException | DataNotFoundException e) {
-				LOGGER.error("Impossible de charger les catégories" ,e );
+			List<CategorieOperation> resultatCategories = callHTTPGetListData(BudgetApiUrlEnum.PARAMS_CATEGORIES_FULL).block();
+			// Recalcul des liens sur les catégories parentes
+			if(resultatCategories != null){
+				resultatCategories
+					.parallelStream()
+					.forEach(c ->
+						c.getListeSSCategories()
+							.parallelStream()
+							.forEach(ssc -> ssc.setCategorieParente(c)));
+				this.listeCategories = resultatCategories;
 			}
 		}
 		return listeCategories;

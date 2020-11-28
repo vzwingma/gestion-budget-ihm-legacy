@@ -3,20 +3,16 @@
  */
 package com.terrier.finances.gestion.ui.login.ui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
-import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
+import com.terrier.finances.gestion.communs.api.model.Info;
 import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
-import com.terrier.finances.gestion.services.admin.model.Info;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
 import com.terrier.finances.gestion.ui.login.listeners.ActionConnexionClickListener;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 /**
@@ -93,7 +89,7 @@ public class LoginController extends AbstractUIController<Login>{
 				}
 				label.setValue(label.getValue() + ":" +  version);
 			});
-		} catch (DataNotFoundException | UserNotAuthorizedException e) {
+		} catch (Exception e) {
 			LOGGER.error("Erreur sur la réception des versions");
 			label.setValue(label.getValue() + ":" + version);
 		}
@@ -103,8 +99,7 @@ public class LoginController extends AbstractUIController<Login>{
 
 	/**
 	 * Méthode d'authenticiation de l'utilisateur
-	 * @param login de l'utilisateur
-	 * @param accessTokenEnClair en clair de l'utilisateur
+	 * @param accessToken token de l'utilisateur
 	 */
 	public void authenticateUser(String accessToken){
 
@@ -118,9 +113,7 @@ public class LoginController extends AbstractUIController<Login>{
 		}
 		else{
 			LOGGER.error("****************** ECHEC AUTH ***********************");
-			Notification.show("Les login et mot de passe sont incorrects", Notification.Type.ERROR_MESSAGE);
+			Notification.show("Le token est incorrect", Notification.Type.ERROR_MESSAGE);
 		}
 	}
-	
-
 }

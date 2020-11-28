@@ -1,24 +1,18 @@
 package com.terrier.finances.gestion.ui.login.model;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurDroitsEnum;
 import com.terrier.finances.gestion.communs.utilisateur.enums.UtilisateurPrefsEnum;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
-import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
-
+import com.vaadin.ui.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -118,7 +112,7 @@ public class UserUISession {
 	
 	/**
 	 * Enregistrement de l'utilisateur
-	 * @param idUtilisateur USER
+	 * @param token USER
 	 */
 	public boolean setAccessToken(String token){
 		this.accessToken = token;

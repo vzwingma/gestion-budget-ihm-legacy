@@ -1,5 +1,7 @@
 package com.terrier.finances.gestion.ui.login.business;
 
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.ui.login.model.UserUISession;
 
 /**
@@ -16,7 +18,7 @@ public interface IUserUISessionsService {
 	 */
 	public UserUISession getSession();
 
-	public void enregistrementUtilisateur();
+	public void enregistrementUtilisateur() throws UserNotAuthorizedException, DataNotFoundException;
 
 	/**
 	 * Déconnexion de l'utilisateur

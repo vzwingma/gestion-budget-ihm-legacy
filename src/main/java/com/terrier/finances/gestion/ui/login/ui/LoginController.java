@@ -4,6 +4,8 @@
 package com.terrier.finances.gestion.ui.login.ui;
 
 import com.terrier.finances.gestion.communs.api.model.Info;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
+import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
 import com.terrier.finances.gestion.ui.budget.ui.BudgetMensuelPage;
 import com.terrier.finances.gestion.ui.communs.abstrait.AbstractUIController;
@@ -103,17 +105,24 @@ public class LoginController extends AbstractUIController<Login>{
 	 */
 	public void authenticateUser(String accessToken){
 
-		if(accessToken != null){
-			getUserSession().setAccessToken(accessToken);
-			LOGGER.info("Accès autorisé pour {}", accessToken);
-			getServiceUserSessions().enregistrementUtilisateur();
-			// MAJ
-			getUserSession().getMainLayout().removeAllComponents();
-			getUserSession().getMainLayout().addComponent(new BudgetMensuelPage());
+		try{
+			if(accessToken != null){
+				getUserSession().setAccessToken(accessToken);
+				getServiceUserSessions().enregistrementUtilisateur();
+				LOGGER.info("Accès autorisé pour {}", accessToken);
+				// MAJ
+				getUserSession().getMainLayout().removeAllComponents();
+				getUserSession().getMainLayout().addComponent(new BudgetMensuelPage());
+			}
+			else{
+				LOGGER.error("****************** ECHEC AUTH ***********************");
+				Notification.show("Le token est incorrect", Notification.Type.ERROR_MESSAGE);
+			}
 		}
-		else{
+		catch (UserNotAuthorizedException | DataNotFoundException e){
 			LOGGER.error("****************** ECHEC AUTH ***********************");
-			Notification.show("Le token est incorrect", Notification.Type.ERROR_MESSAGE);
+			Notification.show("L'utilisateur est introuvable", Notification.Type.ERROR_MESSAGE);
 		}
+
 	}
 }

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.vzwingma.finances.budget</groupId>
 	<artifactId>ihm</artifactId>
-	<version>12.1.6</version>
+	<version>12.1.8</version>
 	<packaging>war</packaging>
 	<name>[Budget] IHM Legacy</name>
 	<description>IHM de l'application</description>

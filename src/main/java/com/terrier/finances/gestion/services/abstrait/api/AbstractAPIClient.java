@@ -7,6 +7,7 @@ import com.terrier.finances.gestion.communs.abstrait.AbstractAPIObjectModel;
 import com.terrier.finances.gestion.communs.api.AbstractHTTPReactiveClient;
 import com.terrier.finances.gestion.communs.api.model.Info;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.services.FacadeServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,40 +49,11 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @param <Q> Classe des données à envoyer
 	 * @param path chemin
 	 * @param dataToSend body à envoyer
-	 * @return réponse
+	 * @return status
 	 */
-	protected <Q extends AbstractAPIObjectModel, R extends  AbstractAPIObjectModel>
-		Mono<R> callHTTPPostResponse(String path, Q dataToSend, Class<R> classResponse) {
-		return callAPIandReturnResponse(HttpMethod.POST, path, null, null, dataToSend, classResponse);
-	}
-
 	protected <Q extends AbstractAPIObjectModel>
 	HttpStatus callHTTPPostStatus(String path,  Map<String, String> pathParams, Q dataToSend) {
 		return callAPIandReturnStatus(HttpMethod.POST, path, pathParams, null, dataToSend);
-	}
-	/**
-	 * Appel POST vers les API Services
-	 * @param <Q> Classe des données à envoyer
-	 * @param path chemin
-	 * @param pathParams paramètres d'URL
-	 * @param dataToSend body à envoyer
-	 * @return réponse
-	 */
-	protected <Q extends AbstractAPIObjectModel, R extends  AbstractAPIObjectModel>
-	Mono<R> callHTTPPostResponse(String path, Map<String, String> pathParams, Q dataToSend, Class<R> classResponse) {
-		return callAPIandReturnResponse(HttpMethod.POST, path, pathParams, null, dataToSend, classResponse);
-	}
-
-	/**
-	 * Appel POST vers les API Services
-	 * @param <Q> classe du contenu de la requête 
-	 * @param path chemin
-	 * @param dataToSend body à envoyer
-	 * @return réponse
-	 */
-	protected  <Q extends AbstractAPIObjectModel>
-	Mono<R> callHTTPPost(String path, Q dataToSend) {
-		return callAPIandReturnResponse(HttpMethod.POST, path, null, null, dataToSend, responseClassType);
 	}
 
 	
@@ -93,8 +65,14 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @return réponse body
 	 */
 	protected <Q extends AbstractAPIObjectModel> 
-	Mono<R> callHTTPPost(String path,  Map<String, String> pathParams, Map<String, String> queryParams, Q dataToSend) {
-		return callAPIandReturnResponse(HttpMethod.POST, path, pathParams, queryParams, dataToSend, responseClassType);
+		R callHTTPPost(String path,  Map<String, String> pathParams, Map<String, String> queryParams, Q dataToSend)
+		throws DataNotFoundException{
+		try{
+			return callAPIandReturnResponse(HttpMethod.POST, path, pathParams, queryParams, dataToSend, responseClassType).block();
+		}
+		catch (Exception e){
+			throw new DataNotFoundException("Erreur lors de la réception du service");
+		}
 	}
 
 	/**
@@ -110,8 +88,13 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @param path chemin
 	 * @return données en réponse
 	 */
-	protected Mono<R> callHTTPGetData(String path) {
-		return callAPIandReturnResponse(HttpMethod.GET, path, null, null, null, responseClassType);
+	protected R callHTTPGetData(String path) throws  DataNotFoundException {
+		try{
+			return callAPIandReturnResponse(HttpMethod.GET, path, null, null, null, responseClassType).block();
+		}
+		catch (Exception e){
+			throw new DataNotFoundException("Erreur lors de la réception du service");
+		}
 	}
 
 
@@ -119,15 +102,20 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @param path chemin
 	 * @return données en réponse
 	 */
-	protected Mono<List<R>> callHTTPGetListData(String path) {
-		return callAPIandReturnResponses(HttpMethod.GET, path, responseClassType).collectList();
+	protected List<R> callHTTPGetListData(String path) throws DataNotFoundException{
+		try{
+			return callAPIandReturnResponses(HttpMethod.GET, path, responseClassType).collectList().block();
+		}
+		catch (Exception e){
+			throw new DataNotFoundException("Erreur lors de la réception du service");
+		}
 	}
 	/**
 	 * @param path chemin
 	 * @return données en réponse
 	 */
-	protected Mono<R> callHTTPGetData(String path, Map<String, String> pathParams,  Map<String, String> queryParams) {
-		return callAPIandReturnResponse(HttpMethod.GET, path, pathParams, queryParams, null, responseClassType);
+	protected R callHTTPGetData(String path, Map<String, String> pathParams,  Map<String, String> queryParams) throws  DataNotFoundException{
+		return callAPIandReturnResponse(HttpMethod.GET, path, pathParams, queryParams, null, responseClassType).block();
 	}
 
 
@@ -137,8 +125,13 @@ public abstract class AbstractAPIClient<R extends AbstractAPIObjectModel> extend
 	 * @param path racine de l'URL
 	 * @return résultat de l'appel
 	 */
-	protected Mono<R> callHTTPDeleteData(String path, Map<String, String> pathParams) {
-		return callAPIandReturnResponse(HttpMethod.DELETE, path, pathParams, null, null, responseClassType);
+	protected R callHTTPDeleteData(String path, Map<String, String> pathParams) throws DataNotFoundException {
+		try{
+			return callAPIandReturnResponse(HttpMethod.DELETE, path, pathParams, null, null, responseClassType).block();
+		}
+		catch (Exception e){
+			throw new DataNotFoundException("Erreur lors de la réception du service");
+		}
 	}
 	
 

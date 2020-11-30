@@ -93,7 +93,7 @@ public class LoginController extends AbstractUIController<Login>{
 			});
 		} catch (Exception e) {
 			LOGGER.error("Erreur sur la réception des versions");
-			label.setValue(label.getValue() + ":" + version);
+			label.setValue(label.getValue() + ":" + "N/A");
 		}
 
 	}

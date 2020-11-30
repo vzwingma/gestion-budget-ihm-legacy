@@ -7,7 +7,6 @@ import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
 import com.terrier.finances.gestion.communs.utils.data.BudgetDateTimeUtils;
 import com.terrier.finances.gestion.communs.utils.exceptions.BudgetNotFoundException;
-import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedException;
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
@@ -38,14 +37,14 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 	 * @param mois mois 
 	 * @param annee année
 	 * @return budget mensuel chargé et initialisé à partir des données précédentes
-	 * @throws UserNotAuthorizedException 
+	 * @throws DataNotFoundException erreur
 	 */
-	public BudgetMensuel chargerBudgetMensuel(String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException, UserNotAuthorizedException{
+	public BudgetMensuel chargerBudgetMensuel(String idCompte, Month mois, int annee) throws BudgetNotFoundException, DataNotFoundException {
 		Map<String, String> params = new HashMap<>();
 		params.put("idCompte", idCompte);
 		params.put("mois", Integer.toString(mois.getValue()));
 		params.put("annee", Integer.toString(annee));
-		BudgetMensuel budget = callHTTPGetData(BudgetApiUrlEnum.BUDGET_QUERY_FULL, null, params).block();
+		BudgetMensuel budget = callHTTPGetData(BudgetApiUrlEnum.BUDGET_QUERY_FULL, null, params);
 		if(budget == null) {
 			throw new BudgetNotFoundException("Impossible de trouver le budget du compte ["+idCompte+"]");
 		}
@@ -73,14 +72,11 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 	 * Réinitialiser un budget mensuel
 	 * @param budget budget mensuel
 	 * @throws DataNotFoundException  erreur sur les données
-	 * @throws BudgetNotFoundException budget introuvable
-	 * @throws CompteClosedException compte clos. Impossible de réinitialiser
-	 * @throws UserNotAuthorizedException erreur d'authentification
 	 */
-	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws BudgetNotFoundException, DataNotFoundException, CompteClosedException, UserNotAuthorizedException {
+	public BudgetMensuel reinitialiserBudgetMensuel(BudgetMensuel budget) throws DataNotFoundException {
 		Map<String, String> pathParams = new HashMap<>();
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_BUDGET, budget.getId());
-		BudgetMensuel budgetInit = callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_ID_FULL, pathParams).block();
+		BudgetMensuel budgetInit = callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_ID_FULL, pathParams);
 		return budgetInit;
 	}
 	
@@ -103,15 +99,14 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 	 * @param  idBudgetMensuel budget à (dé)locker
 	 * @param budgetActif flag
 	 */
-	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif) throws UserNotAuthorizedException, DataNotFoundException{
+	public BudgetMensuel setBudgetActif(String idBudgetMensuel, boolean budgetActif) throws DataNotFoundException{
 		
 		Map<String, String> pathParams = new HashMap<>();
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_BUDGET, idBudgetMensuel);
 		
 		Map<String, String> queryParams = new HashMap<>();
 		queryParams.put("actif", Boolean.toString(budgetActif));
-		BudgetMensuel budget = callHTTPPost(BudgetApiUrlEnum.BUDGET_ETAT_FULL, pathParams, queryParams, null).block();
-		return budget;
+		return callHTTPPost(BudgetApiUrlEnum.BUDGET_ETAT_FULL, pathParams, queryParams, null);
 	}
 	
 	/**
@@ -122,15 +117,14 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 	 * @throws DataNotFoundException erreur données
 	 * @throws UserNotAuthorizedException  user not
 	 */
-	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation operation, CompteBancaire compteCrediteur) throws DataNotFoundException, UserNotAuthorizedException{
+	public BudgetMensuel ajoutLigneTransfertIntercompte(String idBudget, LigneOperation operation, CompteBancaire compteCrediteur) throws DataNotFoundException {
 		BudgetMensuel budgetUpdated = null;
 		Map<String, String> pathParams = new HashMap<>();
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_BUDGET, idBudget);
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_OPERATION, operation.getId());
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_COMPTE, compteCrediteur.getId());
 		
-		budgetUpdated =  callHTTPPost(BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL, pathParams, null, operation).block();
-		return budgetUpdated;
+		return callHTTPPost(BudgetApiUrlEnum.BUDGET_OPERATION_INTERCOMPTE_FULL, pathParams, null, operation);
 	}
 
 	
@@ -142,7 +136,7 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 	 * @throws BudgetNotFoundException not found
 	 * @throws UserNotAuthorizedException 
 	 */
-	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException, BudgetNotFoundException, UserNotAuthorizedException{
+	public BudgetMensuel majLigneOperation(String idBudget, LigneOperation operation) throws DataNotFoundException{
 	
 		BudgetMensuel budgetUpdated = null;
 		
@@ -152,10 +146,10 @@ public class OperationsAPIService extends AbstractAPIClient<BudgetMensuel> imple
 		
 		if(operation.getEtat() != null)
 		{
-			budgetUpdated =  callHTTPPost(BudgetApiUrlEnum.BUDGET_OPERATION_FULL, pathParams, null, operation).block();
+			budgetUpdated =  callHTTPPost(BudgetApiUrlEnum.BUDGET_OPERATION_FULL, pathParams, null, operation);
 		}
 		else {
-			budgetUpdated =  callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_OPERATION_FULL, pathParams).block();
+			budgetUpdated =  callHTTPDeleteData(BudgetApiUrlEnum.BUDGET_OPERATION_FULL, pathParams);
 		}
 		return budgetUpdated;
 	}

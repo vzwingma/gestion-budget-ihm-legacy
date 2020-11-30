@@ -1,10 +1,10 @@
 package com.terrier.finances.gestion.services.parametrages.api;
 
-import java.util.List;
-
 import com.terrier.finances.gestion.communs.parametrages.model.v12.CategorieOperation;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
+
+import java.util.List;
 
 /**
  * Interface Service API vers {@link ParametrageControlleur}

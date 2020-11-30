@@ -3,6 +3,7 @@ package com.terrier.finances.gestion.services.operations.api;
 import com.terrier.finances.gestion.communs.api.config.ApiUrlConfigEnum;
 import com.terrier.finances.gestion.communs.comptes.model.api.IntervallesCompteAPIObject;
 import com.terrier.finances.gestion.communs.utils.data.BudgetApiUrlEnum;
+import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.services.abstrait.api.AbstractAPIClient;
 import org.springframework.stereotype.Controller;
 
@@ -27,11 +28,11 @@ public class BudgetsCompteAPIService extends AbstractAPIClient<IntervallesCompte
 	 * @param compte id du compte
 	 * @return la date du premier budget décrit pour cet utilisateur
 	 */
-	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) {
+	public IntervallesCompteAPIObject getIntervallesBudgets(String compte) throws DataNotFoundException {
 		
 		Map<String, String> pathParams = new HashMap<>();
 		pathParams.put(BudgetApiUrlEnum.PARAM_ID_COMPTE, compte);
-		return callHTTPGetData(BudgetApiUrlEnum.BUDGET_COMPTE_INTERVALLES_FULL, pathParams, null).block();
+		return callHTTPGetData(BudgetApiUrlEnum.BUDGET_COMPTE_INTERVALLES_FULL, pathParams, null);
 	}
 
 

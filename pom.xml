@@ -13,7 +13,7 @@
 		
 		<communs.version>12.2.1</communs.version>
 		<spring.version>5.3.4</spring.version>
-		<vaadin.version>8.12.1</vaadin.version>		
+		<vaadin.version>8.12.3</vaadin.version>		
 		<maven.build.timestamp.format>dd/MM/yyyy HH:mm</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<sonar.projectKey>gestion-budget-ihm-legacy</sonar.projectKey>

@@ -1,8 +1,5 @@
 package com.terrier.finances.gestion.services.operations.api;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-
 import com.terrier.finances.gestion.communs.budget.model.v12.BudgetMensuel;
 import com.terrier.finances.gestion.communs.comptes.model.v12.CompteBancaire;
 import com.terrier.finances.gestion.communs.operations.model.v12.LigneOperation;
@@ -11,6 +8,9 @@ import com.terrier.finances.gestion.communs.utils.exceptions.CompteClosedExcepti
 import com.terrier.finances.gestion.communs.utils.exceptions.DataNotFoundException;
 import com.terrier.finances.gestion.communs.utils.exceptions.UserNotAuthorizedException;
 import com.terrier.finances.gestion.services.abstrait.api.IAPIClient;
+
+import java.time.LocalDateTime;
+import java.time.Month;
 
 /**
  * API  vers le domaine Budget
@@ -80,9 +80,8 @@ public interface IOperationsAPIService extends IAPIClient {
 	
 	/**
 	 * Mise à jour de la ligne de dépense du budget
-	 * @param ligneId ligne à modifier (ou à créer si elle n'existe pas
-	 * @param etat état de la ligne
-	 * @param auteur auteur de l'action
+	 * @param idBudget id budget
+	 * @param operation opération à mettre à jour
 	 * @throws DataNotFoundException erreur ligne non trouvé
 	 * @throws BudgetNotFoundException not found
 	 * @throws UserNotAuthorizedException 
